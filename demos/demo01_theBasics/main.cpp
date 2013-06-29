@@ -27,13 +27,6 @@
 
 using namespace Ogre;
 
-//#include <OgreException.h>
-
-//#include <OgreRoot.h>
-//#include <OgreRenderWindow.h>
-//#include <OgreSceneManager.h>
-//#include <OgreCamera.h>
-//#include <OgreWindowEventUtilities.h>
 #include <OgreOverlay.h>
 #include <OgreOverlayElement.h>
 #include <OgreOverlayManager.h>
@@ -48,14 +41,32 @@ class OgreNewtonApplication: public ExampleApplication
 	class ApplicationFrameListener: public ExampleFrameListener
 	{
 		public:
-		ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr)
+		ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld)
 			:ExampleFrameListener(win, cam)
+			//,m_lastTime(0.0)
 			,m_sceneMgr(mgr)
+			,m_physicsWorld(physicsWorld)
 		{
 		}
 
 		virtual ~ApplicationFrameListener(void)
 		{
+		}
+
+		virtual void updateStats(void)
+		{
+			ExampleFrameListener::updateStats();
+			try {
+				// use one of the debug output to show the physics time
+				OverlayElement* const gui = OverlayManager::getSingleton().getOverlayElement("Core/NumTris");
+				dAssert (gui);
+				double time = double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f;
+				char text[256];
+				sprintf (text, "Physics time : %05.3f ms", time);
+				//gui->setCaption(physTime + StringConverter::toString(time, 3) + " ms");
+				gui->setCaption(text);
+			}
+			catch(...) { /* ignore */ }
 		}
 
 		bool frameStarted(const FrameEvent &evt)
@@ -66,7 +77,9 @@ class OgreNewtonApplication: public ExampleApplication
 			return true;
 		}
 
+		//double m_lastTime;
 		SceneManager* m_sceneMgr;
+		OgreNewtonWorld* m_physicsWorld;
 	};
 
 
@@ -94,7 +107,7 @@ class OgreNewtonApplication: public ExampleApplication
 	void createFrameListener()
 	{
 		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr);
+		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, m_physicsWorld);
 		mRoot->addFrameListener(m_listener);
 	}
 
