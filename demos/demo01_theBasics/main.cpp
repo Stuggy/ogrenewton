@@ -45,24 +45,17 @@ class OgreNewtonApplication: public ExampleApplication
 {
 	public:
 
-
-	//class OgreNewtonFrameListener: public OgreNewtonWorld
 	class ApplicationFrameListener: public ExampleFrameListener
 	{
 		public:
 		ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr)
 			:ExampleFrameListener(win, cam)
-			,m_root(root)
 			,m_sceneMgr(mgr)
 		{
-			m_physicsWorld = new OgreNewtonWorld (win);
-			root->addFrameListener(m_physicsWorld);
 		}
 
 		virtual ~ApplicationFrameListener(void)
 		{
-			m_root->removeFrameListener(m_physicsWorld);
-			delete m_physicsWorld;
 		}
 
 		bool frameStarted(const FrameEvent &evt)
@@ -73,22 +66,28 @@ class OgreNewtonApplication: public ExampleApplication
 			return true;
 		}
 
-		Root* m_root;
 		SceneManager* m_sceneMgr;
-		OgreNewtonWorld* m_physicsWorld;
 	};
 
 
 	OgreNewtonApplication()
 		:ExampleApplication()
 		,m_listener(NULL)
+		,m_physicsWorld(NULL)
 	{
 	}
 
 	virtual ~OgreNewtonApplication()
 	{
-		mRoot->removeFrameListener(m_listener);
-		delete m_listener;
+		if (m_listener) {
+			mRoot->removeFrameListener(m_listener);
+			delete m_listener;
+		}
+
+		if (m_physicsWorld) {
+			mRoot->removeFrameListener(m_physicsWorld);
+			delete m_physicsWorld;
+		}
 	}
 
 	protected:
@@ -101,6 +100,11 @@ class OgreNewtonApplication: public ExampleApplication
 
 	void createScene()
 	{
+		// create the physic world first
+		m_physicsWorld = new OgreNewtonWorld (mWindow);
+		mRoot->addFrameListener(m_physicsWorld);
+
+
 		// sky box.
 		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 
@@ -117,6 +121,10 @@ class OgreNewtonApplication: public ExampleApplication
 //		floor->setMaterialName( "Simple/BeachStones" );
 //		floor->setCastShadows( false );
 
+		// create a scene body to add all static collidable meshes in the world 
+		dNewtonSceneBody* const sceneBody = new dNewtonSceneBody (m_physicsWorld);
+
+
 	}
 
 //	OgreNewt::Body* makeSimpleBox( Ogre::Vector3& size, Ogre::Vector3& pos, Ogre::Quaternion& orient );
@@ -132,6 +140,7 @@ class OgreNewtonApplication: public ExampleApplication
 //	Ogre::FrameListener* mNewtonListener;
 //	int mEntityCount;
 
+	OgreNewtonWorld* m_physicsWorld;
 	ApplicationFrameListener* m_listener;
 
 };
