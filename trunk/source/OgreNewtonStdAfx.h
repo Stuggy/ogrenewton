@@ -24,15 +24,15 @@
 
 #include <Ogre.h>
 #include <OgreRoot.h>
-#include <OgreVector3.h>
-#include <OgreQuaternion.h>
-#include <OgreMovableObject.h>
-#include <OgreRenderable.h>
 #include <OgreNode.h>
-#include <OgreFrameListener.h>
+#include <OgreVector3.h>
 #include <OgreSceneNode.h>
+#include <OgreQuaternion.h>
+#include <OgreRenderable.h>
 #include <OgreSceneManager.h>
 #include <OgreManualObject.h>
+#include <OgreMovableObject.h>
+#include <OgreFrameListener.h>
 
 #include <Newton.h>
 #include <dNewton.h>
