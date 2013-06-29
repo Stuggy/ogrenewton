@@ -23,11 +23,11 @@
 #include "OgreNewtonStdAfx.h"
 #include "OgreNewtonWorld.h"
 
-OgreNewtonWorld::OgreNewtonWorld (Ogre::RenderWindow* const win, int updateFramerate)
-	:Ogre::FrameListener()
+OgreNewtonWorld::OgreNewtonWorld (RenderWindow* const win, int updateFramerate)
+	:FrameListener()
 	,dNewton()
 {
-	setUpdateFPS (Ogre::Real (updateFramerate), 3);
+	setUpdateFPS (Real (updateFramerate), 3);
 }
 
 OgreNewtonWorld::~OgreNewtonWorld()
@@ -35,8 +35,15 @@ OgreNewtonWorld::~OgreNewtonWorld()
 }
 
 
-void OgreNewtonWorld::setUpdateFPS(Ogre::Real desiredFps, int maxUpdatesPerFrames)
+void OgreNewtonWorld::setUpdateFPS(Real desiredFps, int maxUpdatesPerFrames)
 {
 	m_timestep = 1.0f / desiredFps;
 	SetMaxUpdatesPerIterations (maxUpdatesPerFrames);
+}
+
+bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
+{
+	UpdateAsync (m_timestep);
+
+	return true;
 }

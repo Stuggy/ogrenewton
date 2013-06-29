@@ -25,20 +25,21 @@
 
 #include "OgreNewtonStdAfx.h"
 
-class OgreNewtonWorld: public Ogre::FrameListener, public dNewton 
+using namespace Ogre;
+
+class OgreNewtonWorld: public FrameListener, public dNewton 
 {
 	public:
-	OgreNewtonWorld (Ogre::RenderWindow* const win, int updateFramerate = 120);
+	OgreNewtonWorld (RenderWindow* const win, int updateFramerate = 120);
 	virtual ~OgreNewtonWorld();
 
-	bool frameStarted(const Ogre::FrameEvent &evt);
+	bool frameStarted(const FrameEvent &evt);
 
-	void setUpdateFPS(Ogre::Real desiredFps, int maxUpdatesPerFrames = 3);
+	void setUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
 
 
 	protected:
-	Ogre::Real m_timestep;
-	
+	Real m_timestep;
 };
 
 #endif
