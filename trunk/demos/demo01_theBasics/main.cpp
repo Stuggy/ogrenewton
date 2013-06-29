@@ -118,10 +118,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 	try
     {
 		application.go();
-//		if (application.initialise() && application.setup())
-//		{
-//			application.run();
-//		}
 	}
 	catch(Ogre::Exception &e)
 	{
