@@ -83,7 +83,11 @@ public:
 	}
 
 	protected:
-//	void createFrameListener();
+	void createFrameListener()
+	{
+
+	}
+
 	void createScene()
 	{
 
@@ -109,10 +113,11 @@ public:
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 {
 
+	OgreNewtonApplication application;
+
 	try
     {
-		OgreNewtonApplication application;
-		
+		application.go();
 //		if (application.initialise() && application.setup())
 //		{
 //			application.run();
