@@ -1,0 +1,247 @@
+
+material castle000
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture ornament2_.tga
+			}
+		}
+
+	}
+
+}
+
+material castle001
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture wall_p.tga
+			}
+		}
+
+	}
+
+}
+
+material castle002
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture icon.tga
+			}
+		}
+
+	}
+
+}
+
+material castle003
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture wall_4.tga
+			}
+		}
+
+	}
+
+}
+
+material castle004
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture ornament1_.tga
+			}
+		}
+
+	}
+
+}
+
+material castle005
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture carpet4_w.tga
+			}
+		}
+
+	}
+
+}
+
+material castle006
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture tiles.tga
+			}
+		}
+
+	}
+
+}
+
+material castle007
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture floor_.tga
+			}
+		}
+
+	}
+
+}
+
+material castle008
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture wall_8.tga
+			}
+		}
+
+	}
+
+}
+
+material castle009
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture oldmetal.tga
+			}
+		}
+
+	}
+
+}
+
+material castle010
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture wall_7.tga
+			}
+		}
+
+	}
+
+}
+
+material castle011
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture wall_w.tga
+			}
+		}
+
+	}
+
+}
+
+material castle012
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture blinkyde.tga
+			}
+		}
+
+	}
+
+}
