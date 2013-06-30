@@ -143,7 +143,24 @@ class OgreNewtonApplication: public ExampleApplication
 		mRoot->addFrameListener(m_listener);
 	}
 
-	void loadStaticLevel ()
+
+	SceneNode* CreateNode (const String& mesh, const String& name, const Vector3& position, const Vector3& scale, const Quaternion& orientation)
+	{
+		Entity* const entity = mSceneMgr->createEntity(name, mesh);
+		entity->setCastShadows(true);
+
+		Ogre::SceneNode* const node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+
+		node->attachObject(entity);
+		node->setScale(scale);
+		node->setPosition(position);
+		node->setOrientation(orientation);
+		return node;
+	}
+
+
+
+	void loadStaticScene ()
 	{
 		// create a scene body to add all static collidable meshes in the world 
 		dNewtonSceneBody* const sceneBody = new dNewtonSceneBody (m_physicsWorld);
@@ -167,12 +184,19 @@ class OgreNewtonApplication: public ExampleApplication
 		sceneBody->AddCollision(&meshCollision);
 
 
-
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
-
 	}
 
+	void LoadDynamicsScene(const Vector3& origin)
+	{
+		Vector3 posit (origin + Vector3(0.0f, 0.0f, -5.0f)); 
+
+
+		SceneNode* const node = CreateNode("box.mesh", "box", posit, Vector3(1.0f, 1.0f, 1.0f), Quaternion (Degree(0), Vector3::UNIT_Y));
+
+		SceneNode* const node1 = CreateNode("box.mesh", "box1", posit + Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Degree(0), Vector3::UNIT_Y));
+	}
 
 	void createScene()
 	{
@@ -182,9 +206,23 @@ class OgreNewtonApplication: public ExampleApplication
 
 
 		//make a light
-		Light* const light = mSceneMgr->createLight( "Light1" );
-		light->setType (Light::LT_POINT );
-		light->setPosition (Vector3(0.0f, 100.0f, 0.0f) );
+		Light* const light0 = mSceneMgr->createLight( "Light0" );
+//		Light* const light1 = mSceneMgr->createLight( "Light1" );
+//		Light* const light2 = mSceneMgr->createLight( "Light2" );
+		Light* const light3 = mSceneMgr->createLight( "Light3" );
+
+		light0->setType (Light::LT_POINT );
+		light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
+		
+//		light1->setType (Light::LT_POINT );
+//		light1->setPosition (Vector3(100.0f, 100.0f, -100.0f) );
+
+//		light2->setType (Light::LT_POINT );
+//		light2->setPosition (Vector3(-100.0f, 100.0f, 100.0f) );
+
+		light3->setType (Light::LT_POINT );
+		light3->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
+
 
 
 		// sky box.
@@ -192,18 +230,23 @@ class OgreNewtonApplication: public ExampleApplication
 
 
 		// load all of the static geometry
-		loadStaticLevel ();
+		loadStaticScene ();
 
 		// position camera using the ray cast functionality
 		Ogre::Vector3 start(0.0f, 1000.0f, 10.0f);
 		Ogre::Vector3 end(0.0f, -1000.0f, 10.0f);
 		ApplicationRayCast raycaster(m_physicsWorld); 
 		raycaster.CastRay (&start.x, &end.x);
-		mCamera->setPosition(raycaster.m_contact.x, raycaster.m_contact.y + 5.0f, raycaster.m_contact.z);
+
+		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 5.0f, 0.0f));
+		mCamera->setPosition(origin);
 
 		// set the near and far clip plane
 		mCamera->setNearClipDistance(0.1f);
 		mCamera->setFarClipDistance(10000.0f);
+
+		// now load the dynamcics Scene
+		LoadDynamicsScene(origin);
 	}
 
 	protected:

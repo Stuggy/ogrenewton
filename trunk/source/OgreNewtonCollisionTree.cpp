@@ -120,8 +120,8 @@ void OgreNewtonCollisionTree::ParseNode(SceneNode* const node, const Quaternion 
 
 			// 16 or 32 bit indices?
 			bool uses32bit = (i_sptr->getType()	== HardwareIndexBuffer::IT_32BIT);
-			unsigned long* i_Longptr;
-			unsigned short* i_Shortptr;
+			unsigned long* i_Longptr = NULL;
+			unsigned short* i_Shortptr = NULL;
 
 			if (uses32bit) {
 				i_Longptr = static_cast<unsigned long*> (i_sptr->lock(HardwareBuffer::HBL_READ_ONLY));
