@@ -37,6 +37,7 @@
 #include <Newton.h>
 #include <dNewton.h>
 #include <dNewtonBody.h>
+#include <dNewtonRayCast.h>
 #include <dNewtonCollision.h>
 #include <dNewtonSceneBody.h>
 

@@ -39,6 +39,38 @@ class OgreNewtonApplication: public ExampleApplication
 {
 	public:
 
+	class ApplicationRayCast: public dNewtonRayCast
+	{
+		public:
+		ApplicationRayCast(dNewton* const world)
+			:dNewtonRayCast(world)
+			,m_param(1.0f)
+		{
+		}
+
+		void CastRay (const dFloat* const p0, const dFloat* const p1, int threadIndex = 0)
+		{
+			m_param = 1.2f;
+			m_bodyHit = NULL;
+			dNewtonRayCast::CastRay(p0, p1);
+		}
+
+		dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, const int* const collisionID, dFloat intersectParam)
+		{
+			if (intersectParam < m_param) {
+				m_param = intersectParam;
+				m_normal = Vector3 (normal[0], normal[1], normal[2]); 
+				m_contact = Vector3 (contact[0], contact[1], contact[2]); 
+			}
+			return intersectParam;
+		}
+
+		Vector3 m_normal;
+		Vector3 m_contact;
+		dNewtonBody* m_bodyHit;
+		Real m_param;
+	};
+
 	class ApplicationFrameListener: public ExampleFrameListener
 	{
 		public:
@@ -155,7 +187,6 @@ class OgreNewtonApplication: public ExampleApplication
 		light->setPosition (Vector3(0.0f, 100.0f, 0.0f) );
 
 
-
 		// sky box.
 		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 
@@ -163,18 +194,16 @@ class OgreNewtonApplication: public ExampleApplication
 		// load all of the static geometry
 		loadStaticLevel ();
 
-
-
-		// position camera
-//		Ogre::Vector3 start(0.0f, 1000.0f, 10.0f);
-//		Ogre::Vector3 end(0.0f, -1000.0f, 10.0f);
-//		OgreNewt::BasicRaycast castRay (m_World, start, end, true);
-//		OgreNewt::BasicRaycast::BasicRaycastInfo info = castRay.getFirstHit();
-//		mCamera->setPosition(start.x, 2.0f + start.y + (end.y - start.y) * info.mDistance, start.z);
+		// position camera using the ray cast functionality
+		Ogre::Vector3 start(0.0f, 1000.0f, 10.0f);
+		Ogre::Vector3 end(0.0f, -1000.0f, 10.0f);
+		ApplicationRayCast raycaster(m_physicsWorld); 
+		raycaster.CastRay (&start.x, &end.x);
+		mCamera->setPosition(raycaster.m_contact.x, raycaster.m_contact.y + 5.0f, raycaster.m_contact.z);
 
 		// set the near and far clip plane
-//		mCamera->setNearClipDistance(0.2f);
-//		mCamera->setFarClipDistance(1000.0f);
+		mCamera->setNearClipDistance(0.1f);
+		mCamera->setFarClipDistance(10000.0f);
 	}
 
 	protected:
