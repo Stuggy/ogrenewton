@@ -188,13 +188,11 @@ class OgreNewtonApplication: public ExampleApplication
 		sceneBody->EndAddRemoveCollision();
 	}
 
-	void LoadDynamicsScene(const Vector3& origin)
+	void LoadDynamicScene(const Vector3& origin)
 	{
 		Vector3 posit (origin + Vector3(0.0f, 0.0f, -5.0f)); 
 
-
-		SceneNode* const node = CreateNode("box.mesh", "box", posit, Vector3(1.0f, 1.0f, 1.0f), Quaternion (Degree(0), Vector3::UNIT_Y));
-
+		SceneNode* const node = CreateNode("box.mesh", "box", posit, Vector3(0.5f, 0.25f, 0.25f), Quaternion (Degree(0), Vector3::UNIT_Y));
 		SceneNode* const node1 = CreateNode("box.mesh", "box1", posit + Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Degree(0), Vector3::UNIT_Y));
 	}
 
@@ -207,23 +205,13 @@ class OgreNewtonApplication: public ExampleApplication
 
 		//make a light
 		Light* const light0 = mSceneMgr->createLight( "Light0" );
-//		Light* const light1 = mSceneMgr->createLight( "Light1" );
-//		Light* const light2 = mSceneMgr->createLight( "Light2" );
 		Light* const light3 = mSceneMgr->createLight( "Light3" );
 
 		light0->setType (Light::LT_POINT );
 		light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
-		
-//		light1->setType (Light::LT_POINT );
-//		light1->setPosition (Vector3(100.0f, 100.0f, -100.0f) );
-
-//		light2->setType (Light::LT_POINT );
-//		light2->setPosition (Vector3(-100.0f, 100.0f, 100.0f) );
 
 		light3->setType (Light::LT_POINT );
 		light3->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
-
-
 
 		// sky box.
 		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
@@ -245,8 +233,8 @@ class OgreNewtonApplication: public ExampleApplication
 		mCamera->setNearClipDistance(0.1f);
 		mCamera->setFarClipDistance(10000.0f);
 
-		// now load the dynamcics Scene
-		LoadDynamicsScene(origin);
+		// now load the dynamics Scene
+		LoadDynamicScene(origin);
 	}
 
 	protected:
