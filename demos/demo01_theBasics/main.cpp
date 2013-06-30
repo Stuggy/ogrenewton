@@ -43,7 +43,6 @@ class OgreNewtonApplication: public ExampleApplication
 		public:
 		ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld)
 			:ExampleFrameListener(win, cam)
-			//,m_lastTime(0.0)
 			,m_sceneMgr(mgr)
 			,m_physicsWorld(physicsWorld)
 		{
@@ -63,10 +62,11 @@ class OgreNewtonApplication: public ExampleApplication
 				double time = double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f;
 				char text[256];
 				sprintf (text, "Physics time : %05.3f ms", time);
-				//gui->setCaption(physTime + StringConverter::toString(time, 3) + " ms");
 				gui->setCaption(text);
 			}
-			catch(...) { /* ignore */ }
+			catch(...) 
+			{ 
+			}
 		}
 
 		bool frameStarted(const FrameEvent &evt)
@@ -77,7 +77,6 @@ class OgreNewtonApplication: public ExampleApplication
 			return true;
 		}
 
-		//double m_lastTime;
 		SceneManager* m_sceneMgr;
 		OgreNewtonWorld* m_physicsWorld;
 	};
@@ -111,66 +110,25 @@ class OgreNewtonApplication: public ExampleApplication
 		mRoot->addFrameListener(m_listener);
 	}
 
-
-	// this will load all of the static scene in the level and add then to a Newton SceneSceneBody object 
-	void LoadStaticScene ()
+	void loadStaticLevel ()
 	{
-/*
-//		if (name == "")
-//		{
-//			name = "FactoryObject" + Ogre::StringConverter::toString(generatedObjectCount++);
-//		}
-
-
-		// add a bright light above the scene
-		Light* light = mSceneMgr->createLight();
-		light->setType(Light::LT_POINT);
-		light->setPosition(-10, 40, 20);
-		light->setSpecularColour(ColourValue::White);
-
-		// create a floor mesh resource
-		MeshManager::getSingleton().createPlane("floor", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,	Plane(Vector3::UNIT_Y, 0), 100, 100, 10, 10, true, 1, 10, 10, Vector3::UNIT_Z);
-
-		// create a floor entity, give it a material, and place it at the origin
-		Entity* floor = mSceneMgr->createEntity("Floor", "floor");
-		floor->setMaterialName("Examples/Rockwall");
-		floor->setCastShadows(false);
-		mSceneMgr->getRootSceneNode()->attachObject(floor);
-*/
-		Entity* const entity = mSceneMgr->createEntity("sandbox.mesh", "sandbox");
-
-		if (material != "")
-		{
-			entity->setMaterialName(material);
-		}
-
-		entity->setCastShadows(true);
-
-		Ogre::SceneNode* node = sceneManager->getRootSceneNode()->createChildSceneNode(name);
-
-		node->attachObject(entity);
-		node->setScale(scale);
-		node->setPosition(position);
-		node->setOrientation(orientation);
-
-
-		// this will be a static object that we can throw objects at.  we'll use a simple cylinder primitive.
-		// first I load the visual mesh that represents it.  I have some simple primitive shaped .mesh files in
-		// the "primitives" directory to make this simple... all of them have a basic size of "1" so that they
-		// can easily be scaled to fit any size primitive.
-		//		Entity* floor;
-		//		SceneNode* floornode;
-		//		floor = mSceneMgr->createEntity("Floor", "cylinder.mesh" );
-		//		floornode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
-		//		floornode->attachObject( floor );
-		//		floor->setMaterialName( "Simple/BeachStones" );
-		//		floor->setCastShadows( false );
-
 		// create a scene body to add all static collidable meshes in the world 
 		dNewtonSceneBody* const sceneBody = new dNewtonSceneBody (m_physicsWorld);
-*/
+
+
+		// floor object!
+		//floor = mSceneMgr->createEntity("Floor", "simple_terrain.mesh" );
+		Entity* const floor = mSceneMgr->createEntity("Floor", "playground.mesh" );
+		//	floor = mSceneMgr->createEntity("Floor", "castle.mesh" );
+		//	floor = mSceneMgr->createEntity("Floor", "xxx.mesh" );
+
+		SceneNode* const floornode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
+		floornode->attachObject( floor );
+		floor->setCastShadows( false );
+
 
 	}
+
 
 	void createScene()
 	{
@@ -178,31 +136,38 @@ class OgreNewtonApplication: public ExampleApplication
 		m_physicsWorld = new OgreNewtonWorld (mWindow);
 		mRoot->addFrameListener(m_physicsWorld);
 
+
+		//make a light
+		Ogre::Light* const light = mSceneMgr->createLight( "Light1" );
+		light->setType( Ogre::Light::LT_POINT );
+		light->setPosition( Ogre::Vector3(0.0f, 100.0f, 100.0f) );
+
+
+
 		// sky box.
-//		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
-
-		// load the static scene 
-		LoadStaticScene ();
+		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 
 
+		// load all of the static geometry
+		loadStaticLevel ();
+
+
+
+		// position camera
+//		Ogre::Vector3 start(0.0f, 1000.0f, 10.0f);
+//		Ogre::Vector3 end(0.0f, -1000.0f, 10.0f);
+//		OgreNewt::BasicRaycast castRay (m_World, start, end, true);
+//		OgreNewt::BasicRaycast::BasicRaycastInfo info = castRay.getFirstHit();
+//		mCamera->setPosition(start.x, 2.0f + start.y + (end.y - start.y) * info.mDistance, start.z);
+
+		// set the near and far clip plane
+//		mCamera->setNearClipDistance(0.2f);
+//		mCamera->setFarClipDistance(1000.0f);
 	}
 
-//	OgreNewt::Body* makeSimpleBox( Ogre::Vector3& size, Ogre::Vector3& pos, Ogre::Quaternion& orient );
-//	OgreNewt::Body* makeSimpleShere( Ogre::Vector3& size, Ogre::Vector3& pos, Ogre::Quaternion& orient );
-
-	private:
-
-//	void SwinDoors (Ogre::Vector3 pos, Ogre::Vector3 size);
-//	void SlidingDoors (Ogre::Vector3 pos, Ogre::Vector3 size);
-//	void SimpleRobot (Ogre::Vector3 pos, Ogre::Vector3 size);
-//	void BallAndSocketRope(Ogre::Vector3 pos, Ogre::Vector3 size);
-//	OgreNewt::World* m_World;
-//	Ogre::FrameListener* mNewtonListener;
-//	int mEntityCount;
-
+	protected:
 	OgreNewtonWorld* m_physicsWorld;
 	ApplicationFrameListener* m_listener;
-
 };
 
 

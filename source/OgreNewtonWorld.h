@@ -34,12 +34,15 @@ class OgreNewtonWorld: public FrameListener, public dNewton
 	virtual ~OgreNewtonWorld();
 
 	bool frameStarted(const FrameEvent &evt);
-
 	void setUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
+
+	void SetConcurrentUpdateMode (bool mode);
+	bool GetConcurrentUpdateMode () const; 
 
 
 	protected:
 	Real m_timestep;
+	bool m_concurrentUpdateMode;
 };
 
 #endif
