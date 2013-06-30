@@ -1,0 +1,1178 @@
+
+material chiropteradm000
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture lig_b064-01b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm001
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v064-01d.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm002
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 064-03b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm003
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture lig_064-02w1.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm004
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture stone03a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm005
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block02a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm006
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 064-04b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm007
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 032-04c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm008
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v064-03b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm009
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v064-02a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm010
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture stone04d.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm011
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block01a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm012
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v064-02c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm013
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture lig_b064-01c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm014
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v064-02b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm015
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v128-02d.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm016
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v128-02a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm017
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture stone05a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm018
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 032-01a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm019
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v064-03e.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm020
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v128-04d.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm021
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v128-01a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm022
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture s128-02a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm023
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 128-01a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm024
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 032-01b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm025
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block02b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm026
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 128-comb1.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm027
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block02c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm028
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture s128-02b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm029
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block01d.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm030
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture grate1a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm031
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v128-03c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm032
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture lig_v192-01ba.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm033
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 032-03b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm034
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture stone03d.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm035
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 032-04d.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm036
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture zbighouse-logo.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm037
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block01c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm038
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block02d.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm039
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture nnk05stone.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm040
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 032-03a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm041
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v064-02d.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm042
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v096-01c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm043
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture sand1b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm044
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v128-02b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm045
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 256-03a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm046
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block01b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm047
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v064-01a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm048
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture stone03c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm049
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block06b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm050
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture lig_064-02b1.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm051
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 096-01c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm052
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 064-02c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm053
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture v064-01c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm054
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture stone04a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm055
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture zbatcula-logo.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm056
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture lig_b064-01a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm057
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 128-03a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm058
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 064-01b.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm059
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture block06a.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm060
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 064-01c.jpg
+			}
+		}
+
+	}
+
+}
+
+material chiropteradm061
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.2 0.2 0.2 1
+			diffuse 0.7 0.7 0.7 1
+
+			texture_unit
+			{
+				texture 064-02b.jpg
+			}
+		}
+
+	}
+
+}
