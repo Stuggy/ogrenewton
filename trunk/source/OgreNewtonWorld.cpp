@@ -26,6 +26,7 @@
 OgreNewtonWorld::OgreNewtonWorld (RenderWindow* const win, int updateFramerate)
 	:FrameListener()
 	,dNewton()
+	,m_concurrentUpdateMode(true)
 {
 	setUpdateFPS (Real (updateFramerate), 3);
 }
@@ -41,9 +42,24 @@ void OgreNewtonWorld::setUpdateFPS(Real desiredFps, int maxUpdatesPerFrames)
 	SetMaxUpdatesPerIterations (maxUpdatesPerFrames);
 }
 
+void OgreNewtonWorld::SetConcurrentUpdateMode (bool mode)
+{
+	m_concurrentUpdateMode = mode;
+}
+
+bool OgreNewtonWorld::GetConcurrentUpdateMode () const
+{
+	return m_concurrentUpdateMode;
+}
+
+
 bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 {
-	UpdateAsync (m_timestep);
+	if (m_concurrentUpdateMode) {
+		UpdateAsync (m_timestep);
+	} else {
+		Update (m_timestep);
+	}
 
 	return true;
 }
