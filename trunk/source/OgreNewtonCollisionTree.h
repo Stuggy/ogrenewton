@@ -32,8 +32,17 @@ class OgreNewtonWorld;
 class OgreNewtonCollisionTree: public dNewtonCollisionMesh
 {
 	public:
-	OgreNewtonCollisionTree (OgreNewtonWorld* const world, SceneNode* const startNode);
+	enum FaceWinding
+	{
+		FW_DEFAULT,
+		FW_REVERSE
+	};
+
+	OgreNewtonCollisionTree (OgreNewtonWorld* const world, SceneNode* const startNode, FaceWinding winding = FW_DEFAULT);
 	virtual ~OgreNewtonCollisionTree();
+
+	void ParseNode(Ogre::SceneNode* const node,	const Quaternion &curOrient, const Vector3 &curPos, const Vector3 &curScale, FaceWinding fw);
+
 
 	OgreNewtonCollisionTree (NewtonCollision* const shape, dCollsionType type);
 	dNewtonCollision* Clone(NewtonCollision* const shape) const;

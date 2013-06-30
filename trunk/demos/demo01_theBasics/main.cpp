@@ -129,16 +129,15 @@ class OgreNewtonApplication: public ExampleApplication
 		floor->setCastShadows( false );
 
 		// create a collision tree mesh
-		OgreNewtonCollisionTree meshCollision (m_physicsWorld);
+		OgreNewtonCollisionTree meshCollision (m_physicsWorld, floornode);
 
-		// add this collsion to the scene body
+		// add this collision to the scene body
 		sceneBody->AddCollision(&meshCollision);
 
 
 
-
 		// done adding collision shape to the scene body, now optimize the scene
-		sceneBody->BeginAddRemoveCollision();
+		sceneBody->EndAddRemoveCollision();
 
 	}
 
