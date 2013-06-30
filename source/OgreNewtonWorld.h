@@ -39,6 +39,10 @@ class OgreNewtonWorld: public FrameListener, public dNewton
 	void SetConcurrentUpdateMode (bool mode);
 	bool GetConcurrentUpdateMode () const; 
 
+	dNewtonBody* CreateBox(Ogre::SceneNode* const sourceNode);
+		
+
+
 
 	protected:
 	Real m_timestep;

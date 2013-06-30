@@ -10,7 +10,7 @@ material box000
 
 			texture_unit
 			{
-				texture newtonLogo.tga
+				texture crate.tga
 			}
 		}
 
