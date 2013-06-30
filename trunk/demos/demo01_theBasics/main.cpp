@@ -24,6 +24,7 @@
 
 #include "OgreNewtonStdAfx.h"
 #include <OgreNewtonWorld.h>
+#include <OgreNewtonCollisionTree.h>
 
 using namespace Ogre;
 
@@ -115,17 +116,29 @@ class OgreNewtonApplication: public ExampleApplication
 		// create a scene body to add all static collidable meshes in the world 
 		dNewtonSceneBody* const sceneBody = new dNewtonSceneBody (m_physicsWorld);
 
+		// start adding collision shape to the scene body
+		sceneBody->BeginAddRemoveCollision();
 
 		// floor object!
-		//floor = mSceneMgr->createEntity("Floor", "simple_terrain.mesh" );
-		Entity* const floor = mSceneMgr->createEntity("Floor", "playground.mesh" );
-		//	floor = mSceneMgr->createEntity("Floor", "castle.mesh" );
-		//	floor = mSceneMgr->createEntity("Floor", "xxx.mesh" );
+		Entity* const floor = mSceneMgr->createEntity("Floor", "flatplane.mesh" );		
+		//Entity* const floor = mSceneMgr->createEntity("Floor", "playground.mesh" );
+		//Entity* const floor = mSceneMgr->createEntity("Floor", "castle.mesh" );
 
 		SceneNode* const floornode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
 		floornode->attachObject( floor );
 		floor->setCastShadows( false );
 
+		// create a collision tree mesh
+		OgreNewtonCollisionTree meshCollision (m_physicsWorld);
+
+		// add this collsion to the scene body
+		sceneBody->AddCollision(&meshCollision);
+
+
+
+
+		// done adding collision shape to the scene body, now optimize the scene
+		sceneBody->BeginAddRemoveCollision();
 
 	}
 
@@ -138,9 +151,9 @@ class OgreNewtonApplication: public ExampleApplication
 
 
 		//make a light
-		Ogre::Light* const light = mSceneMgr->createLight( "Light1" );
-		light->setType( Ogre::Light::LT_POINT );
-		light->setPosition( Ogre::Vector3(0.0f, 100.0f, 100.0f) );
+		Light* const light = mSceneMgr->createLight( "Light1" );
+		light->setType (Light::LT_POINT );
+		light->setPosition (Vector3(0.0f, 100.0f, 0.0f) );
 
 
 
