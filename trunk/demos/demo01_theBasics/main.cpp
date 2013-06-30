@@ -111,31 +111,78 @@ class OgreNewtonApplication: public ExampleApplication
 		mRoot->addFrameListener(m_listener);
 	}
 
-	void createScene()
+
+	// this will load all of the static scene in the level and add then to a Newton SceneSceneBody object 
+	void LoadStaticScene ()
 	{
-		// create the physic world first
-		m_physicsWorld = new OgreNewtonWorld (mWindow);
-		mRoot->addFrameListener(m_physicsWorld);
+/*
+//		if (name == "")
+//		{
+//			name = "FactoryObject" + Ogre::StringConverter::toString(generatedObjectCount++);
+//		}
 
 
-		// sky box.
-		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
+		// add a bright light above the scene
+		Light* light = mSceneMgr->createLight();
+		light->setType(Light::LT_POINT);
+		light->setPosition(-10, 40, 20);
+		light->setSpecularColour(ColourValue::White);
+
+		// create a floor mesh resource
+		MeshManager::getSingleton().createPlane("floor", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,	Plane(Vector3::UNIT_Y, 0), 100, 100, 10, 10, true, 1, 10, 10, Vector3::UNIT_Z);
+
+		// create a floor entity, give it a material, and place it at the origin
+		Entity* floor = mSceneMgr->createEntity("Floor", "floor");
+		floor->setMaterialName("Examples/Rockwall");
+		floor->setCastShadows(false);
+		mSceneMgr->getRootSceneNode()->attachObject(floor);
+*/
+		Entity* const entity = mSceneMgr->createEntity("sandbox.mesh", "sandbox");
+
+		if (material != "")
+		{
+			entity->setMaterialName(material);
+		}
+
+		entity->setCastShadows(true);
+
+		Ogre::SceneNode* node = sceneManager->getRootSceneNode()->createChildSceneNode(name);
+
+		node->attachObject(entity);
+		node->setScale(scale);
+		node->setPosition(position);
+		node->setOrientation(orientation);
 
 
 		// this will be a static object that we can throw objects at.  we'll use a simple cylinder primitive.
 		// first I load the visual mesh that represents it.  I have some simple primitive shaped .mesh files in
 		// the "primitives" directory to make this simple... all of them have a basic size of "1" so that they
 		// can easily be scaled to fit any size primitive.
-//		Entity* floor;
-//		SceneNode* floornode;
-//		floor = mSceneMgr->createEntity("Floor", "cylinder.mesh" );
-//		floornode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
-//		floornode->attachObject( floor );
-//		floor->setMaterialName( "Simple/BeachStones" );
-//		floor->setCastShadows( false );
+		//		Entity* floor;
+		//		SceneNode* floornode;
+		//		floor = mSceneMgr->createEntity("Floor", "cylinder.mesh" );
+		//		floornode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
+		//		floornode->attachObject( floor );
+		//		floor->setMaterialName( "Simple/BeachStones" );
+		//		floor->setCastShadows( false );
 
 		// create a scene body to add all static collidable meshes in the world 
 		dNewtonSceneBody* const sceneBody = new dNewtonSceneBody (m_physicsWorld);
+*/
+
+	}
+
+	void createScene()
+	{
+		// create the physic world first
+		m_physicsWorld = new OgreNewtonWorld (mWindow);
+		mRoot->addFrameListener(m_physicsWorld);
+
+		// sky box.
+//		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
+
+		// load the static scene 
+		LoadStaticScene ();
 
 
 	}
