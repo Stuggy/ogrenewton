@@ -34,7 +34,6 @@ OgreNewtonCollisionTree::OgreNewtonCollisionTree (OgreNewtonWorld* const world, 
 	BeginFace();
 	ParseNode (node, rootOrient, rootPos, rootScale, winding);
 	EndFace();
-
 }
 
 OgreNewtonCollisionTree::OgreNewtonCollisionTree (NewtonCollision* const shape, dCollsionType type)
