@@ -61,22 +61,33 @@ dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
 
 bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 {
-	dLong currentTime = GetTimeInMicrosenconds ();
-
+	dLong simulationTime = GetTimeInMicrosenconds ();
 	if (m_concurrentUpdateMode) {
 		UpdateAsync (m_timestep);
 	} else {
 		Update (m_timestep);
 	}
 
+	dFloat param = GetInteplationParam(m_timestep);
+
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
-		SceneNode* const node = (SceneNode*) body->GetUserData();
-		dAssert (node);
+	
+//		if (body->GetSleepState()) {
+			dMatrix matrix (body->GetVisualMatrix (param));
+			SceneNode* const node = (SceneNode*) body->GetUserData();
+			dAssert (node);
 
+			dQuaternion rotation (matrix);
+			Vector3 posit (matrix.m_posit.m_x, matrix.m_posit.m_y, matrix.m_posit.m_z);
+			Quaternion nodeRotation (rotation.m_q0, rotation.m_q1, rotation.m_q2, rotation.m_q3);
+
+			Node* nodeParent = node->getParent();
+			node->setPosition(nodeParent->_getDerivedOrientation().Inverse() * (posit - nodeParent->_getDerivedPosition())/ nodeParent->_getDerivedScale());
+			node->setOrientation(nodeParent->_getDerivedOrientation().Inverse() * nodeRotation);
+//		}
 	}
 
-
-	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds () - currentTime;
+	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds () - simulationTime;
 	return true;
 }
