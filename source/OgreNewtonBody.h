@@ -20,8 +20,8 @@
 */
 
 
-#ifndef _OGRE_NEWTON_SCENE_BODY_H_
-#define _OGRE_NEWTON_SCENE_BODY_H_
+#ifndef _OGRE_NEWTON_BODY_H_
+#define _OGRE_NEWTON_BODY_H_
 
 #include "OgreNewtonStdAfx.h"
 
@@ -31,8 +31,10 @@ class OgreNewtonWorld;
 class OgreNewtonBody: public dNewtonBody
 {
 	public:
-	OgreNewtonBody (OgreNewtonWorld* const dWorld, const dNewtonCollision* const collision, SceneNode* const treeNode, const Matrix4& location);
+	OgreNewtonBody (OgreNewtonWorld* const dWorld, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location);
 	~OgreNewtonBody();
+
+	virtual void OnForceAndTorque (dFloat timestep, int threadIndex);
 };
 
 
