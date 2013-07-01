@@ -26,6 +26,7 @@
 OgreNewtonWorld::OgreNewtonWorld (RenderWindow* const win, int updateFramerate)
 	:FrameListener()
 	,dNewton()
+	,m_gravity (0.0f, -9.8f, 0.0f)
 	,m_concurrentUpdateMode(true)
 {
 	setUpdateFPS (Real (updateFramerate), 3);

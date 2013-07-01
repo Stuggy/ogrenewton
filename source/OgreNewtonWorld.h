@@ -43,10 +43,12 @@ class OgreNewtonWorld: public FrameListener, public dNewton
 
 	dLong GetPhysicsTimeInMicroSeconds() const;
 	
-
+	
+	const Vector3& GetGravity() const {return m_gravity;}
 
 
 	protected:
+	Vector3 m_gravity;
 	Real m_timestep;
 	bool m_concurrentUpdateMode;
 	dLong m_lastPhysicTimeInMicroseconds;

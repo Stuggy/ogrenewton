@@ -31,10 +31,11 @@ class OgreNewtonWorld;
 class OgreNewtonBody: public dNewtonBody
 {
 	public:
-	OgreNewtonBody (OgreNewtonWorld* const dWorld, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location);
+	OgreNewtonBody (OgreNewtonWorld* const dWorld, Real mass, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location);
 	~OgreNewtonBody();
-
 	virtual void OnForceAndTorque (dFloat timestep, int threadIndex);
+
+	static OgreNewtonBody* CreateBox(OgreNewtonWorld* const world, SceneNode* const sourceNode, Real mass, const Matrix4& matrix);
 };
 
 

@@ -156,70 +156,17 @@ class OgreNewtonApplication: public ExampleApplication
 		sceneBody->EndAddRemoveCollision();
 	}
 
-	void CreateBox(SceneNode* const sourceNode, Real mass, const Matrix4& matrix)
-	{
-
-		MovableObject* const attachedObject = sourceNode->getAttachedObject(0);
-
-		Vector3 position       = sourceNode->getPosition();
-		Vector3 size           = Vector3::UNIT_SCALE;
-		Vector3 centerOffset   = Vector3::ZERO;
-		Vector3 scale          = sourceNode->_getDerivedScale();
-		Vector3 dimensions     = scale;
-		Quaternion orientation = sourceNode->_getDerivedOrientation();
-
-		AxisAlignedBox boundingBox = attachedObject->getBoundingBox();
-		Vector3 padding = (boundingBox.getMaximum() - boundingBox.getMinimum()) * MeshManager::getSingleton().getBoundsPaddingFactor() * 2;
-
-		size = (boundingBox.getMaximum() - boundingBox.getMinimum()) - padding * 2;
-		centerOffset = boundingBox.getMinimum() + padding + (size / 2.0f);
-//		dimensions = sourceNode->_getDerivedScale() * size;
-
-		Matrix4 modifierMatrix;
-		modifierMatrix.makeTransform(centerOffset * scale, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
-		modifierMatrix = modifierMatrix.transpose();
-
-		dNewtonCollisionBox boxShape (m_physicsWorld, size.x, size.y, size.z, 0);
-		boxShape.SetScale(scale.x, scale.y, scale.z);
-
-//		modifiedCollision->setScalarMatrix(modifierMatrix);
-		boxShape.SetMatrix (modifierMatrix[0]);
-
-		//OgreNewtonWorld* const dWorld, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location
-		OgreNewtonBody* const body = new OgreNewtonBody (m_physicsWorld, &boxShape, sourceNode, matrix);
-/*
-		if (materialId != NULL)
-		{
-			body->setMaterialGroupID(materialId);
-		}
-
-		Vector3 inertia, offset;
-		modifiedCollision->calculateInertialMatrix(inertia, offset);
-
-		body->setMassMatrix(mass, inertia * mass);
-		body->setCenterOfMass(offset);
-		body->setStandardForceCallback();
-		body->attachNode(sourceNode);
-		body->setPositionOrientation(position, orientation);
-
-		boxes.insert(std::make_pair(sourceNode->getName(), body));
-
-		return body;
-*/
-	}
-
 	void LoadDynamicScene(const Vector3& origin)
 	{
-		Vector3 posit (origin + Vector3(0.0f, 0.0f, -5.0f)); 
-
-		Vector3 pos(0.5f, 0.25f, 0.25f);
+		Vector3 pos (origin + Vector3(0.0f, 0.0f, -5.0f)); 
 		Quaternion rot (Degree(0), Vector3::UNIT_Y);
 
 		Matrix4	matrix;	
 		matrix.makeTransform (pos, Vector3 (1.0f, 1.0f, 1.0f), rot);
 
-		SceneNode* const node = CreateNode("box.mesh", "box", posit, Vector3(0.5f, 0.25f, 0.25f), Quaternion (Degree(0), Vector3::UNIT_Y));
-		CreateBox (node, 10.0f, matrix);
+		Vector3 scale(0.5f, 0.25f, 0.25f);
+		SceneNode* const node = CreateNode("box.mesh", "box", pos, scale, rot);
+		OgreNewtonBody::CreateBox (m_physicsWorld, node, 10.0f, matrix);
 
 		//SceneNode* const node1 = CreateNode("box.mesh", "box1", posit + Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Degree(0), Vector3::UNIT_Y));
 	}
@@ -254,7 +201,7 @@ class OgreNewtonApplication: public ExampleApplication
 		OgreNewtonRayCast raycaster(m_physicsWorld); 
 		raycaster.CastRay (&start.x, &end.x);
 
-		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 5.0f, 0.0f));
+		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 2.0f, 0.0f));
 		mCamera->setPosition(origin);
 
 		// set the near and far clip plane
