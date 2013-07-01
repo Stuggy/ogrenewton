@@ -165,7 +165,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="newton.lib dMath_d.lib dNewton.lib OIS.lib OgreMain.lib OgreOverlay.lib libboost_thread-vc90-mt-1_53.lib libboost_date_time-vc90-mt-1_53.lib libboost_system-vc90-mt-1_53.lib libboost_chrono-vc90-mt-1_53.lib"
+				AdditionalDependencies="newton.lib dMath.lib dNewton.lib OIS.lib OgreMain.lib OgreOverlay.lib libboost_thread-vc90-mt-1_53.lib libboost_date_time-vc90-mt-1_53.lib libboost_system-vc90-mt-1_53.lib libboost_chrono-vc90-mt-1_53.lib"
 				OutputFile="../../../bin/$(InputName).exe"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"

@@ -129,7 +129,14 @@ class OgreNewtonApplication: public ExampleApplication
 		return node;
 	}
 
-
+	String MakeName (const char* const name) const 
+	{
+		static int enumeration = 0;
+		char text[256];
+		sprintf (text, "%s_%d", name, enumeration);
+		enumeration ++;
+		return String (text);
+	}
 
 	void loadStaticScene ()
 	{
@@ -156,17 +163,66 @@ class OgreNewtonApplication: public ExampleApplication
 		sceneBody->EndAddRemoveCollision();
 	}
 
+	void BuildJenga(const Vector3& location, int high)
+	{
+		Vector3 blockBoxSize (0.8f, 0.5f, 0.8f * 3.0f);
+
+		// find the floor position
+		Vector3 start(location + Vector3 (0.0f, 10.0f, 0.0f));
+		Vector3 end (start - Vector3 (0.0f, 20.0f, 0.0f));
+		OgreNewtonRayCast raycaster(m_physicsWorld); 
+		raycaster.CastRay (&start.x, &end.x);
+		Vector3 position (raycaster.m_contact + Vector3 (0.0f, blockBoxSize.y * 0.5f, 0.0f));
+
+		Matrix4 baseMatrix (Matrix4::IDENTITY);
+		baseMatrix.setTrans (position);
+
+
+		// set realistic mass and inertia matrix for each block
+		Real mass = 5.0f;
+
+		// create a 90 degree rotation matrix
+		Matrix4 rotMatrix (Quaternion (Degree(90.0f), Vector3 (0.0f, 1.0f, 0.0f)));
+
+		// separate a bit the block alone the horizontal direction
+		Real gap = 0.01f;
+
+		for (int i = 0; i < high; i ++) { 
+			Matrix4 matrix(baseMatrix);
+			Vector3 step_x (matrix[0][0], matrix[0][1], matrix[0][2]); 
+
+			step_x = step_x * (blockBoxSize.x + gap);
+			matrix.setTrans (matrix.getTrans() - step_x);
+
+			for (int j = 0; j < 3; j ++) { 
+				SceneNode* const node = CreateNode("box.mesh", MakeName ("jengaBox"), matrix.getTrans(), blockBoxSize, matrix.extractQuaternion());
+				OgreNewtonBody::CreateBox (m_physicsWorld, node, mass, matrix);
+				matrix.setTrans (matrix.getTrans() + step_x);
+			}
+
+			baseMatrix = baseMatrix * rotMatrix;
+			Vector3 step_y (matrix[1][0], matrix[1][1], matrix[1][2]); 
+			step_y = step_y * blockBoxSize.y * 0.99f;
+			baseMatrix.setTrans (baseMatrix.getTrans() + step_y);
+		}
+	}
+
 	void LoadDynamicScene(const Vector3& origin)
 	{
-		Vector3 pos (origin + Vector3(0.0f, 0.0f, -5.0f)); 
-		Quaternion rot (Degree(0), Vector3::UNIT_Y);
+//		Vector3 pos (origin + Vector3(0.0f, 0.0f, -5.0f)); 
+//		Quaternion rot (Degree(0), Vector3::UNIT_Y);
+//		Matrix4	matrix;	
+//		matrix.makeTransform (pos, Vector3 (1.0f, 1.0f, 1.0f), rot);
+//		Vector3 scale(0.5f, 0.25f, 0.25f);
+//		SceneNode* const node = CreateNode("box.mesh", "box", pos, scale, rot);
+//		OgreNewtonBody::CreateBox (m_physicsWorld, node, 10.0f, matrix);
 
-		Matrix4	matrix;	
-		matrix.makeTransform (pos, Vector3 (1.0f, 1.0f, 1.0f), rot);
+		BuildJenga (origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
+		BuildJenga (origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
 
-		Vector3 scale(0.5f, 0.25f, 0.25f);
-		SceneNode* const node = CreateNode("box.mesh", "box", pos, scale, rot);
-		OgreNewtonBody::CreateBox (m_physicsWorld, node, 10.0f, matrix);
+		BuildJenga (origin + Vector3(-10.0f, 0.0f, -60.0f) , 40);
+		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);
+
 
 		//SceneNode* const node1 = CreateNode("box.mesh", "box1", posit + Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Degree(0), Vector3::UNIT_Y));
 	}
