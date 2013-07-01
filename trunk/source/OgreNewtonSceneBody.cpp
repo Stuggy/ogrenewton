@@ -30,17 +30,21 @@ class OgreNewtonSceneBody::OgreNewtonCollisionTree: public dNewtonCollisionMesh
 	OgreNewtonCollisionTree (OgreNewtonWorld* const world, SceneNode* const startNode, FaceWinding winding = FW_DEFAULT)
 		:dNewtonCollisionMesh (world)
 	{
+		// save the node as the use data for this collision
+		SetUserData (startNode);
+
 		Vector3 rootPos (Vector3::ZERO);
 		Vector3 rootScale = startNode->getScale();
 		Quaternion rootOrient = Quaternion::IDENTITY;
 
+		// parse the entire node adding all static mesh to the collision tree
 		BeginFace();
 		ParseNode (startNode, rootOrient, rootPos, rootScale, winding);
 		EndFace();
 	}
 
-	OgreNewtonCollisionTree (NewtonCollision* const shape, dCollsionType type)
-		:dNewtonCollisionMesh (shape, type)
+	OgreNewtonCollisionTree (const OgreNewtonCollisionTree& src, NewtonCollision* const shape)
+		:dNewtonCollisionMesh (src, shape)
 	{
 	}
 
@@ -190,7 +194,7 @@ class OgreNewtonSceneBody::OgreNewtonCollisionTree: public dNewtonCollisionMesh
 
 	dNewtonCollision* Clone(NewtonCollision* const shape) const
 	{
-		return new OgreNewtonCollisionTree (shape, m_type);
+		return new OgreNewtonCollisionTree (*this, shape);
 	}
 };
 
