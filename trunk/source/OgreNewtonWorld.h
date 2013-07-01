@@ -40,13 +40,16 @@ class OgreNewtonWorld: public FrameListener, public dNewton
 	bool GetConcurrentUpdateMode () const; 
 
 	dNewtonBody* CreateBox(Ogre::SceneNode* const sourceNode);
-		
+
+	dLong GetPhysicsTimeInMicroSeconds() const;
+	
 
 
 
 	protected:
 	Real m_timestep;
 	bool m_concurrentUpdateMode;
+	dLong m_lastPhysicTimeInMicroseconds;
 };
 
 #endif
