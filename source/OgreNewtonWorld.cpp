@@ -53,13 +53,30 @@ bool OgreNewtonWorld::GetConcurrentUpdateMode () const
 }
 
 
+dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
+{
+	return m_lastPhysicTimeInMicroseconds;
+}
+
+
 bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 {
+	dLong currentTime = GetTimeInMicrosenconds ();
+
 	if (m_concurrentUpdateMode) {
 		UpdateAsync (m_timestep);
 	} else {
 		Update (m_timestep);
 	}
 
+	// iterate over all physics bodies and get the tranformtaion matrix;
+	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
+		SceneNode* const node = (SceneNode*) body->GetUserData();
+		dAssert (node);
+
+	}
+
+
+	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds () - currentTime;
 	return true;
 }

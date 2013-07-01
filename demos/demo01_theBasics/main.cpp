@@ -173,12 +173,15 @@ class OgreNewtonApplication: public ExampleApplication
 		//Entity* const floor = mSceneMgr->createEntity("Floor", "playground.mesh" );
 		//Entity* const floor = mSceneMgr->createEntity("Floor", "castle.mesh" );
 
-		SceneNode* const floornode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
-		floornode->attachObject( floor );
+		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
+		floorNode->attachObject( floor );
 		floor->setCastShadows( false );
 
+		// save the root node as the body user data
+		sceneBody->SetUserData(floorNode);
+
 		// create a collision tree mesh
-		OgreNewtonCollisionTree meshCollision (m_physicsWorld, floornode);
+		OgreNewtonCollisionTree meshCollision (m_physicsWorld, floorNode);
 
 		// add this collision to the scene body
 		sceneBody->AddCollision(&meshCollision);
