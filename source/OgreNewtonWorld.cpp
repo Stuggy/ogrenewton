@@ -72,12 +72,9 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
-	
-		if (body->GetSleepState()) {
+		SceneNode* const node = (SceneNode*) body->GetUserData();
+		if (node && !body->GetSleepState()) {
 			dMatrix matrix (body->GetVisualMatrix (param));
-			SceneNode* const node = (SceneNode*) body->GetUserData();
-			dAssert (node);
-
 			dQuaternion rotation (matrix);
 			Vector3 posit (matrix.m_posit.m_x, matrix.m_posit.m_y, matrix.m_posit.m_z);
 			Quaternion nodeRotation (rotation.m_q0, rotation.m_q1, rotation.m_q2, rotation.m_q3);

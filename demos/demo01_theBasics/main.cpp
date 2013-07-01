@@ -26,7 +26,7 @@
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonSceneBody.h>
-#include <OgreNewtonCollisionTree.h>
+
 
 using namespace Ogre;
 
@@ -147,14 +147,8 @@ class OgreNewtonApplication: public ExampleApplication
 		floorNode->attachObject( floor );
 		floor->setCastShadows( false );
 
-		// save the root node as the body user data
-		sceneBody->SetUserData(floorNode);
-
-		// create a collision tree mesh
-		OgreNewtonCollisionTree meshCollision (m_physicsWorld, floorNode);
-
 		// add this collision to the scene body
-		sceneBody->AddCollision(&meshCollision);
+		sceneBody->AddCollisionTree (floorNode);
 
 
 		// done adding collision shape to the scene body, now optimize the scene
