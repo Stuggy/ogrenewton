@@ -21,9 +21,8 @@
 
 
 #include "OgreNewtonStdAfx.h"
-#include "OgreNewtonWorld.h"
 #include "OgreNewtonBody.h"
-
+#include "OgreNewtonWorld.h"
 
 
 OgreNewtonBody::OgreNewtonBody (OgreNewtonWorld* const world, const dNewtonCollision* const collision, SceneNode* const treeNode, const Matrix4& location)
@@ -36,3 +35,7 @@ OgreNewtonBody::~OgreNewtonBody()
 }
 
 
+void OgreNewtonBody::OnForceAndTorque (dFloat timestep, int threadIndex)
+{
+
+}
