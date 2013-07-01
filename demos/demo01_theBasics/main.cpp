@@ -22,8 +22,10 @@
 
 
 
-#include "OgreNewtonStdAfx.h"
+#include <OgreNewtonStdAfx.h>
 #include <OgreNewtonWorld.h>
+#include <OgreNewtonRayCast.h>
+#include <OgreNewtonSceneBody.h>
 #include <OgreNewtonCollisionTree.h>
 
 using namespace Ogre;
@@ -38,38 +40,6 @@ using namespace Ogre;
 class OgreNewtonApplication: public ExampleApplication
 {
 	public:
-
-	class ApplicationRayCast: public dNewtonRayCast
-	{
-		public:
-		ApplicationRayCast(dNewton* const world)
-			:dNewtonRayCast(world)
-			,m_param(1.0f)
-		{
-		}
-
-		void CastRay (const dFloat* const p0, const dFloat* const p1, int threadIndex = 0)
-		{
-			m_param = 1.2f;
-			m_bodyHit = NULL;
-			dNewtonRayCast::CastRay(p0, p1);
-		}
-
-		dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, const int* const collisionID, dFloat intersectParam)
-		{
-			if (intersectParam < m_param) {
-				m_param = intersectParam;
-				m_normal = Vector3 (normal[0], normal[1], normal[2]); 
-				m_contact = Vector3 (contact[0], contact[1], contact[2]); 
-			}
-			return intersectParam;
-		}
-
-		Vector3 m_normal;
-		Vector3 m_contact;
-		dNewtonBody* m_bodyHit;
-		Real m_param;
-	};
 
 	class ApplicationFrameListener: public ExampleFrameListener
 	{
@@ -163,7 +133,7 @@ class OgreNewtonApplication: public ExampleApplication
 	void loadStaticScene ()
 	{
 		// create a scene body to add all static collidable meshes in the world 
-		dNewtonSceneBody* const sceneBody = new dNewtonSceneBody (m_physicsWorld);
+		OgreNewtonSceneBody* const sceneBody = new OgreNewtonSceneBody (m_physicsWorld);
 
 		// start adding collision shape to the scene body
 		sceneBody->BeginAddRemoveCollision();
@@ -226,7 +196,7 @@ class OgreNewtonApplication: public ExampleApplication
 		// position camera using the ray cast functionality
 		Ogre::Vector3 start(0.0f, 1000.0f, 10.0f);
 		Ogre::Vector3 end(0.0f, -1000.0f, 10.0f);
-		ApplicationRayCast raycaster(m_physicsWorld); 
+		OgreNewtonRayCast raycaster(m_physicsWorld); 
 		raycaster.CastRay (&start.x, &end.x);
 
 		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 5.0f, 0.0f));

@@ -160,6 +160,22 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\source\OgreNewtonRayCast.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonRayCast.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonSceneBody.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonSceneBody.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\OgreNewtonStdAfx.cpp"
 			>
 			<FileConfiguration

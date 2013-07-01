@@ -73,7 +73,7 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
 	
-//		if (body->GetSleepState()) {
+		if (body->GetSleepState()) {
 			dMatrix matrix (body->GetVisualMatrix (param));
 			SceneNode* const node = (SceneNode*) body->GetUserData();
 			dAssert (node);
@@ -85,7 +85,7 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 			Node* nodeParent = node->getParent();
 			node->setPosition(nodeParent->_getDerivedOrientation().Inverse() * (posit - nodeParent->_getDerivedPosition())/ nodeParent->_getDerivedScale());
 			node->setOrientation(nodeParent->_getDerivedOrientation().Inverse() * nodeRotation);
-//		}
+		}
 	}
 
 	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds () - simulationTime;
