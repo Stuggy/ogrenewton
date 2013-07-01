@@ -152,6 +152,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\source\OgreNewtonBody.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonBody.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\OgreNewtonRayCast.cpp"
 			>
 		</File>
