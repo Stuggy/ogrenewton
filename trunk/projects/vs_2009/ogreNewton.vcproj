@@ -152,14 +152,6 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\source\OgreNewtonCollisionTree.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\source\OgreNewtonCollisionTree.h"
-			>
-		</File>
-		<File
 			RelativePath="..\..\source\OgreNewtonRayCast.cpp"
 			>
 		</File>
