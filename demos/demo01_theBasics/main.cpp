@@ -197,14 +197,13 @@ class OgreNewtonApplication: public ExampleApplication
 		// create a 90 degree rotation matrix
 		Matrix4 rotMatrix (Quaternion (Degree(90.0f), Vector3 (0.0f, 1.0f, 0.0f)));
 
-		// separate a bit the block alone the horizontal direction
-		Real gap = 0.01f;
+		Real collisionPenetration = 1.0f / 256.0f;
 
 		for (int i = 0; i < high; i ++) { 
 			Matrix4 matrix(baseMatrix);
 			Vector3 step_x (matrix[0][0], matrix[0][1], matrix[0][2]); 
 
-			step_x = step_x * (blockBoxSize.x + gap);
+			step_x = step_x * blockBoxSize.x;
 			matrix.setTrans (matrix.getTrans() - step_x);
 
 			for (int j = 0; j < 3; j ++) { 
@@ -215,7 +214,7 @@ class OgreNewtonApplication: public ExampleApplication
 
 			baseMatrix = baseMatrix * rotMatrix;
 			Vector3 step_y (matrix[1][0], matrix[1][1], matrix[1][2]); 
-			step_y = step_y * blockBoxSize.y * 0.99f;
+			step_y = step_y * (blockBoxSize.y - collisionPenetration);
 			baseMatrix.setTrans (baseMatrix.getTrans() + step_y);
 		}
 	}
