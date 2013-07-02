@@ -30,22 +30,17 @@ using namespace Ogre;
 class OgreNewtonWorld: public FrameListener, public dNewton 
 {
 	public:
-	OgreNewtonWorld (RenderWindow* const win, int updateFramerate = 120);
+	OgreNewtonWorld (int updateFramerate = 120);
 	virtual ~OgreNewtonWorld();
 
 	bool frameStarted(const FrameEvent &evt);
-	void setUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
 
+	void SetUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
 	void SetConcurrentUpdateMode (bool mode);
 	bool GetConcurrentUpdateMode () const; 
-
 	dNewtonBody* CreateBox(Ogre::SceneNode* const sourceNode);
-
 	dLong GetPhysicsTimeInMicroSeconds() const;
-	
-	
 	const Vector3& GetGravity() const {return m_gravity;}
-
 
 	protected:
 	Vector3 m_gravity;

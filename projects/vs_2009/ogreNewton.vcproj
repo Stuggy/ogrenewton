@@ -160,6 +160,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\source\OgreNewtonDebugger.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonDebugger.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\OgreNewtonRayCast.cpp"
 			>
 		</File>
