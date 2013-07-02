@@ -27,13 +27,12 @@
 
 using namespace Ogre;
 
-//#include <OgreOverlay.h>
+
+#include <OgreOverlay.h>
 #include <OgreOverlayElement.h>
 #include <OgreOverlayManager.h>
 #include <ExampleApplication.h>
 #include <ExampleFrameListener.h>
-
-
 
 
 class OgreNewtonExampleApplication: public ExampleApplication
