@@ -21,9 +21,15 @@
 
 
 #include "OgreNewtonStdAfx.h"
+
+#ifdef _MSC_VER
+	#pragma warning (disable: 4512) //'OIS::MouseEvent' : assignment operator could not be generated
+#endif
+
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDebugger.h"
 #include "OgreNewtonExampleApplication.h"
+
 
 
 OgreNewtonExampleApplication::OgreNewtonExampleApplication()
