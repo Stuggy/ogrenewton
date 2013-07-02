@@ -28,15 +28,9 @@
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
-
+#include "OgreNewtonExampleApplication.h"
 
 using namespace Ogre;
-
-#include <OgreOverlay.h>
-#include <OgreOverlayElement.h>
-#include <OgreOverlayManager.h>
-#include <ExampleApplication.h>
-#include <ExampleFrameListener.h>
 
 
 class OgreNewtonApplication: public ExampleApplication
