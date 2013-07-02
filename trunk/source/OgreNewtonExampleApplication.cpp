@@ -53,10 +53,9 @@ OgreNewtonExampleApplication::~OgreNewtonExampleApplication()
 }
 
 
+
 void OgreNewtonExampleApplication::createScene()
 {
-	ExampleApplication::createScene();
-
 	// create the physic world first
 	m_physicsWorld = new OgreNewtonWorld ();
 	mRoot->addFrameListener(m_physicsWorld);
