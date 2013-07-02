@@ -33,7 +33,7 @@
 using namespace Ogre;
 
 
-class OgreNewtonApplication: public ExampleApplication
+class OgreNewtonApplication: public OgreNewtonExampleApplication
 {
 	public:
 
@@ -88,28 +88,16 @@ class OgreNewtonApplication: public ExampleApplication
 
 
 	OgreNewtonApplication()
-		:ExampleApplication()
+		:OgreNewtonExampleApplication()
 		,m_listener(NULL)
-		,m_physicsWorld(NULL)
-		,m_debugRender(NULL)
 	{
 	}
 
 	virtual ~OgreNewtonApplication()
 	{
-		if (m_debugRender) {
-			mRoot->removeFrameListener(m_debugRender);
-			delete m_debugRender;
-		}
-
 		if (m_listener) {
 			mRoot->removeFrameListener(m_listener);
 			delete m_listener;
-		}
-
-		if (m_physicsWorld) {
-			mRoot->removeFrameListener(m_physicsWorld);
-			delete m_physicsWorld;
 		}
 	}
 
@@ -228,19 +216,13 @@ class OgreNewtonApplication: public ExampleApplication
 //		BuildJenga (origin + Vector3(-10.0f, 0.0f, -60.0f) , 40);
 //		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);
 
-
 		//SceneNode* const node1 = CreateNode("box.mesh", "box1", posit + Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Degree(0), Vector3::UNIT_Y));
 	}
 
 	void createScene()
 	{
 		// create the physic world first
-		m_physicsWorld = new OgreNewtonWorld ();
-		mRoot->addFrameListener(m_physicsWorld);
-
-		// create a debug Renderer for showing physics data visually
-		m_debugRender = new OgreNewtonDebugger (mSceneMgr, m_physicsWorld);
-		mRoot->addFrameListener(m_debugRender);
+		OgreNewtonExampleApplication::createScene();
 
 		//make a light
 		Light* const light0 = mSceneMgr->createLight( "Light0" );
@@ -254,7 +236,6 @@ class OgreNewtonApplication: public ExampleApplication
 
 		// sky box.
 		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
-
 
 		// load all of the static geometry
 		loadStaticScene ();
@@ -277,8 +258,6 @@ class OgreNewtonApplication: public ExampleApplication
 	}
 
 	protected:
-	OgreNewtonWorld* m_physicsWorld;
-	OgreNewtonDebugger* m_debugRender;
 	ApplicationFrameListener* m_listener;
 };
 
@@ -286,15 +265,11 @@ class OgreNewtonApplication: public ExampleApplication
 
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 {
-
 	OgreNewtonApplication application;
 
-	try
-    {
+	try {
 		application.go();
-	}
-	catch(Exception &e)
-	{
+	} catch(Exception &e) {
 		MessageBox(NULL, e.getFullDescription().c_str(), "Well, this is embarrassing.. an Ogre exception has occurred.", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 	}
 

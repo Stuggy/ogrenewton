@@ -42,7 +42,7 @@ class OgreNewtonExampleApplication: public ExampleApplication
 	virtual ~OgreNewtonExampleApplication();
 	
 	protected:
-	virtual void createScene();
+	virtual void createScene(void);
 
 	protected:
 	OgreNewtonWorld* m_physicsWorld;
