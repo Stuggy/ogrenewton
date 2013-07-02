@@ -26,6 +26,7 @@
 #include "OgreNewtonBody.h"
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonRayCast.h>
+#include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
 
 
@@ -45,10 +46,11 @@ class OgreNewtonApplication: public ExampleApplication
 	class ApplicationFrameListener: public ExampleFrameListener
 	{
 		public:
-		ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld)
+		ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld, OgreNewtonDebugger* const debugRender)
 			:ExampleFrameListener(win, cam)
 			,m_sceneMgr(mgr)
 			,m_physicsWorld(physicsWorld)
+			,m_debugRender(debugRender)
 		{
 		}
 
@@ -75,6 +77,10 @@ class OgreNewtonApplication: public ExampleApplication
 
 		bool frameStarted(const FrameEvent &evt)
 		{
+			// set the debug render mode
+			m_debugRender->SetDebugMode(mKeyboard->isKeyDown(OIS::KC_F3) ? true : false);
+
+			// check for termination
 			if (mKeyboard->isKeyDown(OIS::KC_ESCAPE))
 				return false;
 
@@ -83,6 +89,7 @@ class OgreNewtonApplication: public ExampleApplication
 
 		SceneManager* m_sceneMgr;
 		OgreNewtonWorld* m_physicsWorld;
+		OgreNewtonDebugger* m_debugRender;
 	};
 
 
@@ -90,11 +97,17 @@ class OgreNewtonApplication: public ExampleApplication
 		:ExampleApplication()
 		,m_listener(NULL)
 		,m_physicsWorld(NULL)
+		,m_debugRender(NULL)
 	{
 	}
 
 	virtual ~OgreNewtonApplication()
 	{
+		if (m_debugRender) {
+			mRoot->removeFrameListener(m_debugRender);
+			delete m_debugRender;
+		}
+
 		if (m_listener) {
 			mRoot->removeFrameListener(m_listener);
 			delete m_listener;
@@ -110,7 +123,7 @@ class OgreNewtonApplication: public ExampleApplication
 	void createFrameListener()
 	{
 		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, m_physicsWorld);
+		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, m_physicsWorld, m_debugRender);
 		mRoot->addFrameListener(m_listener);
 	}
 
@@ -218,10 +231,9 @@ class OgreNewtonApplication: public ExampleApplication
 //		OgreNewtonBody::CreateBox (m_physicsWorld, node, 10.0f, matrix);
 
 		BuildJenga (origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
-		BuildJenga (origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
-
-		BuildJenga (origin + Vector3(-10.0f, 0.0f, -60.0f) , 40);
-		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);
+//		BuildJenga (origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
+//		BuildJenga (origin + Vector3(-10.0f, 0.0f, -60.0f) , 40);
+//		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);
 
 
 		//SceneNode* const node1 = CreateNode("box.mesh", "box1", posit + Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Degree(0), Vector3::UNIT_Y));
@@ -230,9 +242,12 @@ class OgreNewtonApplication: public ExampleApplication
 	void createScene()
 	{
 		// create the physic world first
-		m_physicsWorld = new OgreNewtonWorld (mWindow);
+		m_physicsWorld = new OgreNewtonWorld ();
 		mRoot->addFrameListener(m_physicsWorld);
 
+		// create a debug Renderer for showing physics data visually
+		m_debugRender = new OgreNewtonDebugger (mSceneMgr, m_physicsWorld);
+		mRoot->addFrameListener(m_debugRender);
 
 		//make a light
 		Light* const light0 = mSceneMgr->createLight( "Light0" );
@@ -270,6 +285,7 @@ class OgreNewtonApplication: public ExampleApplication
 
 	protected:
 	OgreNewtonWorld* m_physicsWorld;
+	OgreNewtonDebugger* m_debugRender;
 	ApplicationFrameListener* m_listener;
 };
 

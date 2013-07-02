@@ -69,15 +69,15 @@ OgreNewtonBody* OgreNewtonBody::CreateBox(OgreNewtonWorld* const world, SceneNod
 	centerOffset = boundingBox.getMinimum() + padding + (size / 2.0f);
 //		dimensions = sourceNode->_getDerivedScale() * size;
 
-	Matrix4 modifierMatrix;
-	modifierMatrix.makeTransform(centerOffset * scale, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
-	modifierMatrix = modifierMatrix.transpose();
+	Matrix4 shapeMatrix;
+	shapeMatrix.makeTransform(centerOffset * scale, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
+	shapeMatrix = shapeMatrix.transpose();
 
 	dNewtonCollisionBox boxShape (world, size.x, size.y, size.z, 0);
 	boxShape.SetScale(scale.x, scale.y, scale.z);
 
 //		modifiedCollision->setScalarMatrix(modifierMatrix);
-	boxShape.SetMatrix (modifierMatrix[0]);
+	boxShape.SetMatrix (shapeMatrix[0]);
 
 	OgreNewtonBody* const body = new OgreNewtonBody (world, mass, &boxShape, sourceNode, matrix);
 /*
