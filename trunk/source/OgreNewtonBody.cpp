@@ -27,8 +27,6 @@
 
 OgreNewtonBody::OgreNewtonBody (OgreNewtonWorld* const world, Real mass, const dNewtonCollision* const collision, SceneNode* const treeNode, const Matrix4& location)
 	:dNewtonBody (world, mass, collision, treeNode, location.transpose()[0])
-	,m_peekPosit (Vector3 (0.0f, 0.0f, 0.0f))
-	,m_peekStep (Vector3 (0.0f, 0.0f, 0.0f))
 {
 }
 
@@ -41,98 +39,11 @@ void OgreNewtonBody::OnForceAndTorque (dFloat timestep, int threadIndex)
 {
 	const OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 	SetForce (world->GetGravity() * GetMass());
-	ApplyPeekImpulse(timestep);
 }
 
-void OgreNewtonBody::ApplyPeekImpulse (dFloat timestep)
-{
-	Vector3 peekPosit (0.0f, 0.0f, 0.0f);
-	Vector3 peekStep (0.0f, 0.0f, 0.0f);
-	{
-		dNewton::ScopeLock scopelock (&m_lock);
-		peekPosit = m_peekPosit;
-		peekStep = m_peekStep;
-		m_peekPosit = Vector3 (0.0f, 0.0f, 0.0f);
-		m_peekStep = Vector3 (0.0f, 0.0f, 0.0f);
-	}
-
-	if ((peekPosit.dotProduct(peekPosit) != 0.0f) && (m_peekStep.dotProduct(m_peekStep) != 0.0f)) {
-
-		//dVector com; 
-		//dMatrix matrix; 
-		//dVector omega0;
-		//dVector veloc0;
-		//dVector omega1;
-		//dVector veloc1;
-		//dVector pointVeloc;
-		//Real Ixx;
-		//Real Iyy;
-		//Real Izz;
-		//Real mass;
-
-		Real invTimeStep = 1.0f / timestep;
-
-		// calculate the desired impulse
-		Matrix4 matrix (GetMatrix());
-
-		Vector3 omega0 (GetOmega());
-		Vector3 veloc0 (GetVeloc());
-//		NewtonBodyGetMassMatrix (body, &mass, &Ixx, &Iyy, &Izz);
-
-		Real stiffness = 0.3f;
-		Vector3 pointVeloc (GetPointVeloc (peekPosit));
-		Vector3 deltaVeloc (peekStep * (stiffness * invTimeStep) - pointVeloc);
-
-		for (int i = 0; i < 3; i ++) {
-			Vector3 veloc (0.0f, 0.0f, 0.0f);
-			veloc[i] = deltaVeloc[i];
-			ApplyImpulseToDesiredPointVeloc (peekPosit, veloc);
-		}
-/*
-	NewtonBodyGetOmega (body, &omega1[0]);
-	NewtonBodyGetVelocity (body, &veloc1[0]);
-	NewtonBodyGetMassMatrix (body, &mass, &Ixx, &Iyy, &Izz);
-
-	dMatrix Inertia;
-	Inertia[0] = matrix[0].Scale (Ixx);
-	Inertia[1] = matrix[1].Scale (Iyy);
-	Inertia[2] = matrix[2].Scale (Izz);
-	Inertia[3] = dVector (0.0f, 0.0f, 0.0f, 1.0f);
-
-	force = (veloc1 - veloc0).Scale (mass * invTimeStep);
-	torque = Inertia.RotateVector (matrix.UnrotateVector(omega1 - omega0)).Scale (invTimeStep);
-
-	// restore the body linear and angular velocity 
-	NewtonBodySetOmega (body, &omega0[0]);
-	NewtonBodySetVelocity (body, &veloc0[0]);
-
-	// reset the impulse accumulators for the next update
-	m_extLinearImpulse = dVector (0.0f, 0.0f, 0.0f, 0.0f);
-	m_extAngularImpulse = dVector (0.0f, 0.0f, 0.0f, 0.0f);
-
-	// clamp the extern force to no more than 5 gravities
-	//const float gravities = 5.0f;
-	//float maxWeight = peelNewton->mGravityMag * mass * gravities;
-	//dVector force (cookie->m_extLinearImpulse.Scale (invTimeStep));
-	//if ((force % force) > (maxWeight * maxWeight)) {
-	//	force = force.Scale (maxWeight / dSqrt (force % force));
-	//}
-	//force += dVector (peelNewton->mGlobalGravity.x, peelNewton->mGlobalGravity.y, peelNewton->mGlobalGravity.z, 0.0f).Scale (mass);
-
-	//dFloat inertia = dMax (dMax (Ixx, Iyy), Izz);
-	//float maxTorque = inertia * gravities;
-	//dVector torque (cookie->m_extAngularImpulse.Scale (invTimeStep));
-	//if ((torque % torque) > maxTorque) {
-	//	torque = torque.Scale (maxTorque / dSqrt (torque % torque));
-	//}
-*/
-	}
-
-}
 
 OgreNewtonBody* OgreNewtonBody::CreateBox(OgreNewtonWorld* const world, SceneNode* const sourceNode, Real mass, const Matrix4& matrix)
 {
-
 	MovableObject* const attachedObject = sourceNode->getAttachedObject(0);
 
 	Vector3 position       = sourceNode->getPosition();

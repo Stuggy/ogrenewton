@@ -54,11 +54,6 @@ class OgreNewtonBody: public dNewtonBody
 	void ApplyImpulseToDesiredPointVeloc (const Vector3& point, const Vector3& desiredveloc);
 
 	static OgreNewtonBody* CreateBox(OgreNewtonWorld* const world, SceneNode* const sourceNode, Real mass, const Matrix4& matrix);
-
-	protected:
-	void ApplyPeekImpulse(dFloat timestep);
-	Vector3 m_peekPosit;
-	Vector3 m_peekStep;
 };
 
 
