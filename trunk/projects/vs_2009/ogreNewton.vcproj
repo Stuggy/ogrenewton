@@ -184,6 +184,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\source\OgreNewtonRayPeekingManager.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonRayPeekingManager.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\OgreNewtonSceneBody.cpp"
 			>
 		</File>

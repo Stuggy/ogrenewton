@@ -28,7 +28,8 @@
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
-#include "OgreNewtonExampleApplication.h"
+#include <OgreNewtonRayPeekingManager.h>
+#include <OgreNewtonExampleApplication.h>
 
 using namespace Ogre;
 
@@ -36,7 +37,6 @@ using namespace Ogre;
 class OgreNewtonApplication: public OgreNewtonExampleApplication
 {
 	public:
-
 	class ApplicationFrameListener: public ExampleFrameListener
 	{
 		public:
@@ -203,26 +203,19 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
-//		Vector3 pos (origin + Vector3(0.0f, 0.0f, -5.0f)); 
-//		Quaternion rot (Degree(0), Vector3::UNIT_Y);
-//		Matrix4	matrix;	
-//		matrix.makeTransform (pos, Vector3 (1.0f, 1.0f, 1.0f), rot);
-//		Vector3 scale(0.5f, 0.25f, 0.25f);
-//		SceneNode* const node = CreateNode("box.mesh", "box", pos, scale, rot);
-//		OgreNewtonBody::CreateBox (m_physicsWorld, node, 10.0f, matrix);
-
 		BuildJenga (origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
 //		BuildJenga (origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
 //		BuildJenga (origin + Vector3(-10.0f, 0.0f, -60.0f) , 40);
 //		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);
-
-		//SceneNode* const node1 = CreateNode("box.mesh", "box1", posit + Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Degree(0), Vector3::UNIT_Y));
 	}
 
 	void createScene()
 	{
 		// create the physic world first
 		OgreNewtonExampleApplication::createScene();
+
+		// create a ray cast peeker 
+		m_rayPeeker = new OgreNewtonRayPeekManager (m_physicsWorld);
 
 		//make a light
 		Light* const light0 = mSceneMgr->createLight( "Light0" );
@@ -259,6 +252,7 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 
 	protected:
 	ApplicationFrameListener* m_listener;
+	OgreNewtonRayPeekManager* m_rayPeeker;
 };
 
 

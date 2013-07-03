@@ -19,31 +19,45 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef _OGRE_NEWTON_STDAFX_H_
-#define _OGRE_NEWTON_STDAFX_H_
 
-#include <Ogre.h>
-#include <OgreRoot.h>
-#include <OgreNode.h>
-#include <OgreVector3.h>
-#include <OgreSceneNode.h>
-#include <OgreQuaternion.h>
-#include <OgreRenderable.h>
-#include <OgreSceneManager.h>
-#include <OgreManualObject.h>
-#include <OgreMovableObject.h>
-#include <OgreFrameListener.h>
+#ifndef _OGRE_NEWTON_RAY_PEEKING_H_
+#define _OGRE_NEWTON_RAY_PEEKING_H_
 
-#include <Newton.h>
-#include <dNewton.h>
-#include <dNewtonBody.h>
-#include <dNewtonRayCast.h>
-#include <dNewtonCollision.h>
-#include <dNewtonSceneBody.h>
-#include <CustomControllerManager.h>
+#include "OgreNewtonStdAfx.h"
 
+using namespace Ogre;
+
+#define OGRE_RAY_PEEKER_PLUGIN_NAME		"raypeekeranager"
+
+
+class OgreNewtonWorld;
+
+class OgreNewtonRayPeekController
+{
+	CUSTOM_CONTROLLER_GLUE(OgreNewtonRayPeekController);
+
+	public:
+	virtual void PreUpdate(dFloat timestep, int threadIndex)
+	{
+		//do nothing;
+	}
+
+	virtual void PostUpdate(dFloat timestep, int threadIndex)
+	{
+		//do nothing;
+	}
+};
+
+
+class OgreNewtonRayPeekManager: public CustomControllerManager<OgreNewtonRayPeekController> 
+{
+	public:
+	OgreNewtonRayPeekManager (OgreNewtonWorld* const world);
+	virtual ~OgreNewtonRayPeekManager();
+
+	void PreUpdate(dFloat timestep, int threadIndex);
+	void PostUpdate (const NewtonWorld* const world, void* const listenerUserData, dFloat timestep);
+	virtual void Debug () const {};
+};
 
 #endif
-
-
-
