@@ -31,6 +31,7 @@ using namespace Ogre;
 
 
 class OgreNewtonWorld;
+class OgreNewtonBody;
 
 class OgreNewtonRayPeekController
 {
@@ -58,6 +59,16 @@ class OgreNewtonRayPeekManager: public CustomControllerManager<OgreNewtonRayPeek
 	void PreUpdate(dFloat timestep, int threadIndex);
 	void PostUpdate (const NewtonWorld* const world, void* const listenerUserData, dFloat timestep);
 	virtual void Debug () const {};
+
+	protected:
+	void GetAndClearPosition (Vector3& localPosit, Vector3& targetPosit);   
+
+	
+	Vector3 m_globalTarget;
+	Vector3 m_localpHandlePoint;
+	OgreNewtonBody* m_peekBody;
+	Real m_stiffness;
+	unsigned m_lock;
 };
 
 #endif
