@@ -34,11 +34,37 @@
 using namespace Ogre;
 
 
+
 class OgreNewtonApplication: public OgreNewtonExampleApplication
 {
 	public:
 	class ApplicationFrameListener: public ExampleFrameListener
 	{
+		class KeyTrigger
+		{
+			public:
+			KeyTrigger ()
+				:m_state(false)
+				,m_mem0(false)
+				,m_mem1(false)
+			{
+			}
+			
+			void Update (bool input)
+			{
+				m_mem0 = m_mem1;
+				m_mem1 = input;
+				m_state = (!m_mem0 & m_mem1) ^ m_state;
+			}
+
+			bool m_state;
+
+			private:
+			bool m_mem0;
+			bool m_mem1;
+		};
+
+
 		public:
 		ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld, OgreNewtonDebugger* const debugRender)
 			:ExampleFrameListener(win, cam)
@@ -72,7 +98,8 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 		bool frameStarted(const FrameEvent &evt)
 		{
 			// set the debug render mode
-			m_debugRender->SetDebugMode(mKeyboard->isKeyDown(OIS::KC_F3) ? true : false);
+			m_debugTriggerKey.Update (mKeyboard->isKeyDown(OIS::KC_F3) ? true : false);
+			m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
 
 			// check for termination
 			if (mKeyboard->isKeyDown(OIS::KC_ESCAPE))
@@ -84,6 +111,7 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 		SceneManager* m_sceneMgr;
 		OgreNewtonWorld* m_physicsWorld;
 		OgreNewtonDebugger* m_debugRender;
+		KeyTrigger m_debugTriggerKey;
 	};
 
 
