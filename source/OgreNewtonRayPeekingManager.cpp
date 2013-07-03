@@ -19,31 +19,28 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef _OGRE_NEWTON_STDAFX_H_
-#define _OGRE_NEWTON_STDAFX_H_
 
-#include <Ogre.h>
-#include <OgreRoot.h>
-#include <OgreNode.h>
-#include <OgreVector3.h>
-#include <OgreSceneNode.h>
-#include <OgreQuaternion.h>
-#include <OgreRenderable.h>
-#include <OgreSceneManager.h>
-#include <OgreManualObject.h>
-#include <OgreMovableObject.h>
-#include <OgreFrameListener.h>
-
-#include <Newton.h>
-#include <dNewton.h>
-#include <dNewtonBody.h>
-#include <dNewtonRayCast.h>
-#include <dNewtonCollision.h>
-#include <dNewtonSceneBody.h>
-#include <CustomControllerManager.h>
+#include "OgreNewtonStdAfx.h"
+#include "OgreNewtonWorld.h"
+#include "OgreNewtonRayPeekingManager.h"
 
 
-#endif
+OgreNewtonRayPeekManager::OgreNewtonRayPeekManager (OgreNewtonWorld* const world)
+	:CustomControllerManager<OgreNewtonRayPeekController>(world->GetNewton(), OGRE_RAY_PEEKER_PLUGIN_NAME)
+{
+}
+
+OgreNewtonRayPeekManager::~OgreNewtonRayPeekManager()
+{
+}
 
 
+void OgreNewtonRayPeekManager::PostUpdate (const NewtonWorld* const world, void* const listenerUserData, dFloat timestep)
+{
+	//do nothing;
+}
 
+void OgreNewtonRayPeekManager::PreUpdate(dFloat timestep, int threadIndex)
+{
+	// all of the work will be done here;
+}
