@@ -1,4 +1,3 @@
-
 /* Copyright (c) <2003-2011> <Julio Jerez, Newton Game Dynamics>
 * 
 * This software is provided 'as-is', without any express or implied
@@ -35,7 +34,7 @@
 
 using namespace Ogre;
 
-
+class MouseCursor;
 
 class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, public OIS::MouseListener, public WindowEventListener
 {
@@ -72,53 +71,16 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 	virtual void updateStats(void);
 	bool frameStarted(const FrameEvent &evt);
 
+	virtual void windowMoved (RenderWindow* rw); 
+	virtual void windowFocusChange(RenderWindow* rw);
+	virtual void windowResized(RenderWindow* rw);
+	virtual void windowClosed(RenderWindow* rw);
 
-
-	virtual bool keyPressed(const OIS::KeyEvent &evt)
-	{
-		return true;
-	}
-
-	virtual bool keyReleased(const OIS::KeyEvent &evt)
-	{
-		return true;
-	}
-
-	virtual bool mouseMoved (const OIS::MouseEvent &arg )
-	{
-//			if (cursor != NULL) {
-//				// Update cursor position
-//				cursor->updatePosition(evt.state.X.abs, evt.state.Y.abs);
-//			}
-		return true;
-	}
-
-	virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
-	{
-		return true;
-	}
-
-	virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
-	{
-		return true;
-	}
-
-	void windowMoved (RenderWindow* rw) 
-	{
-	}
-
-	void windowFocusChange(RenderWindow* rw) 
-	{
-	}
-
-	void windowResized(RenderWindow* rw)
-	{
-	}
-
-	void windowClosed(RenderWindow* rw)
-	{
-		m_shutDwoun = true;
-	}
+	virtual bool keyPressed(const OIS::KeyEvent &evt);
+	virtual bool keyReleased(const OIS::KeyEvent &evt);
+	virtual bool mouseMoved (const OIS::MouseEvent &arg);
+	virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id);
+	virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 
 	SceneManager* m_sceneMgr;
 	Camera* m_camera;
@@ -128,7 +90,7 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 	KeyTrigger m_debugTriggerKey;
 	bool m_mousePickMemory;
 
-//		MouseCursor* cursor;
+	MouseCursor* m_cursor;
 	OIS::Mouse* m_mouse;
 	OIS::InputManager* m_ois;
 	OIS::Keyboard* m_keyboard;
