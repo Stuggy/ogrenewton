@@ -30,8 +30,8 @@ using namespace Ogre;
 #define OGRE_RAY_PEEKER_PLUGIN_NAME		"raypeekeranager"
 
 
-class OgreNewtonWorld;
 class OgreNewtonBody;
+class OgreNewtonWorld;
 
 class OgreNewtonRayPickController
 {
@@ -53,11 +53,16 @@ class OgreNewtonRayPickController
 class OgreNewtonRayPickManager: public CustomControllerManager<OgreNewtonRayPickController> 
 {
 	public:
+
+	class OgreNewtonRayPicker;
+
 	OgreNewtonRayPickManager (OgreNewtonWorld* const world);
 	virtual ~OgreNewtonRayPickManager();
 
 	void PreUpdate(dFloat timestep, int threadIndex);
 	void PostUpdate (const NewtonWorld* const world, void* const listenerUserData, dFloat timestep);
+
+	OgreNewtonBody* PickBody (const Vector3& lineP0, const Vector3& lineP1, Vector3& hitPoint, Vector3& hitNormal) const;
 
 	void SetPickedBody (OgreNewtonBody* const body, const Vector3& posit = Vector3 (0.0f, 0.0f, 0.0f));
 	virtual void Debug () const {};
@@ -68,7 +73,8 @@ class OgreNewtonRayPickManager: public CustomControllerManager<OgreNewtonRayPick
 	
 	Vector3 m_globalTarget;
 	Vector3 m_localpHandlePoint;
-	OgreNewtonBody* m_peekBody;
+	OgreNewtonWorld* m_world;
+	OgreNewtonBody* m_pickedBody;
 	Real m_stiffness;
 	unsigned m_lock;
 };

@@ -23,14 +23,43 @@
 #include "OgreNewtonStdAfx.h"
 #include "OgreNewtonBody.h"
 #include "OgreNewtonWorld.h"
+#include "OgreNewtonRayCast.h"
 #include "OgreNewtonRayPickManager.h"
+
+class OgreNewtonRayPickManager::OgreNewtonRayPicker: public OgreNewtonRayCast
+{
+	public:
+	OgreNewtonRayPicker(dNewton* const world)
+		:OgreNewtonRayCast(world)
+	{
+	}
+
+	dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, const int* const collisionID, dFloat intersectParam)
+	{
+		if (intersectParam < m_param) {
+			// skip static bodies
+			OgreNewtonBody* const ogreBody = (OgreNewtonBody*) body;
+			Real mass = ogreBody->GetMass();
+			if (mass > 0.0f) {
+				m_bodyHit = ogreBody;
+				m_param = intersectParam;
+				m_normal = Vector3 (normal[0], normal[1], normal[2]); 
+				m_contact = Vector3 (contact[0], contact[1], contact[2]); 
+			}
+		}
+		return intersectParam;
+	}
+};
+
+
 
 
 OgreNewtonRayPickManager::OgreNewtonRayPickManager (OgreNewtonWorld* const world)
 	:CustomControllerManager<OgreNewtonRayPickController>(world->GetNewton(), OGRE_RAY_PEEKER_PLUGIN_NAME)
 	,m_globalTarget (0.0f, 0.0f, 0.0f) 
 	,m_localpHandlePoint (0.0f, 0.0f, 0.0f) 
-	,m_peekBody(NULL)
+	,m_world(world)
+	,m_pickedBody(NULL)
 	,m_stiffness(0.25f)
 	,m_lock(0)
 {
@@ -56,12 +85,23 @@ void OgreNewtonRayPickManager::GetAndClearPosition (Vector3& localPosit, Vector3
 	m_globalTarget = Vector3 (0.0f, 0.0f, 0.0f);
 }
 
+OgreNewtonBody* OgreNewtonRayPickManager::PickBody (const Vector3& lineP0, const Vector3& lineP1, Vector3& hitPoint, Vector3& hitNormal) const
+{
+	OgreNewtonRayPicker rayPicker (m_world);
+
+	rayPicker.CastRay(&lineP0.x, &lineP1.x, 0);
+
+	hitPoint = rayPicker.m_contact;
+	hitNormal = rayPicker.m_normal;
+	return (OgreNewtonBody*) rayPicker.m_bodyHit;
+}	
+
 void OgreNewtonRayPickManager::SetPickedBody (OgreNewtonBody* const body, const Vector3& posit)
 {
 	dNewton::ScopeLock scopelock (&m_lock);
 
-	m_peekBody = body;
-	if (m_peekBody) {
+	m_pickedBody = body;
+	if (m_pickedBody) {
 		Matrix4 matrix (body->GetMatrix().inverseAffine());
 		m_localpHandlePoint = matrix.transformAffine(posit);
 		m_globalTarget = m_localpHandlePoint;
@@ -71,7 +111,7 @@ void OgreNewtonRayPickManager::SetPickedBody (OgreNewtonBody* const body, const 
 void OgreNewtonRayPickManager::PreUpdate(dFloat timestep, int threadIndex)
 {
 	// all of the work will be done here;
-	if (m_peekBody) {
+	if (m_pickedBody) {
 		dAssert (0);
 /*
 		Vector3 peekTarget;

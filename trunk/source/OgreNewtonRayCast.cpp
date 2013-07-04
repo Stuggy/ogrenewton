@@ -21,6 +21,7 @@
 
 
 #include "OgreNewtonStdAfx.h"
+#include "OgreNewtonBody.h"
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonRayCast.h"
 
@@ -41,6 +42,7 @@ void OgreNewtonRayCast::CastRay (const dFloat* const p0, const dFloat* const p1,
 dFloat OgreNewtonRayCast::OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, const int* const collisionID, dFloat intersectParam)
 {
 	if (intersectParam < m_param) {
+		m_bodyHit = (OgreNewtonBody*) body;
 		m_param = intersectParam;
 		m_normal = Vector3 (normal[0], normal[1], normal[2]); 
 		m_contact = Vector3 (contact[0], contact[1], contact[2]); 

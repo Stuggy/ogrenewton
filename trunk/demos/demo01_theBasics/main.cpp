@@ -111,11 +111,11 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 				Vector3 end (camray.getPoint (200.0f));
 
 				if (!m_mousePickMemory) {
+					Vector3 hitPoint;
+					Vector3 hitNormal;
 					m_rayPicker->SetPickedBody (NULL);
-
-					OgreNewtonRayCast rayCast (m_physicsWorld);
-					rayCast.CastRay(&start.x, &end.x);
-					if (rayCast.m_bodyHit) {
+					OgreNewtonBody* const body = m_rayPicker->PickBody (start, end, hitPoint, hitNormal);
+					if (body) {
 						dAssert (0);
 					}
 
@@ -271,7 +271,7 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
-		BuildJenga (origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
+//		BuildJenga (origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
 //		BuildJenga (origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
 //		BuildJenga (origin + Vector3(-10.0f, 0.0f, -60.0f) , 40);
 //		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);
