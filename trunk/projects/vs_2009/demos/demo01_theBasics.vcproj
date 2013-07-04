@@ -215,6 +215,14 @@
 			RelativePath="..\..\..\demos\demo01_theBasics\main.cpp"
 			>
 		</File>
+		<File
+			RelativePath="..\..\..\demos\common\MouseCursor.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\MouseCursor.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

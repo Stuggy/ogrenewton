@@ -21,8 +21,8 @@
 */
 
 
-
 #include <OgreNewtonStdAfx.h>
+#include "MouseCursor.h"
 #include "DemosFrameListener.h"
 
 ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld, OgreNewtonDebugger* const debugRender)
@@ -56,16 +56,72 @@ ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindo
 	m_keyboard->setEventCallback(this);
 
 	WindowEventUtilities::addWindowEventListener(win, this);		
+
+
+	m_cursor = new MouseCursor();
+	m_cursor->setImage("cursor.png");
+	m_cursor->setWindowDimensions(win->getWidth(), win->getHeight());
+	m_cursor->setVisible(true);
+
 }
 
 ApplicationFrameListener::~ApplicationFrameListener(void)
 {
 	if (m_ois) {
+		delete m_cursor;
 		m_ois->destroyInputObject(m_mouse);
 		m_ois->destroyInputObject(m_keyboard);
 		OIS::InputManager::destroyInputSystem(m_ois);
 	}
 }
+
+
+bool ApplicationFrameListener::keyPressed(const OIS::KeyEvent &evt)
+{
+	return true;
+}
+
+bool ApplicationFrameListener::keyReleased(const OIS::KeyEvent &evt)
+{
+	return true;
+}
+
+bool ApplicationFrameListener::mouseMoved (const OIS::MouseEvent &evt)
+{
+	if (m_cursor != NULL) {
+		// Update cursor position
+		m_cursor->updatePosition(evt.state.X.abs, evt.state.Y.abs);
+	}
+	return true;
+}
+
+bool ApplicationFrameListener::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+{
+	return true;
+}
+
+bool ApplicationFrameListener::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+{
+	return true;
+}
+
+void ApplicationFrameListener::windowMoved (RenderWindow* rw) 
+{
+}
+
+void ApplicationFrameListener::windowFocusChange(RenderWindow* rw) 
+{
+}
+
+void ApplicationFrameListener::windowResized(RenderWindow* rw)
+{
+}
+
+void ApplicationFrameListener::windowClosed(RenderWindow* rw)
+{
+	m_shutDwoun = true;
+}
+
 
 
 void ApplicationFrameListener::updateStats(void)
