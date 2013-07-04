@@ -59,18 +59,17 @@ class OgreNewtonRayPickManager: public CustomControllerManager<OgreNewtonRayPick
 	OgreNewtonRayPickManager (OgreNewtonWorld* const world);
 	virtual ~OgreNewtonRayPickManager();
 
-	void PreUpdate(dFloat timestep, int threadIndex);
-	void PostUpdate (const NewtonWorld* const world, void* const listenerUserData, dFloat timestep);
+	void PreUpdate(dFloat timestep);
+	void PostUpdate (dFloat timestep);
 
-	OgreNewtonBody* PickBody (const Vector3& lineP0, const Vector3& lineP1, Vector3& hitPoint, Vector3& hitNormal) const;
+	OgreNewtonBody* RayCast (const Vector3& lineP0, const Vector3& lineP1, Real& pickParam) const;
 
-	void SetPickedBody (OgreNewtonBody* const body, const Vector3& posit = Vector3 (0.0f, 0.0f, 0.0f));
+	void SetTarget (const Vector3& targetPoint);
+	void SetPickedBody (OgreNewtonBody* const body, const Vector3& handle = Vector3 (0.0f, 0.0f, 0.0f));
+
 	virtual void Debug () const {};
 
 	protected:
-	void GetAndClearPosition (Vector3& localPosit, Vector3& targetPosit);   
-
-	
 	Vector3 m_globalTarget;
 	Vector3 m_localpHandlePoint;
 	OgreNewtonWorld* m_world;

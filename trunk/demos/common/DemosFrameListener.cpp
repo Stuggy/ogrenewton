@@ -148,7 +148,6 @@ void ApplicationFrameListener::DoMousePick ()
 {
 	bool mouseKey1 = m_mouse->getMouseState().buttonDown(OIS::MB_Right);
 	if (mouseKey1) {
-
 		Real mx = Real (m_mouse->getMouseState().X.abs) / Real(m_mouse->getMouseState().width);
 		Real my = Real (m_mouse->getMouseState().Y.abs) / Real(m_mouse->getMouseState().height);
 		Ray camray = m_camera->getCameraToViewportRay(mx, my);
@@ -157,16 +156,13 @@ void ApplicationFrameListener::DoMousePick ()
 		Vector3 end (camray.getPoint (200.0f));
 
 		if (!m_mousePickMemory) {
-			Vector3 hitPoint;
-			Vector3 hitNormal;
 			m_rayPicker->SetPickedBody (NULL);
-			OgreNewtonBody* const body = m_rayPicker->PickBody (start, end, hitPoint, hitNormal);
+			OgreNewtonBody* const body = m_rayPicker->RayCast (start, end, m_pickParam);
 			if (body) {
-				dAssert (0);
+				m_rayPicker->SetPickedBody (body, start + (end - start) * m_pickParam);
 			}
-
 		} else {
-			dAssert (0);
+			m_rayPicker->SetTarget (start + (end - start) * m_pickParam);
 		}
 
 	} else {

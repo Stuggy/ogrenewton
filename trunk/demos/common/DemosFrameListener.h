@@ -95,6 +95,7 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 	OIS::InputManager* m_ois;
 	OIS::Keyboard* m_keyboard;
 	bool m_shutDwoun;
+	Real m_pickParam;
 };
 
 
