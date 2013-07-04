@@ -31,133 +31,15 @@
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
 
+#include "DemosFrameListener.h"
+
 using namespace Ogre;
-
-
 
 class OgreNewtonApplication: public OgreNewtonExampleApplication
 {
 	public:
-	class ApplicationFrameListener: public ExampleFrameListener
-	{
-		class KeyTrigger
-		{
-			public:
-			KeyTrigger ()
-				:m_state(false)
-				,m_mem0(false)
-				,m_mem1(false)
-			{
-			}
-			
-			void Update (bool input)
-			{
-				m_mem0 = m_mem1;
-				m_mem1 = input;
-				m_state = (!m_mem0 & m_mem1) ^ m_state;
-			}
-
-			bool m_state;
-
-			private:
-			bool m_mem0;
-			bool m_mem1;
-		};
-
-
-		public:
-		ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld, OgreNewtonDebugger* const debugRender)
-			:ExampleFrameListener(win, cam)
-			,m_sceneMgr(mgr)
-			,m_physicsWorld(physicsWorld)
-			,m_debugRender(debugRender)
-			,m_rayPicker (new OgreNewtonRayPickManager (physicsWorld))
-			,m_mousePickMemory(false)
-		{
-		}
-
-		virtual ~ApplicationFrameListener(void)
-		{
-		}
-
-		virtual void updateStats(void)
-		{
-			ExampleFrameListener::updateStats();
-			try {
-				// use one of the debug output to show the physics time
-				OverlayElement* const gui = OverlayManager::getSingleton().getOverlayElement("Core/NumTris");
-				dAssert (gui);
-				double time = double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f;
-				char text[256];
-				sprintf (text, "Physics time : %05.3f ms", time);
-				gui->setCaption(text);
-			}
-			catch(...) 
-			{ 
-			}
-		}
-
-
-		void DoMousePick ()
-		{
-			bool mouseKey1 = mMouse->getMouseState().buttonDown(OIS::MB_Right);
-			if (mouseKey1) {
-
-				Real mx = Real (mMouse->getMouseState().X.abs) / Ogre::Real(mMouse->getMouseState().width);
-				Real my = Ogre::Real (mMouse->getMouseState().Y.abs) / Ogre::Real(mMouse->getMouseState().height);
-				Ray camray = mCamera->getCameraToViewportRay(mx, my);
-
-				Vector3 start (camray.getOrigin());
-				Vector3 end (camray.getPoint (200.0f));
-
-				if (!m_mousePickMemory) {
-					Vector3 hitPoint;
-					Vector3 hitNormal;
-					m_rayPicker->SetPickedBody (NULL);
-					OgreNewtonBody* const body = m_rayPicker->PickBody (start, end, hitPoint, hitNormal);
-					if (body) {
-						dAssert (0);
-					}
-
-				} else {
-					dAssert (0);
-				}
-
-			} else {
-				m_rayPicker->SetPickedBody (NULL);
-			}
-			m_mousePickMemory = mouseKey1;
-		}
-
-
-		bool frameStarted(const FrameEvent &evt)
-		{
-			// set the debug render mode
-			m_debugTriggerKey.Update (mKeyboard->isKeyDown(OIS::KC_F3) ? true : false);
-
-			DoMousePick ();
-
-			m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
-
-			// check for termination
-			if (mKeyboard->isKeyDown(OIS::KC_ESCAPE))
-				return false;
-
-			return true;
-		}
-
-		SceneManager* m_sceneMgr;
-		OgreNewtonWorld* m_physicsWorld;
-		OgreNewtonDebugger* m_debugRender;
-		OgreNewtonRayPickManager* m_rayPicker;
-		KeyTrigger m_debugTriggerKey;
-		bool m_mousePickMemory;
-	};
-
-
 	OgreNewtonApplication()
 		:OgreNewtonExampleApplication()
-		,m_listener(NULL)
 	{
 	}
 
@@ -170,13 +52,14 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 	}
 
 	protected:
-	void createFrameListener()
+	String MakeName (const char* const name) const 
 	{
-		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, m_physicsWorld, m_debugRender);
-		mRoot->addFrameListener(m_listener);
+		static int enumeration = 0;
+		char text[256];
+		sprintf (text, "%s_%d", name, enumeration);
+		enumeration ++;
+		return String (text);
 	}
-
 
 	SceneNode* CreateNode (const String& mesh, const String& name, const Vector3& position, const Vector3& scale, const Quaternion& orientation)
 	{
@@ -190,15 +73,6 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 		node->setPosition(position);
 		node->setOrientation(orientation);
 		return node;
-	}
-
-	String MakeName (const char* const name) const 
-	{
-		static int enumeration = 0;
-		char text[256];
-		sprintf (text, "%s_%d", name, enumeration);
-		enumeration ++;
-		return String (text);
 	}
 
 	void loadStaticScene ()
@@ -277,6 +151,15 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 //		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);
 	}
 
+
+	void createFrameListener()
+	{
+		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
+		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, m_physicsWorld, m_debugRender);
+		mRoot->addFrameListener(m_listener);
+	}
+
+
 	void createScene()
 	{
 		// create the physic world first
@@ -317,7 +200,6 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 
 	protected:
 	ApplicationFrameListener* m_listener;
-	
 };
 
 
