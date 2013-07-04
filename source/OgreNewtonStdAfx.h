@@ -39,7 +39,6 @@
 #include <dNewtonBody.h>
 #include <dNewtonRayCast.h>
 #include <dNewtonCollision.h>
-#include <dNewtonSceneBody.h>
 #include <CustomControllerManager.h>
 
 

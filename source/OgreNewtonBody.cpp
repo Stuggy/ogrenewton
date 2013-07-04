@@ -30,6 +30,11 @@ OgreNewtonBody::OgreNewtonBody (OgreNewtonWorld* const world, Real mass, const d
 {
 }
 
+OgreNewtonBody::OgreNewtonBody()
+	:dNewtonBody()
+{
+}
+
 OgreNewtonBody::~OgreNewtonBody()
 {
 }

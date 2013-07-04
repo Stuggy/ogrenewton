@@ -33,9 +33,9 @@ using namespace Ogre;
 class OgreNewtonWorld;
 class OgreNewtonBody;
 
-class OgreNewtonRayPeekController
+class OgreNewtonRayPickController
 {
-	CUSTOM_CONTROLLER_GLUE(OgreNewtonRayPeekController);
+	CUSTOM_CONTROLLER_GLUE(OgreNewtonRayPickController);
 
 	public:
 	virtual void PreUpdate(dFloat timestep, int threadIndex)
@@ -50,14 +50,16 @@ class OgreNewtonRayPeekController
 };
 
 
-class OgreNewtonRayPeekManager: public CustomControllerManager<OgreNewtonRayPeekController> 
+class OgreNewtonRayPickManager: public CustomControllerManager<OgreNewtonRayPickController> 
 {
 	public:
-	OgreNewtonRayPeekManager (OgreNewtonWorld* const world);
-	virtual ~OgreNewtonRayPeekManager();
+	OgreNewtonRayPickManager (OgreNewtonWorld* const world);
+	virtual ~OgreNewtonRayPickManager();
 
 	void PreUpdate(dFloat timestep, int threadIndex);
 	void PostUpdate (const NewtonWorld* const world, void* const listenerUserData, dFloat timestep);
+
+	void SetPickedBody (OgreNewtonBody* const body, const Vector3& posit = Vector3 (0.0f, 0.0f, 0.0f));
 	virtual void Debug () const {};
 
 	protected:

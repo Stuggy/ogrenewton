@@ -184,11 +184,11 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\OgreNewtonRayPeekingManager.cpp"
+			RelativePath="..\..\source\OgreNewtonRayPickManager.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\OgreNewtonRayPeekingManager.h"
+			RelativePath="..\..\source\OgreNewtonRayPickManager.h"
 			>
 		</File>
 		<File
