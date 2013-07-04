@@ -136,7 +136,7 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 				matrix.setTrans (matrix.getTrans() + step_x);
 			}
 
-			baseMatrix = baseMatrix * rotMatrix;
+			baseMatrix = baseMatrix * rotMatrix;			
 			Vector3 step_y (matrix[1][0], matrix[1][1], matrix[1][2]); 
 			step_y = step_y * (blockBoxSize.y - collisionPenetration);
 			baseMatrix.setTrans (baseMatrix.getTrans() + step_y);
@@ -145,7 +145,7 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
-//		BuildJenga (origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
+		BuildJenga (origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
 //		BuildJenga (origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
 //		BuildJenga (origin + Vector3(-10.0f, 0.0f, -60.0f) , 40);
 //		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);

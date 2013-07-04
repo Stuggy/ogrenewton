@@ -70,87 +70,67 @@ OgreNewtonRayPickManager::~OgreNewtonRayPickManager()
 }
 
 
-void OgreNewtonRayPickManager::PostUpdate (const NewtonWorld* const world, void* const listenerUserData, dFloat timestep)
+void OgreNewtonRayPickManager::PostUpdate (dFloat timestep)
 {
 	//do nothing;
 }
 
-void OgreNewtonRayPickManager::GetAndClearPosition (Vector3& localPosit, Vector3& targetPosit)
-{
-	dNewton::ScopeLock scopelock (&m_lock);
-	localPosit = m_localpHandlePoint;
-	targetPosit = m_globalTarget;
 
-	m_localpHandlePoint = Vector3 (0.0f, 0.0f, 0.0f);
-	m_globalTarget = Vector3 (0.0f, 0.0f, 0.0f);
-}
-
-OgreNewtonBody* OgreNewtonRayPickManager::PickBody (const Vector3& lineP0, const Vector3& lineP1, Vector3& hitPoint, Vector3& hitNormal) const
+OgreNewtonBody* OgreNewtonRayPickManager::RayCast (const Vector3& lineP0, const Vector3& lineP1, Real& pickParam) const
 {
 	OgreNewtonRayPicker rayPicker (m_world);
 
 	rayPicker.CastRay(&lineP0.x, &lineP1.x, 0);
-
-	hitPoint = rayPicker.m_contact;
-	hitNormal = rayPicker.m_normal;
+	pickParam = rayPicker.m_param;
 	return (OgreNewtonBody*) rayPicker.m_bodyHit;
 }	
 
-void OgreNewtonRayPickManager::SetPickedBody (OgreNewtonBody* const body, const Vector3& posit)
+void OgreNewtonRayPickManager::SetPickedBody (OgreNewtonBody* const body, const Vector3& handle)
 {
 	dNewton::ScopeLock scopelock (&m_lock);
 
 	m_pickedBody = body;
 	if (m_pickedBody) {
 		Matrix4 matrix (body->GetMatrix().inverseAffine());
-		m_localpHandlePoint = matrix.transformAffine(posit);
-		m_globalTarget = m_localpHandlePoint;
+		m_localpHandlePoint = matrix.transformAffine(handle);
+		m_globalTarget = handle;
 	}
 }
 
-void OgreNewtonRayPickManager::PreUpdate(dFloat timestep, int threadIndex)
+void OgreNewtonRayPickManager::SetTarget (const Vector3& targetPoint)
+{
+	dNewton::ScopeLock scopelock (&m_lock);
+	m_globalTarget = targetPoint;
+}
+
+
+void OgreNewtonRayPickManager::PreUpdate(dFloat timestep)
 {
 	// all of the work will be done here;
+	dNewton::ScopeLock scopelock (&m_lock);
 	if (m_pickedBody) {
-		dAssert (0);
-/*
-		Vector3 peekTarget;
-		Vector3 peekLocalPosit;
-		GetAndClearPosition (peekLocalPosit, peekTarget);
+		const Vector3 peekTarget(m_globalTarget);
+		const Vector3 peekLocalPosit (m_localpHandlePoint);
 
 		Real invTimeStep = 1.0f / timestep;
-		Matrix4 matrix (m_peekBody->GetMatrix());
-		Vector3 omega0 (m_peekBody->GetOmega());
-		Vector3 veloc0 (m_peekBody->GetVeloc());
+		Matrix4 matrix (m_pickedBody->GetMatrix());
+		Vector3 omega (m_pickedBody->GetOmega());
+		Vector3 veloc (m_pickedBody->GetVeloc());
 
 		Vector3 peekPosit (matrix.transformAffine(peekLocalPosit));
 		Vector3 peekStep (peekTarget - peekPosit);
 
-		Vector3 pointVeloc (m_peekBody->GetPointVeloc (peekPosit));
+		Vector3 pointVeloc (m_pickedBody->GetPointVeloc (peekPosit));
 		Vector3 deltaVeloc (peekStep * (m_stiffness * invTimeStep) - pointVeloc);
 
 		for (int i = 0; i < 3; i ++) {
 			Vector3 veloc (0.0f, 0.0f, 0.0f);
 			veloc[i] = deltaVeloc[i];
-			m_peekBody->ApplyImpulseToDesiredPointVeloc (peekPosit, veloc);
+			m_pickedBody->ApplyImpulseToDesiredPointVeloc (peekPosit, veloc);
 		}
 
-		Real mass = m_peekBody->GetMass ();
-		Vector3 omega1 (m_peekBody->GetOmega());
-		Vector3 veloc1 (m_peekBody->GetVeloc());
-		Vector3 inerta (m_peekBody->GetInertia());
-
-		m_peekBody->SetVeloc (veloc0);
-		m_peekBody->SetOmega (omega0);
-
-		dMatrix Inertia;
-		Inertia[0] = matrix[0].Scale (Ixx);
-		Inertia[1] = matrix[1].Scale (Iyy);
-		Inertia[2] = matrix[2].Scale (Izz);
-		Inertia[3] = dVector (0.0f, 0.0f, 0.0f, 1.0f);
-		force = (veloc1 - veloc0).Scale (mass * invTimeStep);
-		torque = Inertia.RotateVector (matrix.UnrotateVector(omega1 - omega0)).Scale (invTimeStep);
-*/
+		// damp omega a little
+		m_pickedBody->SetOmega(m_pickedBody->GetOmega() * 0.9f);
 	}
 }
 
