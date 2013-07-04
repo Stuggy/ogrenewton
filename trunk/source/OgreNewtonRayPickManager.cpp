@@ -23,11 +23,11 @@
 #include "OgreNewtonStdAfx.h"
 #include "OgreNewtonBody.h"
 #include "OgreNewtonWorld.h"
-#include "OgreNewtonRayPeekingManager.h"
+#include "OgreNewtonRayPickManager.h"
 
 
-OgreNewtonRayPeekManager::OgreNewtonRayPeekManager (OgreNewtonWorld* const world)
-	:CustomControllerManager<OgreNewtonRayPeekController>(world->GetNewton(), OGRE_RAY_PEEKER_PLUGIN_NAME)
+OgreNewtonRayPickManager::OgreNewtonRayPickManager (OgreNewtonWorld* const world)
+	:CustomControllerManager<OgreNewtonRayPickController>(world->GetNewton(), OGRE_RAY_PEEKER_PLUGIN_NAME)
 	,m_globalTarget (0.0f, 0.0f, 0.0f) 
 	,m_localpHandlePoint (0.0f, 0.0f, 0.0f) 
 	,m_peekBody(NULL)
@@ -36,17 +36,17 @@ OgreNewtonRayPeekManager::OgreNewtonRayPeekManager (OgreNewtonWorld* const world
 {
 }
 
-OgreNewtonRayPeekManager::~OgreNewtonRayPeekManager()
+OgreNewtonRayPickManager::~OgreNewtonRayPickManager()
 {
 }
 
 
-void OgreNewtonRayPeekManager::PostUpdate (const NewtonWorld* const world, void* const listenerUserData, dFloat timestep)
+void OgreNewtonRayPickManager::PostUpdate (const NewtonWorld* const world, void* const listenerUserData, dFloat timestep)
 {
 	//do nothing;
 }
 
-void OgreNewtonRayPeekManager::GetAndClearPosition (Vector3& localPosit, Vector3& targetPosit)
+void OgreNewtonRayPickManager::GetAndClearPosition (Vector3& localPosit, Vector3& targetPosit)
 {
 	dNewton::ScopeLock scopelock (&m_lock);
 	localPosit = m_localpHandlePoint;
@@ -56,7 +56,19 @@ void OgreNewtonRayPeekManager::GetAndClearPosition (Vector3& localPosit, Vector3
 	m_globalTarget = Vector3 (0.0f, 0.0f, 0.0f);
 }
 
-void OgreNewtonRayPeekManager::PreUpdate(dFloat timestep, int threadIndex)
+void OgreNewtonRayPickManager::SetPickedBody (OgreNewtonBody* const body, const Vector3& posit)
+{
+	dNewton::ScopeLock scopelock (&m_lock);
+
+	m_peekBody = body;
+	if (m_peekBody) {
+		Matrix4 matrix (body->GetMatrix().inverseAffine());
+		m_localpHandlePoint = matrix.transformAffine(posit);
+		m_globalTarget = m_localpHandlePoint;
+	}
+}
+
+void OgreNewtonRayPickManager::PreUpdate(dFloat timestep, int threadIndex)
 {
 	// all of the work will be done here;
 	if (m_peekBody) {
@@ -100,5 +112,5 @@ void OgreNewtonRayPeekManager::PreUpdate(dFloat timestep, int threadIndex)
 		torque = Inertia.RotateVector (matrix.UnrotateVector(omega1 - omega0)).Scale (invTimeStep);
 */
 	}
-
 }
+

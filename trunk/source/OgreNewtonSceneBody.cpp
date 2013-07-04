@@ -201,26 +201,61 @@ class OgreNewtonSceneBody::OgreNewtonCollisionTree: public dNewtonCollisionMesh
 
 
 
-OgreNewtonSceneBody::OgreNewtonSceneBody (OgreNewtonWorld* const world)
-	:dNewtonSceneBody (world)
+OgreNewtonSceneBody::OgreNewtonSceneBody (OgreNewtonWorld* const ogreWorld)
+	:OgreNewtonBody ()
 {
+	Matrix4 matrix (Matrix4::IDENTITY);
+	dNewtonCollisionScene collision (ogreWorld);
+	SetBody (NewtonCreateDynamicBody (ogreWorld->GetNewton (), collision.GetShape(), matrix[0]));
 }
 
 OgreNewtonSceneBody::~OgreNewtonSceneBody()
 {
 }
 
-
-void OgreNewtonSceneBody::AddCollisionTree (SceneNode* const treeNode, FaceWinding faceWind)
+void OgreNewtonSceneBody::BeginAddRemoveCollision()
 {
-	// save the root node as the body user data
-//	sceneBody->SetUserData(floorNode);
+	dNewtonCollisionScene* const scene = (dNewtonCollisionScene*) GetCollision();
+	scene->BeginAddRemoveCollision();
+}
 
+void* OgreNewtonSceneBody::AddCollision(const dNewtonCollision* const collision)
+{
+	dNewtonCollisionScene* const scene = (dNewtonCollisionScene*) GetCollision();
+	return scene->AddCollision(collision);
+}
+
+void OgreNewtonSceneBody::RemoveCollision (void* const handle)
+{
+	dNewtonCollisionScene* const scene = (dNewtonCollisionScene*) GetCollision();
+	scene->RemoveCollision(handle);
+}
+
+void OgreNewtonSceneBody::EndAddRemoveCollision()
+{
+	dNewtonCollisionScene* const scene = (dNewtonCollisionScene*) GetCollision();
+	scene->EndAddRemoveCollision();
+
+	// need to update the aabb in the broad phase, for this we call set matrix
+	dMatrix matrix;
+	NewtonBody* const body = GetNewtonBody();
+	NewtonBodyGetMatrix(body, &matrix[0][0]);
+	NewtonBodySetMatrix(body, &matrix[0][0]);
+}
+
+
+void* OgreNewtonSceneBody::AddCollisionTree (SceneNode* const treeNode, FaceWinding faceWind)
+{
 	OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 
 	// create a collision tree mesh
 	OgreNewtonCollisionTree meshCollision (world, treeNode);
 
 	// add this collision to the scene body
-	AddCollision (&meshCollision);
+	return AddCollision (&meshCollision);
 }
+
+
+
+
+

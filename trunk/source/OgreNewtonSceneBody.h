@@ -24,11 +24,12 @@
 #define _OGRE_NEWTON_SCENE_BODY_H_
 
 #include "OgreNewtonStdAfx.h"
+#include "OgreNewtonBody.h"
 
 using namespace Ogre;
 
 
-class OgreNewtonSceneBody: public dNewtonSceneBody
+class OgreNewtonSceneBody: public OgreNewtonBody
 {
 	public:
 	enum FaceWinding
@@ -43,7 +44,16 @@ class OgreNewtonSceneBody: public dNewtonSceneBody
 	OgreNewtonSceneBody (OgreNewtonWorld* const world);
 	~OgreNewtonSceneBody();
 
-	void AddCollisionTree (SceneNode* const treeNode, FaceWinding faceWind = FW_DEFAULT);
+
+	virtual void OnForceAndTorque (dFloat timestep, int threadIndex) {};
+
+	virtual void BeginAddRemoveCollision();
+	virtual void* AddCollision(const dNewtonCollision* const collision);
+	virtual void* AddCollisionTree (SceneNode* const treeNode, FaceWinding faceWind = FW_DEFAULT);
+	
+	virtual void RemoveCollision (void* const handle);
+	virtual void EndAddRemoveCollision();
+	
 };
 
 

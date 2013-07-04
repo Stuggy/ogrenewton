@@ -28,7 +28,7 @@
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
-#include <OgreNewtonRayPeekingManager.h>
+#include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
 
 using namespace Ogre;
@@ -71,6 +71,8 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 			,m_sceneMgr(mgr)
 			,m_physicsWorld(physicsWorld)
 			,m_debugRender(debugRender)
+			,m_rayPicker (new OgreNewtonRayPickManager (physicsWorld))
+			,m_mousePickMemory(false)
 		{
 		}
 
@@ -95,10 +97,46 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 			}
 		}
 
+
+		void DoMousePick ()
+		{
+			bool mouseKey1 = mMouse->getMouseState().buttonDown(OIS::MB_Right);
+			if (mouseKey1) {
+
+				Real mx = Real (mMouse->getMouseState().X.abs) / Ogre::Real(mMouse->getMouseState().width);
+				Real my = Ogre::Real (mMouse->getMouseState().Y.abs) / Ogre::Real(mMouse->getMouseState().height);
+				Ray camray = mCamera->getCameraToViewportRay(mx, my);
+
+				Vector3 start (camray.getOrigin());
+				Vector3 end (camray.getPoint (200.0f));
+
+				if (!m_mousePickMemory) {
+					m_rayPicker->SetPickedBody (NULL);
+
+					OgreNewtonRayCast rayCast (m_physicsWorld);
+					rayCast.CastRay(&start.x, &end.x);
+					if (rayCast.m_bodyHit) {
+						dAssert (0);
+					}
+
+				} else {
+					dAssert (0);
+				}
+
+			} else {
+				m_rayPicker->SetPickedBody (NULL);
+			}
+			m_mousePickMemory = mouseKey1;
+		}
+
+
 		bool frameStarted(const FrameEvent &evt)
 		{
 			// set the debug render mode
 			m_debugTriggerKey.Update (mKeyboard->isKeyDown(OIS::KC_F3) ? true : false);
+
+			DoMousePick ();
+
 			m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
 
 			// check for termination
@@ -111,7 +149,9 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 		SceneManager* m_sceneMgr;
 		OgreNewtonWorld* m_physicsWorld;
 		OgreNewtonDebugger* m_debugRender;
+		OgreNewtonRayPickManager* m_rayPicker;
 		KeyTrigger m_debugTriggerKey;
+		bool m_mousePickMemory;
 	};
 
 
@@ -242,9 +282,6 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 		// create the physic world first
 		OgreNewtonExampleApplication::createScene();
 
-		// create a ray cast peeker 
-		m_rayPeeker = new OgreNewtonRayPeekManager (m_physicsWorld);
-
 		//make a light
 		Light* const light0 = mSceneMgr->createLight( "Light0" );
 		Light* const light3 = mSceneMgr->createLight( "Light3" );
@@ -280,7 +317,7 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 
 	protected:
 	ApplicationFrameListener* m_listener;
-	OgreNewtonRayPeekManager* m_rayPeeker;
+	
 };
 
 
