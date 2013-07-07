@@ -39,7 +39,6 @@ OgreNewtonWorld::OgreNewtonWorld (OgreNewtonApplication* const application, int 
 
 OgreNewtonWorld::~OgreNewtonWorld()
 {
-//	WaitForUpdateToFinish ();
 }
 
 
@@ -109,5 +108,6 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds () - simulationTime;
 
 	m_application->OnRenderUpdateEnd (param);
+
 	return true;
 }

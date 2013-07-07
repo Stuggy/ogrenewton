@@ -26,6 +26,11 @@
 #include "ScreenWriter.h"
 #include "DemosFrameListener.h"
 
+
+#define CAMERA_SPEED 0.25f
+#define CAMERA_YAW_SPEED (1.0f * 3.141592f / 180.0f)
+#define CAMERA_PITCH_SPEED (1.0f * 3.141592f / 180.0f)
+
 ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonExampleApplication* const physicsWorld, OgreNewtonDebugger* const debugRender)
 	:FrameListener()
 	,OIS::KeyListener()
@@ -133,13 +138,14 @@ void ApplicationFrameListener::windowClosed(RenderWindow* rw)
 void ApplicationFrameListener::UpdateMousePick ()
 {
 
-	bool mouseKey1 = m_mouse->getMouseState().buttonDown(OIS::MB_Left);
+	const OIS::MouseState& mouseState = m_mouse->getMouseState();
+	bool mouseKey1 = mouseState.buttonDown(OIS::MB_Left);
 
 	if (m_keyboard->isKeyDown(OIS::KC_LCONTROL) || m_keyboard->isKeyDown(OIS::KC_RCONTROL)) {
 		m_cursor->setVisible(true);
 		if (mouseKey1) {
-			Real mx = Real (m_mouse->getMouseState().X.abs) / Real(m_mouse->getMouseState().width);
-			Real my = Real (m_mouse->getMouseState().Y.abs) / Real(m_mouse->getMouseState().height);
+			Real mx = Real (mouseState.X.abs) / Real(mouseState.width);
+			Real my = Real (mouseState.Y.abs) / Real(mouseState.height);
 			Ray camray = m_camera->getCameraToViewportRay(mx, my);
 
 			Vector3 start (camray.getOrigin());
@@ -169,7 +175,7 @@ void ApplicationFrameListener::UpdateFreeCamera ()
 {
 	OgreNewtonWorld* const physics = m_physicsWorld->GetPhysics();
 
-	Real moveScale = 1.0f;
+	Real moveScale = CAMERA_SPEED;
 	if(m_keyboard->isKeyDown(OIS::KC_LSHIFT)) {
 		moveScale *= 2.0f;
 	}
@@ -178,57 +184,31 @@ void ApplicationFrameListener::UpdateFreeCamera ()
 	Real translation = 0.0f;
 	Radian pitch (0.0f);
 	Radian yaw (0.0f);
-	
 
 	if (m_keyboard->isKeyDown(OIS::KC_W)) {
+		translation = -moveScale;
+	}
+
+	if (m_keyboard->isKeyDown(OIS::KC_S)) {
 		translation = moveScale;
 	}
 
-/*
-	if(mKeyboard->isKeyDown(OIS::KC_A)) {
-		mTranslateVector.x = -moveScale;	// Move camera left
 
-
-	if(mKeyboard->isKeyDown(OIS::KC_D))
-		mTranslateVector.x = moveScale;	// Move camera RIGHT
-
-
-	if(mKeyboard->isKeyDown(OIS::KC_DOWN) || mKeyboard->isKeyDown(OIS::KC_S) )
-		mTranslateVector.z = moveScale;	// Move camera backward
-
-	if(mKeyboard->isKeyDown(OIS::KC_PGUP))
-		mTranslateVector.y = moveScale;	// Move camera up
-
-	if(mKeyboard->isKeyDown(OIS::KC_PGDOWN))
-		mTranslateVector.y = -moveScale;	// Move camera down
-
-	if(mKeyboard->isKeyDown(OIS::KC_RIGHT))
-		mCamera->yaw(-mRotScale);
-
-	if(mKeyboard->isKeyDown(OIS::KC_LEFT))
-		mCamera->yaw(mRotScale);
-
-	if( mKeyboard->isKeyDown(OIS::KC_ESCAPE) || mKeyboard->isKeyDown(OIS::KC_Q) )
-		return false;
-
-	if( mKeyboard->isKeyDown(OIS::KC_F) && mTimeUntilNextToggle <= 0 )
-	{
-		mStatsOn = !mStatsOn;
-		showDebugOverlay(mStatsOn);
-		mTimeUntilNextToggle = 1;
+	if (m_keyboard->isKeyDown(OIS::KC_A)) {
+		strafe = moveScale;
 	}
 
-	if( mKeyboard->isKeyDown(OIS::KC_T) && mTimeUntilNextToggle <= 0 )
-	{
-		switch(mFiltering)
-		{
-		case TFO_BILINEAR:
-			mFiltering = TFO_TRILINEAR;
-			mAniso = 1;
-			break;
-		case TFO_TRILINEAR:
-			mFiltering = TFO_ANISOTROPIC;
-*/
+	if (m_keyboard->isKeyDown(OIS::KC_D)) {
+		strafe = -moveScale;
+	}
+
+	const OIS::MouseState& mouseState = m_mouse->getMouseState();
+
+	if (mouseState.X.rel > 2) {
+		yaw = Radian (-CAMERA_YAW_SPEED);
+	} else if (mouseState.X.rel < -2) {
+		yaw = Radian (CAMERA_YAW_SPEED);
+	}
 
 	// queue a camera at simulation time
 	m_physicsWorld->MoveCamera (translation, strafe, pitch, yaw);
