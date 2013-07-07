@@ -62,6 +62,8 @@ dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
 
 bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 {
+//NewtonSerializeToFile (GetNewton(), "xxxx.bin");
+
 	dLong simulationTime = GetTimeInMicrosenconds ();
 	if (m_concurrentUpdateMode) {
 		UpdateAsync (m_timestep);

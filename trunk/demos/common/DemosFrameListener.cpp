@@ -23,6 +23,7 @@
 
 #include <OgreNewtonStdAfx.h>
 #include "MouseCursor.h"
+#include "ScreenWriter.h"
 #include "DemosFrameListener.h"
 
 ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld, OgreNewtonDebugger* const debugRender)
@@ -30,11 +31,14 @@ ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindo
 	,OIS::KeyListener()
 	,OIS::MouseListener()
 	,WindowEventListener()
-	,m_sceneMgr(mgr)
 	,m_camera(cam)
+	,m_sceneMgr(mgr)
+	,m_renderWindow(win)
 	,m_physicsWorld(physicsWorld)
 	,m_debugRender(debugRender)
 	,m_rayPicker (new OgreNewtonRayPickManager (physicsWorld))
+	,m_debugTriggerKey(false)
+	,m_onScreeHelp(true)
 	,m_mousePickMemory(false)
 	,m_shutDwoun(false)
 {
@@ -63,16 +67,27 @@ ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindo
 	m_cursor->setWindowDimensions(win->getWidth(), win->getHeight());
 	m_cursor->setVisible(true);
 
+	m_screen = new ScreenWriter(win->getWidth(), win->getHeight());
+//	m_screen->write(10, 20, "F1         - Toggle debug info text");
+//	m_screen->write(10, 36, "F3         - Toggle debug display");
+//	m_screen->write(10, 36, "Hold CTRL  - Show cursor and pick");
+//	m_screen->write(10, 52, "Hold SHIFT - Move faster");
+//	m_screen->write(10, 68, "SPACE      - Throw a sphere");
+//	m_screen->write(10, 84, "ESC        - Exit application");
 }
 
 ApplicationFrameListener::~ApplicationFrameListener(void)
 {
+	delete m_screen;
+
 	if (m_ois) {
 		delete m_cursor;
 		m_ois->destroyInputObject(m_mouse);
 		m_ois->destroyInputObject(m_keyboard);
 		OIS::InputManager::destroyInputSystem(m_ois);
 	}
+
+
 }
 
 
@@ -123,49 +138,36 @@ void ApplicationFrameListener::windowClosed(RenderWindow* rw)
 }
 
 
-
-void ApplicationFrameListener::updateStats(void)
+void ApplicationFrameListener::UpdateMousePick ()
 {
-/*
-	ExampleFrameListener::updateStats();
-	try {
-		// use one of the debug output to show the physics time
-		OverlayElement* const gui = OverlayManager::getSingleton().getOverlayElement("Core/NumTris");
-		dAssert (gui);
-		double time = double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f;
-		char text[256];
-		sprintf (text, "Physics time : %05.3f ms", time);
-		gui->setCaption(text);
-	}
-	catch(...) 
-	{ 
-	}
-*/
-}
 
+	bool mouseKey1 = m_mouse->getMouseState().buttonDown(OIS::MB_Left);
 
-void ApplicationFrameListener::DoMousePick ()
-{
-	bool mouseKey1 = m_mouse->getMouseState().buttonDown(OIS::MB_Right);
-	if (mouseKey1) {
-		Real mx = Real (m_mouse->getMouseState().X.abs) / Real(m_mouse->getMouseState().width);
-		Real my = Real (m_mouse->getMouseState().Y.abs) / Real(m_mouse->getMouseState().height);
-		Ray camray = m_camera->getCameraToViewportRay(mx, my);
+	if (m_keyboard->isKeyDown(OIS::KC_LCONTROL) || m_keyboard->isKeyDown(OIS::KC_RCONTROL)) {
+		m_cursor->setVisible(true);
+		if (mouseKey1) {
+			Real mx = Real (m_mouse->getMouseState().X.abs) / Real(m_mouse->getMouseState().width);
+			Real my = Real (m_mouse->getMouseState().Y.abs) / Real(m_mouse->getMouseState().height);
+			Ray camray = m_camera->getCameraToViewportRay(mx, my);
 
-		Vector3 start (camray.getOrigin());
-		Vector3 end (camray.getPoint (200.0f));
+			Vector3 start (camray.getOrigin());
+			Vector3 end (camray.getPoint (200.0f));
 
-		if (!m_mousePickMemory) {
-			m_rayPicker->SetPickedBody (NULL);
-			OgreNewtonBody* const body = m_rayPicker->RayCast (start, end, m_pickParam);
-			if (body) {
-				m_rayPicker->SetPickedBody (body, start + (end - start) * m_pickParam);
+			if (!m_mousePickMemory) {
+				m_rayPicker->SetPickedBody (NULL);
+				OgreNewtonBody* const body = m_rayPicker->RayCast (start, end, m_pickParam);
+				if (body) {
+					m_rayPicker->SetPickedBody (body, start + (end - start) * m_pickParam);
+				}
+			} else {
+				m_rayPicker->SetTarget (start + (end - start) * m_pickParam);
 			}
-		} else {
-			m_rayPicker->SetTarget (start + (end - start) * m_pickParam);
-		}
 
+		} else {
+			m_rayPicker->SetPickedBody (NULL);
+		}
 	} else {
+		m_cursor->setVisible(false);
 		m_rayPicker->SetPickedBody (NULL);
 	}
 	m_mousePickMemory = mouseKey1;
@@ -182,8 +184,10 @@ bool ApplicationFrameListener::frameStarted(const FrameEvent &evt)
 
 	// set the debug render mode
 	m_debugTriggerKey.Update (m_keyboard->isKeyDown(OIS::KC_F3) ? true : false);
+	m_onScreeHelp.Update (m_keyboard->isKeyDown(OIS::KC_F1) ? true : false);
 
-	DoMousePick ();
+	// see if we have a object on the pick queue
+	UpdateMousePick ();
 
 	m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
 
@@ -195,3 +199,23 @@ bool ApplicationFrameListener::frameStarted(const FrameEvent &evt)
 }
 
 
+bool ApplicationFrameListener::frameEnded(const FrameEvent& evt)
+{
+	const RenderTarget::FrameStats& stats = m_renderWindow->getStatistics();
+
+	double physTime = double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f;
+	m_screen->write(20, 20, "FPS: %05.3f", stats.lastFPS);
+	m_screen->write(20, 36, "Physics time: %05.3f ms", physTime);
+	if (m_onScreeHelp.m_state) {
+		m_screen->write(20,  52, "F1: Hide debug help text");
+		m_screen->write(20,  68, "F3: toggle display physic debug");
+		m_screen->write(20,  84, "Hold CTRL and Left Mouse Key: show mouse cursor and pick");
+		m_screen->write(20, 100, "ESC: Exit application");
+
+	} else if (m_onScreeHelp.TriggerDown()){
+		m_screen->removeAll();
+	}
+
+	m_screen->update();
+	return true;
+}

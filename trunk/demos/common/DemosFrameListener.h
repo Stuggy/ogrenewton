@@ -35,18 +35,31 @@
 using namespace Ogre;
 
 class MouseCursor;
+class ScreenWriter;
 
+//class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, public OIS::MouseListener, public WindowEventListener
 class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, public OIS::MouseListener, public WindowEventListener
 {
 	class KeyTrigger
 	{
 		public:
-		KeyTrigger ()
-			:m_state(false)
+		KeyTrigger (bool state)
+			:m_state(state)
 			,m_mem0(false)
 			,m_mem1(false)
 		{
 		}
+
+		bool TriggerUp() const
+		{
+			return !m_mem0 & m_mem1;
+		}
+
+		bool TriggerDown() const
+		{
+			return m_mem0 & !m_mem1;
+		}
+
 		
 		void Update (bool input)
 		{
@@ -67,9 +80,10 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 	ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld, OgreNewtonDebugger* const debugRender);
 	virtual ~ApplicationFrameListener(void);
 
-	void DoMousePick ();
-	virtual void updateStats(void);
+	void UpdateMousePick ();
+	
 	bool frameStarted(const FrameEvent &evt);
+	bool frameEnded(const FrameEvent& evt);
 
 	virtual void windowMoved (RenderWindow* rw); 
 	virtual void windowFocusChange(RenderWindow* rw);
@@ -82,18 +96,23 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 	virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 	virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 
-	SceneManager* m_sceneMgr;
 	Camera* m_camera;
+	SceneManager* m_sceneMgr;
+	RenderWindow* m_renderWindow;
 	OgreNewtonWorld* m_physicsWorld;
 	OgreNewtonDebugger* m_debugRender;
 	OgreNewtonRayPickManager* m_rayPicker;
 	KeyTrigger m_debugTriggerKey;
+	KeyTrigger m_onScreeHelp;
 	bool m_mousePickMemory;
 
 	MouseCursor* m_cursor;
 	OIS::Mouse* m_mouse;
 	OIS::InputManager* m_ois;
 	OIS::Keyboard* m_keyboard;
+	ScreenWriter* m_screen;
+
+
 	bool m_shutDwoun;
 	Real m_pickParam;
 };
