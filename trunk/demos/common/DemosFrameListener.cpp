@@ -41,6 +41,7 @@ ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindo
 	,m_onScreeHelp(true)
 	,m_mousePickMemory(false)
 	,m_shutDwoun(false)
+	,m_pickParam(0.0f)
 {
 	unsigned long windowHandle;
 	win->getCustomAttribute("WINDOW", &windowHandle);
@@ -68,12 +69,15 @@ ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindo
 	m_cursor->setVisible(true);
 
 	m_screen = new ScreenWriter(win->getWidth(), win->getHeight());
-//	m_screen->write(10, 20, "F1         - Toggle debug info text");
-//	m_screen->write(10, 36, "F3         - Toggle debug display");
-//	m_screen->write(10, 36, "Hold CTRL  - Show cursor and pick");
-//	m_screen->write(10, 52, "Hold SHIFT - Move faster");
-//	m_screen->write(10, 68, "SPACE      - Throw a sphere");
-//	m_screen->write(10, 84, "ESC        - Exit application");
+
+	// initialize the Camera position
+//	Matrix3 rot;
+//	Radian rotZ;
+//	m_translateVector = m_camera->getPosition();
+//	m_camera->getOrientation().ToRotationMatrix (rot);
+//	rot.ToEulerAnglesZYX (m_rotY, m_rotX, rotZ);
+//	SetCameraTarget (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep)
+	m_physicsWorld->ResetCamera (m_camera->getPosition(), m_camera->getOrientation());
 }
 
 ApplicationFrameListener::~ApplicationFrameListener(void)
@@ -171,7 +175,75 @@ void ApplicationFrameListener::UpdateMousePick ()
 		m_rayPicker->SetPickedBody (NULL);
 	}
 	m_mousePickMemory = mouseKey1;
+}
 
+void ApplicationFrameListener::UpdateFreeCamera ()
+{
+	Real moveScale = 1.0f;
+	if(m_keyboard->isKeyDown(OIS::KC_LSHIFT)) {
+		moveScale *= 2.0f;
+	}
+	
+	Real translation = 0.0f;
+
+	if (m_keyboard->isKeyDown(OIS::KC_W)) {
+		translation = moveScale;
+	}
+
+/*
+	if(mKeyboard->isKeyDown(OIS::KC_A)) {
+		mTranslateVector.x = -moveScale;	// Move camera left
+
+
+	if(mKeyboard->isKeyDown(OIS::KC_D))
+		mTranslateVector.x = moveScale;	// Move camera RIGHT
+
+
+	if(mKeyboard->isKeyDown(OIS::KC_DOWN) || mKeyboard->isKeyDown(OIS::KC_S) )
+		mTranslateVector.z = moveScale;	// Move camera backward
+
+	if(mKeyboard->isKeyDown(OIS::KC_PGUP))
+		mTranslateVector.y = moveScale;	// Move camera up
+
+	if(mKeyboard->isKeyDown(OIS::KC_PGDOWN))
+		mTranslateVector.y = -moveScale;	// Move camera down
+
+	if(mKeyboard->isKeyDown(OIS::KC_RIGHT))
+		mCamera->yaw(-mRotScale);
+
+	if(mKeyboard->isKeyDown(OIS::KC_LEFT))
+		mCamera->yaw(mRotScale);
+
+	if( mKeyboard->isKeyDown(OIS::KC_ESCAPE) || mKeyboard->isKeyDown(OIS::KC_Q) )
+		return false;
+
+	if( mKeyboard->isKeyDown(OIS::KC_F) && mTimeUntilNextToggle <= 0 )
+	{
+		mStatsOn = !mStatsOn;
+		showDebugOverlay(mStatsOn);
+		mTimeUntilNextToggle = 1;
+	}
+
+	if( mKeyboard->isKeyDown(OIS::KC_T) && mTimeUntilNextToggle <= 0 )
+	{
+		switch(mFiltering)
+		{
+		case TFO_BILINEAR:
+			mFiltering = TFO_TRILINEAR;
+			mAniso = 1;
+			break;
+		case TFO_TRILINEAR:
+			mFiltering = TFO_ANISOTROPIC;
+*/
+
+	m_physicsWorld->SetCameraTarget (translation, 0.0f, Radian (0.0f), Radian (0.0f));
+
+	// set the camera matrix 
+	Vector3 cameraPosit;
+	Quaternion cameraRotation;
+	m_physicsWorld->GetInterpolatedCameraMatrix(cameraPosit, cameraRotation);
+	m_camera->setPosition(cameraPosit);
+	m_camera->setOrientation(cameraRotation);
 }
 
 
@@ -188,6 +260,7 @@ bool ApplicationFrameListener::frameStarted(const FrameEvent &evt)
 
 	// see if we have a object on the pick queue
 	UpdateMousePick ();
+	UpdateFreeCamera ();
 
 	m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
 
@@ -209,8 +282,9 @@ bool ApplicationFrameListener::frameEnded(const FrameEvent& evt)
 	if (m_onScreeHelp.m_state) {
 		m_screen->write(20,  52, "F1: Hide debug help text");
 		m_screen->write(20,  68, "F3: toggle display physic debug");
-		m_screen->write(20,  84, "Hold CTRL and Left Mouse Key: show mouse cursor and pick");
-		m_screen->write(20, 100, "ESC: Exit application");
+		m_screen->write(20,  84, "W, S, A, D: Free camera navigation");
+		m_screen->write(20, 100, "Hold CTRL and Left Mouse Key: show mouse cursor and pick");
+		m_screen->write(20, 116, "ESC: Exit application");
 
 	} else if (m_onScreeHelp.TriggerDown()){
 		m_screen->removeAll();

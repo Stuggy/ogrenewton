@@ -33,6 +33,14 @@ class OgreNewtonWorld: public FrameListener, public dNewton
 	OgreNewtonWorld (int updateFramerate = 120);
 	virtual ~OgreNewtonWorld();
 
+	virtual void OnBeginUpdate (dFloat timestepInSecunds);
+//	virtual void OnEndUpdate (dFloat timestepInSecunds);
+
+	void GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation);
+
+
+	void ResetCamera (const Vector3& posit, const Quaternion& rot);
+	void SetCameraTarget (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep);
 	bool frameStarted(const FrameEvent &evt);
 
 	void SetUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
@@ -43,10 +51,26 @@ class OgreNewtonWorld: public FrameListener, public dNewton
 	const Vector3& GetGravity() const {return m_gravity;}
 
 	protected:
+	void CalculateIntepolatedCameraMatrix(Real Param);
+
 	Vector3 m_gravity;
 	Real m_timestep;
 	bool m_concurrentUpdateMode;
 	dLong m_lastPhysicTimeInMicroseconds;
+
+
+	unsigned m_cameraLock;
+	Radian m_yawStep;
+	Radian m_pitchStep;
+	Radian m_yawAngle;
+	Radian m_pitchAngle;
+	Vector3 m_translation;
+	Vector3 m_translationStep;
+	
+
+	Vector3 m_interpolatedCameraPosition;
+	Quaternion m_interpolatedCameraRotation;
+	dNewtonTransformLerp m_cameraTransform;
 };
 
 #endif

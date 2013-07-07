@@ -38,6 +38,23 @@ using namespace Ogre;
 class OgreNewtonApplication: public OgreNewtonExampleApplication
 {
 	public:
+/*
+	class DemoOgreNewtonWorld: public OgreNewtonWorld
+	{
+		public:
+		DemoOgreNewtonWorld()
+			:OgreNewtonWorld ()
+		{
+		}
+
+		// overload thsi function for updation the camera
+		void OnBeginUpdate (dFloat timestepInSecunds)
+		{
+
+		}
+	};
+*/
+
 	OgreNewtonApplication()
 		:OgreNewtonExampleApplication()
 	{
