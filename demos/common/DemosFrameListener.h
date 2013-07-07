@@ -81,6 +81,7 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 	virtual ~ApplicationFrameListener(void);
 
 	void UpdateMousePick ();
+	void UpdateFreeCamera ();
 	
 	bool frameStarted(const FrameEvent &evt);
 	bool frameEnded(const FrameEvent& evt);
@@ -111,6 +112,7 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 	OIS::InputManager* m_ois;
 	OIS::Keyboard* m_keyboard;
 	ScreenWriter* m_screen;
+
 
 
 	bool m_shutDwoun;

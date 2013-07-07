@@ -34,11 +34,13 @@
 #include <OgreMovableObject.h>
 #include <OgreFrameListener.h>
 
+
 #include <Newton.h>
 #include <dNewton.h>
 #include <dNewtonBody.h>
 #include <dNewtonRayCast.h>
 #include <dNewtonCollision.h>
+#include <dNewtonTranformLerp.h>
 #include <CustomControllerManager.h>
 
 
