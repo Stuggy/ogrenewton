@@ -1,0 +1,14 @@
+DebugText
+{
+	type 		truetype
+	source 		consolas.ttf
+	size 		12
+	resolution 	72
+}
+BlueHighway-10
+{
+	type 		truetype
+	source 		bluehigh.ttf
+	size 		32
+	resolution 	72
+}

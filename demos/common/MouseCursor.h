@@ -22,15 +22,14 @@
 #ifndef MOUSECURSOR_H
 #define MOUSECURSOR_H
 
-
-#include <OgrePanelOverlayElement.h>
 #include <OgreTexture.h>
-#include <OgreMaterialManager.h>
 #include <OgreOverlayManager.h>
+#include <OgreMaterialManager.h>
+#include <OgrePanelOverlayElement.h>
 
 using namespace Ogre;
 
-class MouseCursor// : public Singleton<MouseCursor>
+class MouseCursor
 {
 	public:
 	MouseCursor();

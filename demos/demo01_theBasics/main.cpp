@@ -146,9 +146,9 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 	void LoadDynamicScene(const Vector3& origin)
 	{
 		BuildJenga (origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
-//		BuildJenga (origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
-//		BuildJenga (origin + Vector3(-10.0f, 0.0f, -60.0f) , 40);
-//		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);
+		BuildJenga (origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
+		BuildJenga (origin + Vector3(-10.0f, 0.0f, -60.0f) , 40);
+		BuildJenga (origin + Vector3( 10.0f, 0.0f, -60.0f) , 40);
 	}
 
 
