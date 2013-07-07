@@ -39,10 +39,6 @@ OgreNewtonApplication::OgreNewtonApplication()
 
 OgreNewtonApplication::~OgreNewtonApplication()
 {
-	if (m_physicsWorld) {
-		mRoot->removeFrameListener(m_physicsWorld);
-		delete m_physicsWorld;
-	}
 }
 
 
@@ -54,3 +50,11 @@ void OgreNewtonApplication::createScene()
 	mRoot->addFrameListener(m_physicsWorld);
 }
 
+void OgreNewtonApplication::destroyScene(void)
+{
+	m_physicsWorld->WaitForUpdateToFinish ();
+
+	mRoot->removeFrameListener(m_physicsWorld);
+	delete m_physicsWorld;
+	m_physicsWorld = NULL;
+}

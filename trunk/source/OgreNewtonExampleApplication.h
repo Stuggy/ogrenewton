@@ -48,6 +48,7 @@ class OgreNewtonExampleApplication: public OgreNewtonApplication
 	
 	protected:
 	virtual void createScene(void);
+	virtual void destroyScene(void);
 
 	protected:
 	OgreNewtonDebugger* m_debugRender;

@@ -46,13 +46,6 @@ class OgreNewtonDemoApplication: public OgreNewtonExampleApplication
 
 	virtual ~OgreNewtonDemoApplication()
 	{
-		// make sure no update is in progress, before shutting down all systems
-		GetPhysics()->WaitForUpdateToFinish ();
-
-		if (m_listener) {
-			mRoot->removeFrameListener(m_listener);
-			delete m_listener;
-		}
 	}
 
 	protected:
@@ -203,6 +196,15 @@ class OgreNewtonDemoApplication: public OgreNewtonExampleApplication
 
 		// initialize the Camera position after teh scen was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
+	}
+
+	void destroyScene()
+	{
+		mRoot->removeFrameListener(m_listener);
+		delete m_listener;
+		m_listener = NULL;
+
+		OgreNewtonExampleApplication::destroyScene();
 	}
 
 	protected:

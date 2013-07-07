@@ -56,6 +56,7 @@ class OgreNewtonApplication: public ExampleApplication
 	
 	protected:
 	virtual void createScene(void);
+	virtual void destroyScene(void);
 
 	protected:
 	OgreNewtonWorld* m_physicsWorld;

@@ -47,10 +47,6 @@ OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 
 OgreNewtonExampleApplication::~OgreNewtonExampleApplication()
 {
-	if (m_debugRender) {
-		mRoot->removeFrameListener(m_debugRender);
-		delete m_debugRender;
-	}
 }
 
 
@@ -61,6 +57,20 @@ void OgreNewtonExampleApplication::createScene()
 	// create a debug Renderer for showing physics data visually
 	m_debugRender = new OgreNewtonDebugger (mSceneMgr, m_physicsWorld);
 	mRoot->addFrameListener(m_debugRender);
+}
+
+void OgreNewtonExampleApplication::destroyScene(void)
+{
+	// make sure no update is in progress, before shutting down all systems
+	GetPhysics()->WaitForUpdateToFinish ();
+
+	// destroy the debugger
+	mRoot->removeFrameListener(m_debugRender);
+	delete m_debugRender;
+	m_debugRender = NULL;
+	
+	// destroy the physics world		
+	OgreNewtonApplication::destroyScene();
 }
 
 
@@ -76,7 +86,8 @@ void OgreNewtonExampleApplication::ResetCamera (const Vector3& posit, const Quat
 	Radian rotX;
 	Radian rotY;
 	Radian rotZ;
-	rot.ToEulerAnglesZYX (rotY, rotX, rotZ);
+	//rot.ToEulerAnglesZYX (rotY, rotX, rotZ);
+	rot.ToEulerAnglesZYX (rotZ, rotY, rotX);
 
 	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
 	m_yawAngle = rotY;
@@ -111,9 +122,13 @@ void OgreNewtonExampleApplication::OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	m_pitchAngle = Math::Clamp (m_pitchAngle.valueRadians() + m_pitchStep.valueRadians(), - 80.0f * 3.141592f / 180.0f, 80.0f * 3.141592f / 180.0f);
 
 	Matrix3 rot; 
-	rot.FromEulerAnglesZYX (m_yawAngle, m_pitchAngle, Radian (0.0f));
+	//rot.FromEulerAnglesZYX (m_yawAngle, m_pitchAngle, Radian (0.0f));
+	rot.FromEulerAnglesZYX (Radian (0.0f), m_yawAngle, m_pitchAngle);
 	Matrix4 matrix (rot);
-	matrix.setTrans(m_translation + m_translationStep);
+	m_translation += Vector3 (matrix[2][0], matrix[2][1], matrix[2][2]) * m_translationStep[2];   
+	m_translation += Vector3 (matrix[0][0], matrix[0][1], matrix[0][2]) * m_translationStep[0];   
+
+	matrix.setTrans(m_translation);
 	matrix = matrix.transpose();
 	m_cameraTransform.Update (matrix[0]);
 }
