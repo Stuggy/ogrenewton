@@ -20,48 +20,45 @@
 */
 
 
-#ifndef _OGRE_NEWTON_EXAMPLE_APPLICATION_H_
-#define _OGRE_NEWTON_EXAMPLE_APPLICATION_H_
+#ifndef _OGRE_NEWTON_APPLICATION_H_
+#define _OGRE_NEWTON_APPLICATION_H_
 
 #include "OgreNewtonStdAfx.h"
-#include "OgreNewtonApplication.h"
 
 using namespace Ogre;
 
+#ifdef _MSC_VER
+	#pragma warning (disable: 4512) //'OIS::MouseEvent' : assignment operator could not be generated
+#endif
+
+#include <OgreOverlay.h>
+#include <OgreOverlayElement.h>
+#include <OgreOverlayManager.h>
+#include <ExampleApplication.h>
+#include <ExampleFrameListener.h>
 
 
-class OgreNewtonExampleApplication: public OgreNewtonApplication
+class OgreNewtonApplication: public ExampleApplication
 {
 	public:
-	OgreNewtonExampleApplication();
-	virtual ~OgreNewtonExampleApplication();
+	OgreNewtonApplication();
+	virtual ~OgreNewtonApplication();
 
-	virtual void OnPhysicUpdateBegin(dFloat timestepInSecunds);
-	virtual void OnPhysicUpdateEnd(dFloat timestepInSecunds);
-	virtual void OnRenderUpdateBegin(dFloat updateParam);
-	virtual void OnRenderUpdateEnd(dFloat updateParam);
+	OgreNewtonWorld* GetPhysics() const { return m_physicsWorld;}
 
-	void ResetCamera (const Vector3& posit, const Quaternion& rot);
-	void MoveCamera (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep);
-	void GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation);
+	// these are the main even call back the client application implement for controlling the  application
+	// these function are all call asynchronous and in parallel
+	virtual void OnPhysicUpdateBegin(dFloat timestepInSecunds) {}
+	virtual void OnPhysicUpdateEnd(dFloat timestepInSecunds) {}
+	virtual void OnRenderUpdateBegin(dFloat updateParam) {}
+	virtual void OnRenderUpdateEnd(dFloat updateParam) {}
 
 	
 	protected:
 	virtual void createScene(void);
 
 	protected:
-	OgreNewtonDebugger* m_debugRender;
-
-	unsigned m_cameraLock;
-	Radian m_yawStep;
-	Radian m_pitchStep;
-	Radian m_yawAngle;
-	Radian m_pitchAngle;
-	Vector3 m_translation;
-	Vector3 m_translationStep;
-	Vector3 m_interpolatedCameraPosition;
-	Quaternion m_interpolatedCameraRotation;
-	dNewtonTransformLerp m_cameraTransform;
+	OgreNewtonWorld* m_physicsWorld;
 };
 
 

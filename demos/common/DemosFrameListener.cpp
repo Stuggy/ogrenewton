@@ -26,7 +26,7 @@
 #include "ScreenWriter.h"
 #include "DemosFrameListener.h"
 
-ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld, OgreNewtonDebugger* const debugRender)
+ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonExampleApplication* const physicsWorld, OgreNewtonDebugger* const debugRender)
 	:FrameListener()
 	,OIS::KeyListener()
 	,OIS::MouseListener()
@@ -36,7 +36,7 @@ ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindo
 	,m_renderWindow(win)
 	,m_physicsWorld(physicsWorld)
 	,m_debugRender(debugRender)
-	,m_rayPicker (new OgreNewtonRayPickManager (physicsWorld))
+	,m_rayPicker (new OgreNewtonRayPickManager (physicsWorld->GetPhysics()))
 	,m_debugTriggerKey(false)
 	,m_onScreeHelp(true)
 	,m_mousePickMemory(false)
@@ -69,29 +69,17 @@ ApplicationFrameListener::ApplicationFrameListener(Root* const root, RenderWindo
 	m_cursor->setVisible(true);
 
 	m_screen = new ScreenWriter(win->getWidth(), win->getHeight());
-
-	// initialize the Camera position
-//	Matrix3 rot;
-//	Radian rotZ;
-//	m_translateVector = m_camera->getPosition();
-//	m_camera->getOrientation().ToRotationMatrix (rot);
-//	rot.ToEulerAnglesZYX (m_rotY, m_rotX, rotZ);
-//	SetCameraTarget (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep)
-	m_physicsWorld->ResetCamera (m_camera->getPosition(), m_camera->getOrientation());
 }
 
 ApplicationFrameListener::~ApplicationFrameListener(void)
 {
 	delete m_screen;
-
 	if (m_ois) {
 		delete m_cursor;
 		m_ois->destroyInputObject(m_mouse);
 		m_ois->destroyInputObject(m_keyboard);
 		OIS::InputManager::destroyInputSystem(m_ois);
 	}
-
-
 }
 
 
@@ -179,12 +167,18 @@ void ApplicationFrameListener::UpdateMousePick ()
 
 void ApplicationFrameListener::UpdateFreeCamera ()
 {
+	OgreNewtonWorld* const physics = m_physicsWorld->GetPhysics();
+
 	Real moveScale = 1.0f;
 	if(m_keyboard->isKeyDown(OIS::KC_LSHIFT)) {
 		moveScale *= 2.0f;
 	}
 	
+	Real strafe = 0.0f;
 	Real translation = 0.0f;
+	Radian pitch (0.0f);
+	Radian yaw (0.0f);
+	
 
 	if (m_keyboard->isKeyDown(OIS::KC_W)) {
 		translation = moveScale;
@@ -236,9 +230,10 @@ void ApplicationFrameListener::UpdateFreeCamera ()
 			mFiltering = TFO_ANISOTROPIC;
 */
 
-	m_physicsWorld->SetCameraTarget (translation, 0.0f, Radian (0.0f), Radian (0.0f));
+	// queue a camera at simulation time
+	m_physicsWorld->MoveCamera (translation, strafe, pitch, yaw);
 
-	// set the camera matrix 
+	// set the camera matrix for rendering time
 	Vector3 cameraPosit;
 	Quaternion cameraRotation;
 	m_physicsWorld->GetInterpolatedCameraMatrix(cameraPosit, cameraRotation);
@@ -276,7 +271,8 @@ bool ApplicationFrameListener::frameEnded(const FrameEvent& evt)
 {
 	const RenderTarget::FrameStats& stats = m_renderWindow->getStatistics();
 
-	double physTime = double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f;
+	OgreNewtonWorld* const physics = m_physicsWorld->GetPhysics();
+	double physTime = double (physics->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f;
 	m_screen->write(20, 20, "FPS: %05.3f", stats.lastFPS);
 	m_screen->write(20, 36, "Physics time: %05.3f ms", physTime);
 	if (m_onScreeHelp.m_state) {

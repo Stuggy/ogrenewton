@@ -22,29 +22,24 @@
 
 #include "OgreNewtonStdAfx.h"
 #include "OgreNewtonWorld.h"
+#include "OgreNewtonApplication.h"
 
-OgreNewtonWorld::OgreNewtonWorld (int updateFramerate)
+
+
+OgreNewtonWorld::OgreNewtonWorld (OgreNewtonApplication* const application, int updateFramerate)
 	:FrameListener()
 	,dNewton()
+	,m_application(application)
 	,m_gravity (0.0f, -9.8f, 0.0f)
 	,m_concurrentUpdateMode(true)
 	,m_lastPhysicTimeInMicroseconds(0)
-	,m_cameraLock(0)
-	,m_yawStep(0.0f)
-	,m_pitchStep(0.0f)
-	,m_yawAngle(0.0f)
-	,m_pitchAngle(0.0f)
-	,m_translation(0.0f, 0.0f, 0.0f)
-	,m_translationStep(0.0f, 0.0f, 0.0f)
-	,m_interpolatedCameraPosition(0.0f, 0.0f, 0.0f)
-	,m_interpolatedCameraRotation (Quaternion::IDENTITY)
-	,m_cameraTransform()
 {
 	SetUpdateFPS (Real (updateFramerate), 3);
 }
 
 OgreNewtonWorld::~OgreNewtonWorld()
 {
+//	WaitForUpdateToFinish ();
 }
 
 
@@ -70,69 +65,16 @@ dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
 	return m_lastPhysicTimeInMicroseconds;
 }
 
-void OgreNewtonWorld::ResetCamera (const Vector3& posit, const Quaternion& rotation)
-{
-	Matrix4 matrix;
-	matrix.makeTransform (posit, Vector3 (1.0f, 1.0f, 1.0f), rotation);
-	matrix = matrix.transpose();
-
-	Matrix3 rot;
-	matrix.extract3x3Matrix(rot);
-
-	Radian rotX;
-	Radian rotY;
-	Radian rotZ;
-	rot.ToEulerAnglesZYX (rotY, rotX, rotZ);
-
-	ScopeLock lock (&m_cameraLock);
-	m_yawAngle = rotY;
-	m_pitchAngle = rotX;
-	m_translation = posit;
-	m_cameraTransform.ResetMatrix (&matrix[0][0]);
-}
-
-void OgreNewtonWorld::SetCameraTarget (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep)
-{
-	ScopeLock lock (&m_cameraLock);
-	m_yawStep = yawAngleStep;
-	m_pitchStep = pitchAngleStep;
-	m_translationStep = Vector3 (deltaStrafe, 0.0f, deltaTranslation);
-}
-
 void OgreNewtonWorld::OnBeginUpdate (dFloat timestepInSecunds)
 {
-
-	// here we update the camera movement at simulation rate
-	ScopeLock lock (&m_cameraLock);
-
-	m_yawAngle = fmodf (m_yawAngle.valueRadians() + m_yawStep.valueRadians(), 3.141592f * 2.0f);
-	m_pitchAngle = Math::Clamp (m_pitchAngle.valueRadians() + m_pitchStep.valueRadians(), - 80.0f * 3.141592f / 180.0f, 80.0f * 3.141592f / 180.0f);
-
-	Matrix3 rot; 
-	rot.FromEulerAnglesZYX (m_yawAngle, m_pitchAngle, Radian (0.0f));
-	Matrix4 matrix (rot);
-	matrix.setTrans(m_translation + m_translationStep);
-	matrix = matrix.transpose();
-	m_cameraTransform.Update (matrix[0]);
+	m_application->OnPhysicUpdateBegin(timestepInSecunds);
 }
 
-void OgreNewtonWorld::GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation)
+void OgreNewtonWorld::OnEndUpdate (dFloat timestepInSecunds)
 {
-	ScopeLock lock (&m_cameraLock);
-	cameraPosit = m_interpolatedCameraPosition;
-	cameraRotation = m_interpolatedCameraRotation;
+	m_application->OnPhysicUpdateEnd(timestepInSecunds);
 }
 
-void OgreNewtonWorld::CalculateIntepolatedCameraMatrix(Real param)
-{
-	Matrix4 cameraMatrix;
-	ScopeLock lock (&m_cameraLock);
-	m_cameraTransform.InterplateMatrix (param, cameraMatrix[0]);
-	cameraMatrix = cameraMatrix.transpose();
-
-	m_interpolatedCameraPosition = cameraMatrix.getTrans();
-	m_interpolatedCameraRotation = cameraMatrix.extractQuaternion();
-}
 
 
 bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
@@ -147,9 +89,7 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 	}
 
 	dFloat param = GetInteplationParam(m_timestep);
-
-	// get the interpolated camera matrix
-	CalculateIntepolatedCameraMatrix(param);
+	m_application->OnRenderUpdateBegin (param);
 
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
@@ -166,7 +106,8 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 			node->setOrientation(nodeParent->_getDerivedOrientation().Inverse() * nodeRotation);
 		}
 	}
-
 	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds () - simulationTime;
+
+	m_application->OnRenderUpdateEnd (param);
 	return true;
 }

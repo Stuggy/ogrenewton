@@ -37,7 +37,6 @@ using namespace Ogre;
 class MouseCursor;
 class ScreenWriter;
 
-//class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, public OIS::MouseListener, public WindowEventListener
 class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, public OIS::MouseListener, public WindowEventListener
 {
 	class KeyTrigger
@@ -77,7 +76,7 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 
 
 	public:
-	ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonWorld* const physicsWorld, OgreNewtonDebugger* const debugRender);
+	ApplicationFrameListener(Root* const root, RenderWindow* const win, Camera* const cam, SceneManager* const mgr, OgreNewtonExampleApplication* const physicsWorld, OgreNewtonDebugger* const debugRender);
 	virtual ~ApplicationFrameListener(void);
 
 	void UpdateMousePick ();
@@ -100,7 +99,7 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 	Camera* m_camera;
 	SceneManager* m_sceneMgr;
 	RenderWindow* m_renderWindow;
-	OgreNewtonWorld* m_physicsWorld;
+	OgreNewtonExampleApplication* m_physicsWorld;
 	OgreNewtonDebugger* m_debugRender;
 	OgreNewtonRayPickManager* m_rayPicker;
 	KeyTrigger m_debugTriggerKey;

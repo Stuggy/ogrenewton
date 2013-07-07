@@ -35,33 +35,20 @@
 
 using namespace Ogre;
 
-class OgreNewtonApplication: public OgreNewtonExampleApplication
+class OgreNewtonDemoApplication: public OgreNewtonExampleApplication
 {
 	public:
-/*
-	class DemoOgreNewtonWorld: public OgreNewtonWorld
-	{
-		public:
-		DemoOgreNewtonWorld()
-			:OgreNewtonWorld ()
-		{
-		}
 
-		// overload thsi function for updation the camera
-		void OnBeginUpdate (dFloat timestepInSecunds)
-		{
-
-		}
-	};
-*/
-
-	OgreNewtonApplication()
+	OgreNewtonDemoApplication()
 		:OgreNewtonExampleApplication()
 	{
 	}
 
-	virtual ~OgreNewtonApplication()
+	virtual ~OgreNewtonDemoApplication()
 	{
+		// make sure no update is in progress, before shutting down all systems
+		GetPhysics()->WaitForUpdateToFinish ();
+
 		if (m_listener) {
 			mRoot->removeFrameListener(m_listener);
 			delete m_listener;
@@ -172,7 +159,7 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 	void createFrameListener()
 	{
 		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, m_physicsWorld, m_debugRender);
+		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
 		mRoot->addFrameListener(m_listener);
 	}
 
@@ -213,6 +200,9 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
+
+		// initialize the Camera position after teh scen was loaded
+		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 	}
 
 	protected:
@@ -223,7 +213,7 @@ class OgreNewtonApplication: public OgreNewtonExampleApplication
 
 INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 {
-	OgreNewtonApplication application;
+	OgreNewtonDemoApplication application;
 
 	try {
 		application.go();
