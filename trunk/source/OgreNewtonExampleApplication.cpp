@@ -22,9 +22,6 @@
 
 #include "OgreNewtonStdAfx.h"
 
-#ifdef _MSC_VER
-	#pragma warning (disable: 4512) //'OIS::MouseEvent' : assignment operator could not be generated
-#endif
 
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDebugger.h"
@@ -33,9 +30,18 @@
 
 
 OgreNewtonExampleApplication::OgreNewtonExampleApplication()
-	:ExampleApplication()
-	,m_physicsWorld(NULL)
+	:OgreNewtonApplication()
 	,m_debugRender(NULL)
+	,m_cameraLock(0)
+	,m_yawStep(0.0f)
+	,m_pitchStep(0.0f)
+	,m_yawAngle(0.0f)
+	,m_pitchAngle(0.0f)
+	,m_translation(0.0f, 0.0f, 0.0f)
+	,m_translationStep(0.0f, 0.0f, 0.0f)
+	,m_interpolatedCameraPosition(0.0f, 0.0f, 0.0f)
+	,m_interpolatedCameraRotation (Quaternion::IDENTITY)
+	,m_cameraTransform()
 {
 }
 
@@ -45,23 +51,89 @@ OgreNewtonExampleApplication::~OgreNewtonExampleApplication()
 		mRoot->removeFrameListener(m_debugRender);
 		delete m_debugRender;
 	}
-
-	if (m_physicsWorld) {
-		mRoot->removeFrameListener(m_physicsWorld);
-		delete m_physicsWorld;
-	}
 }
-
 
 
 void OgreNewtonExampleApplication::createScene()
 {
-	// create the physic world first
-	m_physicsWorld = new OgreNewtonWorld ();
-	mRoot->addFrameListener(m_physicsWorld);
+	OgreNewtonApplication::createScene();
 
 	// create a debug Renderer for showing physics data visually
 	m_debugRender = new OgreNewtonDebugger (mSceneMgr, m_physicsWorld);
 	mRoot->addFrameListener(m_debugRender);
+}
+
+
+void OgreNewtonExampleApplication::ResetCamera (const Vector3& posit, const Quaternion& rotation)
+{
+	Matrix4 matrix;
+	matrix.makeTransform (posit, Vector3 (1.0f, 1.0f, 1.0f), rotation);
+	matrix = matrix.transpose();
+
+	Matrix3 rot;
+	matrix.extract3x3Matrix(rot);
+
+	Radian rotX;
+	Radian rotY;
+	Radian rotZ;
+	rot.ToEulerAnglesZYX (rotY, rotX, rotZ);
+
+	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
+	m_yawAngle = rotY;
+	m_pitchAngle = rotX;
+	m_translation = posit;
+	m_cameraTransform.ResetMatrix (&matrix[0][0]);
+}
+
+void OgreNewtonExampleApplication::MoveCamera (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep)
+{
+	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
+	m_yawStep = yawAngleStep;
+	m_pitchStep = pitchAngleStep;
+	m_translationStep = Vector3 (deltaStrafe, 0.0f, deltaTranslation);
+}
+
+
+void OgreNewtonExampleApplication::GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation)
+{
+	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
+	cameraPosit = m_interpolatedCameraPosition;
+	cameraRotation = m_interpolatedCameraRotation;
+}
+
+
+void OgreNewtonExampleApplication::OnPhysicUpdateBegin(dFloat timestepInSecunds) 
+{
+	// here we update the camera movement at simulation rate
+	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
+
+	m_yawAngle = fmodf (m_yawAngle.valueRadians() + m_yawStep.valueRadians(), 3.141592f * 2.0f);
+	m_pitchAngle = Math::Clamp (m_pitchAngle.valueRadians() + m_pitchStep.valueRadians(), - 80.0f * 3.141592f / 180.0f, 80.0f * 3.141592f / 180.0f);
+
+	Matrix3 rot; 
+	rot.FromEulerAnglesZYX (m_yawAngle, m_pitchAngle, Radian (0.0f));
+	Matrix4 matrix (rot);
+	matrix.setTrans(m_translation + m_translationStep);
+	matrix = matrix.transpose();
+	m_cameraTransform.Update (matrix[0]);
+}
+
+void OgreNewtonExampleApplication::OnPhysicUpdateEnd(dFloat timestepInSecunds) 
+{
+}
+
+void OgreNewtonExampleApplication::OnRenderUpdateBegin(dFloat updateParam) 
+{
+	Matrix4 cameraMatrix;
+	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
+	m_cameraTransform.InterplateMatrix (updateParam, cameraMatrix[0]);
+	cameraMatrix = cameraMatrix.transpose();
+	m_interpolatedCameraPosition = cameraMatrix.getTrans();
+	m_interpolatedCameraRotation = cameraMatrix.extractQuaternion();
+}
+
+
+void OgreNewtonExampleApplication::OnRenderUpdateEnd(dFloat updateParam) 
+{
 }
 

@@ -20,42 +20,37 @@
 */
 
 
-#ifndef _OGRE_NEWTON_WORLD_H_
-#define _OGRE_NEWTON_WORLD_H_
-
 #include "OgreNewtonStdAfx.h"
 
-using namespace Ogre;
-
-class OgreNewtonApplication;
-
-class OgreNewtonWorld: public FrameListener, public dNewton 
-{
-	public:
-	OgreNewtonWorld (OgreNewtonApplication* const application, int updateFramerate = 120);
-	virtual ~OgreNewtonWorld();
-
-	bool frameStarted(const FrameEvent &evt);
-
-	void SetUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
-	void SetConcurrentUpdateMode (bool mode);
-	bool GetConcurrentUpdateMode () const; 
-	dNewtonBody* CreateBox(Ogre::SceneNode* const sourceNode);
-	dLong GetPhysicsTimeInMicroSeconds() const;
-	const Vector3& GetGravity() const {return m_gravity;}
-
-	protected:
-	virtual void OnBeginUpdate (dFloat timestepInSecunds);
-	virtual void OnEndUpdate (dFloat timestepInSecunds);
-
-
-
-	OgreNewtonApplication* m_application;
-
-	Vector3 m_gravity;
-	Real m_timestep;
-	bool m_concurrentUpdateMode;
-	dLong m_lastPhysicTimeInMicroseconds;
-};
-
+#ifdef _MSC_VER
+	#pragma warning (disable: 4512) //'OIS::MouseEvent' : assignment operator could not be generated
 #endif
+
+#include "OgreNewtonWorld.h"
+#include "OgreNewtonApplication.h"
+
+
+
+OgreNewtonApplication::OgreNewtonApplication()
+	:ExampleApplication()
+	,m_physicsWorld(NULL)
+{
+}
+
+OgreNewtonApplication::~OgreNewtonApplication()
+{
+	if (m_physicsWorld) {
+		mRoot->removeFrameListener(m_physicsWorld);
+		delete m_physicsWorld;
+	}
+}
+
+
+
+void OgreNewtonApplication::createScene()
+{
+	// create the physic world first
+	m_physicsWorld = new OgreNewtonWorld (this);
+	mRoot->addFrameListener(m_physicsWorld);
+}
+
