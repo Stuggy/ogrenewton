@@ -49,7 +49,7 @@ ManualObject* OgreNewtonMesh::CreateEntiry (const String& name) const
 	int indexCount = GetTotalIndexCount();
 
 	int* const indexList = new int [indexCount];
-	int* const remapIndex = new int [indexCount];
+	bool* const remapIndex = new bool [indexCount];
 	dNewtonMesh::dPoint* const posits = new dNewtonMesh::dPoint[pointCount];
 	dNewtonMesh::dPoint* const normals = new dNewtonMesh::dPoint[pointCount];
 	dNewtonMesh::dUV* const uv0 = new dNewtonMesh::dUV[pointCount];
@@ -59,8 +59,30 @@ ManualObject* OgreNewtonMesh::CreateEntiry (const String& name) const
 
 	void* const materialsHandle = BeginMaterialHandle (); 
 	for (int handle = GetMaterialIndex (materialsHandle); handle != -1; handle = GetNextMaterialIndex (materialsHandle, handle)) {
-		// ogre does no support shared vertex for sub mesh, we will have to do the operation twice
-//		object->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+		
+
+		int materialIndex = MaterialGetMaterial (materialHandle, handle); 
+		int indexCount = MaterialGetIndexCount (materialHandle, handle); 
+		MaterialGetIndexStream (materialHandle, handle, indexList); 
+
+		object->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+		// ogre does not support shared vertex for sub mesh, 
+		// we will have remap the vertex data
+		int vertexCount = 0;
+		memset (remapIndex, false,  indexCount * sizeof (bool));
+		for( int i = 0; i < indexCount; i ++) {
+			int index = indexList[i];
+			if (!remapIndex[i]) {
+				remapIndex[i] = true;
+				indexList[i] = vertexCount;
+
+
+				vertexCount ++;
+			}
+		}
+
+		object->end();
+		
 	}
 	EndMaterialHandle (materialsHandle); 
 
