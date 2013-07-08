@@ -38,8 +38,8 @@ class OgreNewtonExampleApplication: public OgreNewtonApplication
 
 	virtual void OnPhysicUpdateBegin(dFloat timestepInSecunds);
 	virtual void OnPhysicUpdateEnd(dFloat timestepInSecunds);
-	virtual void OnRenderUpdateBegin(dFloat updateParam);
-	virtual void OnRenderUpdateEnd(dFloat updateParam);
+	virtual bool OnRenderUpdateBegin(dFloat updateParam);
+	virtual bool OnRenderUpdateEnd(dFloat updateParam);
 
 	void ResetCamera (const Vector3& posit, const Quaternion& rot);
 	void MoveCamera (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep);

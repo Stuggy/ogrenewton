@@ -22,6 +22,16 @@
 #ifndef _OGRE_NEWTON_STDAFX_H_
 #define _OGRE_NEWTON_STDAFX_H_
 
+#ifdef _MSC_VER
+	#pragma warning (disable: 4193)//: #pragma warning(pop) : no matching '#pragma warning(push)'
+	#pragma warning (disable: 4127) // conditional expression is constant
+	#pragma warning (disable: 4512) //'OIS::MouseEvent' : assignment operator could not be generated
+	#pragma warning (disable: 4100) // 'code' : unreferenced formal parameter
+	#pragma warning (disable: 4275) //: non dll-interface struct 'Ogre::Box' used as base for dll-interface class 'Ogre::PixelBox'
+	#pragma warning (disable: 4251) //'Ogre::Material::mTechniques' : class 'std::vector<_Ty,_Ax>' needs to have dll-interface to be used by clients of class 'Ogre::Material'
+#endif
+
+
 #include <Ogre.h>
 #include <OgreRoot.h>
 #include <OgreNode.h>

@@ -30,6 +30,8 @@
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
 
+#ifndef _DEMO_APPLICATION_FRAME_LISTENER_H_
+#define _DEMO_APPLICATION_FRAME_LISTENER_H_
 
 
 using namespace Ogre;
@@ -118,4 +120,4 @@ class ApplicationFrameListener: public FrameListener, public OIS::KeyListener, p
 	Real m_pickParam;
 };
 
-
+#endif
