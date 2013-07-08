@@ -23,6 +23,7 @@
 
 
 #include <OgreNewtonStdAfx.h>
+#include "OgreNewtonMesh.h"
 #include "OgreNewtonBody.h"
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonRayCast.h>
@@ -49,29 +50,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 	}
 
 	protected:
-	String MakeName (const char* const name) const 
-	{
-		static int enumeration = 0;
-		char text[256];
-		sprintf (text, "%s_%d", name, enumeration);
-		enumeration ++;
-		return String (text);
-	}
-
-	SceneNode* CreateNode (const String& mesh, const String& name, const Vector3& position, const Vector3& scale, const Quaternion& orientation)
-	{
-		Entity* const entity = mSceneMgr->createEntity(name, mesh);
-		entity->setCastShadows(true);
-
-		SceneNode* const node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-
-		node->attachObject(entity);
-		node->setScale(scale);
-		node->setPosition(position);
-		node->setOrientation(orientation);
-		return node;
-	}
-
 	void loadStaticScene ()
 	{
 		// create a scene body to add all static collidable meshes in the world 
@@ -92,9 +70,32 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// add this collision to the scene body
 		sceneBody->AddCollisionTree (floorNode);
 
-
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
+	}
+
+
+	String MakeName (const char* const name) const 
+	{
+		static int enumeration = 0;
+		char text[256];
+		sprintf (text, "%s_%d", name, enumeration);
+		enumeration ++;
+		return String (text);
+	}
+/*
+	SceneNode* CreateNode (const String& mesh, const String& name, const Vector3& position, const Vector3& scale, const Quaternion& orientation)
+	{
+		Entity* const entity = mSceneMgr->createEntity(name, mesh);
+		entity->setCastShadows(true);
+
+		SceneNode* const node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+
+		node->attachObject(entity);
+		node->setScale(scale);
+		node->setPosition(position);
+		node->setOrientation(orientation);
+		return node;
 	}
 
 	void BuildJenga(const Vector3& location, int high)
@@ -139,6 +140,74 @@ class OgreNewtonDemoApplication: public DemoApplication
 			baseMatrix.setTrans (baseMatrix.getTrans() + step_y);
 		}
 	}
+*/
+
+
+	SceneNode* CreateEmptyNode (const String& name, const Vector3& position, const Quaternion& orientation)
+	{
+		SceneNode* const node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+		//node->attachObject(entity);
+		node->setScale(Vector3 (1.0f, 1.0f, 1.0f));
+		node->setPosition(position);
+		node->setOrientation(orientation);
+		return node;
+	}
+
+	void BuildJenga(const Vector3& location, int high)
+	{
+		Vector3 blockBoxSize (0.4f, 0.2f, 0.4f * 3.0f);
+
+		// find the floor position
+		Vector3 start(location + Vector3 (0.0f, 10.0f, 0.0f));
+		Vector3 end (start - Vector3 (0.0f, 20.0f, 0.0f));
+		OgreNewtonRayCast raycaster(m_physicsWorld); 
+		raycaster.CastRay (&start.x, &end.x);
+		Vector3 position (raycaster.m_contact + Vector3 (0.0f, blockBoxSize.y * 0.5f, 0.0f));
+
+		Matrix4 baseMatrix (Matrix4::IDENTITY);
+		baseMatrix.setTrans (position);
+
+
+		// set realistic mass and inertia matrix for each block
+		Real mass = 5.0f;
+
+		// create a 90 degree rotation matrix
+		Matrix4 rotMatrix (Quaternion (Degree(90.0f), Vector3 (0.0f, 1.0f, 0.0f)));
+
+		Real collisionPenetration = 1.0f / 256.0f;
+
+		// make a box collision
+		dNewtonCollisionBox boxShape (m_physicsWorld, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, 0);
+
+		// create a visual for visual representation
+		OgreNewtonMesh boxMesh (&boxShape);
+		boxMesh.Triangulate();
+
+		// create a manual object for rendering 
+		ManualObject* const mesh = boxMesh.CreateEntiry(MakeName ("jengaBox"));
+
+/*
+		for (int i = 0; i < high; i ++) { 
+			Matrix4 matrix(baseMatrix);
+			Vector3 step_x (matrix[0][0], matrix[0][1], matrix[0][2]); 
+
+			step_x = step_x * blockBoxSize.x;
+			matrix.setTrans (matrix.getTrans() - step_x);
+
+			for (int j = 0; j < 3; j ++) { 
+				SceneNode* const node = CreateNode("box.mesh", MakeName ("jengaBox"), matrix.getTrans(), blockBoxSize, matrix.extractQuaternion());
+				OgreNewtonBody::CreateBox (m_physicsWorld, node, mass, matrix);
+				matrix.setTrans (matrix.getTrans() + step_x);
+			}
+
+			baseMatrix = baseMatrix * rotMatrix;			
+			Vector3 step_y (matrix[1][0], matrix[1][1], matrix[1][2]); 
+			step_y = step_y * (blockBoxSize.y - collisionPenetration);
+			baseMatrix.setTrans (baseMatrix.getTrans() + step_y);
+		}
+*/
+	}
+
 
 	void LoadDynamicScene(const Vector3& origin)
 	{

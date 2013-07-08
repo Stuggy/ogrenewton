@@ -50,8 +50,8 @@ void OgreNewtonDebugger::BodyDebugData::Init(OgreNewtonDebugger* const debugger,
 {
 	m_lru = debugger->m_lru;
 
-//	Ogre::Vector3 pos, vel, omega;
-//	Ogre::Quaternion ori;
+//	Vector3 pos, vel, omega;
+//	Quaternion ori;
 //	bod->getVisualPositionOrientation(pos, ori);
 
 //	vel = bod->getVelocity();
@@ -63,8 +63,8 @@ void OgreNewtonDebugger::BodyDebugData::Init(OgreNewtonDebugger* const debugger,
 //	std::ostringstream oss_info;
 //	oss_info.precision(2);
 //	oss_info.setf(std::ios::fixed,std::ios::floatfield);
-//	Ogre::Vector3 inertia;
-//	Ogre::Real mass;
+//	Vector3 inertia;
+//	Real mass;
 //	bod->getMassMatrix(mass, inertia);
 
 //	oss_info << "[" << bod->getOgreNode()->getName() << "]" << std::endl;
@@ -87,7 +87,7 @@ void OgreNewtonDebugger::BodyDebugData::Init(OgreNewtonDebugger* const debugger,
 		data->m_updated = 1;
 		m_debugnode->addChild(data->m_node);
 		data->m_text->setCaption(oss_info.str());
-		data->m_text->setLocalTranslation(bod->getAABB().getSize().y * 1.1f * Ogre::Vector3::UNIT_Y);
+		data->m_text->setLocalTranslation(bod->getAABB().getSize().y * 1.1f * Vector3::UNIT_Y);
 	}
 	else
 	{
@@ -111,25 +111,25 @@ void OgreNewtonDebugger::BodyDebugData::Init(OgreNewtonDebugger* const debugger,
 		{
 			std::ostringstream oss;
 			oss << "__OgreNewt__Debugger__Lines__" << bod << "__";
-			data->m_lines = new Ogre::ManualObject(oss.str());
+			data->m_lines = new ManualObject(oss.str());
 		}
 
 		if( data->m_text )
 		{
 			data->m_text->setCaption(oss_info.str());
-			data->m_text->setLocalTranslation(bod->getAABB().getMaximum().y * 1.1f * Ogre::Vector3::UNIT_Y);
+			data->m_text->setLocalTranslation(bod->getAABB().getMaximum().y * 1.1f * Vector3::UNIT_Y);
 		}
 		else
 		{
 			data->m_text = new OgreNewt::OgreAddons::MovableText( oss_name.str(), oss_info.str(), "BlueHighway-10",0.5);
-			data->m_text->setLocalTranslation(bod->getAABB().getMaximum().y / 2.0f * Ogre::Vector3::UNIT_Y + Ogre::Vector3::UNIT_Y * 0.1f);
+			data->m_text->setLocalTranslation(bod->getAABB().getMaximum().y / 2.0f * Vector3::UNIT_Y + Vector3::UNIT_Y * 0.1f);
 			data->m_text->setTextAlignment( OgreNewt::OgreAddons::MovableText::H_LEFT, OgreNewt::OgreAddons::MovableText::V_ABOVE );
 		}
 
 		data->m_node->attachObject(data->m_text);
 	    
 
-//		data->m_lines->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
+//		data->m_lines->begin("BaseWhiteNoLighting", RenderOperation::OT_LINE_LIST );
 		// set color
 //		if( it != m_materialcolors.end() )
 //			data->m_lines->colour(it->second);
@@ -137,7 +137,7 @@ void OgreNewtonDebugger::BodyDebugData::Init(OgreNewtonDebugger* const debugger,
 //			data->m_lines->colour(m_defaultcolor);
 //
 //		float matrix[16];
-//		Converters::QuatPosToMatrix(Ogre::Quaternion::IDENTITY, Ogre::Vector3::ZERO, &matrix[0]);
+//		Converters::QuatPosToMatrix(Quaternion::IDENTITY, Vector3::ZERO, &matrix[0]);
 //	    
 //		NewtonCollisionForEachPolygonDo( NewtonBodyGetCollision(newtonBody), &matrix[0], newtonPerPoly, data->m_lines );
 //		data->m_lines->end();
@@ -156,12 +156,12 @@ void OgreNewtonDebugger::BodyDebugData::Init(OgreNewtonDebugger* const debugger,
 	char name[256];
 	sprintf (name, "__debug_collsion_shape_%d__", debugger->m_uniqueID);
 	debugger->m_uniqueID ++;
-	m_lines = new Ogre::ManualObject(name);
+	m_lines = new ManualObject(name);
 
 	dNewtonCollision* const collision = body->GetCollision();
 	OgreNewtonGetCollisionMesh getMeshFaces (collision, this);
 
-	m_lines->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
+	m_lines->begin("BaseWhiteNoLighting", RenderOperation::OT_LINE_LIST );
 
 	Matrix4 localMatrix (Matrix4::IDENTITY);
 	collision->DebugRender (localMatrix[0], &getMeshFaces);
