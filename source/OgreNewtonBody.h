@@ -50,6 +50,9 @@ class OgreNewtonBody: public dNewtonBody
 	void SetForce (const Vector3& force);
 	void SetTorque (const Vector3& torque);
 
+	void AddForce (const Vector3& force);
+	void AddTorque (const Vector3& torque);
+
 	Vector3 GetPointVeloc (const Vector3& point) const;
 	void ApplyImpulseToDesiredPointVeloc (const Vector3& point, const Vector3& desiredveloc);
 
@@ -129,6 +132,17 @@ inline void OgreNewtonBody::SetTorque (const Vector3& torque)
 {
 	dNewtonBody::SetTorque (&torque.x);
 }
+
+inline void OgreNewtonBody::AddForce (const Vector3& force)
+{
+	dNewtonBody::AddForce (&force.x);
+}
+
+inline void OgreNewtonBody::AddTorque (const Vector3& torque)
+{
+	dNewtonBody::AddTorque (&torque.x);
+}
+
 
 inline Vector3 OgreNewtonBody::GetPointVeloc (const Vector3& point) const
 {
