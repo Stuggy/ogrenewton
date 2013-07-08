@@ -24,7 +24,6 @@
 #include <OgreTextureManager.h>
 #include <OgreTechnique.h>
 
-//template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton = 0;
 
 MouseCursor::MouseCursor()
 	:guiOverlay(0)

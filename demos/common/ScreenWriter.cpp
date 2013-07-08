@@ -19,10 +19,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "ScreenWriter.h"
+#include <OgreNewtonStdAfx.h>
 #include <OgreTextAreaOverlayElement.h>
 
-//template<> ScreenWriter* Singleton<ScreenWriter>::ms_Singleton = 0;
+#include "ScreenWriter.h"
+
 
 ScreenWriter::ScreenWriter(int winWidth, int winHeight)
 {
