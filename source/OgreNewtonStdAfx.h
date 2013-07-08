@@ -48,6 +48,7 @@
 #include <Newton.h>
 #include <dNewton.h>
 #include <dNewtonBody.h>
+#include <dNewtonMesh.h>
 #include <dNewtonRayCast.h>
 #include <dNewtonCollision.h>
 #include <dNewtonTranformLerp.h>
