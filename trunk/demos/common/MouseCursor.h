@@ -22,6 +22,7 @@
 #ifndef MOUSECURSOR_H
 #define MOUSECURSOR_H
 
+#include <OgreNewtonStdAfx.h>
 #include <OgreTexture.h>
 #include <OgreOverlayManager.h>
 #include <OgreMaterialManager.h>

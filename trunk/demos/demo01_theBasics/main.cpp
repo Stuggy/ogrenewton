@@ -172,7 +172,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 		light3->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
 
 		// sky box.
-		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
+		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
+		mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");
 
 		// load all of the static geometry
 		loadStaticScene ();

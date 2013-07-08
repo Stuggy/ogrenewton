@@ -98,9 +98,19 @@ void OgreNewtonExampleApplication::ResetCamera (const Vector3& posit, const Quat
 void OgreNewtonExampleApplication::MoveCamera (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep)
 {
 	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
-	m_yawStep = yawAngleStep;
-	m_pitchStep = pitchAngleStep;
-	m_translationStep = Vector3 (deltaStrafe, 0.0f, deltaTranslation);
+	if (m_yawStep == Radian (0.0f)) {
+		m_yawStep = yawAngleStep;
+	}
+	if (m_pitchStep == Radian (0.0f)) {
+		m_pitchStep = pitchAngleStep;
+	}
+
+	if (m_translationStep.x == 0.0f) {
+		m_translationStep.x = deltaStrafe;
+	}
+	if (m_translationStep.z == 0.0f) {
+		m_translationStep.z = deltaTranslation;
+	}
 }
 
 
@@ -124,12 +134,16 @@ void OgreNewtonExampleApplication::OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	//rot.FromEulerAnglesZYX (m_yawAngle, m_pitchAngle, Radian (0.0f));
 	rot.FromEulerAnglesZYX (Radian (0.0f), m_yawAngle, m_pitchAngle);
 	Matrix4 matrix (rot);
-	m_translation += Vector3 (matrix[2][0], matrix[2][1], matrix[2][2]) * m_translationStep[2];   
-	m_translation += Vector3 (matrix[0][0], matrix[0][1], matrix[0][2]) * m_translationStep[0];   
+	m_translation += Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * m_translationStep[2];   
+	m_translation += Vector3 (matrix[0][0], matrix[1][0], matrix[2][0]) * m_translationStep[0];   
 
 	matrix.setTrans(m_translation);
 	matrix = matrix.transpose();
 	m_cameraTransform.Update (matrix[0]);
+
+	m_yawStep = 0.0f;
+	m_pitchStep = 0.0f;
+	m_translationStep = Vector3 (0.0f, 0.0f, 0.0f);
 }
 
 void OgreNewtonExampleApplication::OnPhysicUpdateEnd(dFloat timestepInSecunds) 

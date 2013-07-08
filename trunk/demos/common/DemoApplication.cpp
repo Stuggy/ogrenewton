@@ -208,12 +208,21 @@ void DemoApplication::UpdateFreeCamera ()
 		strafe = -moveScale;
 	}
 
-	const OIS::MouseState& mouseState = m_mouse->getMouseState();
+	if (!(m_keyboard->isKeyDown(OIS::KC_LCONTROL) || m_keyboard->isKeyDown(OIS::KC_RCONTROL))) {
+		const OIS::MouseState& mouseState = m_mouse->getMouseState();
+		//dTrace (("%d\n", mouseState.X.rel))
+		
+		if (mouseState.X.rel > 2) {
+			yaw = Radian (-CAMERA_YAW_SPEED);
+		} else if (mouseState.X.rel < -2) {
+			yaw = Radian (CAMERA_YAW_SPEED);
+		}
 
-	if (mouseState.X.rel > 2) {
-//		yaw = Radian (-CAMERA_YAW_SPEED);
-	} else if (mouseState.X.rel < -2) {
-//		yaw = Radian (CAMERA_YAW_SPEED);
+		if (mouseState.Y.rel > 2) {
+			pitch = Radian (-CAMERA_PITCH_SPEED);
+		} else if (mouseState.Y.rel < -2) {
+			pitch = Radian (CAMERA_PITCH_SPEED);
+		}
 	}
 
 	// queue a camera at simulation time
