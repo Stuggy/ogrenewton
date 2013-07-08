@@ -114,8 +114,8 @@ void OgreNewtonRayPickManager::PreUpdate(dFloat timestep)
 
 		Real invTimeStep = 1.0f / timestep;
 		Matrix4 matrix (m_pickedBody->GetMatrix());
-		Vector3 omega (m_pickedBody->GetOmega());
-		Vector3 veloc (m_pickedBody->GetVeloc());
+		Vector3 omega0 (m_pickedBody->GetOmega());
+		Vector3 veloc0 (m_pickedBody->GetVeloc());
 
 		Vector3 peekPosit (matrix.transformAffine(peekLocalPosit));
 		Vector3 peekStep (peekTarget - peekPosit);
@@ -128,9 +128,24 @@ void OgreNewtonRayPickManager::PreUpdate(dFloat timestep)
 			veloc[i] = deltaVeloc[i];
 			m_pickedBody->ApplyImpulseToDesiredPointVeloc (peekPosit, veloc);
 		}
+/*
+		Vector3 veloc1 (m_pickedBody->GetVeloc());
+		Vector3 omega1 (m_pickedBody->GetOmega() * 0.9f);
 
-		// damp omega a little
-		m_pickedBody->SetOmega(m_pickedBody->GetOmega() * 0.9f);
+		// restore body velocity and angular velocity
+		m_pickedBody->SetOmega(omega0);
+		m_pickedBody->SetVeloc(veloc0);
+
+		// convert the delta velocity change to a external force and torque
+		Vector3 inertia (m_pickedBody->GetInertia());
+	
+		matrix.setTrans(Vector3(0.0f, 0.0f, 0.0f));
+		Matrix4 invMatrix (matrix.transpose());
+		Vector3 angularMomentum (matrix.transformAffine(invMatrix.transformAffine(omega1 - omega0) * inertia));
+
+		m_pickedBody->AddForce ((veloc1 - veloc0) * (m_pickedBody->GetMass() * invTimeStep));
+		m_pickedBody->AddTorque(angularMomentum * invTimeStep);
+*/
 	}
 }
 

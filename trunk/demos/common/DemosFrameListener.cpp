@@ -205,9 +205,9 @@ void ApplicationFrameListener::UpdateFreeCamera ()
 	const OIS::MouseState& mouseState = m_mouse->getMouseState();
 
 	if (mouseState.X.rel > 2) {
-		yaw = Radian (-CAMERA_YAW_SPEED);
+//		yaw = Radian (-CAMERA_YAW_SPEED);
 	} else if (mouseState.X.rel < -2) {
-		yaw = Radian (CAMERA_YAW_SPEED);
+//		yaw = Radian (CAMERA_YAW_SPEED);
 	}
 
 	// queue a camera at simulation time
