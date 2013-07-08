@@ -48,6 +48,7 @@ ManualObject* OgreNewtonMesh::CreateEntiry (const String& name) const
 	int pointCount = GetPointCount();
 	int indexCount = GetTotalIndexCount();
 
+	int* const indexList = new int [indexCount];
 	int* const remapIndex = new int [indexCount];
 	dNewtonMesh::dPoint* const posits = new dNewtonMesh::dPoint[pointCount];
 	dNewtonMesh::dPoint* const normals = new dNewtonMesh::dPoint[pointCount];
@@ -59,11 +60,12 @@ ManualObject* OgreNewtonMesh::CreateEntiry (const String& name) const
 	void* const materialsHandle = BeginMaterialHandle (); 
 	for (int handle = GetMaterialIndex (materialsHandle); handle != -1; handle = GetNextMaterialIndex (materialsHandle, handle)) {
 		// ogre does no support shared vertex for sub mesh, we will have to do the operation twice
-		object->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+//		object->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	}
 	EndMaterialHandle (materialsHandle); 
 
 
+	delete[] indexList;
 	delete[] remapIndex;
 	delete[] uv1;
 	delete[] uv0;
