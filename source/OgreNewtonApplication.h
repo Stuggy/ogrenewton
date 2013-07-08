@@ -27,9 +27,6 @@
 
 using namespace Ogre;
 
-#ifdef _MSC_VER
-	#pragma warning (disable: 4512) //'OIS::MouseEvent' : assignment operator could not be generated
-#endif
 
 #include <OgreOverlay.h>
 #include <OgreOverlayElement.h>
@@ -50,8 +47,16 @@ class OgreNewtonApplication: public ExampleApplication
 	// these function are all call asynchronous and in parallel
 	virtual void OnPhysicUpdateBegin(dFloat timestepInSecunds) {}
 	virtual void OnPhysicUpdateEnd(dFloat timestepInSecunds) {}
-	virtual void OnRenderUpdateBegin(dFloat updateParam) {}
-	virtual void OnRenderUpdateEnd(dFloat updateParam) {}
+
+	virtual bool OnRenderUpdateBegin(dFloat updateParam) 
+	{
+		return true;
+	}
+
+	virtual bool OnRenderUpdateEnd(dFloat updateParam) 
+	{
+		return true;
+	}
 
 	
 	protected:

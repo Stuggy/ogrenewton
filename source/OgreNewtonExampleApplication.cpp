@@ -47,6 +47,7 @@ OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 
 OgreNewtonExampleApplication::~OgreNewtonExampleApplication()
 {
+	delete m_debugRender;
 }
 
 
@@ -65,9 +66,7 @@ void OgreNewtonExampleApplication::destroyScene(void)
 	GetPhysics()->WaitForUpdateToFinish ();
 
 	// destroy the debugger
-	mRoot->removeFrameListener(m_debugRender);
-	delete m_debugRender;
-	m_debugRender = NULL;
+	m_debugRender->HideDebugInformation();
 	
 	// destroy the physics world		
 	OgreNewtonApplication::destroyScene();
@@ -137,7 +136,7 @@ void OgreNewtonExampleApplication::OnPhysicUpdateEnd(dFloat timestepInSecunds)
 {
 }
 
-void OgreNewtonExampleApplication::OnRenderUpdateBegin(dFloat updateParam) 
+bool OgreNewtonExampleApplication::OnRenderUpdateBegin(dFloat updateParam) 
 {
 	Matrix4 cameraMatrix;
 	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
@@ -145,10 +144,12 @@ void OgreNewtonExampleApplication::OnRenderUpdateBegin(dFloat updateParam)
 	cameraMatrix = cameraMatrix.transpose();
 	m_interpolatedCameraPosition = cameraMatrix.getTrans();
 	m_interpolatedCameraRotation = cameraMatrix.extractQuaternion();
+	return true;
 }
 
 
-void OgreNewtonExampleApplication::OnRenderUpdateEnd(dFloat updateParam) 
+bool OgreNewtonExampleApplication::OnRenderUpdateEnd(dFloat updateParam) 
 {
+	return true;
 }
 

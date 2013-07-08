@@ -88,7 +88,7 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 	}
 
 	dFloat param = GetInteplationParam(m_timestep);
-	m_application->OnRenderUpdateBegin (param);
+	bool ret = m_application->OnRenderUpdateBegin (param);
 
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
@@ -109,5 +109,5 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 
 	m_application->OnRenderUpdateEnd (param);
 
-	return true;
+	return ret;
 }

@@ -30,17 +30,17 @@
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
+#include "DemoApplication.h"
 
-#include "DemosFrameListener.h"
 
 using namespace Ogre;
 
-class OgreNewtonDemoApplication: public OgreNewtonExampleApplication
+class OgreNewtonDemoApplication: public DemoApplication
 {
 	public:
 
 	OgreNewtonDemoApplication()
-		:OgreNewtonExampleApplication()
+		:DemoApplication()
 	{
 	}
 
@@ -152,15 +152,14 @@ class OgreNewtonDemoApplication: public OgreNewtonExampleApplication
 	void createFrameListener()
 	{
 		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
-		mRoot->addFrameListener(m_listener);
+//		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
+//		mRoot->addFrameListener(m_listener);
 	}
-
 
 	void createScene()
 	{
 		// create the physic world first
-		OgreNewtonExampleApplication::createScene();
+		DemoApplication::createScene();
 
 		//make a light
 		Light* const light0 = mSceneMgr->createLight( "Light0" );
@@ -194,21 +193,9 @@ class OgreNewtonDemoApplication: public OgreNewtonExampleApplication
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
 
-		// initialize the Camera position after teh scen was loaded
+		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 	}
-
-	void destroyScene()
-	{
-		mRoot->removeFrameListener(m_listener);
-		delete m_listener;
-		m_listener = NULL;
-
-		OgreNewtonExampleApplication::destroyScene();
-	}
-
-	protected:
-	ApplicationFrameListener* m_listener;
 };
 
 

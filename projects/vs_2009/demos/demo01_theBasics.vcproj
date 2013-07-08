@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../source;../../../demos/common;&quot;$(OGRE_ENGINE)/boost&quot;;&quot;$(OGRE_ENGINE)/include&quot;;&quot;$(OGRE_ENGINE)/include/OGRE&quot;;&quot;$(OGRE_ENGINE)/include/OGRE/Overlay&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dMath&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dNewton&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dCustomJoints&quot;;&quot;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton&quot;"
+				AdditionalIncludeDirectories="../../../source;../../../demos/common;&quot;$(OGRE_ENGINE_BUILD)/include&quot;;&quot;$(OGRE_ENGINE)/OgreMain/include&quot;;&quot;$(OGRE_ENGINE)/OgreMain/include/ogre&quot;;&quot;$(OGRE_ENGINE)/Samples/Common/include&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)/include&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dMath&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dNewton&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dCustomJoints&quot;;&quot;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;BOOST_ALL_NO_LIB;_NEWTON_STATIC_LIB;_CNEWTON_STATIC_LIB"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -72,11 +72,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="newton_d.lib dMath_d.lib dNewton_d.lib dJointLibrary_d.lib OIS_d.lib OgreMain_d.lib OgreOverlay_d.lib libboost_thread-vc90-mt-gd-1_53.lib libboost_date_time-vc90-mt-gd-1_53.lib libboost_system-vc90-mt-gd-1_53.lib libboost_chrono-vc90-mt-gd-1_53.lib"
+				AdditionalDependencies="newton_d.lib dMath_d.lib dNewton_d.lib dJointLibrary_d.lib OIS_d.lib OgreMain_d.lib"
 				OutputFile="../../../bin/$(InputName)_d.exe"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE)\boost\lib&quot;;&quot;$(OGRE_ENGINE)\lib\debug&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\debug_mdd&quot;"
+				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\debug&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\debug&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\debug_mdd&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/$(InputName).pdb"
 				SubSystem="2"
@@ -137,7 +137,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="../../../source;../../../demos/common;&quot;$(OGRE_ENGINE)/boost&quot;;&quot;$(OGRE_ENGINE)/include&quot;;&quot;$(OGRE_ENGINE)/include/OGRE&quot;;&quot;$(OGRE_ENGINE)/include/OGRE/Overlay&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dMath&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dNewton&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dCustomJoints&quot;;&quot;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton&quot;"
+				AdditionalIncludeDirectories="../../../source;../../../demos/common;&quot;$(OGRE_ENGINE_BUILD)/include&quot;;&quot;$(OGRE_ENGINE)/OgreMain/include&quot;;&quot;$(OGRE_ENGINE)/OgreMain/include/ogre&quot;;&quot;$(OGRE_ENGINE)/Samples/Common/include&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)/include&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dMath&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dNewton&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dCustomJoints&quot;;&quot;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;BOOST_ALL_NO_LIB;_NEWTON_STATIC_LIB;_CNEWTON_STATIC_LIB"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -165,11 +165,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="newton.lib dMath.lib dNewton.lib dJointLibrary.lib OIS.lib OgreMain.lib OgreOverlay.lib libboost_thread-vc90-mt-1_53.lib libboost_date_time-vc90-mt-1_53.lib libboost_system-vc90-mt-1_53.lib libboost_chrono-vc90-mt-1_53.lib"
+				AdditionalDependencies="newton.lib dMath.lib dNewton.lib dJointLibrary.lib OIS.lib OgreMain.lib"
 				OutputFile="../../../bin/$(InputName).exe"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE)\boost\lib&quot;;&quot;$(OGRE_ENGINE)\lib\release&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\release_md&quot;"
+				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\release&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\release&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\release_md&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/$(InputName).pdb"
 				SubSystem="2"
@@ -204,11 +204,11 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\demos\common\DemosFrameListener.cpp"
+			RelativePath="..\..\..\demos\common\DemoApplication.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\demos\common\DemosFrameListener.h"
+			RelativePath="..\..\..\demos\common\DemoApplication.h"
 			>
 		</File>
 		<File

@@ -72,11 +72,11 @@ class OgreNewtonDebugger: public FrameListener
 	virtual ~OgreNewtonDebugger();
 
 	void SetDebugMode(bool onOff);
+	void ShowDebugInformation();
+	void HideDebugInformation();
 
 	private:
 	bool frameStarted(const FrameEvent &evt);
-	void ShowDebugInformation();
-	void HideDebugInformation();
 
 	SceneManager* m_sceneMgr;
 	OgreNewtonWorld* m_world;
