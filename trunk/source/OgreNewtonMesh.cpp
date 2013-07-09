@@ -49,7 +49,7 @@ ManualObject* OgreNewtonMesh::CreateEntiry (const String& name) const
 	int indexCount = GetTotalIndexCount();
 
 	int* const indexList = new int [indexCount];
-	bool* const remapIndex = new bool [indexCount];
+	int* const remapIndex = new int [indexCount];
 	dNewtonMesh::dPoint* const posits = new dNewtonMesh::dPoint[pointCount];
 	dNewtonMesh::dPoint* const normals = new dNewtonMesh::dPoint[pointCount];
 	dNewtonMesh::dUV* const uv0 = new dNewtonMesh::dUV[pointCount];
@@ -59,30 +59,31 @@ ManualObject* OgreNewtonMesh::CreateEntiry (const String& name) const
 
 	void* const materialsHandle = BeginMaterialHandle (); 
 	for (int handle = GetMaterialIndex (materialsHandle); handle != -1; handle = GetNextMaterialIndex (materialsHandle, handle)) {
-		
-
-		int materialIndex = MaterialGetMaterial (materialHandle, handle); 
-		int indexCount = MaterialGetIndexCount (materialHandle, handle); 
-		MaterialGetIndexStream (materialHandle, handle, indexList); 
+		//int materialIndex = MaterialGetMaterial (materialsHandle, handle); 
+		int indexCount = MaterialGetIndexCount (materialsHandle, handle); 
+		MaterialGetIndexStream (materialsHandle, handle, indexList); 
 
 		object->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
-		// ogre does not support shared vertex for sub mesh, 
-		// we will have remap the vertex data
+		// ogre does not support shared vertex for sub mesh, we will have remap the vertex data
 		int vertexCount = 0;
-		memset (remapIndex, false,  indexCount * sizeof (bool));
+		memset (remapIndex, 0xff, indexCount * sizeof (remapIndex[0]));
 		for( int i = 0; i < indexCount; i ++) {
 			int index = indexList[i];
-			if (!remapIndex[i]) {
-				remapIndex[i] = true;
-				indexList[i] = vertexCount;
-
-
+			if (remapIndex[index] == -1) {
+				remapIndex[index] = vertexCount;
+				object->position (posits[index].m_x, posits[index].m_y, posits[index].m_z);
+				object->normal (normals[index].m_x, normals[index].m_y, normals[index].m_z);
+				object->textureCoord (uv0[index].m_u, uv0[index].m_v);
 				vertexCount ++;
 			}
+			indexList[i] = remapIndex[index];
+			
 		}
 
+		for (int i = 0; i < indexCount; i += 3) {
+			object->triangle (indexList[i + 0], indexList[i + 1], indexList[i + 2]);
+		}
 		object->end();
-		
 	}
 	EndMaterialHandle (materialsHandle); 
 
