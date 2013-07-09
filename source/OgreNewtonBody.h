@@ -56,8 +56,6 @@ class OgreNewtonBody: public dNewtonBody
 	Vector3 GetPointVeloc (const Vector3& point) const;
 	void ApplyImpulseToDesiredPointVeloc (const Vector3& point, const Vector3& desiredveloc);
 
-	static OgreNewtonBody* CreateBox(OgreNewtonWorld* const world, SceneNode* const sourceNode, Real mass, const Matrix4& matrix);
-
 	protected:
 	OgreNewtonBody();
 };

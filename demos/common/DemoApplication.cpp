@@ -201,11 +201,11 @@ void DemoApplication::UpdateFreeCamera ()
 
 
 	if (m_keyboard->isKeyDown(OIS::KC_A)) {
-		strafe = moveScale;
+		strafe = -moveScale;
 	}
 
 	if (m_keyboard->isKeyDown(OIS::KC_D)) {
-		strafe = -moveScale;
+		strafe = moveScale;
 	}
 
 	if (!(m_keyboard->isKeyDown(OIS::KC_LCONTROL) || m_keyboard->isKeyDown(OIS::KC_RCONTROL))) {
