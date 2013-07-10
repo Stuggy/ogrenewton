@@ -267,16 +267,16 @@ bool DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 {
 	const RenderTarget::FrameStats& stats = mWindow->getStatistics();
 
-	OgreNewtonWorld* const physics =GetPhysics();
-	double physTime = double (physics->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f;
+	OgreNewtonWorld* const physics = GetPhysics();
 	m_screen->write(20, 20, "FPS: %05.3f", stats.lastFPS);
-	m_screen->write(20, 36, "Physics time: %05.3f ms", physTime);
+	m_screen->write(20, 36, "Physics time: %05.3f ms", float (double (physics->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
+	m_screen->write(20, 52, "Number of rigid bodies: %d", physics->GetBodyCount());
 	if (m_onScreeHelp.m_state) {
-		m_screen->write(20,  52, "F1: Hide debug help text");
-		m_screen->write(20,  68, "F3: toggle display physic debug");
-		m_screen->write(20,  84, "W, S, A, D: Free camera navigation");
-		m_screen->write(20, 100, "Hold CTRL and Left Mouse Key: show mouse cursor and pick");
-		m_screen->write(20, 116, "ESC: Exit application");
+		m_screen->write(20,  68, "F1: Hide debug help text");
+		m_screen->write(20,  84, "F3: toggle display physic debug");
+		m_screen->write(20, 100, "W, S, A, D: Free camera navigation");
+		m_screen->write(20, 116, "Hold CTRL and Left Mouse Key: show mouse cursor and pick");
+		m_screen->write(20, 132, "ESC: Exit application");
 
 	} else if (m_onScreeHelp.TriggerDown()){
 		m_screen->removeAll();
