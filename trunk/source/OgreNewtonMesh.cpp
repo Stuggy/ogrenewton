@@ -41,7 +41,7 @@ OgreNewtonMesh::~OgreNewtonMesh()
 {
 }
 
-ManualObject* OgreNewtonMesh::CreateEntiry (const String& name) const
+ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 {
 	ManualObject* const object = new ManualObject(name);
 
