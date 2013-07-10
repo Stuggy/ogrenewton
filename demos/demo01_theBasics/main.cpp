@@ -117,18 +117,23 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		Real collisionPenetration = 1.0f / 256.0f;
 
-		// make a box collision
+		// make a box collision shape
 		dNewtonCollisionBox boxShape (m_physicsWorld, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, 0);
+		
+		// create a texture for using with this material
+		Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("crate.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
 
 		// make a material to use with this mesh
-		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("jengaMaterial", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("jengaMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
 		renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
+		renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("crate.tga");
 		renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
 
 		// create a visual for visual representation
 		OgreNewtonMesh boxMesh (&boxShape);
 		boxMesh.Triangulate();
 		int materialId = boxMesh.AddMaterial(renderMaterial);
+		boxMesh.ApplyBoxMapping (materialId, materialId, materialId);
 
 		// create a manual object for rendering 
 		ManualObject* const object = boxMesh.CreateEntity(MakeName ("jengaBox"));
