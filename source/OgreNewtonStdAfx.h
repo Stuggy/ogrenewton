@@ -23,7 +23,10 @@
 #define _OGRE_NEWTON_STDAFX_H_
 
 #ifdef _MSC_VER
-	#pragma warning (disable: 4193)//: #pragma warning(pop) : no matching '#pragma warning(push)'
+	// I wish the opgre team resulve these warnings.
+	// ogre is full or warning that we need to disable if we want a clean build
+	#pragma warning (disable: 4244) //'+=' : conversion from 'double' to 'Ogre::Real', possible loss of data
+	#pragma warning (disable: 4193) //: #pragma warning(pop) : no matching '#pragma warning(push)'
 	#pragma warning (disable: 4127) // conditional expression is constant
 	#pragma warning (disable: 4512) //'OIS::MouseEvent' : assignment operator could not be generated
 	#pragma warning (disable: 4100) // 'code' : unreferenced formal parameter
