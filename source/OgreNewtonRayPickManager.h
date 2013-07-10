@@ -27,7 +27,7 @@
 
 using namespace Ogre;
 
-#define OGRE_RAY_PEEKER_PLUGIN_NAME		"raypeekeranager"
+#define OGRE_RAY_PICKER_PLUGIN_NAME		"rayPickManager"
 
 
 class OgreNewtonBody;

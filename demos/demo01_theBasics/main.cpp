@@ -125,7 +125,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		boxMesh.Triangulate();
 
 		// create a manual object for rendering 
-		ManualObject* const object = boxMesh.CreateEntiry(MakeName ("jengaBox"));
+		ManualObject* const object = boxMesh.CreateEntity(MakeName ("jengaBox"));
 		MeshPtr mesh (object->convertToMesh (MakeName ("jengaBox")));
 
 

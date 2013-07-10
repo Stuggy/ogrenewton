@@ -36,7 +36,7 @@ class OgreNewtonMesh: public dNewtonMesh
 	OgreNewtonMesh (const dNewtonCollision* const collision);
 	virtual ~OgreNewtonMesh();
 
-	ManualObject* CreateEntiry (const String& name) const;
+	ManualObject* CreateEntity (const String& name) const;
 
 	
 };
