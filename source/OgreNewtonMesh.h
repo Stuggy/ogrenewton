@@ -32,13 +32,26 @@ class OgreNewtonWorld;
 class OgreNewtonMesh: public dNewtonMesh
 {
 	public:
+	class MaterialMap: public std::map<int, Ogre::MaterialPtr> 
+	{
+		public:
+		MaterialMap()
+			  :std::map<int, Ogre::MaterialPtr> ()
+			  ,m_enumerator (0)
+		{
+		}
+		int m_enumerator;
+	};
+
 	OgreNewtonMesh (dNewton* const world);
 	OgreNewtonMesh (const dNewtonCollision* const collision);
 	virtual ~OgreNewtonMesh();
 
+	int AddMaterial (const Ogre::MaterialPtr& material);
+
 	ManualObject* CreateEntity (const String& name) const;
 
-	
+	MaterialMap m_materialMap;	
 };
 
 

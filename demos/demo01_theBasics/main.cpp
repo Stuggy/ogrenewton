@@ -120,14 +120,19 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// make a box collision
 		dNewtonCollisionBox boxShape (m_physicsWorld, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, 0);
 
+		// make a material to use with this mesh
+		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("jengaMaterial", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+		renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
+		renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
+
 		// create a visual for visual representation
 		OgreNewtonMesh boxMesh (&boxShape);
 		boxMesh.Triangulate();
+		int materialId = boxMesh.AddMaterial(renderMaterial);
 
 		// create a manual object for rendering 
 		ManualObject* const object = boxMesh.CreateEntity(MakeName ("jengaBox"));
 		MeshPtr mesh (object->convertToMesh (MakeName ("jengaBox")));
-
 
 		for (int i = 0; i < high; i ++) { 
 			Matrix4 matrix(baseMatrix);

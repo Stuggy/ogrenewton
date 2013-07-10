@@ -27,6 +27,7 @@
 
 OgreNewtonMesh::OgreNewtonMesh (dNewton* const world)
 	:dNewtonMesh (world)
+	,m_materialMap()
 {
 }
 
@@ -40,6 +41,14 @@ OgreNewtonMesh::OgreNewtonMesh (const dNewtonCollision* const collision)
 OgreNewtonMesh::~OgreNewtonMesh()
 {
 }
+
+int OgreNewtonMesh::AddMaterial (const Ogre::MaterialPtr& material)
+{
+	m_materialMap.insert(std::make_pair (m_materialMap.m_enumerator, material));
+	m_materialMap.m_enumerator ++;
+	return m_materialMap.m_enumerator - 1;
+}
+
 
 ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 {
@@ -55,15 +64,19 @@ ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 	dNewtonMesh::dUV* const uv0 = new dNewtonMesh::dUV[pointCount];
 	dNewtonMesh::dUV* const uv1 = new dNewtonMesh::dUV[pointCount];
 	
-	GetVectexStreams(posits, normals, uv0, uv1);
+	GetVertexStreams(posits, normals, uv0, uv1);
 
 	void* const materialsHandle = BeginMaterialHandle (); 
 	for (int handle = GetMaterialIndex (materialsHandle); handle != -1; handle = GetNextMaterialIndex (materialsHandle, handle)) {
-		//int materialIndex = MaterialGetMaterial (materialsHandle, handle); 
+		int materialIndex = MaterialGetMaterial (materialsHandle, handle); 
 		int indexCount = MaterialGetIndexCount (materialsHandle, handle); 
 		MaterialGetIndexStream (materialsHandle, handle, indexList); 
 
-		object->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+		MaterialMap::const_iterator materialItr = m_materialMap.find(materialIndex);
+
+		//object->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+		object->begin(materialItr->second->getName(), Ogre::RenderOperation::OT_TRIANGLE_LIST);
+		
 		// ogre does not support shared vertex for sub mesh, we will have remap the vertex data
 		int vertexCount = 0;
 		memset (remapIndex, 0xff, indexCount * sizeof (remapIndex[0]));
