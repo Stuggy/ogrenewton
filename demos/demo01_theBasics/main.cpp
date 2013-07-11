@@ -31,6 +31,10 @@
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
+
+#include "Utils.h"
+#include "BuildJenga.h"
+#include "BuildPyramid.h"
 #include "DemoApplication.h"
 
 
@@ -74,163 +78,13 @@ class OgreNewtonDemoApplication: public DemoApplication
 		sceneBody->EndAddRemoveCollision();
 	}
 
-
-	String MakeName (const char* const name) const 
-	{
-		static int enumeration = 0;
-		char text[256];
-		sprintf (text, "%s_%d", name, enumeration);
-		enumeration ++;
-		return String (text);
-	}
-
-	SceneNode* CreateNode (Entity* const entity, const Vector3& position, const Quaternion& orientation)
-	{
-		SceneNode* const node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-		node->attachObject(entity);
-		node->setScale(Vector3 (1.0f, 1.0f, 1.0f));
-		node->setPosition(position);
-		node->setOrientation(orientation);
-		return node;
-	}
-
-	void BuildPyramid(const Vector3& location, Real mass, int base, int high)
-	{
-		// please do not ask why, I just like golden ratios dimensions, 
-		// I think they look more preans than squre boxs.
-		Vector3 blockBoxSize (1.62f/2.0f, 0.25f, 0.5f);
-
-		// find the floor position
-		Vector3 start(location + Vector3 (0.0f, 10.0f, 0.0f));
-		Vector3 end (start - Vector3 (0.0f, 20.0f, 0.0f));
-		OgreNewtonRayCast raycaster(m_physicsWorld); 
-		raycaster.CastRay (&start.x, &end.x);
-		Vector3 position (raycaster.m_contact + Vector3 (0.0f, blockBoxSize.y * 0.5f, 0.0f));
-
-		// build the visual mesh out of a collsion box
-			// make a box collision shape
-			dNewtonCollisionBox boxShape (m_physicsWorld, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, 0);
-			
-			// create a texture for using with this material
-			Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("crate.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-
-			// make a material to use with this mesh
-			MaterialPtr renderMaterial = MaterialManager::getSingleton().create("pyramidMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-			renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
-			renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("crate.tga");
-			renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
-
-			// create a visual for visual representation
-			OgreNewtonMesh boxMesh (&boxShape);
-			boxMesh.Triangulate();
-			int materialId = boxMesh.AddMaterial(renderMaterial);
-			boxMesh.ApplyBoxMapping (materialId, materialId, materialId);
-
-			// create a manual object for rendering 
-			ManualObject* const object = boxMesh.CreateEntity(MakeName ("jengaBox"));
-			MeshPtr mesh (object->convertToMesh (MakeName ("jengaBox")));
-
-
-		// get the initial matrix
-		Matrix4 matrix (Matrix4::IDENTITY);
-		matrix.setTrans (position);
-
-		float y0 = matrix.getTrans().x + blockBoxSize.y / 2.0f;
-		float x0 = matrix.getTrans().x - (blockBoxSize.x + 0.01f) * base / 2;
-
-		Real collisionPenetration = 1.0f / 256.0f;
-
-		matrix.setTrans(matrix.getTrans() + Vector3 (0.0f, y0, 0.0f));
-		for (int j = 0; j < high; j ++) {
-			matrix[0][3] = x0;
-			for (int i = 0; i < (base - j) ; i ++) {
-				Entity* const ent = mSceneMgr->createEntity(MakeName ("pyramidBox"), mesh);
-				SceneNode* const node = CreateNode (ent, matrix.getTrans(), matrix.extractQuaternion());
-				new OgreNewtonBody (m_physicsWorld, mass, &boxShape, node, matrix);
-				matrix[0][3] += blockBoxSize.x;
-			}
-			x0 += (blockBoxSize.x + 0.01f) * 0.5f;
-			matrix[1][3] += (blockBoxSize.y - collisionPenetration);
-		}
-
-		delete object;
-	}
-
-	void BuildJenga(const Vector3& location, int high)
-	{
-		Vector3 blockBoxSize (0.4f, 0.2f, 0.4f * 3.0f);
-
-		// find the floor position
-		Vector3 start(location + Vector3 (0.0f, 10.0f, 0.0f));
-		Vector3 end (start - Vector3 (0.0f, 20.0f, 0.0f));
-		OgreNewtonRayCast raycaster(m_physicsWorld); 
-		raycaster.CastRay (&start.x, &end.x);
-		Vector3 position (raycaster.m_contact + Vector3 (0.0f, blockBoxSize.y * 0.5f, 0.0f));
-
-		Matrix4 baseMatrix (Matrix4::IDENTITY);
-		baseMatrix.setTrans (position);
-
-		// set realistic mass and inertia matrix for each block
-		Real mass = 5.0f;
-
-		// create a 90 degree rotation matrix
-		Matrix4 rotMatrix (Quaternion (Degree(90.0f), Vector3 (0.0f, 1.0f, 0.0f)));
-
-		Real collisionPenetration = 1.0f / 256.0f;
-
-		// make a box collision shape
-		dNewtonCollisionBox boxShape (m_physicsWorld, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, 0);
-		
-		// create a texture for using with this material
-		Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("crate.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-
-		// make a material to use with this mesh
-		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("jengaMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-		renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
-		renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("crate.tga");
-		renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
-
-		// create a visual for visual representation
-		OgreNewtonMesh boxMesh (&boxShape);
-		boxMesh.Triangulate();
-		int materialId = boxMesh.AddMaterial(renderMaterial);
-		boxMesh.ApplyBoxMapping (materialId, materialId, materialId);
-
-		// create a manual object for rendering 
-		ManualObject* const object = boxMesh.CreateEntity(MakeName ("jengaBox"));
-		MeshPtr mesh (object->convertToMesh (MakeName ("jengaBox")));
-
-		for (int i = 0; i < high; i ++) { 
-			Matrix4 matrix(baseMatrix);
-			Vector3 step_x (matrix[0][0], matrix[0][1], matrix[0][2]); 
-
-			step_x = step_x * blockBoxSize.x;
-			matrix.setTrans (matrix.getTrans() - step_x);
-
-			for (int j = 0; j < 3; j ++) { 
-				Entity* const ent = mSceneMgr->createEntity(MakeName ("jengaBox"), mesh);
-				SceneNode* const node = CreateNode (ent, matrix.getTrans(), matrix.extractQuaternion());
-				new OgreNewtonBody (m_physicsWorld, mass, &boxShape, node, matrix);
-				matrix.setTrans (matrix.getTrans() + step_x);
-			}
-
-			baseMatrix = baseMatrix * rotMatrix;			
-			Vector3 step_y (matrix[1][0], matrix[1][1], matrix[1][2]); 
-			step_y = step_y * (blockBoxSize.y - collisionPenetration);
-			baseMatrix.setTrans (baseMatrix.getTrans() + step_y);
-		}
-		delete object;
-	}	
-
-
 	void LoadDynamicScene(const Vector3& origin)
 	{
-		BuildJenga (origin + Vector3(-10.0f, 0.0f, -20.0f) , 40);
-		BuildJenga (origin + Vector3( 10.0f, 0.0f, -20.0f) , 40);
-		BuildJenga (origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
-		BuildJenga (origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
-
-		BuildPyramid (Vector3(0.0f, 0.0f, -60.0f), 10.0f, 50, 20);
+		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -20.0f) , 40);
+//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -20.0f) , 40);
+//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
+//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
+		BuildPyramid (mSceneMgr, m_physicsWorld, Vector3(0.0f, 0.0f, -60.0f), 10.0f, 50, 20);
 	}
 
 

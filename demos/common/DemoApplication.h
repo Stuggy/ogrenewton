@@ -80,6 +80,10 @@ class DemoApplication: public OgreNewtonExampleApplication, public OIS::KeyListe
 	DemoApplication	();
 	virtual ~DemoApplication(void);
 
+	virtual void OnPhysicUpdateBegin(dFloat timestepInSecunds);
+	virtual void OnPhysicUpdateEnd(dFloat timestepInSecunds);
+
+
 	virtual bool OnRenderUpdateBegin(dFloat updateParam);
 	virtual bool OnRenderUpdateEnd(dFloat updateParam);
 
