@@ -63,10 +63,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// start adding collision shape to the scene body
 		sceneBody->BeginAddRemoveCollision();
 
-		// floor object!
-		Entity* const floor = mSceneMgr->createEntity("Floor", "flatplane.mesh" );		
-		//Entity* const floor = mSceneMgr->createEntity("Floor", "playground.mesh" );
-		//Entity* const floor = mSceneMgr->createEntity("Floor", "castle.mesh" );
+		// floor object
+		Entity* const floor = mSceneMgr->createEntity(MakeName("Floor"), "flatplane.mesh" );		
+		//Entity* const floor = mSceneMgr->createEntity(MakeName("Floor"), "playground.mesh" );
 
 		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
 		floorNode->attachObject( floor );
