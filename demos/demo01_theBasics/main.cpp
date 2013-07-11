@@ -46,6 +46,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
+		,m_shootingTimer(0.25f)
 	{
 	}
 
@@ -95,6 +96,64 @@ class OgreNewtonDemoApplication: public DemoApplication
 //		mRoot->addFrameListener(m_listener);
 	}
 
+	void CreateComponentsForShutting()
+	{
+		// create a texture for using with this material
+		Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("smilli.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
+		// make a material to use with this mesh
+		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("shootingMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+		renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
+		renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("smilli.tga");
+		renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
+
+		{
+			// make sphere;
+			m_shootingCollisions[0] = new dNewtonCollisionSphere (m_physicsWorld, 0.25f, 0);
+
+			OgreNewtonMesh mesh (m_shootingCollisions[0]);
+			mesh.Triangulate();
+			int materialId = mesh.AddMaterial(renderMaterial);
+			mesh.ApplySphericalMapping (materialId);
+		
+			ManualObject* const object = mesh.CreateEntity(MakeName ("shootMesh"));
+			m_shootingMesh[0] = object->convertToMesh (MakeName ("shootMesh"));
+			delete object;
+		}
+	}
+
+	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
+	{
+		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
+
+		m_shootingTimer -= timestepInSecunds;
+		if ((m_shootingTimer < 0.0f) && m_keyboard->isKeyDown(OIS::KC_SPACE)) {
+			m_shootingTimer = 0.1f;
+
+			Vector3 cameraPosit;
+			Quaternion cameraRotation;
+			GetInterpolatedCameraMatrix (cameraPosit, cameraRotation);
+
+			int index = 0;
+
+			Entity* const ent = mSceneMgr->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
+			SceneNode* const node = CreateNode (mSceneMgr, ent, cameraPosit, cameraRotation);
+			Matrix4 matrix;
+			matrix.makeTransform (cameraPosit, Vector3(1.0f, 1.0f, 1.0f), cameraRotation);
+			OgreNewtonBody* const body = new OgreNewtonBody (m_physicsWorld, 10.0f, m_shootingCollisions[index], node, matrix);
+			body->SetVeloc(Vector3 (0.0f, 0.0f, 10.0f));
+
+		}
+			
+	}
+
+	virtual void destroyScene()
+	{
+		for (int i = 0; i < int (sizeof (m_shootingCollisions) / sizeof (m_shootingCollisions[0])); i ++) {
+			delete m_shootingCollisions[i];
+		}
+	}
+
 	void createScene()
 	{
 		// create the physic world first
@@ -133,9 +192,17 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
 
+		// create shutting components
+		CreateComponentsForShutting();
+
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 	}
+
+	Real m_shootingTimer;
+	MeshPtr m_shootingMesh[1];
+	dNewtonCollision* m_shootingCollisions[1];
+	
 };
 
 
