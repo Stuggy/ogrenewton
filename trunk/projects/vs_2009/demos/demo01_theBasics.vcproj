@@ -204,6 +204,22 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\demos\common\BuildJenga.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\BuildJenga.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\BuildPyramid.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\BuildPyramid.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\demos\common\DemoApplication.cpp"
 			>
 		</File>
@@ -229,6 +245,14 @@
 		</File>
 		<File
 			RelativePath="..\..\..\demos\common\ScreenWriter.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\Utils.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\Utils.h"
 			>
 		</File>
 	</Files>

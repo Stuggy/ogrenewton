@@ -53,13 +53,13 @@ class OgreNewtonExampleApplication: public OgreNewtonApplication
 	protected:
 	OgreNewtonDebugger* m_debugRender;
 
-	unsigned m_cameraLock;
-	Radian m_yawStep;
-	Radian m_pitchStep;
+//	unsigned m_cameraLock;
+//	Radian m_yawStep;
+//	Radian m_pitchStep;
 	Radian m_yawAngle;
 	Radian m_pitchAngle;
 	Vector3 m_translation;
-	Vector3 m_translationStep;
+//	Vector3 m_translationStep;
 	Vector3 m_interpolatedCameraPosition;
 	Quaternion m_interpolatedCameraRotation;
 	dNewtonTransformLerp m_cameraTransform;

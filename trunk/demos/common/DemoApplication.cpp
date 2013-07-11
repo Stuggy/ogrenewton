@@ -141,7 +141,53 @@ void DemoApplication::windowClosed(RenderWindow* rw)
 	m_shutDwoun = true;
 }
 
+// this is called at rendering time
+bool DemoApplication::OnRenderUpdateBegin(dFloat updateParam)
+{
+	// set the camera matrix for rendering time
+	OgreNewtonExampleApplication::OnRenderUpdateBegin(updateParam);
 
+	Vector3 cameraPosit;
+	Quaternion cameraRotation;
+	GetInterpolatedCameraMatrix(cameraPosit, cameraRotation);
+	mCamera->setPosition(cameraPosit);
+	mCamera->setOrientation(cameraRotation);
+
+	// update visual debug 
+	m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
+
+	// check for termination
+	if (m_shutDwoun || m_keyboard->isKeyDown(OIS::KC_ESCAPE))
+		return false;
+
+	return true;
+}
+
+// this is called at rendering time
+bool DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
+{
+	const RenderTarget::FrameStats& stats = mWindow->getStatistics();
+
+	OgreNewtonWorld* const physics = GetPhysics();
+	m_screen->write(20, 20, "FPS: %05.3f", stats.lastFPS);
+	m_screen->write(20, 36, "Physics time: %05.3f ms", float (double (physics->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
+	m_screen->write(20, 52, "Number of rigid bodies: %d", physics->GetBodyCount());
+	if (m_onScreeHelp.m_state) {
+		m_screen->write(20,  68, "F1: Hide debug help text");
+		m_screen->write(20,  84, "F3: toggle display physic debug");
+		m_screen->write(20, 100, "W, S, A, D: Free camera navigation");
+		m_screen->write(20, 116, "Hold CTRL and Left Mouse Key: show mouse cursor and pick");
+		m_screen->write(20, 132, "ESC: Exit application");
+
+	} else if (m_onScreeHelp.TriggerDown()){
+		m_screen->removeAll();
+	}
+	m_screen->update();
+	return true;
+}
+
+
+// this is called at simulation time
 void DemoApplication::UpdateMousePick ()
 {
 	const OIS::MouseState& mouseState = m_mouse->getMouseState();
@@ -177,6 +223,7 @@ void DemoApplication::UpdateMousePick ()
 	m_mousePickMemory = mouseKey1;
 }
 
+// this is called at simulation time
 void DemoApplication::UpdateFreeCamera ()
 {
 	OgreNewtonWorld* const physics = GetPhysics();
@@ -185,7 +232,7 @@ void DemoApplication::UpdateFreeCamera ()
 	if(m_keyboard->isKeyDown(OIS::KC_LSHIFT)) {
 		moveScale *= 2.0f;
 	}
-	
+
 	Real strafe = 0.0f;
 	Real translation = 0.0f;
 	Radian pitch (0.0f);
@@ -211,7 +258,7 @@ void DemoApplication::UpdateFreeCamera ()
 	if (!(m_keyboard->isKeyDown(OIS::KC_LCONTROL) || m_keyboard->isKeyDown(OIS::KC_RCONTROL))) {
 		const OIS::MouseState& mouseState = m_mouse->getMouseState();
 		//dTrace (("%d\n", mouseState.X.rel))
-		
+
 		if (mouseState.X.rel > 2) {
 			yaw = Radian (-CAMERA_YAW_SPEED);
 		} else if (mouseState.X.rel < -2) {
@@ -225,21 +272,14 @@ void DemoApplication::UpdateFreeCamera ()
 		}
 	}
 
-	// queue a camera at simulation time
+	// move camera according to user input
 	MoveCamera (translation, strafe, pitch, yaw);
-
-	// set the camera matrix for rendering time
-	Vector3 cameraPosit;
-	Quaternion cameraRotation;
-	GetInterpolatedCameraMatrix(cameraPosit, cameraRotation);
-	mCamera->setPosition(cameraPosit);
-	mCamera->setOrientation(cameraRotation);
 }
 
-
-bool DemoApplication::OnRenderUpdateBegin(dFloat updateParam)
+// this is called at simulation time
+void DemoApplication::OnPhysicUpdateBegin(dFloat timestepInSecunds)
 {
-	OgreNewtonExampleApplication::OnRenderUpdateBegin(updateParam);
+	OgreNewtonExampleApplication::OnPhysicUpdateBegin(timestepInSecunds);
 
 	// get the inputs
 	m_mouse->capture();
@@ -253,34 +293,10 @@ bool DemoApplication::OnRenderUpdateBegin(dFloat updateParam)
 	// see if we have a object on the pick queue
 	UpdateMousePick ();
 	UpdateFreeCamera ();
-
-	m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
-
-	// check for termination
-	if (m_shutDwoun || m_keyboard->isKeyDown(OIS::KC_ESCAPE))
-		return false;
-
-	return true;
 }
 
-bool DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
+// this is calle at simulation time
+void DemoApplication::OnPhysicUpdateEnd(dFloat timestepInSecunds)
 {
-	const RenderTarget::FrameStats& stats = mWindow->getStatistics();
-
-	OgreNewtonWorld* const physics = GetPhysics();
-	m_screen->write(20, 20, "FPS: %05.3f", stats.lastFPS);
-	m_screen->write(20, 36, "Physics time: %05.3f ms", float (double (physics->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
-	m_screen->write(20, 52, "Number of rigid bodies: %d", physics->GetBodyCount());
-	if (m_onScreeHelp.m_state) {
-		m_screen->write(20,  68, "F1: Hide debug help text");
-		m_screen->write(20,  84, "F3: toggle display physic debug");
-		m_screen->write(20, 100, "W, S, A, D: Free camera navigation");
-		m_screen->write(20, 116, "Hold CTRL and Left Mouse Key: show mouse cursor and pick");
-		m_screen->write(20, 132, "ESC: Exit application");
-
-	} else if (m_onScreeHelp.TriggerDown()){
-		m_screen->removeAll();
-	}
-	m_screen->update();
-	return true;
+	OgreNewtonExampleApplication::OnPhysicUpdateEnd(timestepInSecunds);
 }
