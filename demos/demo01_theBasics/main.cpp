@@ -107,6 +107,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("smilli.tga");
 		renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
 
+		
 		{
 			// make sphere;
 			m_shootingCollisions[0] = new dNewtonCollisionSphere (m_physicsWorld, 0.25f, 0);
@@ -120,6 +121,22 @@ class OgreNewtonDemoApplication: public DemoApplication
 			m_shootingMesh[0] = object->convertToMesh (MakeName ("shootMesh"));
 			delete object;
 		}
+
+		{
+			// make capsule;
+			m_shootingCollisions[1] = new dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 1.0f, 0);
+
+			OgreNewtonMesh mesh (m_shootingCollisions[1]);
+			mesh.Triangulate();
+			int materialId = mesh.AddMaterial(renderMaterial);
+			//mesh.ApplySphericalMapping (materialId);
+			mesh.ApplyCylindricalMapping (materialId, materialId);
+
+			ManualObject* const object = mesh.CreateEntity(MakeName ("shootMesh"));
+			m_shootingMesh[1] = object->convertToMesh (MakeName ("shootMesh"));
+			delete object;
+		}
+
 	}
 
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
@@ -134,15 +151,17 @@ class OgreNewtonDemoApplication: public DemoApplication
 			Quaternion cameraRotation;
 			GetInterpolatedCameraMatrix (cameraPosit, cameraRotation);
 
-			int index = 0;
+			int index = (rand() >> 3) % int (sizeof (m_shootingMesh) / sizeof (m_shootingMesh[0]));
 
-			Entity* const ent = mSceneMgr->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
+   		 	Entity* const ent = mSceneMgr->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
 			SceneNode* const node = CreateNode (mSceneMgr, ent, cameraPosit, cameraRotation);
 			Matrix4 matrix;
 			matrix.makeTransform (cameraPosit, Vector3(1.0f, 1.0f, 1.0f), cameraRotation);
-			OgreNewtonBody* const body = new OgreNewtonBody (m_physicsWorld, 10.0f, m_shootingCollisions[index], node, matrix);
-			body->SetVeloc(Vector3 (0.0f, 0.0f, 10.0f));
+			OgreNewtonBody* const body = new OgreNewtonBody (m_physicsWorld, 30.0f, m_shootingCollisions[index], node, matrix);
 
+			const Real speed = -40.0f;
+			Vector3 veloc (Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * speed);   
+			body->SetVeloc(veloc);
 		}
 			
 	}
@@ -200,8 +219,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 	}
 
 	Real m_shootingTimer;
-	MeshPtr m_shootingMesh[1];
-	dNewtonCollision* m_shootingCollisions[1];
+	MeshPtr m_shootingMesh[2];
+	dNewtonCollision* m_shootingCollisions[2];
 	
 };
 
