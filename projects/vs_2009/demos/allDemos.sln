@@ -8,6 +8,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo01_theBasics", "demo01_
 		{4E75F9E3-764D-4162-870D-A923CB5C7DEC} = {4E75F9E3-764D-4162-870D-A923CB5C7DEC}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo02_levelMesh", "demo02_levelMesh.vcproj", "{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC} = {4E75F9E3-764D-4162-870D-A923CB5C7DEC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +27,10 @@ Global
 		{D1A464A2-D479-458C-98A2-60965D823CD1}.Debug|Win32.Build.0 = Debug|Win32
 		{D1A464A2-D479-458C-98A2-60965D823CD1}.Release|Win32.ActiveCfg = Release|Win32
 		{D1A464A2-D479-458C-98A2-60965D823CD1}.Release|Win32.Build.0 = Release|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.Debug|Win32.Build.0 = Debug|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.Release|Win32.ActiveCfg = Release|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
