@@ -53,7 +53,7 @@ class OgreNewtonSceneBody::OgreNewtonCollisionTree: public dNewtonCollisionMesh
 	{
 	}
 
-	void ParseNode(Ogre::SceneNode* const node,	const Quaternion &curOrient, const Vector3 &curPos, const Vector3 &curScale, FaceWinding fw)
+	void ParseNode(SceneNode* const node,	const Quaternion &curOrient, const Vector3 &curPos, const Vector3 &curScale, FaceWinding fw)
 	{
 		// parse this scene node.
 		// do children first.

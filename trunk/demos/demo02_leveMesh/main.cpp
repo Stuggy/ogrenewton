@@ -64,9 +64,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 		sceneBody->BeginAddRemoveCollision();
 
 		// floor object!
-		Entity* const floor = mSceneMgr->createEntity("Floor", "flatplane.mesh" );		
-		//Entity* const floor = mSceneMgr->createEntity("Floor", "playground.mesh" );
-		//Entity* const floor = mSceneMgr->createEntity("Floor", "castle.mesh" );
+		Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
+		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "playground.mesh" );
+		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
 
 		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
 		floorNode->attachObject( floor );
@@ -81,11 +81,11 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
-		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -20.0f) , 40);
+//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -20.0f) , 40);
 //		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -20.0f) , 40);
 //		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
 //		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
-		BuildPyramid (mSceneMgr, m_physicsWorld, Vector3(0.0f, 0.0f, -60.0f), 10.0f, 50, 20);
+//		BuildPyramid (mSceneMgr, m_physicsWorld, Vector3(0.0f, 0.0f, -60.0f), 10.0f, 50, 20);
 	}
 
 

@@ -47,6 +47,8 @@ class OgreNewtonMesh: public dNewtonMesh
 	OgreNewtonMesh (const dNewtonCollision* const collision);
 	virtual ~OgreNewtonMesh();
 
+	void BuildFromSceneNode(SceneNode* const sceneNode);
+
 	int AddMaterial (const Ogre::MaterialPtr& material);
 
 	ManualObject* CreateEntity (const String& name) const;

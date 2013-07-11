@@ -35,7 +35,6 @@ OgreNewtonMesh::OgreNewtonMesh (dNewton* const world)
 OgreNewtonMesh::OgreNewtonMesh (const dNewtonCollision* const collision)
 	:dNewtonMesh (*collision)
 {
-
 }
 
 OgreNewtonMesh::~OgreNewtonMesh()
@@ -108,4 +107,12 @@ ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 	delete[] normals;
 	delete[] posits;
 	return object;
+}
+
+void OgreNewtonMesh::BuildFromSceneNode(SceneNode* const sceneNode)
+{
+	BeginPolygon();
+
+//	AddFace (int vertexCount, const dFloat* const vertex, int strideInBytes, int materialIndex);
+	EndPolygon();
 }
