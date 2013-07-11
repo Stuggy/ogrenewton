@@ -21,9 +21,12 @@
 
 
 #include "OgreNewtonStdAfx.h"
+#include "OgreNewtonMesh.h"
 #include "OgreNewtonWorld.h"
+
 #include "OgreNewtonSceneBody.h"
 
+/*
 class OgreNewtonSceneBody::OgreNewtonCollisionTree: public dNewtonCollisionMesh
 {
 	public:
@@ -198,7 +201,7 @@ class OgreNewtonSceneBody::OgreNewtonCollisionTree: public dNewtonCollisionMesh
 	}
 };
 
-
+*/
 
 
 OgreNewtonSceneBody::OgreNewtonSceneBody (OgreNewtonWorld* const ogreWorld)
@@ -244,15 +247,23 @@ void OgreNewtonSceneBody::EndAddRemoveCollision()
 }
 
 
-void* OgreNewtonSceneBody::AddCollisionTree (SceneNode* const treeNode, FaceWinding faceWind)
+void* OgreNewtonSceneBody::AddCollisionTree (SceneNode* const treeNode)
 {
 	OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 
-	// create a collision tree mesh
-	OgreNewtonCollisionTree meshCollision (world, treeNode);
+	// convert the nod and all it chidre to a newton mesh
+	OgreNewtonMesh mesh (world);
+	mesh.BuildFromSceneNode (treeNode);
 
+	// create a collision tree mesh
+	dNewtonCollisionMesh collision (world, mesh, 0);
+		
+
+//	OgreNewtonCollisionTree meshCollision (world, treeNode);
+dAssert (0);
 	// add this collision to the scene body
-	return AddCollision (&meshCollision);
+//	return AddCollision (&meshCollision);
+return NULL;
 }
 
 
