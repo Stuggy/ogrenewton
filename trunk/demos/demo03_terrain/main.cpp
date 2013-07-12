@@ -78,7 +78,7 @@ floor->setCastShadows( false );
 sceneBody->AddCollisionTree (floorNode);
 }
 
-/*
+
 		// floor object!
 		m_terrainGlobals = OGRE_NEW TerrainGlobalOptions();
 		m_terrainGroup = OGRE_NEW TerrainGroup(mSceneMgr, Terrain::ALIGN_X_Z, 513, 12000.0f);
@@ -87,7 +87,8 @@ sceneBody->AddCollisionTree (floorNode);
 		m_terrainGroup->setFilenameConvention(String("testTerrain"), String("dat"));
 		m_terrainGroup->setOrigin(Vector3::ZERO);
 
-		//configureTerrainDefaults(light);
+		configureTerrainDefaults();
+
 		for (long x = 0; x < 1; x++) {
 			for (long y = 0; y < 1; y ++) {
 				String filename (m_terrainGroup->generateFilename(x, y));
@@ -121,12 +122,44 @@ sceneBody->AddCollisionTree (floorNode);
 		}
 
 		m_terrainGroup->freeTemporaryResources();
-*/
+
 
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
 	}
 
+
+	void configureTerrainDefaults ()
+	{
+		// Configure global
+		m_terrainGlobals->setMaxPixelError(8);
+		// testing composite map
+		m_terrainGlobals->setCompositeMapDistance(3000);
+
+		// Important to set these so that the terrain knows what to use for derived (non-realtime) data
+		m_terrainGlobals->setLightMapDirection(m_light0->getDerivedDirection());
+		m_terrainGlobals->setCompositeMapAmbient(mSceneMgr->getAmbientLight());
+		m_terrainGlobals->setCompositeMapDiffuse(m_light0->getDiffuseColour());
+
+		// Configure default import settings for if we use imported image
+		Ogre::Terrain::ImportData& defaultimp = m_terrainGroup->getDefaultImportSettings();
+		defaultimp.terrainSize = 513;
+		defaultimp.worldSize = 12000.0f;
+		defaultimp.inputScale = 600;
+		defaultimp.minBatchSize = 33;
+		defaultimp.maxBatchSize = 65;
+		// textures
+		defaultimp.layerList.resize(3);
+		defaultimp.layerList[0].worldSize = 100;
+		defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_diffusespecular.dds");
+		defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_normalheight.dds");
+		defaultimp.layerList[1].worldSize = 30;
+		defaultimp.layerList[1].textureNames.push_back("grass_green-01_diffusespecular.dds");
+		defaultimp.layerList[1].textureNames.push_back("grass_green-01_normalheight.dds");
+		defaultimp.layerList[2].worldSize = 200;
+		defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
+		defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
+	}
 
 
 	void initBlendMaps(Terrain* const terrain)
@@ -214,14 +247,14 @@ sceneBody->AddCollisionTree (floorNode);
 		DemoApplication::createScene();
 
 		//make a light
-		Light* const light0 = mSceneMgr->createLight( "Light0" );
-		Light* const light3 = mSceneMgr->createLight( "Light3" );
+		m_light0 = mSceneMgr->createLight( "Light0" );
+		m_light1 = mSceneMgr->createLight( "Light3" );
 
-		light0->setType (Light::LT_POINT );
-		light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
+		m_light0->setType (Light::LT_POINT );
+		m_light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
 
-		light3->setType (Light::LT_POINT );
-		light3->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
+		m_light1->setType (Light::LT_POINT );
+		m_light1->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
 
 		// sky box.
 		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
@@ -257,6 +290,8 @@ sceneBody->AddCollisionTree (floorNode);
 	MeshPtr m_shootingMesh[2];
 	dNewtonCollision* m_shootingCollisions[2];
 
+	Light* m_light0;
+	Light* m_light1;
 	TerrainGroup* m_terrainGroup;
 	TerrainGlobalOptions* m_terrainGlobals;
 	bool m_terrainsImported;
