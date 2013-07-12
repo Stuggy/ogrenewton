@@ -259,7 +259,6 @@ void* OgreNewtonSceneBody::AddCollisionTree (SceneNode* const treeNode)
 	// create a collision tree mesh
 	dNewtonCollisionMesh meshCollision (world, mesh, 0);
 
-//	OgreNewtonCollisionTree meshCollision (world, treeNode);
 	// add this collision to the scene body
 	return AddCollision (&meshCollision);
 }
