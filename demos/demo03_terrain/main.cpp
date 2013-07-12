@@ -81,11 +81,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -20.0f) , 40);
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -20.0f) , 40);
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
-//		BuildPyramid (mSceneMgr, m_physicsWorld, Vector3(0.0f, 0.0f, -60.0f), 10.0f, 50, 20);
 	}
 
 
@@ -94,49 +89,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
 //		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
 //		mRoot->addFrameListener(m_listener);
-	}
-
-	void CreateComponentsForShutting()
-	{
-		// create a texture for using with this material
-		Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("smilli.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-
-		// make a material to use with this mesh
-		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("shootingMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-		renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
-		renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("smilli.tga");
-		renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
-
-		
-		{
-			// make sphere;
-			m_shootingCollisions[0] = new dNewtonCollisionSphere (m_physicsWorld, 0.25f, 0);
-
-			OgreNewtonMesh mesh (m_shootingCollisions[0]);
-			mesh.Triangulate();
-			int materialId = mesh.AddMaterial(renderMaterial);
-			mesh.ApplySphericalMapping (materialId);
-		
-			ManualObject* const object = mesh.CreateEntity(MakeName ("shootMesh"));
-			m_shootingMesh[0] = object->convertToMesh (MakeName ("shootMesh"));
-			delete object;
-		}
-
-		{
-			// make capsule;
-			m_shootingCollisions[1] = new dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 1.0f, 0);
-
-			OgreNewtonMesh mesh (m_shootingCollisions[1]);
-			mesh.Triangulate();
-			int materialId = mesh.AddMaterial(renderMaterial);
-			//mesh.ApplySphericalMapping (materialId);
-			mesh.ApplyCylindricalMapping (materialId, materialId);
-
-			ManualObject* const object = mesh.CreateEntity(MakeName ("shootMesh"));
-			m_shootingMesh[1] = object->convertToMesh (MakeName ("shootMesh"));
-			delete object;
-		}
-
 	}
 
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
@@ -212,7 +164,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		LoadDynamicScene(origin);
 
 		// create shutting components
-		CreateComponentsForShutting();
+		CreateComponentsForShutting(sizeof (m_shootingCollisions)/sizeof (m_shootingCollisions[0]), m_physicsWorld, m_shootingCollisions, m_shootingMesh);
 
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
