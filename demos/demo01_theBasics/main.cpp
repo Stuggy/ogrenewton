@@ -128,7 +128,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 			OgreNewtonMesh mesh (m_shootingCollisions[1]);
 			mesh.Triangulate();
 			int materialId = mesh.AddMaterial(renderMaterial);
-			//mesh.ApplySphericalMapping (materialId);
 			mesh.ApplyCylindricalMapping (materialId, materialId);
 
 			ManualObject* const object = mesh.CreateEntity(MakeName ("shootMesh"));

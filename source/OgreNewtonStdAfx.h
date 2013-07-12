@@ -54,6 +54,7 @@
 #include <dNewtonMesh.h>
 #include <dNewtonRayCast.h>
 #include <dNewtonCollision.h>
+#include <dNewtonScopeBuffer.h>
 #include <dNewtonTranformLerp.h>
 #include <CustomControllerManager.h>
 

@@ -178,20 +178,52 @@ void OgreNewtonMesh::BuildFromSceneNode(SceneNode* const sceneNode)
 
 				//let's find more information about the Vertices...
 				VertexDeclaration* const v_decl = v_data->vertexDeclaration;
-				const VertexElement* const p_vertexElem = v_decl->findElementBySemantic(VES_POSITION);
-				const VertexElement* const p_normalElem = v_decl->findElementBySemantic(VES_NORMAL);
-				const VertexElement* const p_uvElem = v_decl->findElementBySemantic(VES_TEXTURE_COORDINATES);
+				
+				const VertexElement* const vertexElem = v_decl->findElementBySemantic(VES_POSITION);
+				HardwareVertexBufferSharedPtr vertexPtr = v_data->vertexBufferBinding->getBuffer(vertexElem->getSource());
+				dNewtonScopeBuffer<Vector3> points(vertexPtr->getNumVertices());
+				{
+					int size = vertexPtr->getVertexSize();
+					int offset = vertexElem->getOffset() / sizeof (float);
+					unsigned char* const ptr = static_cast<unsigned char*> (vertexPtr->lock(HardwareBuffer::HBL_READ_ONLY));
+					for (int i = 0; i < points.GetElementsCount(); i ++) {
+						float* data;
+						vertexElem->baseVertexPointerToElement(ptr + i * size, &data);
+						points[i] = Vector3 (data[offset + 0], data[offset + 1], data[offset + 2]);
+					}
+					vertexPtr->unlock();
+				}
 
-				// get pointer!
-				HardwareVertexBufferSharedPtr v_sptr = v_data->vertexBufferBinding->getBuffer(p_vertexElem->getSource());
-				unsigned char* const v_ptr = static_cast<unsigned char*> (v_sptr->lock(HardwareBuffer::HBL_READ_ONLY));
+				const VertexElement* const normalElem = v_decl->findElementBySemantic(VES_NORMAL);
+				HardwareVertexBufferSharedPtr normalPtr = v_data->vertexBufferBinding->getBuffer(normalElem->getSource());
+				dNewtonScopeBuffer<Vector3> normals (normalPtr->getNumVertices());
+				{
+					int size = normalPtr->getVertexSize();
+					int offset = vertexElem->getOffset() / sizeof (float);
+					unsigned char* const ptr = static_cast<unsigned char*> (normalPtr->lock(HardwareBuffer::HBL_READ_ONLY));
+					for (int i = 0; i < normals.GetElementsCount(); i ++) {
+						float* data;
+						vertexElem->baseVertexPointerToElement(ptr + i * size, &data);
+						normals[i] = Vector3 (data[offset + 0], data[offset + 1], data[offset + 2]);
+					}
+					normalPtr->unlock();
+				}
 
-				HardwareVertexBufferSharedPtr n_sptr = v_data->vertexBufferBinding->getBuffer(p_normalElem->getSource());
-				unsigned char* const n_ptr = static_cast<unsigned char*> (n_sptr->lock(HardwareBuffer::HBL_READ_ONLY));
 
-				HardwareVertexBufferSharedPtr uv_sptr = v_data->vertexBufferBinding->getBuffer(p_uvElem->getSource());
-				unsigned char* const uv_ptr = static_cast<unsigned char*> (uv_sptr->lock(HardwareBuffer::HBL_READ_ONLY));
-
+				const VertexElement* const uvElem = v_decl->findElementBySemantic(VES_TEXTURE_COORDINATES);
+				HardwareVertexBufferSharedPtr uvPtr = v_data->vertexBufferBinding->getBuffer(uvElem->getSource());
+				dNewtonScopeBuffer<Vector3> uvs (uvPtr->getNumVertices());
+				{
+					int size = uvPtr->getVertexSize();
+					int offset = vertexElem->getOffset() / sizeof (float);
+					unsigned char* const ptr = static_cast<unsigned char*> (uvPtr->lock(HardwareBuffer::HBL_READ_ONLY));
+					for (int i = 0; i < uvs.GetElementsCount(); i ++) {
+						float* data;
+						uvElem->baseVertexPointerToElement(ptr + i * size, &data);
+						uvs[i] = Vector3 (data[offset + 0], data[offset + 1], 0.0f);
+					}
+					uvPtr->unlock();
+				}
 
 				//now find more about the index!!
 				IndexData* const i_data = sub_mesh->indexData;
@@ -217,80 +249,28 @@ void OgreNewtonMesh::BuildFromSceneNode(SceneNode* const sceneNode)
 
 				for (size_t i = 0; i < poly_count; i++)	{
 					Real poly_verts[3][12];
-					if (uses32bit) {
-						for (int j = 0; j < 3; j++) {
-							// index to first vertex!
-							int idx = i_Longptr[i_offset + j]; 
+					for (int j = 0; j < 3; j++) {
+						// index to first vertex!
+						int idx = uses32bit ? i_Longptr[i_offset + j] : i_Shortptr[i_offset + j]; 
 
-							// get the vertex position
-							float* v_Posptr;
-							unsigned char* v_offset = v_ptr + (idx * v_sptr->getVertexSize());
-							p_vertexElem->baseVertexPointerToElement(v_offset, &v_Posptr);
-							Vector3 p (v_Posptr[0], v_Posptr[1], v_Posptr[2]);
-							p = thisPos + (thisOrient * (p * curScale));
+						poly_verts[j][0] = points[idx].x;
+						poly_verts[j][1] = points[idx].y;
+						poly_verts[j][2] = points[idx].z;
+						poly_verts[j][3] = 0.0f;
 
-							// get the normal position
-							float* n_Posptr;
-							unsigned char* n_offset = n_ptr + (idx * n_sptr->getVertexSize());
-							p_normalElem->baseVertexPointerToElement(n_offset, &n_Posptr);
-							Vector3 n (n_Posptr[0], n_Posptr[1], n_Posptr[2]);
-							n = thisOrient * (n * curScale);
+						poly_verts[j][4] = normals[idx].x;
+						poly_verts[j][5] = normals[idx].y;
+						poly_verts[j][6] = normals[idx].z;
 
-							// get the uv0 position
-							float* uv_Posptr;
-							unsigned char* uv_offset = uv_ptr + (idx * uv_sptr->getVertexSize());
-							p_uvElem->baseVertexPointerToElement(uv_offset, &uv_Posptr);
-							Vector3 uv (uv_Posptr[0], uv_Posptr[1], 0.0f);
+						poly_verts[j][7] = uvs[idx].x;
+						poly_verts[j][8] = uvs[idx].y;
 
-							poly_verts[j][0] = p.x;
-							poly_verts[j][1] = p.y;
-							poly_verts[j][2] = p.z;
-							poly_verts[j][3] = 0.0f;
-
-							poly_verts[j][4] = n.x;
-							poly_verts[j][5] = n.y;
-							poly_verts[j][6] = n.z;
-
-							poly_verts[j][7] = uv.x;
-							poly_verts[j][8] = uv.y;
-
-							poly_verts[j][9]  = 0.0f;
-							poly_verts[j][10] = 0.0f;
-						}
-						AddFace(3, &poly_verts[0][0], 12 * sizeof (Real), cs);
-
-					} else {
-						for (int j = 0; j < 3; j++)	{
-							dAssert (0);
-/*
-							idx = i_Shortptr[i_offset + j]; // index to first vertex!
-							v_offset = v_ptr + (idx * v_sptr->getVertexSize());
-							p_vertexElem->baseVertexPointerToElement(v_offset, &v_Posptr);
-							//now get vertex position from v_Posptr!
-
-							// switch poly winding.
-							poly_verts[j].x = *v_Posptr;
-							v_Posptr++;
-							poly_verts[j].y = *v_Posptr;
-							v_Posptr++;
-							poly_verts[j].z = *v_Posptr;
-							v_Posptr++;
-
-							poly_verts[j] = thisPos + (thisOrient * (poly_verts[j] * curScale));
-*/
-						}
+						poly_verts[j][9]  = 0.0f;
+						poly_verts[j][10] = 0.0f;
 					}
-
-//					AddFace(3, &poly_verts[0].x, sizeof(Vector3), cs);
-
+					AddFace(3, &poly_verts[0][0], 12 * sizeof (Real), cs);
 					i_offset += 3;
 				}
-
-				//unlock the buffers!
-				v_sptr->unlock();
-				n_sptr->unlock();
-				uv_sptr->unlock();
-				i_sptr->unlock();
 			}
 		}
 
