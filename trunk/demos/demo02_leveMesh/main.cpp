@@ -23,8 +23,8 @@
 
 
 #include <OgreNewtonStdAfx.h>
-#include "OgreNewtonMesh.h"
-#include "OgreNewtonBody.h"
+#include <OgreNewtonMesh.h>
+#include <OgreNewtonBody.h>
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonDebugger.h>
