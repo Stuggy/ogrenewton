@@ -33,5 +33,6 @@ using namespace Ogre;
 
 String MakeName (const char* const name);
 SceneNode* CreateNode (SceneManager* const sceneMgr, Entity* const entity, const Vector3& position, const Quaternion& orientation);
+void CreateComponentsForShutting(int count, OgreNewtonWorld* const physicsWorld, dNewtonCollision** shapes, MeshPtr* const visualMeshes);
 
 #endif

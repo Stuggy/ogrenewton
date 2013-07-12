@@ -95,48 +95,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 //		mRoot->addFrameListener(m_listener);
 	}
 
-	void CreateComponentsForShutting()
-	{
-		// create a texture for using with this material
-		Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("smilli.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-
-		// make a material to use with this mesh
-		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("shootingMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-		renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
-		renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("smilli.tga");
-		renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
-
-		
-		{
-			// make sphere;
-			m_shootingCollisions[0] = new dNewtonCollisionSphere (m_physicsWorld, 0.25f, 0);
-
-			OgreNewtonMesh mesh (m_shootingCollisions[0]);
-			mesh.Triangulate();
-			int materialId = mesh.AddMaterial(renderMaterial);
-			mesh.ApplySphericalMapping (materialId);
-		
-			ManualObject* const object = mesh.CreateEntity(MakeName ("shootMesh"));
-			m_shootingMesh[0] = object->convertToMesh (MakeName ("shootMesh"));
-			delete object;
-		}
-
-		{
-			// make capsule;
-			m_shootingCollisions[1] = new dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 1.0f, 0);
-
-			OgreNewtonMesh mesh (m_shootingCollisions[1]);
-			mesh.Triangulate();
-			int materialId = mesh.AddMaterial(renderMaterial);
-			mesh.ApplyCylindricalMapping (materialId, materialId);
-
-			ManualObject* const object = mesh.CreateEntity(MakeName ("shootMesh"));
-			m_shootingMesh[1] = object->convertToMesh (MakeName ("shootMesh"));
-			delete object;
-		}
-
-	}
-
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
@@ -210,7 +168,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		LoadDynamicScene(origin);
 
 		// create shutting components
-		CreateComponentsForShutting();
+		CreateComponentsForShutting(sizeof (m_shootingCollisions)/sizeof (m_shootingCollisions[0]), m_physicsWorld, m_shootingCollisions, m_shootingMesh);
 
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
