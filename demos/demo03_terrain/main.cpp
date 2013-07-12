@@ -64,6 +64,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 	protected:
 	void loadStaticScene ()
 	{
+
 		// create a scene body to add all static collidable meshes in the world 
 		OgreNewtonSceneBody* const sceneBody = new OgreNewtonSceneBody (m_physicsWorld);
 
@@ -77,55 +78,37 @@ floorNode->attachObject( floor );
 floor->setCastShadows( false );
 sceneBody->AddCollisionTree (floorNode);
 }
-
-
-		// floor object!
-		m_terrainGlobals = OGRE_NEW TerrainGlobalOptions();
-		m_terrainGroup = OGRE_NEW TerrainGroup(mSceneMgr, Terrain::ALIGN_X_Z, 513, 12000.0f);
-
-		//m_terrainGroup->setFilenameConvention(String("BasicTutorial3Terrain"), String("dat"));
-		m_terrainGroup->setFilenameConvention(String("testTerrain"), String("dat"));
-		m_terrainGroup->setOrigin(Vector3::ZERO);
-
-		configureTerrainDefaults();
-
-		for (long x = 0; x < 1; x++) {
-			for (long y = 0; y < 1; y ++) {
-				String filename (m_terrainGroup->generateFilename(x, y));
-				if (ResourceGroupManager::getSingleton().resourceExists (m_terrainGroup->getResourceGroup(), filename)) {
-					m_terrainGroup->defineTerrain(x, y);
-				} else {
-//					Image img;
-//					bool flipX = ((x % 2) != 0);
-//					bool flipY = ((y % 2) != 0);
-//					//getTerrainImage(x % 2 != 0, y % 2 != 0, img);
-//					img.load("terrain.png", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-//					if (flipX)
-//						img.flipAroundY();
-//					if (flipY)
-//						img.flipAroundX();
-//					m_terrainGroup->defineTerrain(x, y, &img);
-//					m_terrainsImported = true;
-				}
-			}
-		}
-
-		// sync load since we want everything in place when we start
-		m_terrainGroup->loadAllTerrains(true);
-
-		if (m_terrainsImported) {
-			TerrainGroup::TerrainIterator ti = m_terrainGroup->getTerrainIterator();
-			while(ti.hasMoreElements()) {
-				Terrain* t = ti.getNext()->instance;
-				initBlendMaps(t);
-			}
-		}
-
-		m_terrainGroup->freeTemporaryResources();
-
+		// load a visual ogre terrain
+		LoadVisualTerrain();
 
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
+	}
+
+	void getTerrainImage(bool flipX, bool flipY, Image& img)
+	{
+		img.load("terrain.png", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+		if (flipX)
+			img.flipAroundY();
+		if (flipY)
+			img.flipAroundX();
+	}
+
+
+	void defineTerrain(long x, long y)
+	{
+		String filename = m_terrainGroup->generateFilename(x, y);
+		if (ResourceGroupManager::getSingleton().resourceExists(m_terrainGroup->getResourceGroup(), filename))
+		{
+			m_terrainGroup->defineTerrain(x, y);
+		}
+		else
+		{
+			Image img;
+			getTerrainImage(x % 2 != 0, y % 2 != 0, img);
+			m_terrainGroup->defineTerrain(x, y, &img);
+			m_terrainsImported = true;
+		}
 	}
 
 
@@ -142,7 +125,7 @@ sceneBody->AddCollisionTree (floorNode);
 		m_terrainGlobals->setCompositeMapDiffuse(m_light0->getDiffuseColour());
 
 		// Configure default import settings for if we use imported image
-		Ogre::Terrain::ImportData& defaultimp = m_terrainGroup->getDefaultImportSettings();
+		Terrain::ImportData& defaultimp = m_terrainGroup->getDefaultImportSettings();
 		defaultimp.terrainSize = 513;
 		defaultimp.worldSize = 12000.0f;
 		defaultimp.inputScale = 600;
@@ -195,10 +178,65 @@ sceneBody->AddCollisionTree (floorNode);
 		blendMap1->update();
 	}
 
+	void LoadVisualTerrain()
+	{
+//		mCamera->setPosition(Vector3(1683, 50, 2116));
+//		mCamera->lookAt(Vector3(1963, 50, 1660));
+//		mCamera->setNearClipDistance(0.1f);
+//		mCamera->setFarClipDistance(50000);
+//		if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_INFINITE_FAR_PLANE))
+//		{
+//			mCamera->setFarClipDistance(0);   
+//		}
+//		Vector3 lightdir(0.55f, -0.3f, 0.75f);
+//		lightdir.normalise();
+//		Light* light = mSceneMgr->createLight("tstLight");
+//		light->setType(Light::LT_DIRECTIONAL);
+//		light->setDirection(lightdir);
+//		light->setDiffuseColour(ColourValue::White);
+//		light->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
+//		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
+	 
+		m_terrainGlobals = OGRE_NEW TerrainGlobalOptions();
+	 	m_terrainGroup = OGRE_NEW TerrainGroup(mSceneMgr, Terrain::ALIGN_X_Z, 513, 12000.0f);
+
+		//m_terrainGroup->setFilenameConvention(String("BasicTutorial3Terrain"), String("dat"));
+		m_terrainGroup->setFilenameConvention(String("testTerrain"), String("dat"));
+		m_terrainGroup->setOrigin(Vector3::ZERO);
+	 
+		//configureTerrainDefaults(light);
+		configureTerrainDefaults();
+	 
+		for (long x = 0; x <= 0; ++x)
+			for (long y = 0; y <= 0; ++y)
+				defineTerrain(x, y);
+	 
+		// sync load since we want everything in place when we start
+		m_terrainGroup->loadAllTerrains(true);
+	 
+		if (m_terrainsImported)
+		{
+			TerrainGroup::TerrainIterator ti = m_terrainGroup->getTerrainIterator();
+			while(ti.hasMoreElements())
+			{
+				Terrain* t = ti.getNext()->instance;
+				initBlendMaps(t);
+			}
+		}
+	 
+		m_terrainGroup->freeTemporaryResources();
+	 
+		//ColourValue fadeColour(0.9f, 0.9f, 0.9f);
+		//mSceneMgr->setFog(FOG_LINEAR, fadeColour, 0.0, 10, 1200);
+		//mWindow->getViewport(0)->setBackgroundColour(fadeColour);
+	 	//Plane plane;
+		//plane.d = 100;
+		//plane.normal = Vector3::NEGATIVE_UNIT_Y;
+	}
+
 	void LoadDynamicScene(const Vector3& origin)
 	{
 	}
-
 
 	void createFrameListener()
 	{
@@ -236,6 +274,9 @@ sceneBody->AddCollisionTree (floorNode);
 
 	virtual void destroyScene()
 	{
+	    OGRE_DELETE m_terrainGroup;
+		OGRE_DELETE m_terrainGlobals;
+
 		for (int i = 0; i < int (sizeof (m_shootingCollisions) / sizeof (m_shootingCollisions[0])); i ++) {
 			delete m_shootingCollisions[i];
 		}
@@ -295,7 +336,6 @@ sceneBody->AddCollisionTree (floorNode);
 	TerrainGroup* m_terrainGroup;
 	TerrainGlobalOptions* m_terrainGlobals;
 	bool m_terrainsImported;
-	
 };
 
 
@@ -309,7 +349,11 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 	} catch(Exception &e) {
 		MessageBox(NULL, e.getFullDescription().c_str(), "Well, this is embarrassing.. an Ogre exception has occurred.", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 	}
-
 	return 0;
 }
 
+
+
+
+ 
+ 
