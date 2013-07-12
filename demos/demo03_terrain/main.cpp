@@ -23,14 +23,18 @@
 
 
 #include <OgreNewtonStdAfx.h>
-#include "OgreNewtonMesh.h"
-#include "OgreNewtonBody.h"
+#include <OgreNewtonMesh.h>
+#include <OgreNewtonBody.h>
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
+
+#include <OgreTerrain.h>
+#include <OgreTerrainGroup.h>
+
 
 #include "Utils.h"
 #include "BuildJenga.h"
@@ -64,16 +68,22 @@ class OgreNewtonDemoApplication: public DemoApplication
 		sceneBody->BeginAddRemoveCollision();
 
 		// floor object!
-		Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
+		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
 		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "playground.mesh" );
 		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
-
-		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
-		floorNode->attachObject( floor );
-		floor->setCastShadows( false );
-
+		//SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
+		//floorNode->attachObject( floor );
+		//floor->setCastShadows( false );
 		// add this collision to the scene body
-		sceneBody->AddCollisionTree (floorNode);
+		//sceneBody->AddCollisionTree (floorNode);
+
+
+		m_terrainGlobals = OGRE_NEW TerrainGlobalOptions();
+//		mTerrainGroup = OGRE_NEW Ogre::TerrainGroup(mSceneMgr, Ogre::Terrain::ALIGN_X_Z, 513, 12000.0f);
+
+
+
+
 
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
@@ -173,6 +183,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 	Real m_shootingTimer;
 	MeshPtr m_shootingMesh[2];
 	dNewtonCollision* m_shootingCollisions[2];
+
+	TerrainGlobalOptions* m_terrainGlobals;
+//	TerrainGroup* mTerrainGroup;
+//	bool mTerrainsImported;
 	
 };
 
