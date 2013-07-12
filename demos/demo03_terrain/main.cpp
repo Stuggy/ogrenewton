@@ -200,8 +200,8 @@ sceneBody->AddCollisionTree (floorNode);
 		m_terrainGlobals = OGRE_NEW TerrainGlobalOptions();
 	 	m_terrainGroup = OGRE_NEW TerrainGroup(mSceneMgr, Terrain::ALIGN_X_Z, 513, 12000.0f);
 
-		//m_terrainGroup->setFilenameConvention(String("BasicTutorial3Terrain"), String("dat"));
-		m_terrainGroup->setFilenameConvention(String("testTerrain"), String("dat"));
+		m_terrainGroup->setFilenameConvention(String("BasicTutorial3Terrain"), String("dat"));
+		//m_terrainGroup->setFilenameConvention(String("testTerrain"), String("dat"));
 		m_terrainGroup->setOrigin(Vector3::ZERO);
 	 
 		//configureTerrainDefaults(light);
