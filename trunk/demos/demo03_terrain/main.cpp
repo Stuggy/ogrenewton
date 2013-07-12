@@ -51,6 +51,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 	OgreNewtonDemoApplication()
 		:DemoApplication()
 		,m_shootingTimer(0.25f)
+		,m_terrainGroup(NULL)
+		,m_terrainGlobals(NULL)
+		,m_terrainsImported(false)
 	{
 	}
 
@@ -67,26 +70,96 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// start adding collision shape to the scene body
 		sceneBody->BeginAddRemoveCollision();
 
+{
+Entity* const floor = mSceneMgr->createEntity(MakeName("Floor"), "flatplane.mesh" );		
+SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
+floorNode->attachObject( floor );
+floor->setCastShadows( false );
+sceneBody->AddCollisionTree (floorNode);
+}
+
+/*
 		// floor object!
-		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
-		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "playground.mesh" );
-		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
-		//SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
-		//floorNode->attachObject( floor );
-		//floor->setCastShadows( false );
-		// add this collision to the scene body
-		//sceneBody->AddCollisionTree (floorNode);
-
-
 		m_terrainGlobals = OGRE_NEW TerrainGlobalOptions();
-//		mTerrainGroup = OGRE_NEW Ogre::TerrainGroup(mSceneMgr, Ogre::Terrain::ALIGN_X_Z, 513, 12000.0f);
+		m_terrainGroup = OGRE_NEW TerrainGroup(mSceneMgr, Terrain::ALIGN_X_Z, 513, 12000.0f);
 
+		//m_terrainGroup->setFilenameConvention(String("BasicTutorial3Terrain"), String("dat"));
+		m_terrainGroup->setFilenameConvention(String("testTerrain"), String("dat"));
+		m_terrainGroup->setOrigin(Vector3::ZERO);
 
+		//configureTerrainDefaults(light);
+		for (long x = 0; x < 1; x++) {
+			for (long y = 0; y < 1; y ++) {
+				String filename (m_terrainGroup->generateFilename(x, y));
+				if (ResourceGroupManager::getSingleton().resourceExists (m_terrainGroup->getResourceGroup(), filename)) {
+					m_terrainGroup->defineTerrain(x, y);
+				} else {
+//					Image img;
+//					bool flipX = ((x % 2) != 0);
+//					bool flipY = ((y % 2) != 0);
+//					//getTerrainImage(x % 2 != 0, y % 2 != 0, img);
+//					img.load("terrain.png", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+//					if (flipX)
+//						img.flipAroundY();
+//					if (flipY)
+//						img.flipAroundX();
+//					m_terrainGroup->defineTerrain(x, y, &img);
+//					m_terrainsImported = true;
+				}
+			}
+		}
 
+		// sync load since we want everything in place when we start
+		m_terrainGroup->loadAllTerrains(true);
 
+		if (m_terrainsImported) {
+			TerrainGroup::TerrainIterator ti = m_terrainGroup->getTerrainIterator();
+			while(ti.hasMoreElements()) {
+				Terrain* t = ti.getNext()->instance;
+				initBlendMaps(t);
+			}
+		}
+
+		m_terrainGroup->freeTemporaryResources();
+*/
 
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
+	}
+
+
+
+	void initBlendMaps(Terrain* const terrain)
+	{
+		TerrainLayerBlendMap* blendMap0 = terrain->getLayerBlendMap(1);
+		TerrainLayerBlendMap* blendMap1 = terrain->getLayerBlendMap(2);
+		Real minHeight0 = 70;
+		Real fadeDist0 = 40;
+		Real minHeight1 = 70;
+		Real fadeDist1 = 15;
+		float* pBlend0 = blendMap0->getBlendPointer();
+		float* pBlend1 = blendMap1->getBlendPointer();
+		for (uint16 y = 0; y < terrain->getLayerBlendMapSize(); ++y)
+		{
+			for (uint16 x = 0; x < terrain->getLayerBlendMapSize(); ++x)
+			{
+				Real tx, ty;
+
+				blendMap0->convertImageToTerrainSpace(x, y, &tx, &ty);
+				Real height = terrain->getHeightAtTerrainPosition(tx, ty);
+				Real val = (height - minHeight0) / fadeDist0;
+				val = Math::Clamp(val, (Real)0, (Real)1);
+				*pBlend0++ = val;
+
+				val = (height - minHeight1) / fadeDist1;
+				val = Math::Clamp(val, (Real)0, (Real)1);
+				*pBlend1++ = val;
+			}
+		}
+		blendMap0->dirty();
+		blendMap1->dirty();
+		blendMap0->update();
+		blendMap1->update();
 	}
 
 	void LoadDynamicScene(const Vector3& origin)
@@ -184,9 +257,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 	MeshPtr m_shootingMesh[2];
 	dNewtonCollision* m_shootingCollisions[2];
 
+	TerrainGroup* m_terrainGroup;
 	TerrainGlobalOptions* m_terrainGlobals;
-//	TerrainGroup* mTerrainGroup;
-//	bool mTerrainsImported;
+	bool m_terrainsImported;
 	
 };
 
