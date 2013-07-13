@@ -280,8 +280,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 		loadStaticScene ();
 
 		// position camera using the ray cast functionality
-		Vector3 start(0.0f, 1000.0f, 10.0f);
-		Vector3 end(0.0f, -1000.0f, 10.0f);
+		Vector3 start(3000.0f, 1000.0f, 10.0f);
+		Vector3 end(3000.0f, -1000.0f, 10.0f);
 		OgreNewtonRayCast raycaster(m_physicsWorld); 
 		raycaster.CastRay (&start.x, &end.x);
 
@@ -291,6 +291,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// set the near and far clip plane
 		mCamera->setNearClipDistance(0.1f);
 		mCamera->setFarClipDistance(10000.0f);
+
+		mCamera->setPolygonMode(Ogre::PM_WIREFRAME);
 
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
