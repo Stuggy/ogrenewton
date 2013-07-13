@@ -290,7 +290,7 @@ void* OgreNewtonSceneBody::AddTerrain (Terrain* const terrain)
 	}
 
 	// build the Highfield collision
-	dNewtonCollisionHeightField terrainCollision (world, width, height, 0, horizontalScale, &elevations[0], &attributes[0], 0);
+	dNewtonCollisionHeightField terrainCollision (world, width, height, 4, horizontalScale, &elevations[0], &attributes[0], 0);
 
 	// set the offset matrix for this collision shape
 	Vector3 posit (-(width / 2.0f) * horizontalScale, 0.0f, (height / 2.0f) * horizontalScale);
