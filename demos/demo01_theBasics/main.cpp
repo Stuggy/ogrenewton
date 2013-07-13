@@ -135,14 +135,30 @@ class OgreNewtonDemoApplication: public DemoApplication
 		DemoApplication::createScene();
 
 		//make a light
+//		Light* const light0 = mSceneMgr->createLight( "Light0" );
+//		Light* const light3 = mSceneMgr->createLight( "Light3" );
+
+//		light0->setType (Light::LT_POINT );
+//		light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
+
+//		light3->setType (Light::LT_POINT );
+//		light3->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
+
+
+		//make a light
+		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
+
 		Light* const light0 = mSceneMgr->createLight( "Light0" );
-		Light* const light3 = mSceneMgr->createLight( "Light3" );
+		Vector3 lightdir(0.55f, -0.3f, 0.75f);
+		light0->setType(Light::LT_DIRECTIONAL);
+		light0->setDirection(lightdir);
+		light0->setDiffuseColour(ColourValue(1.0f, 1.0f, 1.0f));
+		light0->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
 
-		light0->setType (Light::LT_POINT );
-		light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
+		//Light* const light1 = mSceneMgr->createLight( "Light1" );
+		//light1->setType (Light::LT_POINT );
+		//light1->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
 
-		light3->setType (Light::LT_POINT );
-		light3->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
 
 		// sky box.
 		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");

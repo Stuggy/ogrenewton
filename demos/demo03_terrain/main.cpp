@@ -180,23 +180,6 @@ sceneBody->AddCollisionTree (floorNode);
 
 	void LoadVisualTerrain()
 	{
-//		mCamera->setPosition(Vector3(1683, 50, 2116));
-//		mCamera->lookAt(Vector3(1963, 50, 1660));
-//		mCamera->setNearClipDistance(0.1f);
-//		mCamera->setFarClipDistance(50000);
-//		if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_INFINITE_FAR_PLANE))
-//		{
-//			mCamera->setFarClipDistance(0);   
-//		}
-//		Vector3 lightdir(0.55f, -0.3f, 0.75f);
-//		lightdir.normalise();
-//		Light* light = mSceneMgr->createLight("tstLight");
-//		light->setType(Light::LT_DIRECTIONAL);
-//		light->setDirection(lightdir);
-//		light->setDiffuseColour(ColourValue::White);
-//		light->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
-//		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
-	 
 		m_terrainGlobals = OGRE_NEW TerrainGlobalOptions();
 	 	m_terrainGroup = OGRE_NEW TerrainGroup(mSceneMgr, Terrain::ALIGN_X_Z, 513, 12000.0f);
 
@@ -225,13 +208,6 @@ sceneBody->AddCollisionTree (floorNode);
 		}
 	 
 		m_terrainGroup->freeTemporaryResources();
-	 
-		//ColourValue fadeColour(0.9f, 0.9f, 0.9f);
-		//mSceneMgr->setFog(FOG_LINEAR, fadeColour, 0.0, 10, 1200);
-		//mWindow->getViewport(0)->setBackgroundColour(fadeColour);
-	 	//Plane plane;
-		//plane.d = 100;
-		//plane.normal = Vector3::NEGATIVE_UNIT_Y;
 	}
 
 	void LoadDynamicScene(const Vector3& origin)
@@ -288,14 +264,22 @@ sceneBody->AddCollisionTree (floorNode);
 		DemoApplication::createScene();
 
 		//make a light
+		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
+
 		m_light0 = mSceneMgr->createLight( "Light0" );
-		m_light1 = mSceneMgr->createLight( "Light3" );
+		
+		//m_light0->setType (Light::LT_POINT );
+		//m_light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
 
-		m_light0->setType (Light::LT_POINT );
-		m_light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
-
-		m_light1->setType (Light::LT_POINT );
-		m_light1->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
+		Vector3 lightdir(0.55f, -0.3f, 0.75f);
+		m_light0->setType(Light::LT_DIRECTIONAL);
+		m_light0->setDirection(lightdir);
+		m_light0->setDiffuseColour(ColourValue(1.0f, 1.0f, 1.0f));
+		m_light0->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
+		
+		//m_light1 = mSceneMgr->createLight( "Light1" );
+		//m_light1->setType (Light::LT_POINT );
+		//m_light1->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
 
 		// sky box.
 		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
@@ -332,7 +316,7 @@ sceneBody->AddCollisionTree (floorNode);
 	dNewtonCollision* m_shootingCollisions[2];
 
 	Light* m_light0;
-	Light* m_light1;
+//	Light* m_light1;
 	TerrainGroup* m_terrainGroup;
 	TerrainGlobalOptions* m_terrainGlobals;
 	bool m_terrainsImported;
