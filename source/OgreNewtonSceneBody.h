@@ -32,16 +32,6 @@ using namespace Ogre;
 class OgreNewtonSceneBody: public OgreNewtonBody
 {
 	public:
-/*
-	enum FaceWinding
-	{
-		FW_DEFAULT,
-		FW_REVERSE
-	};
-
-	class OgreNewtonCollisionTree;
-*/	
-
 	OgreNewtonSceneBody (OgreNewtonWorld* const world);
 	~OgreNewtonSceneBody();
 
@@ -50,11 +40,12 @@ class OgreNewtonSceneBody: public OgreNewtonBody
 
 	virtual void BeginAddRemoveCollision();
 	virtual void* AddCollision(const dNewtonCollision* const collision);
+
+	virtual void* AddTerrain (Terrain* const terrain);
 	virtual void* AddCollisionTree (SceneNode* const treeNode);
 	
 	virtual void RemoveCollision (void* const handle);
 	virtual void EndAddRemoveCollision();
-	
 };
 
 
