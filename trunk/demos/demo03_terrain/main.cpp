@@ -32,9 +32,6 @@
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
 
-#include <OgreTerrain.h>
-#include <OgreTerrainGroup.h>
-
 
 #include "Utils.h"
 #include "BuildJenga.h"
@@ -80,6 +77,14 @@ sceneBody->AddCollisionTree (floorNode);
 }
 		// load a visual ogre terrain
 		LoadVisualTerrain();
+
+		// iterate over all terrain tile and add a collision for each one
+		TerrainGroup::TerrainIterator ti = m_terrainGroup->getTerrainIterator();
+		while(ti.hasMoreElements())	{
+			Terrain* const terrain = ti.getNext()->instance;
+			sceneBody->AddTerrain (terrain);
+		}
+		
 
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
@@ -183,25 +188,25 @@ sceneBody->AddCollisionTree (floorNode);
 		m_terrainGlobals = OGRE_NEW TerrainGlobalOptions();
 	 	m_terrainGroup = OGRE_NEW TerrainGroup(mSceneMgr, Terrain::ALIGN_X_Z, 513, 12000.0f);
 
-		m_terrainGroup->setFilenameConvention(String("BasicTutorial3Terrain"), String("dat"));
-		//m_terrainGroup->setFilenameConvention(String("testTerrain"), String("dat"));
+		//m_terrainGroup->setFilenameConvention(String("BasicTutorial3Terrain"), String("dat"));
+		m_terrainGroup->setFilenameConvention(String("testTerrain"), String("dat"));
 		m_terrainGroup->setOrigin(Vector3::ZERO);
 	 
 		//configureTerrainDefaults(light);
 		configureTerrainDefaults();
 	 
-		for (long x = 0; x <= 0; ++x)
-			for (long y = 0; y <= 0; ++y)
+		for (long x = 0; x < 1; ++x) {
+			for (long y = 0; y < 1; ++y) {
 				defineTerrain(x, y);
+			}
+		}
 	 
 		// sync load since we want everything in place when we start
 		m_terrainGroup->loadAllTerrains(true);
 	 
-		if (m_terrainsImported)
-		{
+		if (m_terrainsImported) {
 			TerrainGroup::TerrainIterator ti = m_terrainGroup->getTerrainIterator();
-			while(ti.hasMoreElements())
-			{
+			while(ti.hasMoreElements())	{
 				Terrain* t = ti.getNext()->instance;
 				initBlendMaps(t);
 			}

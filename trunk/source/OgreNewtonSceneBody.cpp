@@ -265,5 +265,11 @@ void* OgreNewtonSceneBody::AddCollisionTree (SceneNode* const treeNode)
 
 
 
+void* OgreNewtonSceneBody::AddTerrain (Terrain* const terrain)
+{
+//	dNewtonCollisionHeightField (dNewton* const world, int width, int height, int gridsDiagonals, dFloat horizontalScale, const dFloat* const elevationMap, const char* const attributeMap, int shapeID)
+//		:dNewtonCollision(m_heighfield)
 
+	return NULL;
+}
 

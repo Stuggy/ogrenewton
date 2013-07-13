@@ -47,6 +47,9 @@
 #include <OgreMovableObject.h>
 #include <OgreFrameListener.h>
 
+#include <OgreTerrain.h>
+#include <OgreTerrainGroup.h>
+
 
 #include <Newton.h>
 #include <dNewton.h>
