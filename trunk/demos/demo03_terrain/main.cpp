@@ -68,13 +68,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// start adding collision shape to the scene body
 		sceneBody->BeginAddRemoveCollision();
 
-{
-Entity* const floor = mSceneMgr->createEntity(MakeName("Floor"), "flatplane.mesh" );		
-SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
-floorNode->attachObject( floor );
-floor->setCastShadows( false );
-sceneBody->AddCollisionTree (floorNode);
-}
 		// load a visual ogre terrain
 		LoadVisualTerrain();
 
@@ -84,7 +77,6 @@ sceneBody->AddCollisionTree (floorNode);
 			Terrain* const terrain = ti.getNext()->instance;
 			sceneBody->AddTerrain (terrain);
 		}
-		
 
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
@@ -93,22 +85,21 @@ sceneBody->AddCollisionTree (floorNode);
 	void getTerrainImage(bool flipX, bool flipY, Image& img)
 	{
 		img.load("terrain.png", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-		if (flipX)
+		if (flipX) {
 			img.flipAroundY();
-		if (flipY)
+		}
+		if (flipY) {
 			img.flipAroundX();
+		}
 	}
 
 
 	void defineTerrain(long x, long y)
 	{
 		String filename = m_terrainGroup->generateFilename(x, y);
-		if (ResourceGroupManager::getSingleton().resourceExists(m_terrainGroup->getResourceGroup(), filename))
-		{
+		if (ResourceGroupManager::getSingleton().resourceExists(m_terrainGroup->getResourceGroup(), filename)) {
 			m_terrainGroup->defineTerrain(x, y);
-		}
-		else
-		{
+		} else {
 			Image img;
 			getTerrainImage(x % 2 != 0, y % 2 != 0, img);
 			m_terrainGroup->defineTerrain(x, y, &img);
@@ -160,10 +151,8 @@ sceneBody->AddCollisionTree (floorNode);
 		Real fadeDist1 = 15;
 		float* pBlend0 = blendMap0->getBlendPointer();
 		float* pBlend1 = blendMap1->getBlendPointer();
-		for (uint16 y = 0; y < terrain->getLayerBlendMapSize(); ++y)
-		{
-			for (uint16 x = 0; x < terrain->getLayerBlendMapSize(); ++x)
-			{
+		for (uint16 y = 0; y < terrain->getLayerBlendMapSize(); ++y) {
+			for (uint16 x = 0; x < terrain->getLayerBlendMapSize(); ++x) {
 				Real tx, ty;
 
 				blendMap0->convertImageToTerrainSpace(x, y, &tx, &ty);
@@ -239,6 +228,7 @@ sceneBody->AddCollisionTree (floorNode);
 			GetInterpolatedCameraMatrix (cameraPosit, cameraRotation);
 
 			int index = (rand() >> 3) % int (sizeof (m_shootingMesh) / sizeof (m_shootingMesh[0]));
+			//index = 0;
 
    		 	Entity* const ent = mSceneMgr->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
 			SceneNode* const node = CreateNode (mSceneMgr, ent, cameraPosit, cameraRotation);
@@ -276,16 +266,12 @@ sceneBody->AddCollisionTree (floorNode);
 		//m_light0->setType (Light::LT_POINT );
 		//m_light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
 
-		Vector3 lightdir(0.55f, -0.3f, 0.75f);
+		Vector3 lightdir(0.55f, -0.3f, -0.75f);
 		m_light0->setType(Light::LT_DIRECTIONAL);
 		m_light0->setDirection(lightdir);
 		m_light0->setDiffuseColour(ColourValue(1.0f, 1.0f, 1.0f));
 		m_light0->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
 		
-		//m_light1 = mSceneMgr->createLight( "Light1" );
-		//m_light1->setType (Light::LT_POINT );
-		//m_light1->setPosition (Vector3(100.0f, 100.0f, 100.0f) );
-
 		// sky box.
 		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 		mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");
@@ -321,7 +307,6 @@ sceneBody->AddCollisionTree (floorNode);
 	dNewtonCollision* m_shootingCollisions[2];
 
 	Light* m_light0;
-//	Light* m_light1;
 	TerrainGroup* m_terrainGroup;
 	TerrainGlobalOptions* m_terrainGlobals;
 	bool m_terrainsImported;
