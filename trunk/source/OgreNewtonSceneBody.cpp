@@ -274,7 +274,7 @@ void* OgreNewtonSceneBody::AddTerrain (Terrain* const terrain)
 	int size = width * height;
 //	Real min = terrain->getMinHeight();
 //	Real max = terrain->getMaxHeight();
-	Real horizontalScale = (terrain->getWorldSize() / (terrain->getSize() - 2));
+	Real horizontalScale = (terrain->getWorldSize() / (terrain->getSize() - 1));
 
 	dNewtonScopeBuffer<dFloat> elevations(size);
 	dNewtonScopeBuffer<char> attributes(size);
