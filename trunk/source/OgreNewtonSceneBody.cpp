@@ -267,9 +267,40 @@ void* OgreNewtonSceneBody::AddCollisionTree (SceneNode* const treeNode)
 
 void* OgreNewtonSceneBody::AddTerrain (Terrain* const terrain)
 {
-//	dNewtonCollisionHeightField (dNewton* const world, int width, int height, int gridsDiagonals, dFloat horizontalScale, const dFloat* const elevationMap, const char* const attributeMap, int shapeID)
-//		:dNewtonCollision(m_heighfield)
+	OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 
-	return NULL;
+	int width = terrain->getSize() - 1;
+	int height = terrain->getSize() - 1;
+	int size = width * height;
+//	Real min = terrain->getMinHeight();
+//	Real max = terrain->getMaxHeight();
+	Real horizontalScale = (terrain->getWorldSize() / (terrain->getSize() - 2));
+
+	dNewtonScopeBuffer<dFloat> elevations(size);
+	dNewtonScopeBuffer<char> attributes(size);
+	
+	for (int i = 0; i < width; i++) {
+		int index = width * height;
+		for (int k = 0; k < height; k++) {
+			// for now make collsionID zero, until we can get that infor form teh terrain tile
+			attributes[index] = 0;
+			elevations[index] = terrain->getHeightAtPoint(i, k);
+			index ++;
+		}
+	}
+
+	// build the Highfield collision
+	dNewtonCollisionHeightField terrainCollision (world, width, height, 1, horizontalScale, &elevations[0], &attributes[0], 0);
+
+	// set the offset matrix for this collision shape
+	Vector3 posit (-(width / 2.0f) * horizontalScale, 0.0f, (height / 2.0f) * horizontalScale);
+	Quaternion rot(Ogre::Degree(90.0f), Ogre::Vector3(0.0f, 1.0f, 0.0f));
+
+	Matrix4 matrix;
+	matrix.makeTransform (posit, Vector3(1.0f, 1.0f, 1.0f), rot);
+	matrix = matrix.transpose();
+
+	terrainCollision.SetMatrix (&matrix[0][0]);
+	return AddCollision (&terrainCollision);
 }
 
