@@ -279,7 +279,7 @@ void* OgreNewtonSceneBody::AddTerrain (Terrain* const terrain)
 	dNewtonScopeBuffer<dFloat> elevations(size);
 	dNewtonScopeBuffer<char> attributes(size);
 	
-	for (int i = 0; i < width; i++) {
+	for (int i = 0; i < width; i++) {	
 		int index = i * height;
 		for (int k = 0; k < height; k++) {
 			// for now make collsionID zero, until we can get material information from the terrain tile
@@ -290,7 +290,7 @@ void* OgreNewtonSceneBody::AddTerrain (Terrain* const terrain)
 	}
 
 	// build the Highfield collision
-	dNewtonCollisionHeightField terrainCollision (world, width, height, 4, horizontalScale, &elevations[0], &attributes[0], 0);
+	dNewtonCollisionHeightField terrainCollision (world, width, height, 5, horizontalScale, &elevations[0], &attributes[0], 0);
 
 	// set the offset matrix for this collision shape
 	Vector3 posit (-(width / 2.0f) * horizontalScale, 0.0f, (height / 2.0f) * horizontalScale);

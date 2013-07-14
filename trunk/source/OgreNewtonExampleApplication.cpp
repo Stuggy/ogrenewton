@@ -82,14 +82,18 @@ void OgreNewtonExampleApplication::ResetCamera (const Vector3& posit, const Quat
 	Radian rotX;
 	Radian rotY;
 	Radian rotZ;
-	//rot.ToEulerAnglesZYX (rotY, rotX, rotZ);
 	rot.ToEulerAnglesZYX (rotZ, rotY, rotX);
 
-//	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
 	m_yawAngle = rotY;
 	m_pitchAngle = rotX;
 	m_translation = posit;
 	m_cameraTransform.ResetMatrix (&matrix[0][0]);
+
+	Matrix4 cameraMatrix;
+	m_cameraTransform.InterplateMatrix (0.0f, cameraMatrix[0]);
+	cameraMatrix = cameraMatrix.transpose();
+	m_interpolatedCameraPosition = cameraMatrix.getTrans();
+	m_interpolatedCameraRotation = cameraMatrix.extractQuaternion();
 }
 
 void OgreNewtonExampleApplication::MoveCamera (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep)
