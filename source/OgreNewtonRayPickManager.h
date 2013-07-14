@@ -31,7 +31,7 @@ using namespace Ogre;
 
 
 class OgreNewtonBody;
-class OgreNewtonWorld;
+//class OgreNewtonWorld;
 
 class OgreNewtonRayPickController
 {
@@ -62,10 +62,10 @@ class OgreNewtonRayPickManager: public CustomControllerManager<OgreNewtonRayPick
 	void PreUpdate(dFloat timestep);
 	void PostUpdate (dFloat timestep);
 
-	OgreNewtonBody* RayCast (const Vector3& lineP0, const Vector3& lineP1, Real& pickParam) const;
+	dNewtonBody* RayCast (const Vector3& lineP0, const Vector3& lineP1, Real& pickParam) const;
 
 	void SetTarget (const Vector3& targetPoint);
-	void SetPickedBody (OgreNewtonBody* const body, const Vector3& handle = Vector3 (0.0f, 0.0f, 0.0f));
+	void SetPickedBody (dNewtonBody* const body, const Vector3& handle = Vector3 (0.0f, 0.0f, 0.0f));
 
 	virtual void Debug () const {};
 
@@ -73,7 +73,7 @@ class OgreNewtonRayPickManager: public CustomControllerManager<OgreNewtonRayPick
 	Vector3 m_globalTarget;
 	Vector3 m_localpHandlePoint;
 	OgreNewtonWorld* m_world;
-	OgreNewtonBody* m_pickedBody;
+	dNewtonBody* m_pickedBody;
 	Real m_stiffness;
 	unsigned m_lock;
 };

@@ -21,9 +21,9 @@
 
 
 #include "OgreNewtonStdAfx.h"
-#include "OgreNewtonBody.h"
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonRayCast.h"
+#include "OgreNewtonDynamicBody.h"
 #include "OgreNewtonRayPickManager.h"
 
 class OgreNewtonRayPickManager::OgreNewtonRayPicker: public OgreNewtonRayCast
@@ -37,8 +37,10 @@ class OgreNewtonRayPickManager::OgreNewtonRayPicker: public OgreNewtonRayCast
 	dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, const int* const collisionID, dFloat intersectParam)
 	{
 		if (intersectParam < m_param) {
+			dAssert (0);
+/*
 			// skip static bodies
-			OgreNewtonBody* const ogreBody = (OgreNewtonBody*) body;
+			dNewtonBody* const ogreBody = (OgreNewtonBody*) body;
 			Real mass = ogreBody->GetMass();
 			if (mass > 0.0f) {
 				m_bodyHit = ogreBody;
@@ -46,6 +48,7 @@ class OgreNewtonRayPickManager::OgreNewtonRayPicker: public OgreNewtonRayCast
 				m_normal = Vector3 (normal[0], normal[1], normal[2]); 
 				m_contact = Vector3 (contact[0], contact[1], contact[2]); 
 			}
+*/
 		}
 		return intersectParam;
 	}
@@ -76,22 +79,27 @@ void OgreNewtonRayPickManager::PostUpdate (dFloat timestep)
 }
 
 
-OgreNewtonBody* OgreNewtonRayPickManager::RayCast (const Vector3& lineP0, const Vector3& lineP1, Real& pickParam) const
+dNewtonBody* OgreNewtonRayPickManager::RayCast (const Vector3& lineP0, const Vector3& lineP1, Real& pickParam) const
 {
 	OgreNewtonRayPicker rayPicker (m_world);
 
 	rayPicker.CastRay(&lineP0.x, &lineP1.x, 0);
 	pickParam = rayPicker.m_param;
-	return (OgreNewtonBody*) rayPicker.m_bodyHit;
+	return rayPicker.m_bodyHit;
 }	
 
-void OgreNewtonRayPickManager::SetPickedBody (OgreNewtonBody* const body, const Vector3& handle)
+void OgreNewtonRayPickManager::SetPickedBody (dNewtonBody* const body, const Vector3& handle)
 {
 	dNewton::ScopeLock scopelock (&m_lock);
 
 	m_pickedBody = body;
 	if (m_pickedBody) {
-		Matrix4 matrix (body->GetMatrix().inverseAffine());
+		Matrix4 matrix;
+		if (m_pickedBody->GetType() == dNewtonBody::m_dynamic) {
+			matrix = ((OgreNewtonDynamicBody*) body)->GetMatrix().inverseAffine();
+		} else {
+			dAssert (0);
+		}
 		m_localpHandlePoint = matrix.transformAffine(handle);
 		m_globalTarget = handle;
 	}
@@ -109,43 +117,46 @@ void OgreNewtonRayPickManager::PreUpdate(dFloat timestep)
 	// all of the work will be done here;
 	dNewton::ScopeLock scopelock (&m_lock);
 	if (m_pickedBody) {
-		const Vector3 peekTarget(m_globalTarget);
-		const Vector3 peekLocalPosit (m_localpHandlePoint);
+		if (m_pickedBody->GetType() == dNewtonBody::m_dynamic) {
+			OgreNewtonDynamicBody* const body = (OgreNewtonDynamicBody*)m_pickedBody;
+			const Vector3 peekTarget(m_globalTarget);
+			const Vector3 peekLocalPosit (m_localpHandlePoint);
 
-		Real invTimeStep = 1.0f / timestep;
-		Matrix4 matrix (m_pickedBody->GetMatrix());
-		Vector3 omega0 (m_pickedBody->GetOmega());
-		Vector3 veloc0 (m_pickedBody->GetVeloc());
+			Real invTimeStep = 1.0f / timestep;
+			Matrix4 matrix (body->GetMatrix());
+			Vector3 omega0 (body->GetOmega());
+			Vector3 veloc0 (body->GetVeloc());
 
-		Vector3 peekPosit (matrix.transformAffine(peekLocalPosit));
-		Vector3 peekStep (peekTarget - peekPosit);
+			Vector3 peekPosit (matrix.transformAffine(peekLocalPosit));
+			Vector3 peekStep (peekTarget - peekPosit);
 
-		Vector3 pointVeloc (m_pickedBody->GetPointVeloc (peekPosit));
-		Vector3 deltaVeloc (peekStep * (m_stiffness * invTimeStep) - pointVeloc);
+			Vector3 pointVeloc (body->GetPointVeloc (peekPosit));
+			Vector3 deltaVeloc (peekStep * (m_stiffness * invTimeStep) - pointVeloc);
 
-		for (int i = 0; i < 3; i ++) {
-			Vector3 veloc (0.0f, 0.0f, 0.0f);
-			veloc[i] = deltaVeloc[i];
-			m_pickedBody->ApplyImpulseToDesiredPointVeloc (peekPosit, veloc);
+			for (int i = 0; i < 3; i ++) {
+				Vector3 veloc (0.0f, 0.0f, 0.0f);
+				veloc[i] = deltaVeloc[i];
+				body->ApplyImpulseToDesiredPointVeloc (peekPosit, veloc);
+			}
+	//		Vector3 veloc1 (m_pickedBody->GetVeloc());
+	//		Vector3 omega1 (m_pickedBody->GetOmega() * 0.9f);
+
+			// restore body velocity and angular velocity
+	//		m_pickedBody->SetOmega(omega0);
+	//		m_pickedBody->SetVeloc(veloc0);
+
+			// convert the delta velocity change to a external force and torque
+	//		Vector3 inertia (m_pickedBody->GetInertia());
+		
+	//		matrix.setTrans(Vector3(0.0f, 0.0f, 0.0f));
+	//		Matrix4 invMatrix (matrix.transpose());
+	//		Vector3 angularMomentum (matrix.transformAffine(invMatrix.transformAffine(omega1 - omega0) * inertia));
+
+	//		m_pickedBody->AddForce ((veloc1 - veloc0) * (m_pickedBody->GetMass() * invTimeStep));
+	//		m_pickedBody->AddTorque(angularMomentum * invTimeStep);
+		} else {
+			dAssert (0);
 		}
-/*
-		Vector3 veloc1 (m_pickedBody->GetVeloc());
-		Vector3 omega1 (m_pickedBody->GetOmega() * 0.9f);
-
-		// restore body velocity and angular velocity
-		m_pickedBody->SetOmega(omega0);
-		m_pickedBody->SetVeloc(veloc0);
-
-		// convert the delta velocity change to a external force and torque
-		Vector3 inertia (m_pickedBody->GetInertia());
-	
-		matrix.setTrans(Vector3(0.0f, 0.0f, 0.0f));
-		Matrix4 invMatrix (matrix.transpose());
-		Vector3 angularMomentum (matrix.transformAffine(invMatrix.transformAffine(omega1 - omega0) * inertia));
-
-		m_pickedBody->AddForce ((veloc1 - veloc0) * (m_pickedBody->GetMass() * invTimeStep));
-		m_pickedBody->AddTorque(angularMomentum * invTimeStep);
-*/
 	}
 }
 

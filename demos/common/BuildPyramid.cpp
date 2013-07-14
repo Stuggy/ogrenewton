@@ -23,12 +23,12 @@
 
 
 #include <OgreNewtonStdAfx.h>
-#include "OgreNewtonMesh.h"
-#include "OgreNewtonBody.h"
+#include <OgreNewtonMesh.h>
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
+#include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
 
@@ -89,7 +89,7 @@ void BuildPyramid (SceneManager* const sceneMgr, OgreNewtonWorld* const world, c
 		for (int i = 0; i < (base - j) ; i ++) {
 			Entity* const ent = sceneMgr->createEntity(MakeName ("pyramidBox"), mesh);
 			SceneNode* const node = CreateNode (sceneMgr, ent, matrix.getTrans(), matrix.extractQuaternion());
-			new OgreNewtonBody (world, mass, &boxShape, node, matrix);
+			new OgreNewtonDynamicBody (world, mass, &boxShape, node, matrix);
 			matrix[0][3] += blockBoxSize.x;
 		}
 		x0 += (blockBoxSize.x + 0.01f) * 0.5f;

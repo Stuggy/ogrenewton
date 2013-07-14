@@ -160,19 +160,19 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\OgreNewtonBody.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\source\OgreNewtonBody.h"
-			>
-		</File>
-		<File
 			RelativePath="..\..\source\OgreNewtonDebugger.cpp"
 			>
 		</File>
 		<File
 			RelativePath="..\..\source\OgreNewtonDebugger.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonDynamicBody.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonDynamicBody.h"
 			>
 		</File>
 		<File

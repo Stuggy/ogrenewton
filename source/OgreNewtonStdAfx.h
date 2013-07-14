@@ -50,16 +50,16 @@
 #include <OgreTerrain.h>
 #include <OgreTerrainGroup.h>
 
-
 #include <Newton.h>
 #include <dNewton.h>
-#include <dNewtonBody.h>
 #include <dNewtonMesh.h>
 #include <dNewtonRayCast.h>
 #include <dNewtonCollision.h>
+#include <dNewtonDynamicBody.h>
 #include <dNewtonScopeBuffer.h>
 #include <dNewtonTranformLerp.h>
 #include <CustomControllerManager.h>
+
 
 
 #endif

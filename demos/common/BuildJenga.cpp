@@ -23,12 +23,12 @@
 
 
 #include <OgreNewtonStdAfx.h>
-#include "OgreNewtonMesh.h"
-#include "OgreNewtonBody.h"
+#include <OgreNewtonMesh.h>
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
+#include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
 
@@ -91,7 +91,7 @@ void BuildJenga(SceneManager* const sceneMgr, OgreNewtonWorld* const world, cons
 		for (int j = 0; j < 3; j ++) { 
 			Entity* const ent = sceneMgr->createEntity(MakeName ("jengaBox"), mesh);
 			SceneNode* const node = CreateNode (sceneMgr, ent, matrix.getTrans(), matrix.extractQuaternion());
-			new OgreNewtonBody (world, mass, &boxShape, node, matrix);
+			new OgreNewtonDynamicBody (world, mass, &boxShape, node, matrix);
 			matrix.setTrans (matrix.getTrans() + step_x);
 		}
 

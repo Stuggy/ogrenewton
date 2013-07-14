@@ -205,7 +205,7 @@ void DemoApplication::UpdateMousePick ()
 
 			if (!m_mousePickMemory) {
 				m_rayPicker->SetPickedBody (NULL);
-				OgreNewtonBody* const body = m_rayPicker->RayCast (start, end, m_pickParam);
+				dNewtonBody* const body = m_rayPicker->RayCast (start, end, m_pickParam);
 				if (body) {
 					m_rayPicker->SetPickedBody (body, start + (end - start) * m_pickParam);
 				}

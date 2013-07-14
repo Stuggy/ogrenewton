@@ -23,7 +23,6 @@
 #include "OgreNewtonStdAfx.h"
 #include "OgreNewtonMesh.h"
 #include "OgreNewtonWorld.h"
-
 #include "OgreNewtonSceneBody.h"
 
 /*
@@ -205,7 +204,7 @@ class OgreNewtonSceneBody::OgreNewtonCollisionTree: public dNewtonCollisionMesh
 
 
 OgreNewtonSceneBody::OgreNewtonSceneBody (OgreNewtonWorld* const ogreWorld)
-	:OgreNewtonBody ()
+	:dNewtonDynamicBody ()
 {
 	Matrix4 matrix (Matrix4::IDENTITY);
 	dNewtonCollisionScene collision (ogreWorld);
