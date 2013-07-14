@@ -37,18 +37,20 @@ class OgreNewtonRayPickManager::OgreNewtonRayPicker: public OgreNewtonRayCast
 	dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, const int* const collisionID, dFloat intersectParam)
 	{
 		if (intersectParam < m_param) {
-			dAssert (0);
-/*
 			// skip static bodies
-			dNewtonBody* const ogreBody = (OgreNewtonBody*) body;
-			Real mass = ogreBody->GetMass();
+			Real mass = 0.0f;
+			if (body->GetType() == dNewtonBody::m_dynamic) {
+				mass = ((OgreNewtonDynamicBody*) body)->GetMass();
+			} else {
+				dAssert (0);
+			}
+			
 			if (mass > 0.0f) {
-				m_bodyHit = ogreBody;
+				m_bodyHit = (dNewtonBody*) body;
 				m_param = intersectParam;
 				m_normal = Vector3 (normal[0], normal[1], normal[2]); 
 				m_contact = Vector3 (contact[0], contact[1], contact[2]); 
 			}
-*/
 		}
 		return intersectParam;
 	}

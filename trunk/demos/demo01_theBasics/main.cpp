@@ -149,7 +149,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
 
 		Light* const light0 = mSceneMgr->createLight( "Light0" );
-		Vector3 lightdir(0.55f, -0.3f, 0.75f);
+		Vector3 lightdir(-0.55f, -0.3f, -0.75f);
 		light0->setType(Light::LT_DIRECTIONAL);
 		light0->setDirection(lightdir);
 		light0->setDiffuseColour(ColourValue(1.0f, 1.0f, 1.0f));
