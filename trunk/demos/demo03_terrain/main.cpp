@@ -24,11 +24,11 @@
 
 #include <OgreNewtonStdAfx.h>
 #include <OgreNewtonMesh.h>
-#include <OgreNewtonBody.h>
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
+#include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
 
@@ -234,7 +234,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 			SceneNode* const node = CreateNode (mSceneMgr, ent, cameraPosit, cameraRotation);
 			Matrix4 matrix;
 			matrix.makeTransform (cameraPosit, Vector3(1.0f, 1.0f, 1.0f), cameraRotation);
-			OgreNewtonBody* const body = new OgreNewtonBody (m_physicsWorld, 30.0f, m_shootingCollisions[index], node, matrix);
+			OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_physicsWorld, 30.0f, m_shootingCollisions[index], node, matrix);
 
 			const Real speed = -40.0f;
 			Vector3 veloc (Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * speed);   

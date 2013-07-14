@@ -24,12 +24,12 @@
 #define _OGRE_NEWTON_SCENE_BODY_H_
 
 #include "OgreNewtonStdAfx.h"
-#include "OgreNewtonBody.h"
+#include "OgreNewtonRayPickManager.h"
 
 using namespace Ogre;
 
 
-class OgreNewtonSceneBody: public OgreNewtonBody
+class OgreNewtonSceneBody: public dNewtonDynamicBody
 {
 	public:
 	OgreNewtonSceneBody (OgreNewtonWorld* const world);

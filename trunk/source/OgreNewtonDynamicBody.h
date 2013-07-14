@@ -28,13 +28,13 @@
 using namespace Ogre;
 class OgreNewtonWorld;
 
-class OgreNewtonBody: public dNewtonBody
+class OgreNewtonDynamicBody: public dNewtonDynamicBody
 {
 	public:
-	OgreNewtonBody (OgreNewtonWorld* const dWorld, Real mass, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location);
-	~OgreNewtonBody();
+	OgreNewtonDynamicBody (OgreNewtonWorld* const dWorld, Real mass, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location);
+	~OgreNewtonDynamicBody();
 	virtual void OnForceAndTorque (dFloat timestep, int threadIndex);
-
+	
 	Matrix4 GetMatrix() const;
 	void SetMatrix (const Matrix4& matrix);
 
@@ -57,11 +57,11 @@ class OgreNewtonBody: public dNewtonBody
 	void ApplyImpulseToDesiredPointVeloc (const Vector3& point, const Vector3& desiredveloc);
 
 	protected:
-	OgreNewtonBody();
+	OgreNewtonDynamicBody();
 };
 
 
-inline Real OgreNewtonBody::GetMass() const
+inline Real OgreNewtonDynamicBody::GetMass() const
 {
 	Real mass;
 	Real Ixx;
@@ -72,7 +72,7 @@ inline Real OgreNewtonBody::GetMass() const
 	return mass;
 }
 
-inline Vector3 OgreNewtonBody::GetInertia() const
+inline Vector3 OgreNewtonDynamicBody::GetInertia() const
 {
 	Real mass;
 	Real Ixx;
@@ -83,75 +83,75 @@ inline Vector3 OgreNewtonBody::GetInertia() const
 	return Vector3 (Ixx, Iyy, Izz);
 }
 
-inline Matrix4 OgreNewtonBody::GetMatrix() const
+inline Matrix4 OgreNewtonDynamicBody::GetMatrix() const
 {
 	Matrix4 matrix;
-	dNewtonBody::GetMatrix(matrix[0]);
+	dNewtonDynamicBody::GetMatrix(matrix[0]);
 	return matrix.transpose();
 }
 
 
-inline void OgreNewtonBody::SetMatrix (const Matrix4& matrix)
+inline void OgreNewtonDynamicBody::SetMatrix (const Matrix4& matrix)
 {
 	Matrix4 matrixTrans(matrix.transpose());
-	dNewtonBody::SetMatrix(matrixTrans[0]);
+	dNewtonDynamicBody::SetMatrix(matrixTrans[0]);
 }
 
-inline void OgreNewtonBody::SetVeloc (const Vector3& veloc)
+inline void OgreNewtonDynamicBody::SetVeloc (const Vector3& veloc)
 {
-	dNewtonBody::SetVeloc(&veloc.x);
+	dNewtonDynamicBody::SetVeloc(&veloc.x);
 }
 
-inline Vector3 OgreNewtonBody::GetVeloc () const
+inline Vector3 OgreNewtonDynamicBody::GetVeloc () const
 {
 	Vector3 veloc;
-	dNewtonBody::GetOmega(&veloc.x);
+	dNewtonDynamicBody::GetOmega(&veloc.x);
 	return veloc;
 }
 
-inline void OgreNewtonBody::SetOmega (const Vector3& omega)
+inline void OgreNewtonDynamicBody::SetOmega (const Vector3& omega)
 {
-	dNewtonBody::SetOmega(&omega.x);
+	dNewtonDynamicBody::SetOmega(&omega.x);
 }
 
-inline Vector3 OgreNewtonBody::GetOmega () const
+inline Vector3 OgreNewtonDynamicBody::GetOmega () const
 {
 	Vector3 omega;
-	dNewtonBody::GetOmega(&omega.x);
+	dNewtonDynamicBody::GetOmega(&omega.x);
 	return omega;
 }
 
-inline void OgreNewtonBody::SetForce (const Vector3& force)
+inline void OgreNewtonDynamicBody::SetForce (const Vector3& force)
 {
-	dNewtonBody::SetForce (&force.x);
+	dNewtonDynamicBody::SetForce (&force.x);
 }
 
-inline void OgreNewtonBody::SetTorque (const Vector3& torque)
+inline void OgreNewtonDynamicBody::SetTorque (const Vector3& torque)
 {
-	dNewtonBody::SetTorque (&torque.x);
+	dNewtonDynamicBody::SetTorque (&torque.x);
 }
 
-inline void OgreNewtonBody::AddForce (const Vector3& force)
+inline void OgreNewtonDynamicBody::AddForce (const Vector3& force)
 {
-	dNewtonBody::AddForce (&force.x);
+	dNewtonDynamicBody::AddForce (&force.x);
 }
 
-inline void OgreNewtonBody::AddTorque (const Vector3& torque)
+inline void OgreNewtonDynamicBody::AddTorque (const Vector3& torque)
 {
-	dNewtonBody::AddTorque (&torque.x);
+	dNewtonDynamicBody::AddTorque (&torque.x);
 }
 
 
-inline Vector3 OgreNewtonBody::GetPointVeloc (const Vector3& point) const
+inline Vector3 OgreNewtonDynamicBody::GetPointVeloc (const Vector3& point) const
 {
 	Vector3 veloc;
-	dNewtonBody::GetPointVeloc (&point.x, &veloc.x);
+	dNewtonDynamicBody::GetPointVeloc (&point.x, &veloc.x);
 	return veloc;
 }
 
-inline void OgreNewtonBody::ApplyImpulseToDesiredPointVeloc (const Vector3& point, const Vector3& desiredveloc)
+inline void OgreNewtonDynamicBody::ApplyImpulseToDesiredPointVeloc (const Vector3& point, const Vector3& desiredveloc)
 {
-	dNewtonBody::ApplyImpulseToDesiredPointVeloc (&point.x, &desiredveloc.x);
+	dNewtonDynamicBody::ApplyImpulseToDesiredPointVeloc (&point.x, &desiredveloc.x);
 }
 
 

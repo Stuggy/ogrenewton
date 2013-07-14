@@ -21,26 +21,25 @@
 
 
 #include "OgreNewtonStdAfx.h"
-#include "OgreNewtonBody.h"
 #include "OgreNewtonWorld.h"
+#include "OgreNewtonDynamicBody.h"
 
-
-OgreNewtonBody::OgreNewtonBody (OgreNewtonWorld* const world, Real mass, const dNewtonCollision* const collision, SceneNode* const treeNode, const Matrix4& location)
-	:dNewtonBody (world, mass, collision, treeNode, location.transpose()[0])
+OgreNewtonDynamicBody::OgreNewtonDynamicBody (OgreNewtonWorld* const world, Real mass, const dNewtonCollision* const collision, SceneNode* const treeNode, const Matrix4& location)
+	:dNewtonDynamicBody (world, mass, collision, treeNode, location.transpose()[0])
 {
 }
 
-OgreNewtonBody::OgreNewtonBody()
-	:dNewtonBody()
+OgreNewtonDynamicBody::OgreNewtonDynamicBody()
+	:dNewtonDynamicBody()
 {
 }
 
-OgreNewtonBody::~OgreNewtonBody()
+OgreNewtonDynamicBody::~OgreNewtonDynamicBody()
 {
 }
 
 
-void OgreNewtonBody::OnForceAndTorque (dFloat timestep, int threadIndex)
+void OgreNewtonDynamicBody::OnForceAndTorque (dFloat timestep, int threadIndex)
 {
 	const OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 	SetForce (world->GetGravity() * GetMass());
