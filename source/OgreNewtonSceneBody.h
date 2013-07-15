@@ -29,7 +29,7 @@
 using namespace Ogre;
 
 
-class OgreNewtonSceneBody: public dNewtonDynamicBody
+class OGRE_NEWTON_API OgreNewtonSceneBody: public dNewtonDynamicBody
 {
 	public:
 	OgreNewtonSceneBody (OgreNewtonWorld* const world);

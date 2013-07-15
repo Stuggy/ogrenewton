@@ -32,7 +32,7 @@ class OgreNewtonWorld;
 class OgreNewtonPlayerController;
 
 
-class OgreNewtonPlayerManager: public CustomPlayerControllerManager
+class OGRE_NEWTON_API OgreNewtonPlayerManager: public CustomPlayerControllerManager
 {
 	public:
 	OgreNewtonPlayerManager (OgreNewtonWorld* const world);
@@ -45,7 +45,7 @@ class OgreNewtonPlayerManager: public CustomPlayerControllerManager
 };
 
 
-class OgreNewtonPlayerController: public dNewtonAlloc
+class OGRE_NEWTON_API OgreNewtonPlayerController: public dNewtonAlloc
 {
 	public:
 	~OgreNewtonPlayerController();

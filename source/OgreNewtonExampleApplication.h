@@ -30,7 +30,7 @@ using namespace Ogre;
 
 
 
-class OgreNewtonExampleApplication: public OgreNewtonApplication
+class OGRE_NEWTON_API OgreNewtonExampleApplication: public OgreNewtonApplication
 {
 	public:
 	OgreNewtonExampleApplication();

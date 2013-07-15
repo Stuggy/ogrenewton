@@ -26,7 +26,7 @@ using namespace Ogre;
 
 class OgreNewtonBody;
 
-class OgreNewtonDebugger: public FrameListener
+class OGRE_NEWTON_API OgreNewtonDebugger: public FrameListener
 {
     public:
 

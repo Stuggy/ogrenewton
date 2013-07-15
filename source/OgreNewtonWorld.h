@@ -29,7 +29,7 @@ using namespace Ogre;
 
 class OgreNewtonApplication;
 
-class OgreNewtonWorld: public FrameListener, public dNewton 
+class OGRE_NEWTON_API OgreNewtonWorld: public FrameListener, public dNewton 
 {
 	public:
 	OgreNewtonWorld (OgreNewtonApplication* const application, int updateFramerate = 120);
