@@ -130,7 +130,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		newtonMesh.Polygonize();
 
 		// the house is too big we mus scale by some value
-		const Real houseScale = 0.035f;
+		const Real houseScale = 0.02f;
 		newtonMesh.ApplyTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(houseScale, houseScale, houseScale), Quaternion(Quaternion::IDENTITY));
 
 		//now make a collision tree for this mesh
@@ -140,12 +140,12 @@ class OgreNewtonDemoApplication: public DemoApplication
 		Vector3 origin (mCamera->getPosition());
 
 		sceneBody->BeginAddRemoveCollision();
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (  0.0f, 0.0f, -500.0f)), houseScale, collision, houseEntity);
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 ( 80.0f, 0.0f, -500.0f)), houseScale, collision, houseEntity);
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (-80.0f, 0.0f, -500.0f)), houseScale, collision, houseEntity);
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (  0.0f, 0.0f, -200.0f)), houseScale, collision, houseEntity);
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 ( 60.0f, 0.0f, -200.0f)), houseScale, collision, houseEntity);
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (-60.0f, 0.0f, -200.0f)), houseScale, collision, houseEntity);
 
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 ( 80.0f, 0.0f, -550.0f)), houseScale, collision, houseEntity);
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (-80.0f, 0.0f, -550.0f)), houseScale, collision, houseEntity);
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 ( 60.0f, 0.0f, -250.0f)), houseScale, collision, houseEntity);
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (-60.0f, 0.0f, -250.0f)), houseScale, collision, houseEntity);
 
 		sceneBody->EndAddRemoveCollision();
 
@@ -347,8 +347,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 		OgreNewtonSceneBody* const sceneBody = loadStaticScene ();
 
 		// taken from Ogre SDK demos, but using a ray cast to find the ground
-		Vector3 start (1683.0f, 1000.0f, 2116.0f);
-		Vector3 end (1683.0f, -1000.0f, 2116.0f);
+		Vector3 start (1683.0f, 1000.0f, 1800.0f);
+		Vector3 end (1683.0f, -1000.0f, 1800.0f);
 		OgreNewtonRayCast raycaster(m_physicsWorld); 
 		raycaster.CastRay (&start.x, &end.x);
 
