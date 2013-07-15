@@ -208,6 +208,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\demo05_playerController.vcproj"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\demos\common\DemoApplication.cpp"
 			>
 		</File>

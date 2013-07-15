@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="demo04_playerController"
+	Name="demo05_playerController"
 	ProjectGUID="{BC3F09A7-971E-4101-B1A6-54AFA9180777}"
 	RootNamespace="Quake3Map_vc9"
 	TargetFrameworkVersion="131072"
@@ -220,7 +220,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\demos\demo04_playercontroller\playerDemo.cpp"
+			RelativePath="..\..\..\demos\demo05_playerController\playerDemo.cpp"
 			>
 		</File>
 		<File

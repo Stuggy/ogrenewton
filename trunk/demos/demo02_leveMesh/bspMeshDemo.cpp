@@ -64,13 +64,13 @@ class OgreNewtonDemoApplication: public DemoApplication
 		sceneBody->BeginAddRemoveCollision();
 
 		// floor object!
-		Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
-		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "playground.mesh" );
-		//Entity* const floor = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
+		Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
+		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "playground.mesh" );
+		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
 
 		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
-		floorNode->attachObject( floor );
-		floor->setCastShadows( false );
+		floorNode->attachObject( levelMap );
+		levelMap->setCastShadows( false );
 
 		// add this collision to the scene body
 		sceneBody->AddCollisionTree (floorNode);
