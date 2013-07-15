@@ -130,7 +130,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		newtonMesh.Polygonize();
 
 		// the house is too big we mus scale by some value
-		const Real houseScale = 0.05f;
+		const Real houseScale = 0.035f;
 		newtonMesh.ApplyTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(houseScale, houseScale, houseScale), Quaternion(Quaternion::IDENTITY));
 
 		//now make a collision tree for this mesh
