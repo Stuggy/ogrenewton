@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="demo01_theBasics"
-	ProjectGUID="{D1A464A2-D479-458C-98A2-60965D823CD1}"
+	Name="demo04_playerController"
+	ProjectGUID="{BC3F09A7-971E-4101-B1A6-54AFA9180777}"
 	RootNamespace="Quake3Map_vc9"
 	TargetFrameworkVersion="131072"
 	>
@@ -204,22 +204,6 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\demos\common\BuildJenga.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\BuildJenga.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\BuildPyramid.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\BuildPyramid.h"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\demos\common\DemoApplication.cpp"
 			>
 		</File>
@@ -228,15 +212,15 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\demos\demo01_theBasics\engineSetDemo.cpp"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\demos\common\MouseCursor.cpp"
 			>
 		</File>
 		<File
 			RelativePath="..\..\..\demos\common\MouseCursor.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\demo04_playercontroller\playerDemo.cpp"
 			>
 		</File>
 		<File
