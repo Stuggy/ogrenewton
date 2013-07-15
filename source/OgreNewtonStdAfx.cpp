@@ -23,4 +23,32 @@
 
 #include "OgreNewtonStdAfx.h"
 
+#ifdef _OGRE_NEWTON_BUILD_DLL
+
+BOOL APIENTRY DllMain( HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+{
+	switch (ul_reason_for_call)
+	{
+		case DLL_PROCESS_ATTACH:
+		case DLL_THREAD_ATTACH:
+		case DLL_THREAD_DETACH:
+		case DLL_PROCESS_DETACH:
+			break;
+	}
+	return TRUE;
+}
+
+
+
+void* operator new (size_t size) 
+{ 
+	return NewtonAlloc(int (size));
+}
+
+void operator delete (void* ptr) 
+{ 
+	NewtonFree(ptr);
+}
+#endif
+
 
