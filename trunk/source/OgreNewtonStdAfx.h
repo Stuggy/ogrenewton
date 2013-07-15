@@ -62,6 +62,27 @@
 #include <CustomPlayerControllerManager.h>
 
 
+#ifdef _OGRE_NEWTON_STATIC_LIB
+	#define OGRE_NEWTON_API
+#else 
+	#ifdef _OGRE_NEWTON_BUILD_DLL
+		#ifdef _WIN32
+			#define OGRE_NEWTON_API __declspec (dllexport)
+		#else
+			#define OGRE_NEWTON_API __attribute__ ((visibility("default")))
+		#endif
+	#else
+		#ifdef _WIN32
+			#define OGRE_NEWTON_API __declspec (dllimport)
+		#else
+			#define OGRE_NEWTON_API
+		#endif
+	#endif
+#endif
+
+
+
+
 
 #endif
 
