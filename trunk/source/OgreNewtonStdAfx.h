@@ -59,6 +59,7 @@
 #include <dNewtonScopeBuffer.h>
 #include <dNewtonTranformLerp.h>
 #include <CustomControllerManager.h>
+#include <CustomPlayerControllerManager.h>
 
 
 

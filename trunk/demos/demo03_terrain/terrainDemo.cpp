@@ -375,30 +375,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 
-
-
-/*
-{
-Vector3 cameraPosit;
-Quaternion cameraRotation;
-GetInterpolatedCameraMatrix (cameraPosit, cameraRotation);
-
-int index = (rand() >> 3) % int (sizeof (m_shootingMesh) / sizeof (m_shootingMesh[0]));
-index = 0;
-
-Entity* const ent = mSceneMgr->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
-SceneNode* const node = CreateNode (mSceneMgr, ent, cameraPosit, cameraRotation);
-Matrix4 matrix;
-matrix.makeTransform (cameraPosit, Vector3(1.0f, 1.0f, 1.0f), cameraRotation);
-OgreNewtonBody* const body = new OgreNewtonBody (m_physicsWorld, 30.0f, m_shootingCollisions[index], node, matrix);
-
-const Real speed = -40.0f;
-Vector3 veloc (Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * speed);   
-body->SetVeloc(veloc);
-}
-*/
-
-
 	}
 
 	Real m_shootingTimer;
