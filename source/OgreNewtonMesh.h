@@ -45,13 +45,21 @@ class OgreNewtonMesh: public dNewtonMesh
 
 	OgreNewtonMesh (dNewton* const world);
 	OgreNewtonMesh (const dNewtonCollision* const collision);
+	OgreNewtonMesh (dNewton* const world, const Entity* const entity);
+	OgreNewtonMesh (dNewton* const world, SceneNode* const sceneNode);
+
 	virtual ~OgreNewtonMesh();
 
-	void BuildFromSceneNode(SceneNode* const sceneNode);
+	void ApplyTransform (const Vector3& posit, const Vector3& scale, const Quaternion& rotaion);
+
+//	void BuildFromSceneNode(SceneNode* const sceneNode);
 
 	int AddMaterial (const Ogre::MaterialPtr& material);
-
 	ManualObject* CreateEntity (const String& name) const;
+
+	private:
+	void ParseEntity (const Entity* const entity);
+	
 
 	MaterialMap m_materialMap;	
 };
