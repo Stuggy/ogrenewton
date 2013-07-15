@@ -30,9 +30,6 @@ using namespace Ogre;
 #define OGRE_RAY_PICKER_PLUGIN_NAME		"rayPickManager"
 
 
-class OgreNewtonBody;
-//class OgreNewtonWorld;
-
 class OgreNewtonRayPickController
 {
 	CUSTOM_CONTROLLER_GLUE(OgreNewtonRayPickController);

@@ -192,6 +192,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\source\OgreNewtonPlayerManager.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonPlayerManager.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\OgreNewtonRayCast.cpp"
 			>
 		</File>
