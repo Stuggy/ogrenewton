@@ -204,15 +204,15 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\demos\demo02_leveMesh\bspMeshDemo.cpp"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\demos\common\DemoApplication.cpp"
 			>
 		</File>
 		<File
 			RelativePath="..\..\..\demos\common\DemoApplication.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\demo02_leveMesh\main.cpp"
 			>
 		</File>
 		<File

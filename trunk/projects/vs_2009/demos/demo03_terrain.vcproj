@@ -212,10 +212,6 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\demos\demo03_terrain\main.cpp"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\demos\common\MouseCursor.cpp"
 			>
 		</File>
@@ -229,6 +225,10 @@
 		</File>
 		<File
 			RelativePath="..\..\..\demos\common\ScreenWriter.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\demo03_terrain\terrainDemo.cpp"
 			>
 		</File>
 		<File
