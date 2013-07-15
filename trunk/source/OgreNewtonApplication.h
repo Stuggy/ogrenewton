@@ -35,7 +35,7 @@ using namespace Ogre;
 #include <ExampleFrameListener.h>
 
 
-class OgreNewtonApplication: public ExampleApplication
+class OGRE_NEWTON_API OgreNewtonApplication: public ExampleApplication
 {
 	public:
 	OgreNewtonApplication();

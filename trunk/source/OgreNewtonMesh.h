@@ -29,7 +29,7 @@ using namespace Ogre;
 
 class OgreNewtonWorld;
 
-class OgreNewtonMesh: public dNewtonMesh
+class OGRE_NEWTON_API OgreNewtonMesh: public dNewtonMesh
 {
 	public:
 	class MaterialMap: public std::map<int, Ogre::MaterialPtr> 

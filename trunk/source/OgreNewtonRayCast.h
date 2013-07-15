@@ -28,7 +28,7 @@
 using namespace Ogre;
 
 
-class OgreNewtonRayCast: public dNewtonRayCast
+class OGRE_NEWTON_API OgreNewtonRayCast: public dNewtonRayCast
 {
 	public:
 	OgreNewtonRayCast(dNewton* const world);

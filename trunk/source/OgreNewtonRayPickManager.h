@@ -30,7 +30,7 @@ using namespace Ogre;
 #define OGRE_RAY_PICKER_PLUGIN_NAME		"rayPickManager"
 
 
-class OgreNewtonRayPickController
+class OGRE_NEWTON_API OgreNewtonRayPickController
 {
 	CUSTOM_CONTROLLER_GLUE(OgreNewtonRayPickController);
 
@@ -47,7 +47,7 @@ class OgreNewtonRayPickController
 };
 
 
-class OgreNewtonRayPickManager: public CustomControllerManager<OgreNewtonRayPickController> 
+class OGRE_NEWTON_API OgreNewtonRayPickManager: public CustomControllerManager<OgreNewtonRayPickController> 
 {
 	public:
 
