@@ -228,7 +228,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\demos\demo01_theBasics\engineSetDemo.cpp"
+			RelativePath="..\..\..\demos\demo01_theBasics\engineSetupDemo.cpp"
 			>
 		</File>
 		<File
