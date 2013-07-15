@@ -44,15 +44,11 @@ using namespace Ogre;
 
 class OgreNewtonDemoApplication: public DemoApplication
 {
-	public:
+public:
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
-		,m_playerManager(NULL)
 		,m_shootingTimer(0.25f)
-		,m_terrainGroup(NULL)
-		,m_terrainGlobals(NULL)
-		,m_terrainsImported(false)
 	{
 	}
 
@@ -60,231 +56,40 @@ class OgreNewtonDemoApplication: public DemoApplication
 	{
 	}
 
-	protected:
-	OgreNewtonSceneBody* loadStaticScene ()
+protected:
+	void loadStaticScene ()
 	{
-
 		// create a scene body to add all static collidable meshes in the world 
 		OgreNewtonSceneBody* const sceneBody = new OgreNewtonSceneBody (m_physicsWorld);
 
 		// start adding collision shape to the scene body
 		sceneBody->BeginAddRemoveCollision();
 
-		// load a visual ogre terrain
-		LoadVisualTerrain();
+		// floor object!
+		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
+		Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
 
-		// iterate over all terrain tile and add a collision for each one
-		TerrainGroup::TerrainIterator ti = m_terrainGroup->getTerrainIterator();
-		while(ti.hasMoreElements())	{
-			Terrain* const terrain = ti.getNext()->instance;
-			sceneBody->AddTerrain (terrain);
-		}
+		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
+		floorNode->attachObject( levelMap );
+		levelMap->setCastShadows( false );
+
+		// add this collision to the scene body
+		sceneBody->AddCollisionTree (floorNode);
 
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
-
-		return sceneBody;
-	}
-
-	void AddOgreHouse(OgreNewtonSceneBody* const sceneBody, const Vector3& location, Real scale, dNewtonCollisionMesh& collision, Entity* const entity) 
-	{
-		Entity* const houseEntity = mSceneMgr->createEntity(MakeName ("house"), entity->getMesh());
-		SceneNode* houseNode = mSceneMgr->getRootSceneNode()->createChildSceneNode (MakeName("house"));
-		houseNode->attachObject (houseEntity);
-
-		Vector3 start (location + Vector3 (0.0f, 500.0f, 0.0f));
-		Vector3 end (location + Vector3 (0.0f, -500.0f, 0.0f));
-		OgreNewtonRayCast raycaster(m_physicsWorld); 
-		raycaster.CastRay (&start.x, &end.x);
-		Quaternion rot;
-		rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
-		houseNode->setScale(Vector3(scale, scale, scale));
-
-		// calculate the aabb of this mesh so that we can rise the the bottom 
-		Vector3 p0;
-		Vector3 p1;
-		Matrix4 matrix (Matrix4::IDENTITY);
-		collision.CalculateAABB (&matrix[0][0], &p0.x, &p1.x);
-		Real bottom = (p1.y - p0.y) * 0.5f;
-		Vector3 position (raycaster.m_contact + Vector3 (0.0f, bottom, 0.0f));
-
-		// set the matrix for teh visual mesh
-		houseNode->setPosition (position);
-		houseNode->setOrientation(rot);
-
-		// set the collision matrix and add a copy of this collision to the world
-		Matrix4 collisionMatrix;
-		collisionMatrix.makeTransform(position, Vector3(1.0f, 1.0f, 1.0f), rot);
-		collisionMatrix = collisionMatrix.transpose();
-		collision.SetMatrix(&collisionMatrix[0][0]);
-		sceneBody->AddCollision (&collision);
-	}
-
-	void AddOgreHouse(OgreNewtonSceneBody* const sceneBody) 
-	{
-		// we are going to place the same mode few time, therefore let us reuse the same asset
-		Entity* const houseEntity = mSceneMgr->createEntity (MakeName("house"), "tudorhouse.mesh");
-		houseEntity->setCastShadows (true);
-
-		// convert the entity to a newton mesh
-		OgreNewtonMesh newtonMesh (m_physicsWorld, houseEntity);
-		// optimize the mesh
-		newtonMesh.Polygonize();
-
-		// the house is too big we mus scale by some value
-		const Real houseScale = 0.02f;
-		newtonMesh.ApplyTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(houseScale, houseScale, houseScale), Quaternion(Quaternion::IDENTITY));
-
-		//now make a collision tree for this mesh
-		dNewtonCollisionMesh collision (m_physicsWorld,newtonMesh, 0);
-
-		// now we can use this collision as many time as we want
-		Vector3 origin (mCamera->getPosition());
-
-		sceneBody->BeginAddRemoveCollision();
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (  0.0f, 0.0f, -200.0f)), houseScale, collision, houseEntity);
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 ( 60.0f, 0.0f, -200.0f)), houseScale, collision, houseEntity);
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (-60.0f, 0.0f, -200.0f)), houseScale, collision, houseEntity);
-
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 ( 60.0f, 0.0f, -250.0f)), houseScale, collision, houseEntity);
-		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (-60.0f, 0.0f, -250.0f)), houseScale, collision, houseEntity);
-
-		sceneBody->EndAddRemoveCollision();
-
-		//delete houseEntity;
-	}
-
-	void getTerrainImage(bool flipX, bool flipY, Image& img)
-	{
-		img.load("terrain.png", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-		if (flipX) {
-			img.flipAroundY();
-		}
-		if (flipY) {
-			img.flipAroundX();
-		}
-	}
-
-
-	void defineTerrain(long x, long y)
-	{
-		String filename = m_terrainGroup->generateFilename(x, y);
-		if (ResourceGroupManager::getSingleton().resourceExists(m_terrainGroup->getResourceGroup(), filename)) {
-			m_terrainGroup->defineTerrain(x, y);
-		} else {
-			Image img;
-			getTerrainImage(x % 2 != 0, y % 2 != 0, img);
-			m_terrainGroup->defineTerrain(x, y, &img);
-			m_terrainsImported = true;
-		}
-	}
-
-
-	void configureTerrainDefaults ()
-	{
-		// Configure global
-		m_terrainGlobals->setMaxPixelError(8);
-		// testing composite map
-		m_terrainGlobals->setCompositeMapDistance(3000);
-
-		// Important to set these so that the terrain knows what to use for derived (non-realtime) data
-		m_terrainGlobals->setLightMapDirection(m_light0->getDerivedDirection());
-		m_terrainGlobals->setCompositeMapAmbient(mSceneMgr->getAmbientLight());
-		m_terrainGlobals->setCompositeMapDiffuse(m_light0->getDiffuseColour());
-
-		// Configure default import settings for if we use imported image
-		Terrain::ImportData& defaultimp = m_terrainGroup->getDefaultImportSettings();
-		defaultimp.terrainSize = 513;
-		defaultimp.worldSize = 12000.0f;
-		defaultimp.inputScale = 600;
-		defaultimp.minBatchSize = 33;
-		defaultimp.maxBatchSize = 65;
-		// textures
-		defaultimp.layerList.resize(3);
-		defaultimp.layerList[0].worldSize = 100;
-		defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_diffusespecular.dds");
-		defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_normalheight.dds");
-		defaultimp.layerList[1].worldSize = 30;
-		defaultimp.layerList[1].textureNames.push_back("grass_green-01_diffusespecular.dds");
-		defaultimp.layerList[1].textureNames.push_back("grass_green-01_normalheight.dds");
-		defaultimp.layerList[2].worldSize = 200;
-		defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
-		defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
-	}
-
-
-	void initBlendMaps(Terrain* const terrain)
-	{
-		TerrainLayerBlendMap* blendMap0 = terrain->getLayerBlendMap(1);
-		TerrainLayerBlendMap* blendMap1 = terrain->getLayerBlendMap(2);
-		Real minHeight0 = 70;
-		Real fadeDist0 = 40;
-		Real minHeight1 = 70;
-		Real fadeDist1 = 15;
-		float* pBlend0 = blendMap0->getBlendPointer();
-		float* pBlend1 = blendMap1->getBlendPointer();
-		for (uint16 y = 0; y < terrain->getLayerBlendMapSize(); ++y) {
-			for (uint16 x = 0; x < terrain->getLayerBlendMapSize(); ++x) {
-				Real tx, ty;
-
-				blendMap0->convertImageToTerrainSpace(x, y, &tx, &ty);
-				Real height = terrain->getHeightAtTerrainPosition(tx, ty);
-				Real val = (height - minHeight0) / fadeDist0;
-				val = Math::Clamp(val, (Real)0, (Real)1);
-				*pBlend0++ = val;
-
-				val = (height - minHeight1) / fadeDist1;
-				val = Math::Clamp(val, (Real)0, (Real)1);
-				*pBlend1++ = val;
-			}
-		}
-		blendMap0->dirty();
-		blendMap1->dirty();
-		blendMap0->update();
-		blendMap1->update();
-	}
-
-	void LoadVisualTerrain()
-	{
-		m_terrainGlobals = OGRE_NEW TerrainGlobalOptions();
-	 	m_terrainGroup = OGRE_NEW TerrainGroup(mSceneMgr, Terrain::ALIGN_X_Z, 513, 12000.0f);
-
-		//m_terrainGroup->setFilenameConvention(String("BasicTutorial3Terrain"), String("dat"));
-		m_terrainGroup->setFilenameConvention(String("testTerrain"), String("dat"));
-		m_terrainGroup->setOrigin(Vector3::ZERO);
-	 
-		//configureTerrainDefaults(light);
-		configureTerrainDefaults();
-	 
-		for (long x = 0; x < 1; ++x) {
-			for (long y = 0; y < 1; ++y) {
-				defineTerrain(x, y);
-			}
-		}
-	 
-		// sync load since we want everything in place when we start
-		m_terrainGroup->loadAllTerrains(true);
-	 
-		if (m_terrainsImported) {
-			TerrainGroup::TerrainIterator ti = m_terrainGroup->getTerrainIterator();
-			while(ti.hasMoreElements())	{
-				Terrain* t = ti.getNext()->instance;
-				initBlendMaps(t);
-			}
-		}
-	 
-		m_terrainGroup->freeTemporaryResources();
 	}
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
 	}
 
+
 	void createFrameListener()
 	{
 		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-//		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
-//		mRoot->addFrameListener(m_listener);
+		//		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
+		//		mRoot->addFrameListener(m_listener);
 	}
 
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
@@ -300,9 +105,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 			GetInterpolatedCameraMatrix (cameraPosit, cameraRotation);
 
 			int index = (rand() >> 3) % int (sizeof (m_shootingMesh) / sizeof (m_shootingMesh[0]));
-			//index = 0;
 
-   		 	Entity* const ent = mSceneMgr->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
+			Entity* const ent = mSceneMgr->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
 			SceneNode* const node = CreateNode (mSceneMgr, ent, cameraPosit, cameraRotation);
 			Matrix4 matrix;
 			matrix.makeTransform (cameraPosit, Vector3(1.0f, 1.0f, 1.0f), cameraRotation);
@@ -312,14 +116,11 @@ class OgreNewtonDemoApplication: public DemoApplication
 			Vector3 veloc (Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * speed);   
 			body->SetVeloc(veloc);
 		}
-			
+
 	}
 
 	virtual void destroyScene()
 	{
-	    OGRE_DELETE m_terrainGroup;
-		OGRE_DELETE m_terrainGlobals;
-
 		for (int i = 0; i < int (sizeof (m_shootingCollisions) / sizeof (m_shootingCollisions[0])); i ++) {
 			delete m_shootingCollisions[i];
 		}
@@ -332,40 +133,43 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		//make a light
 		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
-		m_light0 = mSceneMgr->createLight( "Light0" );
-	
 
-		Vector3 lightdir(0.55f, -0.3f, -0.75f);
-		m_light0->setType(Light::LT_DIRECTIONAL);
-		m_light0->setDirection(lightdir);
-		m_light0->setDiffuseColour(ColourValue(1.0f, 1.0f, 1.0f));
-		m_light0->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
-		
+		Light* const light0 = mSceneMgr->createLight( "Light0" );
+		Vector3 lightdir0(-0.55f, -0.5f, -0.75f);
+		light0->setType(Light::LT_DIRECTIONAL);
+		light0->setDirection(lightdir0);
+		light0->setDiffuseColour(ColourValue(1.0f, 1.0f, 1.0f));
+		light0->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
+
+
+		Light* const light1 = mSceneMgr->createLight( "Light1" );
+		Vector3 lightdir1(0.4f, -0.9f, 0.5f);
+		light1->setType(Light::LT_DIRECTIONAL);
+		light1->setDirection(lightdir1);
+		light1->setDiffuseColour(ColourValue(1.0f, 1.0f, 1.0f));
+		light1->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
+
+
+
 		// sky box.
 		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 		mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");
 
 		// load all of the static geometry
-		OgreNewtonSceneBody* const sceneBody = loadStaticScene ();
+		loadStaticScene ();
 
-		// taken from Ogre SDK demos, but using a ray cast to find the ground
-		Vector3 start (1683.0f, 1000.0f, 1800.0f);
-		Vector3 end (1683.0f, -1000.0f, 1800.0f);
+		// position camera using the ray cast functionality
+		Vector3 start(-1.0f,  1000.0f, 4.0f);
+		Vector3 end  (-1.0f, -1000.0f, 4.0f);
 		OgreNewtonRayCast raycaster(m_physicsWorld); 
 		raycaster.CastRay (&start.x, &end.x);
 
-		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 10.0f, 0.0f));
+		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 1.0f, 0.0f));
 		mCamera->setPosition(origin);
-		mCamera->lookAt(raycaster.m_contact + Vector3(0.0f, 10.0f, -200.0f));
 
 		// set the near and far clip plane
 		mCamera->setNearClipDistance(0.1f);
 		mCamera->setFarClipDistance(10000.0f);
-		//mCamera->setPolygonMode(Ogre::PM_WIREFRAME);
-
-
-		// add some static meshes to the scene body
-		AddOgreHouse(sceneBody);
 
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
@@ -375,24 +179,12 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
-
-		// now add a player controller top the world
-		m_playerManager = new OgreNewtonPlayerManager(m_physicsWorld);
-
-		m_playerManager->CreatePlayer(100.0f, 2.0f, 0.5f, 2.0f, 0.5f);
 	}
-
-
-	OgreNewtonPlayerManager* m_playerManager;
 
 	Real m_shootingTimer;
 	MeshPtr m_shootingMesh[2];
 	dNewtonCollision* m_shootingCollisions[2];
 
-	Light* m_light0;
-	TerrainGroup* m_terrainGroup;
-	TerrainGlobalOptions* m_terrainGlobals;
-	bool m_terrainsImported;
 };
 
 
@@ -406,6 +198,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 	} catch(Exception &e) {
 		MessageBox(NULL, e.getFullDescription().c_str(), "Well, this is embarrassing.. an Ogre exception has occurred.", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 	}
+
 	return 0;
 }
 
