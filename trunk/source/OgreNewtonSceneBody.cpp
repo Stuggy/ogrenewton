@@ -251,8 +251,7 @@ void* OgreNewtonSceneBody::AddCollisionTree (SceneNode* const treeNode)
 	OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 
 	// convert the nod and all its children to a newton mesh
-	OgreNewtonMesh mesh (world);
-	mesh.BuildFromSceneNode (treeNode);
+	OgreNewtonMesh mesh (world, treeNode);
 	mesh.Polygonize();
 
 	// create a collision tree mesh

@@ -59,7 +59,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 	}
 
 	protected:
-	void loadStaticScene ()
+	OgreNewtonSceneBody* loadStaticScene ()
 	{
 
 		// create a scene body to add all static collidable meshes in the world 
@@ -80,6 +80,76 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
+
+		return sceneBody;
+	}
+
+	void AddOgreHouse(OgreNewtonSceneBody* const sceneBody, const Vector3& location, Real scale, dNewtonCollisionMesh& collision, Entity* const entity) 
+	{
+		Entity* const houseEntity = mSceneMgr->createEntity(MakeName ("house"), entity->getMesh());
+		SceneNode* houseNode = mSceneMgr->getRootSceneNode()->createChildSceneNode (MakeName("house"));
+		houseNode->attachObject (houseEntity);
+
+		Vector3 start (location + Vector3 (0.0f, 500.0f, 0.0f));
+		Vector3 end (location + Vector3 (0.0f, -500.0f, 0.0f));
+		OgreNewtonRayCast raycaster(m_physicsWorld); 
+		raycaster.CastRay (&start.x, &end.x);
+		Quaternion rot;
+		rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
+		houseNode->setScale(Vector3(scale, scale, scale));
+
+		// calculate the aabb of this mesh so that we can rise the the bottom 
+		Vector3 p0;
+		Vector3 p1;
+		Matrix4 matrix (Matrix4::IDENTITY);
+		collision.CalculateAABB (&matrix[0][0], &p0.x, &p1.x);
+		Real bottom = (p1.y - p0.y) * 0.5f;
+		Vector3 position (raycaster.m_contact + Vector3 (0.0f, bottom, 0.0f));
+
+		// set the matrix for teh visual mesh
+		houseNode->setPosition (position);
+		houseNode->setOrientation(rot);
+
+		// set the collision matrix and add a copy of this collision to the world
+		Matrix4 collisionMatrix;
+		collisionMatrix.makeTransform(position, Vector3(1.0f, 1.0f, 1.0f), rot);
+		collisionMatrix = collisionMatrix.transpose();
+		collision.SetMatrix(&collisionMatrix[0][0]);
+		sceneBody->AddCollision (&collision);
+	}
+
+	void AddOgreHouse(OgreNewtonSceneBody* const sceneBody) 
+	{
+		// we are going to place the same mode few time, therefore let us reuse the same asset
+		Entity* const houseEntity = mSceneMgr->createEntity (MakeName("house"), "tudorhouse.mesh");
+		houseEntity->setCastShadows (true);
+
+		// convert the entity to a newton mesh
+		OgreNewtonMesh newtonMesh (m_physicsWorld, houseEntity);
+		// optimize the mesh
+		newtonMesh.Polygonize();
+
+		// the house is too big we mus scale by some value
+		const Real houseScale = 0.05f;
+		newtonMesh.ApplyTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(houseScale, houseScale, houseScale), Quaternion(Quaternion::IDENTITY));
+
+		//now make a collision tree for this mesh
+		dNewtonCollisionMesh collision (m_physicsWorld,newtonMesh, 0);
+
+		// now we can use this collision as many time as we want
+		Vector3 origin (mCamera->getPosition());
+
+		sceneBody->BeginAddRemoveCollision();
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (  0.0f, 0.0f, -500.0f)), houseScale, collision, houseEntity);
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 ( 80.0f, 0.0f, -500.0f)), houseScale, collision, houseEntity);
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (-80.0f, 0.0f, -500.0f)), houseScale, collision, houseEntity);
+
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 ( 80.0f, 0.0f, -550.0f)), houseScale, collision, houseEntity);
+		AddOgreHouse (sceneBody, Vector3(origin + Vector3 (-80.0f, 0.0f, -550.0f)), houseScale, collision, houseEntity);
+
+		sceneBody->EndAddRemoveCollision();
+
+		//delete houseEntity;
 	}
 
 	void getTerrainImage(bool flipX, bool flipY, Image& img)
@@ -260,11 +330,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		//make a light
 		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
-
 		m_light0 = mSceneMgr->createLight( "Light0" );
-		
-		//m_light0->setType (Light::LT_POINT );
-		//m_light0->setPosition (Vector3(-100.0f, 100.0f, -100.0f) );
+	
 
 		Vector3 lightdir(0.55f, -0.3f, -0.75f);
 		m_light0->setType(Light::LT_DIRECTIONAL);
@@ -277,22 +344,27 @@ class OgreNewtonDemoApplication: public DemoApplication
 		mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");
 
 		// load all of the static geometry
-		loadStaticScene ();
+		OgreNewtonSceneBody* const sceneBody = loadStaticScene ();
 
-		// position camera using the ray cast functionality
-		Vector3 start (0.0f, 1000.0f, 10.0f);
-		Vector3 end (0.0f, -1000.0f, 10.0f);
+		// taken from Ogre SDK demos, but using a ray cast to find the ground
+		Vector3 start (1683.0f, 1000.0f, 2116.0f);
+		Vector3 end (1683.0f, -1000.0f, 2116.0f);
 		OgreNewtonRayCast raycaster(m_physicsWorld); 
 		raycaster.CastRay (&start.x, &end.x);
 
-		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 2.0f, 0.0f));
+		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 10.0f, 0.0f));
 		mCamera->setPosition(origin);
+		mCamera->lookAt(raycaster.m_contact + Vector3(0.0f, 10.0f, -200.0f));
 
 		// set the near and far clip plane
 		mCamera->setNearClipDistance(0.1f);
 		mCamera->setFarClipDistance(10000.0f);
-
 		//mCamera->setPolygonMode(Ogre::PM_WIREFRAME);
+
+
+		// add some static meshes to the scene body
+		AddOgreHouse(sceneBody);
+
 
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
