@@ -80,8 +80,23 @@ protected:
 		sceneBody->EndAddRemoveCollision();
 	}
 
+	void SpawnShapeNode (const Vector3& origin, const dNewtonCollision& shape)
+	{
+//		TexturePtr texture = Ogre::TextureManager::getSingleton().load("wood.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
+		// make a material to use with this mesh
+//		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("spawnMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+//		renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
+//		renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("wood.tga");
+//		renderMaterial->setAmbient(1.0f, 1.0f, 1.0f);
+		
+
+	}
+
 	void LoadDynamicScene(const Vector3& origin)
 	{
+
+
 	}
 
 
