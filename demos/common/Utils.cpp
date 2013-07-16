@@ -34,6 +34,10 @@
 
 #include "Utils.h"
 
+Real Rand (Real base)
+{
+	return 2.0f * base * (Real(rand()) / RAND_MAX - 0.5f); 
+}
 
 String MakeName (const char* const name)
 {

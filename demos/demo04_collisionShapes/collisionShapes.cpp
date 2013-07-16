@@ -78,15 +78,70 @@ class OgreNewtonDemoApplication: public DemoApplication
 		sceneBody->EndAddRemoveCollision();
 	}
 
-	void LoadDynamicScene(const Vector3& origin)
+	void SpawnRegularScaledCollisionShape (int count, const Vector3& origin, const dNewtonCollision& shape)
 	{
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -20.0f) , 40);
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -20.0f) , 40);
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
-//		BuildPyramid (mSceneMgr, m_physicsWorld, Vector3(0.0f, 0.0f, -60.0f), 10.0f, 50, 20);
+		TexturePtr texture = Ogre::TextureManager::getSingleton().load("wood.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
+		// make a material to use with this mesh
+		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("spawnMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+		renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
+		renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("wood.tga");
+		renderMaterial->setAmbient(1.0f, 1.0f, 1.0f);
+
+		OgreNewtonMesh mesh (&shape);
+		mesh.Triangulate();
+		int materialId = mesh.AddMaterial(renderMaterial);
+		mesh.ApplyBoxMapping(materialId, materialId, materialId);
+
+		ManualObject* const object = mesh.CreateEntity(MakeName ("spawnMesh"));
+		MeshPtr visualMesh (object->convertToMesh (MakeName ("spawnMesh")));
+		delete object;
+
+		Real scaleStep = (2.0f - 0.5f) / count;
+		Real scaleY = 0.5f;
+
+		for (int i = 0; i < count; i ++) {
+			Matrix4 matrix;
+			Vector3 posit (origin + Vector3 (0.0f, 0.0f, i * 4.0f));
+
+			// make a ogre node
+			Entity* const ent = mSceneMgr->createEntity(MakeName ("spawnMesh"), visualMesh);
+			SceneNode* const node = CreateNode (mSceneMgr, ent, posit, Quaternion::IDENTITY);
+			matrix.makeTransform (posit, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
+
+			// make a dynamic body
+			OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_physicsWorld, 30.0f, &shape, node, matrix);
+
+			// apply non uniform scale to both 
+			dNewtonCollision* const collision = body->GetCollision();
+			node->setScale(1.0f, scaleY, 1.0f);
+			collision->SetScale(1.0f, scaleY, 1.0f);
+
+			scaleY += scaleStep;
+		}
 	}
 
+
+	void LoadDynamicScene(const Vector3& origin)
+	{
+		const int spawnCount = 20;
+
+		// make a convex hull from 200 random points
+		dNewtonScopeBuffer<Vector3> points(200);
+		for (int i = 0; i < points.GetElementsCount(); i ++) {
+			points[i] = Vector3 (Rand (0.5f), Rand (0.5f), Rand (0.5f));
+		}
+		
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 0.0f, -50.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 0.0f, -50.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 0.0f, -50.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 0.0f, -50.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.5, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  0.0f, 0.0f, -50.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 0.0f, -50.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 0.0f, -50.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.5, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 0.0f, -50.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 0.0f, -50.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, 0));
+	}									  
 
 	void createFrameListener()
 	{
