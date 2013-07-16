@@ -121,6 +121,23 @@ class OgreNewtonDemoApplication: public DemoApplication
 		}
 	}
 
+	void SpawnCompoundCollisionShapes (int count, const Vector3& origin)
+	{
+		Entity* const entity = mSceneMgr->createEntity(MakeName("compound"), "torusKnot.mesh" );		
+		entity->setCastShadows (true);
+
+		SceneNode* const node = CreateNode(mSceneMgr, entity, origin, Quaternion::IDENTITY);
+
+		OgreNewtonMesh mesh (m_physicsWorld, entity);
+		dNewtonCollisionMesh xxx (m_physicsWorld, mesh, 0);
+
+		Matrix4 matrix;
+		matrix.makeTransform (origin, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
+		OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_physicsWorld, 0.0f, &xxx, node, matrix);
+		
+		
+	}
+
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
@@ -132,6 +149,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 			points[i] = Vector3 (Rand (0.5f), Rand (0.5f), Rand (0.5f));
 		}
 		
+		// add samples the single solid primitive with non uniform scaling
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 0.0f, -50.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 0.0f, -50.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 0.0f, -50.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
@@ -141,6 +159,11 @@ class OgreNewtonDemoApplication: public DemoApplication
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 0.0f, -50.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.5, 0.75f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 0.0f, -50.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 0.0f, -50.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, 0));
+
+
+		// add some compound collision shapes
+		SpawnCompoundCollisionShapes (10, origin + Vector3 (-0.0f, 0.0f, -50.0f));
+
 	}									  
 
 	void createFrameListener()
@@ -218,6 +241,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// set the near and far clip plane
 		mCamera->setNearClipDistance(0.1f);
 		mCamera->setFarClipDistance(10000.0f);
+		//mCamera->setPolygonMode(Ogre::PM_WIREFRAME);
 
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
