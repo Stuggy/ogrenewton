@@ -65,7 +65,7 @@ void CreateComponentsForShutting(int count, OgreNewtonWorld* const physicsWorld,
 	MaterialPtr renderMaterial = MaterialManager::getSingleton().create("shootingMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
 	renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
 	renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("smilli.tga");
-	renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
+	renderMaterial->setAmbient(1.0f, 1.0f, 1.0f);
 
 	if (count >= 1) {
 		// make sphere;

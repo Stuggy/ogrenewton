@@ -125,20 +125,26 @@ ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 	int pointCount = GetPointCount();
 	int indexCount = GetTotalIndexCount();
 
-	int* const indexList = new int [indexCount];
-	int* const remapIndex = new int [indexCount];
-	dNewtonMesh::dPoint* const posits = new dNewtonMesh::dPoint[pointCount];
-	dNewtonMesh::dPoint* const normals = new dNewtonMesh::dPoint[pointCount];
-	dNewtonMesh::dUV* const uv0 = new dNewtonMesh::dUV[pointCount];
-	dNewtonMesh::dUV* const uv1 = new dNewtonMesh::dUV[pointCount];
+//	int* const indexList = new int [indexCount];
+//	int* const remapIndex = new int [indexCount];
+//	dNewtonMesh::dPoint* const posits = new dNewtonMesh::dPoint[pointCount];
+//	dNewtonMesh::dPoint* const normals = new dNewtonMesh::dPoint[pointCount];
+//	dNewtonMesh::dUV* const uv0 = new dNewtonMesh::dUV[pointCount];
+//	dNewtonMesh::dUV* const uv1 = new dNewtonMesh::dUV[pointCount];
+	dNewtonScopeBuffer<int> indexList (indexCount);
+	dNewtonScopeBuffer<int> remapIndex (indexCount);
+	dNewtonScopeBuffer<dNewtonMesh::dPoint> posits (pointCount);
+	dNewtonScopeBuffer<dNewtonMesh::dPoint> normals (pointCount);
+	dNewtonScopeBuffer<dNewtonMesh::dUV> uv0 (pointCount);
+	dNewtonScopeBuffer<dNewtonMesh::dUV> uv1 (pointCount);
 	
-	GetVertexStreams(posits, normals, uv0, uv1);
+	GetVertexStreams(&posits[0], &normals[0], &uv0[0], &uv1[0]);
 
 	void* const materialsHandle = BeginMaterialHandle (); 
 	for (int handle = GetMaterialIndex (materialsHandle); handle != -1; handle = GetNextMaterialIndex (materialsHandle, handle)) {
 		int materialIndex = MaterialGetMaterial (materialsHandle, handle); 
 		int indexCount = MaterialGetIndexCount (materialsHandle, handle); 
-		MaterialGetIndexStream (materialsHandle, handle, indexList); 
+		MaterialGetIndexStream (materialsHandle, handle, &indexList[0]); 
 
 		MaterialMap::const_iterator materialItr = m_materialMap.find(materialIndex);
 
@@ -147,7 +153,7 @@ ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 		
 		// ogre does not support shared vertex for sub mesh, we will have remap the vertex data
 		int vertexCount = 0;
-		memset (remapIndex, 0xff, indexCount * sizeof (remapIndex[0]));
+		memset (&remapIndex[0], 0xff, indexCount * sizeof (remapIndex[0]));
 		for( int i = 0; i < indexCount; i ++) {
 			int index = indexList[i];
 			if (remapIndex[index] == -1) {
@@ -168,13 +174,6 @@ ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 	}
 	EndMaterialHandle (materialsHandle); 
 
-
-	delete[] indexList;
-	delete[] remapIndex;
-	delete[] uv1;
-	delete[] uv0;
-	delete[] normals;
-	delete[] posits;
 	return object;
 }
 
