@@ -196,7 +196,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="newton_d.lib dMath_d.lib dNewton_d.lib dJointLibrary_d.lib OIS_d.lib OgreMain_d.lib OgreTerrain_d.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\debug&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\debug&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\debug_mdd&quot;"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)\$(TargetName).pdb"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -218,6 +221,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="xcopy  &quot;$(OutDir)\$(TargetName).pdb&quot; &quot;../../bin/*.*&quot;  /F /Y /R&#x0D;&#x0A;xcopy  &quot;$(OutDir)\$(TargetName).dll&quot; &quot;../../bin/*.*&quot;  /F /Y /R&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -271,6 +275,8 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="newton.lib dMath.lib dNewton.lib dJointLibrary.lib OIS.lib OgreMain.lib OgreTerrain.lib"
 				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\release&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\release&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\release_md&quot;"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)\$(TargetName).pdb"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -292,6 +298,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="xcopy  &quot;$(OutDir)\$(TargetName).pdb&quot; &quot;../../bin/*.*&quot;  /F /Y /R&#x0D;&#x0A;xcopy  &quot;$(OutDir)\$(TargetName).dll&quot; &quot;../../bin/*.*&quot;  /F /Y /R&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
