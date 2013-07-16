@@ -153,10 +153,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 0.0f, -10.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 0.0f, -10.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 0.0f, -10.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 0.0f, -10.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.5, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 0.0f, -10.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  0.0f, 0.0f, -10.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 0.0f, -10.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 0.0f, -10.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.5, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 0.0f, -10.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 0.0f, -10.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 0.0f, -10.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, 0));
 
