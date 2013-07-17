@@ -1,0 +1,22 @@
+material "CowMaterial"
+{
+	technique CowMaterial_technique
+	{
+		pass CowMaterial_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0 25.5
+			emissive 0 0 0 1
+
+			texture_unit CowMaterial_Diffuse#0
+			{
+				texture cow.tga
+				tex_coord_set 0
+				colour_op modulate
+				scale 0.25 0.25
+				scroll 1.5 -1.5
+			}
+		}
+	}
+}
