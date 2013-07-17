@@ -121,25 +121,107 @@ class OgreNewtonDemoApplication: public DemoApplication
 		}
 	}
 
-	void SpawnCompoundCollisionShapes (int count, const Vector3& origin)
+
+	void SpawnManualCompoundCollisionShapes (int count, const Vector3& origin)
 	{
-		Entity* const entity = mSceneMgr->createEntity(MakeName("compound"), "torusKnot.mesh" );		
-		entity->setCastShadows (true);
+		// make a long Box 
+		dNewtonCollisionBox boxShape (m_physicsWorld, 2.0f, 0.25f, 0.25f, 0);
 
-		SceneNode* const node = CreateNode(mSceneMgr, entity, origin, Quaternion::IDENTITY);
+		// make a compound and add three instance of the box to make a Cruz 
+		dNewtonCollisionCompound compoundShape (m_physicsWorld, 0);
+		compoundShape.BeginAddRemoveCollision();
 
-		OgreNewtonMesh mesh (m_physicsWorld, entity);
-		dNewtonCollisionMesh xxx (m_physicsWorld, mesh, 0);
+			Matrix4 matrix (Matrix4::IDENTITY);
+			matrix = matrix.transpose();
+			boxShape.SetMatrix(&matrix[0][0]);
+			compoundShape.AddCollision(&boxShape);
 
-		Matrix4 matrix;
-		matrix.makeTransform (origin, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
-		OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_physicsWorld, 0.0f, &xxx, node, matrix);
+			matrix.makeTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Radian (Degree(90.0f)), Vector3 (0.0f, 1.0f, 0.0f)));
+			matrix = matrix.transpose();
+			boxShape.SetMatrix(&matrix[0][0]);
+			compoundShape.AddCollision(&boxShape);
+
+			matrix.makeTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Radian (Degree(90.0f)), Vector3 (0.0f, 0.0f, 1.0f)));
+			matrix = matrix.transpose();
+			boxShape.SetMatrix(&matrix[0][0]);
+			compoundShape.AddCollision(&boxShape);
+
+		compoundShape.EndAddRemoveCollision();
+
+		// create a Ogre mesh for this compound shape
+		TexturePtr texture = Ogre::TextureManager::getSingleton().load("wood.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
+		// make a material to use with this mesh
+		MaterialPtr renderMaterial = MaterialManager::getSingleton().create("spawnMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+		renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
+		renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("wood.tga");
+		renderMaterial->setAmbient(1.0f, 1.0f, 1.0f);
+
+		OgreNewtonMesh mesh (&compoundShape);
+		mesh.Triangulate();
+		int materialId = mesh.AddMaterial(renderMaterial);
+		mesh.ApplyBoxMapping(materialId, materialId, materialId);
+
+		ManualObject* const object = mesh.CreateEntity(MakeName ("spawnMesh"));
+		MeshPtr visualMesh (object->convertToMesh (MakeName ("spawnMesh")));
+		delete object;
+
+		// now use this shape a place few instances in the world
+		for (int i = 0; i < count; i ++) {
+			Matrix4 matrix;
+			Vector3 posit (origin + Vector3 (i * 4.0f, 0.0f, 0.0f));
+
+			// make a ogre node
+			Entity* const ent = mSceneMgr->createEntity(MakeName ("spawnMesh"), visualMesh);
+			SceneNode* const node = CreateNode (mSceneMgr, ent, posit, Quaternion::IDENTITY);
+			matrix.makeTransform (posit, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
+
+			// make a dynamic body
+			new OgreNewtonDynamicBody (m_physicsWorld, 30.0f, &compoundShape, node, matrix);
+		}
 	}
 
+
+	void SpawnAutomaticCompoundCollisionShapes (int count, const Vector3& origin, const char* const meshName)
+	{
+		Entity* const entity = mSceneMgr->createEntity(MakeName("compound"), meshName);		
+		entity->setCastShadows (true);
+
+		// convert the ogre entity to a newton mesh
+		OgreNewtonMesh mesh (m_physicsWorld, entity);
+
+		// make a convex approximation for the newton mesh 
+		OgreNewtonMesh convexAproximation (m_physicsWorld);
+		convexAproximation.CreateApproximateConvexDecomposition(mesh, 0.01f, 0.2f, 32, 100);
+
+		// now make a compound collision form the convex approximation
+		dNewtonCollisionCompound compoundShape (m_physicsWorld, convexAproximation, 0);
+
+		// now use this shape a place few instances in the world
+		MeshPtr visualMesh = entity->getMesh();
+		for (int i = 0; i < count; i ++) {
+			Matrix4 matrix;
+			Vector3 posit (origin + Vector3 (i * 4.0f, 0.0f, 0.0f));
+
+			// make a ogre node
+			Entity* const ent = mSceneMgr->createEntity(MakeName ("spawnMesh"), visualMesh);
+			SceneNode* const node = CreateNode (mSceneMgr, ent, posit, Quaternion::IDENTITY);
+			matrix.makeTransform (posit, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
+
+			// make a dynamic body
+			new OgreNewtonDynamicBody (m_physicsWorld, 30.0f, &compoundShape, node, matrix);
+		}
+	}
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
 		const int spawnCount = 20;
+
+
+		// add some compound collision shapes
+		SpawnManualCompoundCollisionShapes (10, origin + Vector3 (-20.0f, 0.0f, -40.0f));
+		SpawnAutomaticCompoundCollisionShapes (10, origin + Vector3 (-20.0f, 0.0f, -50.0f), "torusKnot.mesh");
+
 
 		// make a convex hull from 200 random points
 		dNewtonScopeBuffer<Vector3> points(200);
@@ -148,20 +230,15 @@ class OgreNewtonDemoApplication: public DemoApplication
 		}
 		
 		// add samples the single solid primitive with non uniform scaling
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 0.0f, -10.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 0.0f, -10.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 0.0f, -10.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 0.0f, -10.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  0.0f, 0.0f, -10.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 0.0f, -10.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 0.0f, -10.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 0.0f, -10.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 0.0f, -10.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, 0));
-
-
-		// add some compound collision shapes
-		SpawnCompoundCollisionShapes (10, origin + Vector3 (-0.0f, 0.0f, -60.0f));
-
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 4.0f, -10.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 4.0f, -10.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 4.0f, -10.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  0.0f, 4.0f, -10.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 4.0f, -10.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 4.0f, -10.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 4.0f, -10.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, 0));
 	}									  
 
 	void createFrameListener()
