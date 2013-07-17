@@ -184,8 +184,7 @@ protected:
 		// create a player manager for controll all players
 		m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
 
-
-m_playerManager->CreateController___ ( 200.0f, 1.0f, 0.25f, 2.0f, 0.5f);
+OgreNewtonPlayerManager::OgreNetwonPlayer* player = new OgreNewtonPlayerManager::OgreNetwonPlayer(m_playerManager, NULL, 200.0f, 1.0f, 0.25f, 2.0f, 0.5f);
 
 	}
 

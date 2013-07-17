@@ -30,33 +30,28 @@ using namespace Ogre;
 
 class OgreNewtonWorld;
 
-
-
 class OGRE_NEWTON_API OgreNewtonPlayerManager: public dNewtonPlayerManager
 {
 	public:
+	class OGRE_NEWTON_API OgreNetwonPlayer: public dNewtonPlayer 
+	{
+		public:
+		OgreNetwonPlayer (dNewtonPlayerManager* const manager, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep);
+
+		virtual void OnPlayerMove (Real timestep);
+
+		private:
+		static Vector3 m_upDir;
+		static Vector3 m_frontDir;
+
+	};
+	
 	OgreNewtonPlayerManager (OgreNewtonWorld* const world);
 	~OgreNewtonPlayerManager ();
 
-	virtual CustomController* CreateController___ (Real mass, Real outerRadius, Real innerRadius, Real height, Real stairStep);
-//	virtual void DestroyPlayer (OgreNewtonPlayerController* const player);
 
-	virtual void ApplyPlayerMove (CustomPlayerController* const controller, Real timestep);
 };
 
-/*
-class OGRE_NEWTON_API OgreNewtonPlayerController: public dNewtonAlloc
-{
-	public:
-	~OgreNewtonPlayerController();
-
-	private:
-	OgreNewtonPlayerController (CustomPlayerControllerManager::CustomController* const controller);
-	CustomPlayerControllerManager::CustomController* m_controller;
-
-	friend class OgreNewtonPlayerManager;
-};
-*/
 
 
 #endif

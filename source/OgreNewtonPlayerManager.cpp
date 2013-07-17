@@ -24,6 +24,9 @@
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonPlayerManager.h"
 
+Vector3 OgreNewtonPlayerManager::OgreNetwonPlayer::m_upDir (0.0f, 1.0f, 0.0f);
+Vector3 OgreNewtonPlayerManager::OgreNetwonPlayer::m_frontDir (0.0f, 0.0f, -1.0f);
+
 
 OgreNewtonPlayerManager::OgreNewtonPlayerManager (OgreNewtonWorld* const world)
 	:dNewtonPlayerManager (world)
@@ -35,38 +38,18 @@ OgreNewtonPlayerManager::~OgreNewtonPlayerManager ()
 }
 
 
-void OgreNewtonPlayerManager::ApplyPlayerMove (CustomPlayerController* const controller, Real timestep)
+//void OgreNewtonPlayerManager::DestroyPlayer (OgreNewtonPlayerController* const player)
+//{
+//}
+
+
+
+OgreNewtonPlayerManager::OgreNetwonPlayer::OgreNetwonPlayer (dNewtonPlayerManager* const manager, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep)
+	:dNewtonPlayer (manager, node, mass, outerRadius, innerRadius, height, stairStep, &m_upDir.x, &m_frontDir.x)
 {
-	dAssert (0);
 }
 
-
-dNewtonPlayerManager::CustomController* OgreNewtonPlayerManager::CreateController___ (Real mass, Real outerRadius, Real innerRadius, Real height, Real stairStep)
-{
-	Vector3 upDir (0.0f, 1.0f, 0.0f);
-	Vector3 frontDir (0.0f, 0.0f, -1.0f);
-	return dNewtonPlayerManager::CreateController (mass, outerRadius, innerRadius, height, stairStep, &upDir[0], &frontDir.x);
-}
-
-/*
-void OgreNewtonPlayerManager::DestroyPlayer (OgreNewtonPlayerController* const player)
+void OgreNewtonPlayerManager::OgreNetwonPlayer::OnPlayerMove (Real timestep)
 {
 
 }
-
-
-OgreNewtonPlayerController::OgreNewtonPlayerController (CustomPlayerControllerManager::CustomController* const controller)
-	:dNewtonAlloc()
-{
-
-}
-
-OgreNewtonPlayerController::~OgreNewtonPlayerController()
-{
-
-}
-*/
-
-
-
-

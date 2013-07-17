@@ -107,8 +107,8 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 				node->setPosition(nodeParent->_getDerivedOrientation().Inverse() * (posit - nodeParent->_getDerivedPosition())/ nodeParent->_getDerivedScale());
 				node->setOrientation(nodeParent->_getDerivedOrientation().Inverse() * nodeRotation);
 			}
-		} else {
-			dAssert (0);
+//		} else {
+//			dAssert (0);
 		}
 
 	}
