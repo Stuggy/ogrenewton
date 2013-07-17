@@ -125,12 +125,6 @@ ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 	int pointCount = GetPointCount();
 	int indexCount = GetTotalIndexCount();
 
-//	int* const indexList = new int [indexCount];
-//	int* const remapIndex = new int [indexCount];
-//	dNewtonMesh::dPoint* const posits = new dNewtonMesh::dPoint[pointCount];
-//	dNewtonMesh::dPoint* const normals = new dNewtonMesh::dPoint[pointCount];
-//	dNewtonMesh::dUV* const uv0 = new dNewtonMesh::dUV[pointCount];
-//	dNewtonMesh::dUV* const uv1 = new dNewtonMesh::dUV[pointCount];
 	dNewtonScopeBuffer<int> indexList (indexCount);
 	dNewtonScopeBuffer<int> remapIndex (indexCount);
 	dNewtonScopeBuffer<dNewtonMesh::dPoint> posits (pointCount);
