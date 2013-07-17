@@ -134,8 +134,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		Matrix4 matrix;
 		matrix.makeTransform (origin, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
 		OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_physicsWorld, 0.0f, &xxx, node, matrix);
-		
-		
 	}
 
 
