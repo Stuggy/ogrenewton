@@ -67,6 +67,7 @@ protected:
 		sceneBody->BeginAddRemoveCollision();
 
 		// floor object!
+		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Floor"), "flatplane.mesh" );		
 		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
 		Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
 
@@ -185,6 +186,10 @@ protected:
 		m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
 
 OgreNewtonPlayerManager::OgreNetwonPlayer* player = new OgreNewtonPlayerManager::OgreNetwonPlayer(m_playerManager, NULL, 200.0f, 1.0f, 0.25f, 2.0f, 0.5f);
+Matrix4 matrix;
+matrix.makeTransform (Vector3(0.0f, 2.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion(Quaternion::IDENTITY));
+matrix= matrix.transpose();
+player->SetMatrix (&matrix[0][0]);
 
 	}
 
