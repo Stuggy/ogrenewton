@@ -24,8 +24,9 @@
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonPlayerManager.h"
 
+
 OgreNewtonPlayerManager::OgreNewtonPlayerManager (OgreNewtonWorld* const world)
-	:CustomPlayerControllerManager (world->GetNewton())
+	:dNewtonPlayerManager (world)
 {
 }
 
@@ -36,9 +37,10 @@ OgreNewtonPlayerManager::~OgreNewtonPlayerManager ()
 
 void OgreNewtonPlayerManager::ApplyPlayerMove (CustomPlayerController* const controller, Real timestep)
 {
+	dAssert (0);
 }
 
-
+/*
 OgreNewtonPlayerController* OgreNewtonPlayerManager::CreatePlayer (Real mass, Real outerRadius, Real innerRadius, Real height, Real stairStep)
 {
 	dMatrix playerAxis; 
@@ -67,7 +69,7 @@ OgreNewtonPlayerController::~OgreNewtonPlayerController()
 {
 
 }
-
+*/
 
 
 
