@@ -40,19 +40,15 @@ void OgreNewtonPlayerManager::ApplyPlayerMove (CustomPlayerController* const con
 	dAssert (0);
 }
 
-/*
-OgreNewtonPlayerController* OgreNewtonPlayerManager::CreatePlayer (Real mass, Real outerRadius, Real innerRadius, Real height, Real stairStep)
-{
-	dMatrix playerAxis; 
-	playerAxis[0] = dVector (0.0f, 1.0f,  0.0f, 0.0f); // the y axis is the character up vector
-	playerAxis[1] = dVector (0.0f, 0.0f, -1.0f, 0.0f); // the x axis is the character front direction
-	playerAxis[2] = playerAxis[0] * playerAxis[1];
-	playerAxis[3] = dVector (0.0f, 0.0f, 0.0f, 1.0f);
 
-	CustomController* const controller = CustomPlayerControllerManager::CreatePlayer(mass, outerRadius, innerRadius, height, stairStep, playerAxis);
-	return new OgreNewtonPlayerController(controller);
+dNewtonPlayerManager::CustomController* OgreNewtonPlayerManager::CreateController___ (Real mass, Real outerRadius, Real innerRadius, Real height, Real stairStep)
+{
+	Vector3 upDir (0.0f, 1.0f, 0.0f);
+	Vector3 frontDir (0.0f, 0.0f, -1.0f);
+	return dNewtonPlayerManager::CreateController (mass, outerRadius, innerRadius, height, stairStep, &upDir[0], &frontDir.x);
 }
 
+/*
 void OgreNewtonPlayerManager::DestroyPlayer (OgreNewtonPlayerController* const player)
 {
 
