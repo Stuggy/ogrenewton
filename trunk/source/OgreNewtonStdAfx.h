@@ -58,8 +58,7 @@
 #include <dNewtonDynamicBody.h>
 #include <dNewtonScopeBuffer.h>
 #include <dNewtonTranformLerp.h>
-#include <CustomControllerManager.h>
-#include <CustomPlayerControllerManager.h>
+#include <dNewtonPlayerManager.h>
 
 
 #ifdef _OGRE_NEWTON_STATIC_LIB

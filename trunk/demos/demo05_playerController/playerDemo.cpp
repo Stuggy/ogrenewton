@@ -49,6 +49,7 @@ public:
 	OgreNewtonDemoApplication()
 		:DemoApplication()
 		,m_shootingTimer(0.25f)
+		,m_playerManager(NULL)
 	{
 	}
 
@@ -179,11 +180,17 @@ protected:
 
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
+
+		// create a player manager for controll all players
+		m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
+
 	}
 
 	Real m_shootingTimer;
 	MeshPtr m_shootingMesh[2];
 	dNewtonCollision* m_shootingCollisions[2];
+
+	OgreNewtonPlayerManager* m_playerManager;
 
 };
 
