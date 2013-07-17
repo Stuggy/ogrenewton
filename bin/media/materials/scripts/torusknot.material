@@ -1,18 +1,15 @@
-material "_01_-_Default"
+material "torusMaterial"
 {
-	technique _01_-_Default_technique
+	technique torusMaterial_technique
 	{
-		pass _01_-_Default_standard
+		pass torusMaterial_standard
 		{
 			ambient 1 1 1 1
 			diffuse 1 1 1 1
 			specular 0 0 0 0 25.5
 			emissive 0 0 0 1
 
-			scene_blend alpha_blend
-			depth_write off
-
-			texture_unit _01_-_Default_Diffuse#0
+			texture_unit torusMaterial_Diffuse#0
 			{
 				texture newtonLogo.tga
 				tex_coord_set 0
