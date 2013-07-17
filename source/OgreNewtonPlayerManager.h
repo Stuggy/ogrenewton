@@ -31,13 +31,14 @@ using namespace Ogre;
 class OgreNewtonWorld;
 
 
+
 class OGRE_NEWTON_API OgreNewtonPlayerManager: public dNewtonPlayerManager
 {
 	public:
 	OgreNewtonPlayerManager (OgreNewtonWorld* const world);
 	~OgreNewtonPlayerManager ();
 
-//	virtual OgreNewtonPlayerController* CreatePlayer (Real mass, Real outerRadius, Real innerRadius, Real height, Real stairStep);
+	virtual CustomController* CreateController___ (Real mass, Real outerRadius, Real innerRadius, Real height, Real stairStep);
 //	virtual void DestroyPlayer (OgreNewtonPlayerController* const player);
 
 	virtual void ApplyPlayerMove (CustomPlayerController* const controller, Real timestep);
