@@ -39,7 +39,7 @@ MyPlayerContyroller::MyPlayerContyroller (OgreNewtonPlayerManager* const manager
 	,m_deriredForwardSpeed(0.0f)
 	,m_deriredStrafeSpeed(0.0f)
 {
-	// load player animations
+	// set the blend mode here
 	playerMesh->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
 
 	// populate our animation list
