@@ -105,8 +105,12 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 			Quaternion nodeRotation (rotation.m_q0, rotation.m_q1, rotation.m_q2, rotation.m_q3);
 
 			Node* const nodeParent = node->getParent();
-			node->setPosition(nodeParent->_getDerivedOrientation().Inverse() * (posit - nodeParent->_getDerivedPosition())/ nodeParent->_getDerivedScale());
-			node->setOrientation(nodeParent->_getDerivedOrientation().Inverse() * nodeRotation);
+			const Vector3& derivedScale = nodeParent->_getDerivedScale();
+			const Vector3& derivedPosition = nodeParent->_getDerivedPosition();
+			const Quaternion derivedRotationInv (nodeParent->_getDerivedOrientation().Inverse());
+
+			node->setPosition (derivedRotationInv * (posit - derivedPosition) / derivedScale);
+			node->setOrientation (derivedRotationInv * nodeRotation);
 
 			// update the application user data (that need to be update at rendering time, ex animations, particles emmitions, etc)
 			//body->OnApplicationPostTransform (evt.timeSinceLastFrame);
