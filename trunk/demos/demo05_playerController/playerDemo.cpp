@@ -71,8 +71,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 			ANIM_NONE
 		};
 
-		MyPlayerContyroller (OgreNewtonPlayerManager* const manager, Entity* const playerMesh, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep)
-			:OgreNewtonPlayerManager::OgreNetwonPlayer (manager, node, mass, outerRadius, innerRadius, height, stairStep)
+		MyPlayerContyroller (OgreNewtonPlayerManager* const manager, Entity* const playerMesh, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat playerHigh, dFloat stairStep, Real playerPivotOffset)
+			:OgreNewtonPlayerManager::OgreNetwonPlayer (manager, node, mass, outerRadius, innerRadius, playerHigh, stairStep)
+			,m_localOffset(0.0f, playerPivotOffset, 0.0f)
 		{
 			// load player animations
 			playerMesh->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
@@ -149,12 +150,19 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// called at rendering time, for game play stuff (we will update the player animations here
 		void OnApplicationPostTransform (dFloat timestep) 
 		{
+			// need to translate the root matrix by the offset;
+			SceneNode* const node = (SceneNode*) GetUserData();
+
+			const Quaternion& rotation (node->getOrientation());
+			node->setPosition (node->getPosition() + rotation * m_localOffset);
+
 			Real baseAnimSpeed = 1.0f;
 			Real topAnimSpeed = 1.0f;
 
 			// increment the current base and top animation times
 			//if (mBaseAnimID != ANIM_NONE) mAnims[mBaseAnimID]->addTime(deltaTime * baseAnimSpeed);
 			//if (mTopAnimID != ANIM_NONE) mAnims[mTopAnimID]->addTime(deltaTime * topAnimSpeed);
+
 
 			mAnims[mBaseAnimID]->addTime (timestep * baseAnimSpeed);
 			mAnims[mTopAnimID]->addTime (timestep * topAnimSpeed);
@@ -177,6 +185,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		AnimID mBaseAnimID;                   // current base (full- or lower-body) animation
 		AnimID mTopAnimID;                    // current top (upper-body) animation
+		Vector3 m_localOffset;
 	};
 
 
@@ -202,9 +211,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 		sceneBody->BeginAddRemoveCollision();
 
 		// floor object!
-		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Floor"), "flatplane.mesh" );		
+		Entity* const levelMap = mSceneMgr->createEntity(MakeName("Floor"), "flatplane.mesh" );		
 		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
-		Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
+		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
 
 		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
 		floorNode->attachObject( levelMap );
@@ -312,15 +321,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 		high = 2.0f;
 		Real mass = 200.0f;
 		Real stairStep = 0.25f * high;
-		Real outerRadius = scale * (bBox.getMaximum().z - bBox.getMinimum().z) * 0.5f;
+		Real outerRadius = scale * (bBox.getMaximum().z - bBox.getMinimum().z) * 0.4f;
 		Real innerRadius = outerRadius * 0.25f;
-
-		MyPlayerContyroller* const player = new MyPlayerContyroller(m_playerManager, playerMesh, playerNode, mass, outerRadius, innerRadius, high, stairStep);
-
-//		Matrix4 matrix;
-//		matrix.makeTransform (Vector3(0.0f, 2.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion(Quaternion::IDENTITY));
-//		matrix= matrix.transpose();
-//		player->SetMatrix (&matrix[0][0]);
+		Real playerPivotOffset = - scale * bBox.getMinimum().y;
+		MyPlayerContyroller* const player = new MyPlayerContyroller(m_playerManager, playerMesh, playerNode, mass, outerRadius, innerRadius, high, stairStep, playerPivotOffset);
 
 //delete player;
 
