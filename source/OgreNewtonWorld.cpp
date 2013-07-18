@@ -33,7 +33,8 @@ OgreNewtonWorld::OgreNewtonWorld (OgreNewtonApplication* const application, int 
 	,m_application(application)
 	,m_gravity (0.0f, -9.8f, 0.0f)
 	,m_concurrentUpdateMode(true)
-	,m_lastPhysicTimeInMicroseconds(0)
+	,m_lastPhysicTimeInMicroseconds(GetTimeInMicrosenconds ())
+	,m_physicUpdateTimestepInMocroseconds(0)
 {
 	SetUpdateFPS (Real (updateFramerate), 3);
 }
@@ -62,7 +63,7 @@ bool OgreNewtonWorld::GetConcurrentUpdateMode () const
 
 dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
 {
-	return m_lastPhysicTimeInMicroseconds;
+	return m_physicUpdateTimestepInMocroseconds;
 }
 
 void OgreNewtonWorld::OnBeginUpdate (dFloat timestepInSecunds)
@@ -91,30 +92,30 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 	dFloat param = GetInteplationParam(m_timestep);
 	bool ret = m_application->OnRenderUpdateBegin (param);
 
+	Real applicationTime = Real (simulationTime - m_lastPhysicTimeInMicroseconds) * 1.0e-6f;
+
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
-		if (body->GetType() == dNewtonBody::m_dynamic) {
-			SceneNode* const node = (SceneNode*) body->GetUserData();
-			OgreNewtonDynamicBody* const dynBody = (OgreNewtonDynamicBody*) body;
-			if (node && !dynBody->GetSleepState()) {
-				dMatrix matrix;
-				body->GetVisualMatrix (param, &matrix[0][0]);
-				dQuaternion rotation (matrix);
-				Vector3 posit (matrix.m_posit.m_x, matrix.m_posit.m_y, matrix.m_posit.m_z);
-				Quaternion nodeRotation (rotation.m_q0, rotation.m_q1, rotation.m_q2, rotation.m_q3);
+		SceneNode* const node = (SceneNode*) body->GetUserData();
+		if (node && !body->GetSleepState()) {
+			dMatrix matrix;
+			body->GetVisualMatrix (param, &matrix[0][0]);
+			dQuaternion rotation (matrix);
+			Vector3 posit (matrix.m_posit.m_x, matrix.m_posit.m_y, matrix.m_posit.m_z);
+			Quaternion nodeRotation (rotation.m_q0, rotation.m_q1, rotation.m_q2, rotation.m_q3);
 
-				Node* const nodeParent = node->getParent();
-				node->setPosition(nodeParent->_getDerivedOrientation().Inverse() * (posit - nodeParent->_getDerivedPosition())/ nodeParent->_getDerivedScale());
-				node->setOrientation(nodeParent->_getDerivedOrientation().Inverse() * nodeRotation);
-			}
-//		} else {
-//			dAssert (0);
+			Node* const nodeParent = node->getParent();
+			node->setPosition(nodeParent->_getDerivedOrientation().Inverse() * (posit - nodeParent->_getDerivedPosition())/ nodeParent->_getDerivedScale());
+			node->setOrientation(nodeParent->_getDerivedOrientation().Inverse() * nodeRotation);
+
+			// update the application user data (that need to be update at rendering time, ex animations, particles emmitions, etc)
+			//body->OnApplicationPostTransform (evt.timeSinceLastFrame);
+			body->OnApplicationPostTransform (applicationTime);
 		}
-
 	}
-	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds () - simulationTime;
-
 	m_application->OnRenderUpdateEnd (param);
 
+	m_lastPhysicTimeInMicroseconds = simulationTime;
+	m_physicUpdateTimestepInMocroseconds = GetTimeInMicrosenconds () - simulationTime;
 	return ret;
 }

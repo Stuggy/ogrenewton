@@ -42,13 +42,148 @@
 
 using namespace Ogre;
 
+static String animNames[] = {"IdleBase", "IdleTop", "RunBase", "RunTop", "HandsClosed", "HandsRelaxed", "DrawSwords",  "SliceVertical", "SliceHorizontal", "Dance", "JumpStart", "JumpLoop", "JumpEnd"};
+#define NUM_ANIMS int (sizeof (animNames)/ sizeof (animNames[0]))
+
 class OgreNewtonDemoApplication: public DemoApplication
 {
-public:
+	public:
+
+	// subclass the basic player 
+	class MyPlayerContyroller: public OgreNewtonPlayerManager::OgreNetwonPlayer
+	{
+		public:
+		enum AnimID
+		{
+			ANIM_IDLE_BASE,
+			ANIM_IDLE_TOP,
+			ANIM_RUN_BASE,
+			ANIM_RUN_TOP,
+			ANIM_HANDS_CLOSED,
+			ANIM_HANDS_RELAXED,
+			ANIM_DRAW_SWORDS,
+			ANIM_SLICE_VERTICAL,
+			ANIM_SLICE_HORIZONTAL,
+			ANIM_DANCE,
+			ANIM_JUMP_START,
+			ANIM_JUMP_LOOP,
+			ANIM_JUMP_END,
+			ANIM_NONE
+		};
+
+		MyPlayerContyroller (OgreNewtonPlayerManager* const manager, Entity* const playerMesh, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep)
+			:OgreNewtonPlayerManager::OgreNetwonPlayer (manager, node, mass, outerRadius, innerRadius, height, stairStep)
+		{
+			// load player animations
+			playerMesh->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
+
+			// populate our animation list
+			for (int i = 0; i < (sizeof animNames / sizeof (animNames[0])); i++) {
+				mAnims[i] = playerMesh->getAnimationState(animNames[i]);
+				mAnims[i]->setLoop(true);
+				//mFadingIn[i] = false;
+				//mFadingOut[i] = false;
+			}
+
+			// start off in the idle state (top and bottom together)
+			setBaseAnimation(ANIM_IDLE_BASE);
+			setTopAnimation(ANIM_IDLE_TOP);
+
+			// relax the hands since we're not holding anything
+			mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
+//			mSwordsDrawn = false;
+		}
+
+		void setBaseAnimation(AnimID id, bool reset = false)
+		{
+//			if (mBaseAnimID >= 0 && mBaseAnimID < NUM_ANIMS)
+//			{
+//				// if we have an old animation, fade it out
+//				mFadingIn[mBaseAnimID] = false;
+//				mFadingOut[mBaseAnimID] = true;
+//			}
+
+			mBaseAnimID = id;
+			mAnims[id]->setEnabled(true);
+			mAnims[id]->setWeight(1.0f);
+
+//			if (id != ANIM_NONE)
+//			{
+//				// if we have a new animation, enable it and fade it in
+//				mAnims[id]->setEnabled(true);
+//				mAnims[id]->setWeight(0);
+//				mFadingOut[id] = false;
+//				mFadingIn[id] = true;
+//				if (reset) mAnims[id]->setTimePosition(0);
+//			}
+		}
+
+
+		void setTopAnimation(AnimID id, bool reset = false)
+		{
+			mTopAnimID = id;
+			mAnims[id]->setEnabled(true);
+			mAnims[id]->setWeight(1.0f);
+/*
+			if (mTopAnimID >= 0 && mTopAnimID < NUM_ANIMS)
+			{
+				// if we have an old animation, fade it out
+				mFadingIn[mTopAnimID] = false;
+				mFadingOut[mTopAnimID] = true;
+			}
+
+			mTopAnimID = id;
+
+			if (id != ANIM_NONE)
+			{
+				// if we have a new animation, enable it and fade it in
+				mAnims[id]->setEnabled(true);
+				mAnims[id]->setWeight(0);
+				mFadingOut[id] = false;
+				mFadingIn[id] = true;
+				if (reset) mAnims[id]->setTimePosition(0);
+			}
+*/
+		}
+
+		// called at rendering time, for game play stuff (we will update the player animations here
+		void OnApplicationPostTransform (dFloat timestep) 
+		{
+			Real baseAnimSpeed = 1.0f;
+			Real topAnimSpeed = 1.0f;
+
+			// increment the current base and top animation times
+			//if (mBaseAnimID != ANIM_NONE) mAnims[mBaseAnimID]->addTime(deltaTime * baseAnimSpeed);
+			//if (mTopAnimID != ANIM_NONE) mAnims[mTopAnimID]->addTime(deltaTime * topAnimSpeed);
+
+			mAnims[mBaseAnimID]->addTime (timestep * baseAnimSpeed);
+			mAnims[mTopAnimID]->addTime (timestep * topAnimSpeed);
+		}
+
+
+		// called at physics time, we most update the player motion here, 
+		// the basic play only apply the gravity, to do anything interesting we must overload OnPlayerMove
+		void OnPlayerMove (Real timestep)
+		{
+			const OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
+			const Vector3& gravity = world->GetGravity();
+			//	SetPlayerVelocity (dFloat forwardSpeed, dFloat lateralSpeed, dFloat verticalSpeed, dFloat headingAngle, const dFloat* const gravity, dFloat timestep);
+			SetPlayerVelocity (0.0f, 0.0f, 0.0f, 0.0f, &gravity.x, timestep);
+		}
+
+		AnimationState* mAnims[NUM_ANIMS];    // master animation list
+		//bool mFadingIn[NUM_ANIMS];            // which animations are fading in
+		//bool mFadingOut[NUM_ANIMS];           // which animations are fading out
+
+		AnimID mBaseAnimID;                   // current base (full- or lower-body) animation
+		AnimID mTopAnimID;                    // current top (upper-body) animation
+	};
+
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
 		,m_shootingTimer(0.25f)
+		,m_player(NULL)
 		,m_playerManager(NULL)
 	{
 	}
@@ -57,7 +192,7 @@ public:
 	{
 	}
 
-protected:
+	protected:
 	void loadStaticScene ()
 	{
 		// create a scene body to add all static collidable meshes in the world 
@@ -128,6 +263,70 @@ protected:
 		}
 	}
 
+	MyPlayerContyroller* CreatePlayer()
+	{
+		// create main model
+		Entity* const playerMesh = mSceneMgr->createEntity(MakeName("SinbadBody"), "Sinbad.mesh");
+		SceneNode* const playerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(MakeName("SinbadBody"));
+		playerNode->attachObject(playerMesh);
+
+		// the model is about 10 meters hight, calculate the scale to make the play 2 meter high
+		playerNode->_updateBounds();
+		AxisAlignedBox bBox (playerNode->_getWorldAABB());
+		Real high = bBox.getMaximum().y - bBox.getMinimum().y;
+		Real scale = 2.0f / high;
+		playerNode->setScale(scale, scale, scale);
+
+
+
+/*
+		// create swords and attach to sheath
+		LogManager::getSingleton().logMessage("Creating swords");
+		mSword1 = sceneMgr->createEntity("SinbadSword1", "Sword.mesh");
+		mSword2 = sceneMgr->createEntity("SinbadSword2", "Sword.mesh");
+		mBodyEnt->attachObjectToBone("Sheath.L", mSword1);
+		mBodyEnt->attachObjectToBone("Sheath.R", mSword2);
+
+		LogManager::getSingleton().logMessage("Creating the chains");
+		// create a couple of ribbon trails for the swords, just for fun
+		NameValuePairList params;
+		params["numberOfChains"] = "2";
+		params["maxElements"] = "80";
+		mSwordTrail = (RibbonTrail*)sceneMgr->createMovableObject("RibbonTrail", &params);
+		mSwordTrail->setMaterialName("Examples/LightRibbonTrail");
+		mSwordTrail->setTrailLength(20);
+		mSwordTrail->setVisible(false);
+		sceneMgr->getRootSceneNode()->attachObject(mSwordTrail);
+		for (int i = 0; i < 2; i++)
+		{
+			mSwordTrail->setInitialColour(i, 1, 0.8, 0);
+			mSwordTrail->setColourChange(i, 0.75, 1.25, 1.25, 1.25);
+			mSwordTrail->setWidthChange(i, 1);
+			mSwordTrail->setInitialWidth(i, 0.5);
+		}
+
+		mKeyDirection = Vector3::ZERO;
+		mVerticalVelocity = 0;
+*/
+
+		high = 2.0f;
+		Real mass = 200.0f;
+		Real stairStep = 0.25f * high;
+		Real outerRadius = scale * (bBox.getMaximum().z - bBox.getMinimum().z) * 0.5f;
+		Real innerRadius = outerRadius * 0.25f;
+
+		MyPlayerContyroller* const player = new MyPlayerContyroller(m_playerManager, playerMesh, playerNode, mass, outerRadius, innerRadius, high, stairStep);
+
+//		Matrix4 matrix;
+//		matrix.makeTransform (Vector3(0.0f, 2.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion(Quaternion::IDENTITY));
+//		matrix= matrix.transpose();
+//		player->SetMatrix (&matrix[0][0]);
+
+//delete player;
+
+		return player;
+	}
+
 	void createScene()
 	{
 		// create the physic world first
@@ -150,8 +349,6 @@ protected:
 		light1->setDirection(lightdir1);
 		light1->setDiffuseColour(ColourValue(1.0f, 1.0f, 1.0f));
 		light1->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
-
-
 
 		// sky box.
 		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
@@ -182,16 +379,11 @@ protected:
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 
-		// create a player manager for controll all players
+		// create a player manager for control all players
 		m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
 
-OgreNewtonPlayerManager::OgreNetwonPlayer* player = new OgreNewtonPlayerManager::OgreNetwonPlayer(m_playerManager, NULL, 200.0f, 1.0f, 0.25f, 2.0f, 0.5f);
-Matrix4 matrix;
-matrix.makeTransform (Vector3(0.0f, 2.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion(Quaternion::IDENTITY));
-matrix= matrix.transpose();
-player->SetMatrix (&matrix[0][0]);
-
-//delete player;
+		// add some players
+		m_player = CreatePlayer();
 
 	}
 
@@ -199,6 +391,7 @@ player->SetMatrix (&matrix[0][0]);
 	MeshPtr m_shootingMesh[2];
 	dNewtonCollision* m_shootingCollisions[2];
 
+	MyPlayerContyroller* m_player;
 	OgreNewtonPlayerManager* m_playerManager;
 
 };
@@ -223,3 +416,4 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 
  
  
+
