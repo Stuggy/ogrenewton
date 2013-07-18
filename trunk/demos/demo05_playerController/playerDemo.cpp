@@ -238,8 +238,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 		loadStaticScene ();
 
 		// position camera using the ray cast functionality
-		Vector3 start(-1.0f,  1000.0f, 4.0f);
-		Vector3 end  (-1.0f, -1000.0f, 4.0f);
+		Vector3 start(1.0f,  1000.0f, 4.0f);
+		Vector3 end  (1.0f, -1000.0f, 4.0f);
 		OgreNewtonRayCast raycaster(m_physicsWorld); 
 		raycaster.CastRay (&start.x, &end.x);
 
