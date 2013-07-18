@@ -56,6 +56,7 @@ class OGRE_NEWTON_API OgreNewtonWorld: public FrameListener, public dNewton
 	Real m_timestep;
 	bool m_concurrentUpdateMode;
 	dLong m_lastPhysicTimeInMicroseconds;
+	dLong m_physicUpdateTimestepInMocroseconds;
 };
 
 #endif
