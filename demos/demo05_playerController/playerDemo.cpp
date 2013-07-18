@@ -74,6 +74,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 		MyPlayerContyroller (OgreNewtonPlayerManager* const manager, Entity* const playerMesh, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat playerHigh, dFloat stairStep, Real playerPivotOffset)
 			:OgreNewtonPlayerManager::OgreNetwonPlayer (manager, node, mass, outerRadius, innerRadius, playerHigh, stairStep)
 			,m_localOffset(0.0f, playerPivotOffset, 0.0f)
+			,m_walkSpeed(2.0f)
+			,m_strafeSpeed(1.0f)
+			,m_deriredForwardSpeed(0.0f)
+			,m_deriredStrafeSpeed(0.0f)
 		{
 			// load player animations
 			playerMesh->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
@@ -168,15 +172,51 @@ class OgreNewtonDemoApplication: public DemoApplication
 			mAnims[mTopAnimID]->addTime (timestep * topAnimSpeed);
 		}
 
+		// this is call from the Ogre main thread, you should not put too much work here
+		// just read te input and save so that function OnPlayerMove use these values later on
+		void ApplyPlayerInputs (const OgreNewtonDemoApplication* const application, Real timestepInSecunds) 
+		{
+			// lock the body whioel modifying values 
+			dNewton::ScopeLock scopelock (&m_lock);
 
-		// called at physics time, we most update the player motion here, 
-		// the basic play only apply the gravity, to do anything interesting we must overload OnPlayerMove
+			m_deriredForwardSpeed = 0.0f;
+			if (application->m_keyboard->isKeyDown(OIS::KC_W)) {
+				m_deriredForwardSpeed = m_walkSpeed;
+			}
+
+			if (application->m_keyboard->isKeyDown(OIS::KC_S)) {
+				m_deriredForwardSpeed = -m_walkSpeed;
+			}
+
+			m_deriredStrafeSpeed = 0.0f;
+			if (application->m_keyboard->isKeyDown(OIS::KC_A)) {
+				m_deriredStrafeSpeed = -m_strafeSpeed;
+			}
+
+			if (application->m_keyboard->isKeyDown(OIS::KC_D)) {
+				m_deriredStrafeSpeed = m_strafeSpeed;
+			}
+		}
+
+		// this is call from the Ogre main thread, you should not put too much work here
+		// just set the desired speed and heading as determien by the AI so that OnPlayerMove use these values later on
+		void ApplyNPCInputs (const OgreNewtonDemoApplication* const application, Real timestepInSecunds) 
+		{
+			// lock the body whioel modifying values 
+			dNewton::ScopeLock scopelock (&m_lock);
+
+		}
+
+
+		// called at physics time form the Physic thread, we most update the player motion here, 
+		// do all of the player logic here, for now the basic play only apply the gravity, 
+		// to do anything interesting we must overload OnPlayerMove
 		void OnPlayerMove (Real timestep)
 		{
 			const OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 			const Vector3& gravity = world->GetGravity();
 			//	SetPlayerVelocity (dFloat forwardSpeed, dFloat lateralSpeed, dFloat verticalSpeed, dFloat headingAngle, const dFloat* const gravity, dFloat timestep);
-			SetPlayerVelocity (0.0f, 0.0f, 0.0f, 0.0f, &gravity.x, timestep);
+			SetPlayerVelocity (m_deriredForwardSpeed, m_deriredStrafeSpeed, 0.0f, 0.0f, &gravity.x, timestep);
 		}
 
 		AnimationState* mAnims[NUM_ANIMS];    // master animation list
@@ -186,6 +226,11 @@ class OgreNewtonDemoApplication: public DemoApplication
 		AnimID mBaseAnimID;                   // current base (full- or lower-body) animation
 		AnimID mTopAnimID;                    // current top (upper-body) animation
 		Vector3 m_localOffset;
+
+		Real m_walkSpeed;
+		Real m_strafeSpeed;
+		Real m_deriredForwardSpeed;
+		Real m_deriredStrafeSpeed;
 	};
 
 
@@ -238,10 +283,21 @@ class OgreNewtonDemoApplication: public DemoApplication
 		//		mRoot->addFrameListener(m_listener);
 	}
 
-	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
+	void OnPhysicUpdateBegin (dFloat timestepInSecunds)
 	{
-		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
+		// bypass the call to DemoApplication::OnPhysicUpdateBegin
+		OgreNewtonExampleApplication::OnPhysicUpdateBegin(timestepInSecunds);
 
+		// get the inputs
+		m_mouse->capture();
+		m_keyboard->capture();
+		WindowEventUtilities::messagePump();
+
+		// set the debug render mode
+		m_debugTriggerKey.Update (m_keyboard->isKeyDown(OIS::KC_F3) ? true : false);
+		m_onScreeHelp.Update (m_keyboard->isKeyDown(OIS::KC_F1) ? true : false);
+
+		// handle shotting objects
 		m_shootingTimer -= timestepInSecunds;
 		if ((m_shootingTimer < 0.0f) && m_keyboard->isKeyDown(OIS::KC_SPACE)) {
 			m_shootingTimer = 0.1f;
@@ -262,7 +318,15 @@ class OgreNewtonDemoApplication: public DemoApplication
 			Vector3 veloc (Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * speed);   
 			body->SetVeloc(veloc);
 		}
-
+		
+		// update all players controller 
+		for (MyPlayerContyroller* player = (MyPlayerContyroller*) m_playerManager->GetFirstPlayer(); player; player = (MyPlayerContyroller*) m_playerManager->GetNextPlayer(player)) {
+			if (player == m_player) {
+				player->ApplyPlayerInputs (this, timestepInSecunds);
+			} else {
+				player->ApplyNPCInputs (this, timestepInSecunds);
+			}
+		}
 	}
 
 	virtual void destroyScene()
@@ -388,8 +452,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		// add some players
 		m_player = CreatePlayer();
-
 	}
+
 
 	Real m_shootingTimer;
 	MeshPtr m_shootingMesh[2];
