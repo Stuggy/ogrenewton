@@ -191,6 +191,8 @@ matrix.makeTransform (Vector3(0.0f, 2.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quat
 matrix= matrix.transpose();
 player->SetMatrix (&matrix[0][0]);
 
+//delete player;
+
 	}
 
 	Real m_shootingTimer;

@@ -37,19 +37,17 @@ class OGRE_NEWTON_API OgreNewtonPlayerManager: public dNewtonPlayerManager
 	{
 		public:
 		OgreNetwonPlayer (dNewtonPlayerManager* const manager, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep);
+		~OgreNetwonPlayer();
 
 		virtual void OnPlayerMove (Real timestep);
 
 		private:
 		static Vector3 m_upDir;
 		static Vector3 m_frontDir;
-
 	};
 	
 	OgreNewtonPlayerManager (OgreNewtonWorld* const world);
 	~OgreNewtonPlayerManager ();
-
-
 };
 
 
