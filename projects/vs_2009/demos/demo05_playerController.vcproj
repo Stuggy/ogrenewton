@@ -408,6 +408,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\demos\common\PlayerExample.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\PlayerExample.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\demos\common\ScreenWriter.cpp"
 			>
 		</File>
