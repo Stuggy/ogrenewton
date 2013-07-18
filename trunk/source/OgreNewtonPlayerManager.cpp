@@ -38,14 +38,12 @@ OgreNewtonPlayerManager::~OgreNewtonPlayerManager ()
 }
 
 
-//void OgreNewtonPlayerManager::DestroyPlayer (OgreNewtonPlayerController* const player)
-//{
-//}
-
-
-
 OgreNewtonPlayerManager::OgreNetwonPlayer::OgreNetwonPlayer (dNewtonPlayerManager* const manager, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep)
 	:dNewtonPlayer (manager, node, mass, outerRadius, innerRadius, height, stairStep, &m_upDir.x, &m_frontDir.x)
+{
+}
+
+OgreNewtonPlayerManager::OgreNetwonPlayer::~OgreNetwonPlayer()
 {
 }
 
