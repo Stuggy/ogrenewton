@@ -88,8 +88,8 @@ class MyPlayerContyroller: public OgreNewtonPlayerManager::OgreNetwonPlayer
 
 	Real m_walkSpeed;
 	Real m_strafeSpeed;
-	Real m_deriredForwardSpeed;
-	Real m_deriredStrafeSpeed;
+	Real m_desiredForwardSpeed;
+	Real m_desiredStrafeSpeed;
 
 	static String m_animNames[];
 };

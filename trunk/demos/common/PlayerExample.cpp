@@ -36,8 +36,8 @@ MyPlayerContyroller::MyPlayerContyroller (OgreNewtonPlayerManager* const manager
 	,m_localRotation (alignment)
 	,m_walkSpeed(2.0f)
 	,m_strafeSpeed(1.0f)
-	,m_deriredForwardSpeed(0.0f)
-	,m_deriredStrafeSpeed(0.0f)
+	,m_desiredForwardSpeed(0.0f)
+	,m_desiredStrafeSpeed(0.0f)
 {
 	// set the blend mode here
 	playerMesh->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
@@ -137,30 +137,30 @@ void MyPlayerContyroller::OnApplicationPostTransform (dFloat timestep)
 // just read te input and save so that function OnPlayerMove use these values later on
 void MyPlayerContyroller::ApplyPlayerInputs (const DemoApplication* const application, Real timestepInSecunds) 
 {
-	// lock the body whioel modifying values 
+	// lock the body while modifying values 
 	dNewton::ScopeLock scopelock (&m_lock);
 
-	m_deriredForwardSpeed = 0.0f;
+	m_desiredForwardSpeed = 0.0f;
 	if (application->m_keyboard->isKeyDown(OIS::KC_W)) {
-		m_deriredForwardSpeed = m_walkSpeed;
+		m_desiredForwardSpeed = m_walkSpeed;
 	}
 
 	if (application->m_keyboard->isKeyDown(OIS::KC_S)) {
-		m_deriredForwardSpeed = -m_walkSpeed;
+		m_desiredForwardSpeed = -m_walkSpeed;
 	}
 
-	m_deriredStrafeSpeed = 0.0f;
+	m_desiredStrafeSpeed = 0.0f;
 	if (application->m_keyboard->isKeyDown(OIS::KC_A)) {
-		m_deriredStrafeSpeed = -m_strafeSpeed;
+		m_desiredStrafeSpeed = -m_strafeSpeed;
 	}
 
 	if (application->m_keyboard->isKeyDown(OIS::KC_D)) {
-		m_deriredStrafeSpeed = m_strafeSpeed;
+		m_desiredStrafeSpeed = m_strafeSpeed;
 	}
 }
 
 // this is call from the Ogre main thread, you should not put too much work here
-// just set the desired speed and heading as determien by the AI so that OnPlayerMove use these values later on
+// just set the desired speed and heading as determine by the AI so that OnPlayerMove use these values later on
 void MyPlayerContyroller::ApplyNPCInputs (const DemoApplication* const application, Real timestepInSecunds) 
 {
 	// lock the body whioel modifying values 
@@ -168,7 +168,7 @@ void MyPlayerContyroller::ApplyNPCInputs (const DemoApplication* const applicati
 
 	//TODO
 	// this is call from the Ogre main thread, you should not put too much work here
-	// just set the desired speed and heading as determien by the AI so that OnPlayerMove use these values later on
+	// just set the desired speed and heading as determine by the AI so that OnPlayerMove use these values later on
 
 }
 
@@ -178,9 +178,32 @@ void MyPlayerContyroller::ApplyNPCInputs (const DemoApplication* const applicati
 // to do anything interesting we must overload OnPlayerMove
 void MyPlayerContyroller::OnPlayerMove (Real timestep)
 {
+static int xxx;
+xxx ++;
+if (xxx > 1020)
+xxx *=1;
+
+#if 1
+	#if 0
+		static FILE* file = fopen ("log.bin", "wb");
+		if (file) {
+			fwrite (&m_desiredForwardSpeed, sizeof (dFloat), 1, file);
+			fwrite (&m_desiredStrafeSpeed, sizeof (dFloat), 1, file);
+			fflush(file);
+		}
+	#else 
+		static FILE* file = fopen ("log.bin", "rb");
+		if (file) {
+			fread (&m_desiredForwardSpeed, sizeof (dFloat), 1, file);
+			fread (&m_desiredStrafeSpeed, sizeof (dFloat), 1, file);
+		}
+	#endif
+#endif
+
+
 	const OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 	const Vector3& gravity = world->GetGravity();
 	//	SetPlayerVelocity (dFloat forwardSpeed, dFloat lateralSpeed, dFloat verticalSpeed, dFloat headingAngle, const dFloat* const gravity, dFloat timestep);
-	SetPlayerVelocity (m_deriredForwardSpeed, m_deriredStrafeSpeed, 0.0f, 0.0f, &gravity.x, timestep);
+	SetPlayerVelocity (m_desiredForwardSpeed, m_desiredStrafeSpeed, 0.0f, 0.0f, &gravity.x, timestep);
 }
 
