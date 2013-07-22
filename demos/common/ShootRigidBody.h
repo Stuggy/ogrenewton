@@ -19,8 +19,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef _MOUSECURSOR_H_
-#define _MOUSECURSOR_H_
+#ifndef _SHOOT_ROGID_BODY_H__
+#define _SHOOT_ROGID_BODY_H__
 
 #include <OgreNewtonStdAfx.h>
 #include <OgreTexture.h>
@@ -30,47 +30,21 @@
 
 using namespace Ogre;
 
-class MouseCursor
+class DemoApplication;
+
+class ShootRigidBody
 {
 	public:
-	MouseCursor();
-	~MouseCursor();
+	ShootRigidBody (OgreNewtonWorld* const physicsWorld);
+	~ShootRigidBody();
 
-	struct Position
-	{
-		Position() 
-		{
-			X = 0;
-			Y = 0;
-			normalisedX = 0.0f;
-			normalisedY = 0.0f;
-		}
+	void ShootRandomBody (DemoApplication* const application, SceneManager* const sceneMgr, Real timestep);
 
-		int X;
-		int Y;
-		float normalisedX;
-		float normalisedY;
-	};
+	Real m_shootingTimer;
+	MeshPtr m_shootingMesh[2];
+	dNewtonCollision* m_shootingCollisions[2];
 
-	void setImage(const String& filename);
-	void setWindowDimensions(unsigned int width, unsigned int height);
-	void setVisible(bool visible);
-	void updatePosition(int x, int y);
-
-	Position getPosition() { return position; };
-
-	//static MouseCursor& getSingleton(void);
-
-	private:
-	Real clamp(Real a, Real min, Real max);
-
-	Overlay* guiOverlay;
-	OverlayContainer* cursorContainer;
-	TexturePtr texture;
-	MaterialPtr material;
-	Real windowWidth;
-	Real windowHeight;
-	Position position;
+	
 };
 
 #endif
