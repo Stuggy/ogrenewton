@@ -412,6 +412,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\demos\common\ShootRigidBody.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\ShootRigidBody.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\demos\demo03_terrain\terrainDemo.cpp"
 			>
 		</File>

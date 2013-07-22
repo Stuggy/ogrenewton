@@ -34,9 +34,11 @@ MyPlayerContyroller::MyPlayerContyroller (OgreNewtonPlayerManager* const manager
 	:OgreNewtonPlayerManager::OgreNetwonPlayer (manager, node, mass, outerRadius, innerRadius, playerHigh, stairStep)
 	,m_localOffset(playerPivotOffset)
 	,m_localRotation (alignment)
+	,m_currentSpeed(0.0f)
+	,m_currentHeadingAngle(0.0f)
 	,m_walkSpeed(2.0f)
 	,m_strafeSpeed(1.0f)
-	,m_desiredForwardSpeed(0.0f)
+	,m_walkDirection(0.0f, 0.0f, 0.0f)
 	,m_desiredStrafeSpeed(0.0f)
 {
 	// set the blend mode here
@@ -134,28 +136,28 @@ void MyPlayerContyroller::OnApplicationPostTransform (dFloat timestep)
 }
 
 // this is call from the Ogre main thread, you should not put too much work here
-// just read te input and save so that function OnPlayerMove use these values later on
+// just read the input and save so that function OnPlayerMove use these values later on
 void MyPlayerContyroller::ApplyPlayerInputs (const DemoApplication* const application, Real timestepInSecunds) 
 {
 	// lock the body while modifying values 
 	dNewton::ScopeLock scopelock (&m_lock);
 
-	m_desiredForwardSpeed = 0.0f;
+
+	m_walkDirection = Vector3 (0.0f, 0.0f, 0.0f);
 	if (application->m_keyboard->isKeyDown(OIS::KC_W)) {
-		m_desiredForwardSpeed = m_walkSpeed;
-	}
+		m_walkDirection.z = 1.0f;
+	} 
 
 	if (application->m_keyboard->isKeyDown(OIS::KC_S)) {
-		m_desiredForwardSpeed = -m_walkSpeed;
-	}
+		m_walkDirection.z = -1.0f;
+	} 
 
-	m_desiredStrafeSpeed = 0.0f;
 	if (application->m_keyboard->isKeyDown(OIS::KC_A)) {
-		m_desiredStrafeSpeed = -m_strafeSpeed;
-	}
+		m_walkDirection.x = 1.0f;
+	} 
 
 	if (application->m_keyboard->isKeyDown(OIS::KC_D)) {
-		m_desiredStrafeSpeed = m_strafeSpeed;
+		m_walkDirection.x = -1.0f;
 	}
 }
 
@@ -163,7 +165,7 @@ void MyPlayerContyroller::ApplyPlayerInputs (const DemoApplication* const applic
 // just set the desired speed and heading as determine by the AI so that OnPlayerMove use these values later on
 void MyPlayerContyroller::ApplyNPCInputs (const DemoApplication* const application, Real timestepInSecunds) 
 {
-	// lock the body whioel modifying values 
+	// lock the body while modifying values 
 	dNewton::ScopeLock scopelock (&m_lock);
 
 	//TODO
@@ -178,32 +180,17 @@ void MyPlayerContyroller::ApplyNPCInputs (const DemoApplication* const applicati
 // to do anything interesting we must overload OnPlayerMove
 void MyPlayerContyroller::OnPlayerMove (Real timestep)
 {
-static int xxx;
-xxx ++;
-if (xxx > 1020)
-xxx *=1;
+	dNewton::ScopeLock scopelock (&m_lock);
 
-#if 1
-	#if 0
-		static FILE* file = fopen ("log.bin", "wb");
-		if (file) {
-			fwrite (&m_desiredForwardSpeed, sizeof (dFloat), 1, file);
-			fwrite (&m_desiredStrafeSpeed, sizeof (dFloat), 1, file);
-			fflush(file);
-		}
-	#else 
-		static FILE* file = fopen ("log.bin", "rb");
-		if (file) {
-			fread (&m_desiredForwardSpeed, sizeof (dFloat), 1, file);
-			fread (&m_desiredStrafeSpeed, sizeof (dFloat), 1, file);
-		}
-	#endif
-#endif
+	Real strafeSpeed = 0.0f;
+	m_currentSpeed = m_walkSpeed * Math::Sqrt (m_walkDirection.dotProduct(m_walkDirection));
 
+	if (m_walkDirection.dotProduct(m_walkDirection) > 0.0f) {
+		m_currentHeadingAngle = Math::ATan2 (m_walkDirection.x, m_walkDirection.z).valueRadians();
+	}
 
 	const OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 	const Vector3& gravity = world->GetGravity();
-	//	SetPlayerVelocity (dFloat forwardSpeed, dFloat lateralSpeed, dFloat verticalSpeed, dFloat headingAngle, const dFloat* const gravity, dFloat timestep);
-	SetPlayerVelocity (m_desiredForwardSpeed, m_desiredStrafeSpeed, 0.0f, 0.0f, &gravity.x, timestep);
+	SetPlayerVelocity (m_currentSpeed, strafeSpeed, 0.0f, m_currentHeadingAngle, &gravity.x, timestep);
 }
 

@@ -38,6 +38,7 @@
 #include "BuildJenga.h"
 #include "BuildPyramid.h"
 #include "PlayerExample.h"
+#include "ShootRigidBody.h"
 #include "DemoApplication.h"
 
 
@@ -49,7 +50,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
-		,m_shootingTimer(0.25f)
+		,m_shootRigidBody(NULL)
 		,m_player(NULL)
 		,m_playerManager(NULL)
 	{
@@ -111,27 +112,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 		m_onScreeHelp.Update (m_keyboard->isKeyDown(OIS::KC_F1) ? true : false);
 
 		// handle shotting objects
-		m_shootingTimer -= timestepInSecunds;
-		if ((m_shootingTimer < 0.0f) && m_keyboard->isKeyDown(OIS::KC_SPACE)) {
-			m_shootingTimer = 0.1f;
+		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
 
-			Vector3 cameraPosit;
-			Quaternion cameraRotation;
-			GetInterpolatedCameraMatrix (cameraPosit, cameraRotation);
-
-			int index = (rand() >> 3) % int (sizeof (m_shootingMesh) / sizeof (m_shootingMesh[0]));
-
-			Entity* const ent = mSceneMgr->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
-			SceneNode* const node = CreateNode (mSceneMgr, ent, cameraPosit, cameraRotation);
-			Matrix4 matrix;
-			matrix.makeTransform (cameraPosit, Vector3(1.0f, 1.0f, 1.0f), cameraRotation);
-			OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_physicsWorld, 30.0f, m_shootingCollisions[index], node, matrix);
-
-			const Real speed = -40.0f;
-			Vector3 veloc (Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * speed);   
-			body->SetVeloc(veloc);
-		}
-		
 		// update all players controller 
 		for (MyPlayerContyroller* player = (MyPlayerContyroller*) m_playerManager->GetFirstPlayer(); player; player = (MyPlayerContyroller*) m_playerManager->GetNextPlayer(player)) {
 			if (player == m_player) {
@@ -144,9 +126,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	virtual void destroyScene()
 	{
-		for (int i = 0; i < int (sizeof (m_shootingCollisions) / sizeof (m_shootingCollisions[0])); i ++) {
-			delete m_shootingCollisions[i];
-		}
+		delete (m_shootRigidBody);
 	}
 
 	MyPlayerContyroller* CreatePlayer()
@@ -254,7 +234,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		LoadDynamicScene(origin);
 
 		// create shutting components
-		CreateComponentsForShutting(sizeof (m_shootingCollisions)/sizeof (m_shootingCollisions[0]), m_physicsWorld, m_shootingCollisions, m_shootingMesh);
+		m_shootRigidBody = new ShootRigidBody(m_physicsWorld);
 
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
@@ -266,11 +246,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		m_player = CreatePlayer();
 	}
 
-
-	Real m_shootingTimer;
-	MeshPtr m_shootingMesh[2];
-	dNewtonCollision* m_shootingCollisions[2];
-
+	ShootRigidBody* m_shootRigidBody;
 	MyPlayerContyroller* m_player;
 	OgreNewtonPlayerManager* m_playerManager;
 };
