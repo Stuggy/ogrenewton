@@ -34,7 +34,7 @@ class OgreNewtonRayPickManager::OgreNewtonRayPicker: public OgreNewtonRayCast
 	{
 	}
 
-	dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, const int* const collisionID, dFloat intersectParam)
+	dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, dLong collisionID, dFloat intersectParam)
 	{
 		if (intersectParam < m_param) {
 			// skip static bodies
