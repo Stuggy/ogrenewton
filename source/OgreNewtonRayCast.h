@@ -33,11 +33,12 @@ class OGRE_NEWTON_API OgreNewtonRayCast: public dNewtonRayCast
 	public:
 	OgreNewtonRayCast(dNewton* const world);
 	void CastRay (const dFloat* const p0, const dFloat* const p1, int threadIndex = 0);
-	dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, const int* const collisionID, dFloat intersectParam);
+	dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, dLong collisionID, dFloat intersectParam);
 
 	Vector3 m_normal;
 	Vector3 m_contact;
 	dNewtonBody* m_bodyHit;
+	dLong m_shapeId;
 	Real m_param;
 };
 

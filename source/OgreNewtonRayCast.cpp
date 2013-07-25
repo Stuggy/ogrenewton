@@ -39,11 +39,12 @@ void OgreNewtonRayCast::CastRay (const dFloat* const p0, const dFloat* const p1,
 	dNewtonRayCast::CastRay(p0, p1);
 }
 
-dFloat OgreNewtonRayCast::OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, const int* const collisionID, dFloat intersectParam)
+dFloat OgreNewtonRayCast::OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, dLong collisionID, dFloat intersectParam)
 {
 	if (intersectParam < m_param) {
 		m_bodyHit = (dNewtonBody*) body;
 		m_param = intersectParam;
+		m_shapeId = collisionID;
 		m_normal = Vector3 (normal[0], normal[1], normal[2]); 
 		m_contact = Vector3 (contact[0], contact[1], contact[2]); 
 	}
