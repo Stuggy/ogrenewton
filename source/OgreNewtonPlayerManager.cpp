@@ -47,6 +47,7 @@ OgreNewtonPlayerManager::OgreNetwonPlayer::~OgreNetwonPlayer()
 {
 }
 
+
 void OgreNewtonPlayerManager::OgreNetwonPlayer::OnPlayerMove (Real timestep)
 {
 	const OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
@@ -54,3 +55,5 @@ void OgreNewtonPlayerManager::OgreNetwonPlayer::OnPlayerMove (Real timestep)
 //	SetPlayerVelocity (dFloat forwardSpeed, dFloat lateralSpeed, dFloat verticalSpeed, dFloat headingAngle, const dFloat* const gravity, dFloat timestep);
 	SetPlayerVelocity (0.0f, 0.0f, 0.0f, 0.0f, &gravity.x, timestep);
 }
+
+

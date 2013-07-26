@@ -114,14 +114,42 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// handle shotting objects
 		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
 
+		// update main player first
+		m_player->ApplyPlayerInputs (this, timestepInSecunds);
+
+		// now update the free camera
+		UpdateFreeCamera ();
+
+		// reposition the camera origin to point to the player
+		Matrix4 camMatrix;
+		m_cameraTransform.GetTargetMatrix (&camMatrix[0][0]);
+		camMatrix = camMatrix.transpose();
+
+		Matrix4 playerMatrix;
+		m_player->GetMatrix (&playerMatrix[0][0]);
+		playerMatrix = playerMatrix.transpose();
+
+		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, m_player->GetPlayerHigh(), 0.0f)));
+		camMatrix[0][3] = camOrigin.x; 
+		camMatrix[1][3] = camOrigin.y; 
+		camMatrix[2][3] = camOrigin.z; 
+
+		camMatrix = camMatrix.transpose();
+		m_cameraTransform.SetTargetMatrix (&camMatrix[0][0]);
+
+
+
+
+
+
+
 		// update all players controller 
 		for (MyPlayerContyroller* player = (MyPlayerContyroller*) m_playerManager->GetFirstPlayer(); player; player = (MyPlayerContyroller*) m_playerManager->GetNextPlayer(player)) {
-			if (player == m_player) {
-				player->ApplyPlayerInputs (this, timestepInSecunds);
-			} else {
+			if (player != m_player) {
 				player->ApplyNPCInputs (this, timestepInSecunds);
 			}
 		}
+
 	}
 
 	virtual void destroyScene()

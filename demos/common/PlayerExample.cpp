@@ -135,7 +135,7 @@ void MyPlayerContyroller::OnApplicationPostTransform (dFloat timestep)
 	m_anims[mTopAnimID]->addTime (timestep * topAnimSpeed);
 }
 
-// this is call from the Ogre main thread, you should not put too much work here
+// this is called from Ogre main thread, you should not put too much work here
 // just read the input and save so that function OnPlayerMove use these values later on
 void MyPlayerContyroller::ApplyPlayerInputs (const DemoApplication* const application, Real timestepInSecunds) 
 {
