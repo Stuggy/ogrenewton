@@ -42,6 +42,8 @@
 #include "DemoApplication.h"
 
 
+#define PLAYER_CAMERA_DISTANCE  5.0f
+
 using namespace Ogre;
 
 class OgreNewtonDemoApplication: public DemoApplication
@@ -129,10 +131,14 @@ class OgreNewtonDemoApplication: public DemoApplication
 		m_player->GetMatrix (&playerMatrix[0][0]);
 		playerMatrix = playerMatrix.transpose();
 
+		Vector3 frontDir (camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
 		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, m_player->GetPlayerHigh(), 0.0f)));
+		camOrigin += frontDir * PLAYER_CAMERA_DISTANCE;
+
 		camMatrix[0][3] = camOrigin.x; 
 		camMatrix[1][3] = camOrigin.y; 
 		camMatrix[2][3] = camOrigin.z; 
+		
 
 		camMatrix = camMatrix.transpose();
 		m_cameraTransform.SetTargetMatrix (&camMatrix[0][0]);
