@@ -34,7 +34,7 @@ MyPlayerContyroller::MyPlayerContyroller (OgreNewtonPlayerManager* const manager
 	:OgreNewtonPlayerManager::OgreNetwonPlayer (manager, node, mass, outerRadius, innerRadius, playerHigh, stairStep)
 	,m_localOffset(playerPivotOffset)
 	,m_localRotation (alignment)
-	,m_currentSpeed(0.0f)
+//	,m_currentSpeed(0.0f)
 	,m_currentHeadingAngle(0.0f)
 	,m_walkSpeed(2.0f)
 	,m_strafeSpeed(1.0f)
@@ -182,15 +182,16 @@ void MyPlayerContyroller::OnPlayerMove (Real timestep)
 {
 	dNewton::ScopeLock scopelock (&m_lock);
 
+	Real walkSpeed = 0.0f;
 	Real strafeSpeed = 0.0f;
-	m_currentSpeed = m_walkSpeed * Math::Sqrt (m_walkDirection.dotProduct(m_walkDirection));
-
-	if (m_walkDirection.dotProduct(m_walkDirection) > 0.0f) {
+	Real walkMag2 = m_walkDirection.dotProduct(m_walkDirection);
+	if (walkMag2 > 0.0f) {
+		walkSpeed = m_walkSpeed;
 		m_currentHeadingAngle = Math::ATan2 (m_walkDirection.x, m_walkDirection.z).valueRadians();
 	}
 
 	const OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 	const Vector3& gravity = world->GetGravity();
-	SetPlayerVelocity (m_currentSpeed, strafeSpeed, 0.0f, m_currentHeadingAngle, &gravity.x, timestep);
+	SetPlayerVelocity (walkSpeed, strafeSpeed, 0.0f, m_currentHeadingAngle, &gravity.x, timestep);
 }
 
