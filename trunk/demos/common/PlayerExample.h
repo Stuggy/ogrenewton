@@ -86,7 +86,7 @@ class MyPlayerContyroller: public OgreNewtonPlayerManager::OgreNetwonPlayer
 	Vector3 m_localOffset;
 	Quaternion m_localRotation;
 
-	Real m_currentSpeed;
+	//Real m_currentSpeed;
 	Real m_currentHeadingAngle;
 	
 	Real m_walkSpeed;
