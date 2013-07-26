@@ -1,15 +1,15 @@
-material "default_0"
+material "flatPlane"
 {
-	technique default_0_technique
+	technique flatPlane_technique
 	{
-		pass default_0_standard
+		pass flatPlane_standard
 		{
 			ambient 1 1 1 1
 			diffuse 1 1 1 1
 			specular 0 0 0 0 25.5
 			emissive 0 0 0 1
 
-			texture_unit default_0_Diffuse#0
+			texture_unit flatPlane_Diffuse#0
 			{
 				texture grids.tga
 				tex_coord_set 0

@@ -40,6 +40,7 @@ class OGRE_NEWTON_API OgreNewtonPlayerManager: public dNewtonPlayerManager
 		~OgreNetwonPlayer();
 
 		virtual void OnPlayerMove (Real timestep);
+	
 
 		private:
 		static Vector3 m_upDir;

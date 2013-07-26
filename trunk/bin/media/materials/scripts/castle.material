@@ -1,247 +1,260 @@
-
-material castle000
+material "default_0"
 {
-	technique
+	technique default_0_technique
 	{
-		pass
+		pass default_0_standard
 		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
 
-			texture_unit
-			{
-				texture ornament2_.tga
-			}
-		}
-
-	}
-
-}
-
-material castle001
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture wall_p.tga
-			}
-		}
-
-	}
-
-}
-
-material castle002
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture icon.tga
-			}
-		}
-
-	}
-
-}
-
-material castle003
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture wall_4.tga
-			}
-		}
-
-	}
-
-}
-
-material castle004
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture ornament1_.tga
-			}
-		}
-
-	}
-
-}
-
-material castle005
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture carpet4_w.tga
-			}
-		}
-
-	}
-
-}
-
-material castle006
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture tiles.tga
-			}
-		}
-
-	}
-
-}
-
-material castle007
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture floor_.tga
-			}
-		}
-
-	}
-
-}
-
-material castle008
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture wall_8.tga
-			}
-		}
-
-	}
-
-}
-
-material castle009
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture oldmetal.tga
-			}
-		}
-
-	}
-
-}
-
-material castle010
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture wall_7.tga
-			}
-		}
-
-	}
-
-}
-
-material castle011
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
-			{
-				texture wall_w.tga
-			}
-		}
-
-	}
-
-}
-
-material castle012
-{
-	technique
-	{
-		pass
-		{
-			ambient 0.2 0.2 0.2 1
-			diffuse 0.7 0.7 0.7 1
-
-			texture_unit
+			texture_unit default_0_Diffuse#0
 			{
 				texture blinkyde.tga
+				tex_coord_set 0
+				colour_op modulate
 			}
 		}
-
 	}
+}
+material "default_1"
+{
+	technique default_1_technique
+	{
+		pass default_1_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
 
+			texture_unit default_1_Diffuse#0
+			{
+				texture wall_7.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_2"
+{
+	technique default_2_technique
+	{
+		pass default_2_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_2_Diffuse#0
+			{
+				texture wall_w.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_3"
+{
+	technique default_3_technique
+	{
+		pass default_3_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_3_Diffuse#0
+			{
+				texture carpet4_w.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_4"
+{
+	technique default_4_technique
+	{
+		pass default_4_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_4_Diffuse#0
+			{
+				texture tiles.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_5"
+{
+	technique default_5_technique
+	{
+		pass default_5_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_5_Diffuse#0
+			{
+				texture floor_.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_6"
+{
+	technique default_6_technique
+	{
+		pass default_6_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_6_Diffuse#0
+			{
+				texture wall_8.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_7"
+{
+	technique default_7_technique
+	{
+		pass default_7_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_7_Diffuse#0
+			{
+				texture oldmetal.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_8"
+{
+	technique default_8_technique
+	{
+		pass default_8_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_8_Diffuse#0
+			{
+				texture icon.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_9"
+{
+	technique default_9_technique
+	{
+		pass default_9_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_9_Diffuse#0
+			{
+				texture wall_4.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_10"
+{
+	technique default_10_technique
+	{
+		pass default_10_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_10_Diffuse#0
+			{
+				texture ornament1_.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_11"
+{
+	technique default_11_technique
+	{
+		pass default_11_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_11_Diffuse#0
+			{
+				texture wall_p.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_12"
+{
+	technique default_12_technique
+	{
+		pass default_12_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 0.7 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_12_Diffuse#0
+			{
+				texture ornament2_.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
 }
