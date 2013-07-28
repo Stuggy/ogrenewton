@@ -42,7 +42,10 @@
 #include "DemoApplication.h"
 
 
-#define PLAYER_CAMERA_DISTANCE  5.0f
+#define PLAYER_SPEED					4.0f
+#define PLAYER_CAMERA_DISTANCE			6.0f
+#define PLAYER_CAMERA_HIGHT_ABOVE_HEAD	0.5f
+
 
 using namespace Ogre;
 
@@ -116,11 +119,12 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// handle shotting objects
 		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
 
-		// update main player first
-		m_player->ApplyPlayerInputs (this, timestepInSecunds);
 
 		// now update the free camera
 		UpdateFreeCamera ();
+
+		// update main player first
+		m_player->ApplyPlayerInputs (this, timestepInSecunds);
 
 		// reposition the camera origin to point to the player
 		Matrix4 camMatrix;
@@ -132,20 +136,15 @@ class OgreNewtonDemoApplication: public DemoApplication
 		playerMatrix = playerMatrix.transpose();
 
 		Vector3 frontDir (camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
-		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, m_player->GetPlayerHigh(), 0.0f)));
+		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, m_player->GetPlayerHigh() + PLAYER_CAMERA_HIGHT_ABOVE_HEAD, 0.0f)));
 		camOrigin += frontDir * PLAYER_CAMERA_DISTANCE;
 
 		camMatrix[0][3] = camOrigin.x; 
 		camMatrix[1][3] = camOrigin.y; 
 		camMatrix[2][3] = camOrigin.z; 
-		
 
 		camMatrix = camMatrix.transpose();
 		m_cameraTransform.SetTargetMatrix (&camMatrix[0][0]);
-
-
-
-
 
 
 
@@ -213,7 +212,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		Real innerRadius = outerRadius * 0.25f;
 		Vector3 playerPivotOffset (0.0f, - scale * bBox.getMinimum().y, 0.0f);
 		Quaternion aligmentRot (Radian (Degree (180.0f)), Vector3 (0.0f, 1.0f, 0.0f));
-		MyPlayerContyroller* const player = new MyPlayerContyroller(m_playerManager, playerMesh, playerNode, mass, outerRadius, innerRadius, high, stairStep, playerPivotOffset, aligmentRot);
+		MyPlayerContyroller* const player = new MyPlayerContyroller(m_playerManager, playerMesh, playerNode, mass, outerRadius, innerRadius, high, stairStep, playerPivotOffset, aligmentRot, PLAYER_SPEED);
 
 		// test deleting the player
 		//delete player;

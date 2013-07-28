@@ -53,7 +53,7 @@ class MyPlayerContyroller: public OgreNewtonPlayerManager::OgreNetwonPlayer
 		ANIM_NONE
 	};
 
-	MyPlayerContyroller (OgreNewtonPlayerManager* const manager, Entity* const playerMesh, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat playerHigh, dFloat stairStep, const Vector3& playerPivotOffset, const Quaternion& alignment);
+	MyPlayerContyroller (OgreNewtonPlayerManager* const manager, Entity* const playerMesh, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat playerHigh, dFloat stairStep, const Vector3& playerPivotOffset, const Quaternion& alignment, Real maxSpeed);
 
 	void setBaseAnimation(AnimID id, bool reset = false);
 	void setTopAnimation(AnimID id, bool reset = false);
@@ -88,6 +88,7 @@ class MyPlayerContyroller: public OgreNewtonPlayerManager::OgreNetwonPlayer
 
 	//Real m_currentSpeed;
 	Real m_currentHeadingAngle;
+	Real m_currentCameraHeadingAngle;
 	
 	Real m_walkSpeed;
 	Real m_strafeSpeed;

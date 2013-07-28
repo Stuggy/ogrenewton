@@ -30,13 +30,14 @@ using namespace Ogre;
 
 String MyPlayerContyroller::m_animNames[] = {"IdleBase", "IdleTop", "RunBase", "RunTop", "HandsClosed", "HandsRelaxed", "DrawSwords",  "SliceVertical", "SliceHorizontal", "Dance", "JumpStart", "JumpLoop", "JumpEnd"};
 
-MyPlayerContyroller::MyPlayerContyroller (OgreNewtonPlayerManager* const manager, Entity* const playerMesh, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat playerHigh, dFloat stairStep, const Vector3& playerPivotOffset, const Quaternion& alignment)
+MyPlayerContyroller::MyPlayerContyroller (OgreNewtonPlayerManager* const manager, Entity* const playerMesh, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat playerHigh, dFloat stairStep, const Vector3& playerPivotOffset, const Quaternion& alignment, Real maxSpeed)
 	:OgreNewtonPlayerManager::OgreNetwonPlayer (manager, node, mass, outerRadius, innerRadius, playerHigh, stairStep)
 	,m_localOffset(playerPivotOffset)
 	,m_localRotation (alignment)
 //	,m_currentSpeed(0.0f)
 	,m_currentHeadingAngle(0.0f)
-	,m_walkSpeed(2.0f)
+	,m_currentCameraHeadingAngle(0.0f)
+	,m_walkSpeed(maxSpeed)
 	,m_strafeSpeed(1.0f)
 	,m_walkDirection(0.0f, 0.0f, 0.0f)
 	,m_desiredStrafeSpeed(0.0f)
@@ -159,6 +160,8 @@ void MyPlayerContyroller::ApplyPlayerInputs (const DemoApplication* const applic
 	if (application->m_keyboard->isKeyDown(OIS::KC_D)) {
 		m_walkDirection.x = -1.0f;
 	}
+
+	m_currentCameraHeadingAngle = application->GetCameraYawAngle();
 }
 
 // this is call from the Ogre main thread, you should not put too much work here
@@ -192,6 +195,6 @@ void MyPlayerContyroller::OnPlayerMove (Real timestep)
 
 	const OgreNewtonWorld* const world = (OgreNewtonWorld*) GetNewton();
 	const Vector3& gravity = world->GetGravity();
-	SetPlayerVelocity (walkSpeed, strafeSpeed, 0.0f, m_currentHeadingAngle, &gravity.x, timestep);
+	SetPlayerVelocity (walkSpeed, strafeSpeed, 0.0f, m_currentHeadingAngle + m_currentCameraHeadingAngle, &gravity.x, timestep);
 }
 
