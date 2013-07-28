@@ -277,6 +277,7 @@
 				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\release&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\release&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\release_md&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)\$(TargetName).pdb"
+				LinkTimeCodeGeneration="0"
 			/>
 			<Tool
 				Name="VCALinkTool"

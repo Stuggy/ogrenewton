@@ -45,6 +45,7 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public OgreNewtonApplication
 	void MoveCamera (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep);
 	void GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation);
 
+	Real GetCameraYawAngle() const ;
 	
 	protected:
 	virtual void createScene(void);
@@ -53,9 +54,9 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public OgreNewtonApplication
 	protected:
 	OgreNewtonDebugger* m_debugRender;
 
-	Radian m_yawAngle;
-	Radian m_pitchAngle;
-	Vector3 m_translation;
+	Radian m_cameraYawAngle;
+	Radian m_cameraPitchAngle;
+	Vector3 m_cameraTranslation;
 	Vector3 m_interpolatedCameraPosition;
 	Quaternion m_interpolatedCameraRotation;
 	dNewtonTransformLerp m_cameraTransform;

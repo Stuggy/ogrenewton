@@ -33,9 +33,9 @@ OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 	:OgreNewtonApplication()
 	,m_debugRender(NULL)
 //	,m_cameraLock(0)
-	,m_yawAngle(0.0f)
-	,m_pitchAngle(0.0f)
-	,m_translation(0.0f, 0.0f, 0.0f)
+	,m_cameraYawAngle(0.0f)
+	,m_cameraPitchAngle(0.0f)
+	,m_cameraTranslation(0.0f, 0.0f, 0.0f)
 	,m_interpolatedCameraPosition(0.0f, 0.0f, 0.0f)
 	,m_interpolatedCameraRotation (Quaternion::IDENTITY)
 	,m_cameraTransform()
@@ -84,9 +84,9 @@ void OgreNewtonExampleApplication::ResetCamera (const Vector3& posit, const Quat
 	Radian rotZ;
 	rot.ToEulerAnglesZYX (rotZ, rotY, rotX);
 
-	m_yawAngle = rotY;
-	m_pitchAngle = rotX;
-	m_translation = posit;
+	m_cameraYawAngle = rotY;
+	m_cameraPitchAngle = rotX;
+	m_cameraTranslation = posit;
 	m_cameraTransform.ResetMatrix (&matrix[0][0]);
 
 	Matrix4 cameraMatrix;
@@ -101,21 +101,25 @@ void OgreNewtonExampleApplication::MoveCamera (Real deltaTranslation, Real delta
 	// here we update the camera movement at simulation rate
 //	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
 
-	m_yawAngle = fmodf (m_yawAngle.valueRadians() + yawAngleStep.valueRadians(), 3.141592f * 2.0f);
-	m_pitchAngle = Math::Clamp (m_pitchAngle.valueRadians() + pitchAngleStep.valueRadians(), - 80.0f * 3.141592f / 180.0f, 80.0f * 3.141592f / 180.0f);
+	m_cameraYawAngle = fmodf (m_cameraYawAngle.valueRadians() + yawAngleStep.valueRadians(), 3.141592f * 2.0f);
+	m_cameraPitchAngle = Math::Clamp (m_cameraPitchAngle.valueRadians() + pitchAngleStep.valueRadians(), - 80.0f * 3.141592f / 180.0f, 80.0f * 3.141592f / 180.0f);
 
 	Matrix3 rot; 
 	//rot.FromEulerAnglesZYX (m_yawAngle, m_pitchAngle, Radian (0.0f));
-	rot.FromEulerAnglesZYX (Radian (0.0f), m_yawAngle, m_pitchAngle);
+	rot.FromEulerAnglesZYX (Radian (0.0f), m_cameraYawAngle, m_cameraPitchAngle);
 	Matrix4 matrix (rot);
-	m_translation += Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * deltaTranslation;   
-	m_translation += Vector3 (matrix[0][0], matrix[1][0], matrix[2][0]) * deltaStrafe;   
+	m_cameraTranslation += Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * deltaTranslation;   
+	m_cameraTranslation += Vector3 (matrix[0][0], matrix[1][0], matrix[2][0]) * deltaStrafe;   
 
-	matrix.setTrans(m_translation);
+	matrix.setTrans(m_cameraTranslation);
 	matrix = matrix.transpose();
 	m_cameraTransform.Update (matrix[0]);
 }
 
+Real OgreNewtonExampleApplication::GetCameraYawAngle() const 
+{
+	return m_cameraYawAngle.valueRadians();  
+}
 
 void OgreNewtonExampleApplication::GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation)
 {
