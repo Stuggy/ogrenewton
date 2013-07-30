@@ -419,6 +419,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\source\OgreNewtonTriggerManager.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonTriggerManager.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\OgreNewtonWorld.cpp"
 			>
 		</File>

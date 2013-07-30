@@ -59,6 +59,7 @@
 #include <dNewtonScopeBuffer.h>
 #include <dNewtonTransformLerp.h>
 #include <dNewtonPlayerManager.h>
+#include <dNewtonTriggerManager.h>
 
 
 #ifdef _OGRE_NEWTON_STATIC_LIB
