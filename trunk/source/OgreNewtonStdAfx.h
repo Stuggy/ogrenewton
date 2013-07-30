@@ -57,7 +57,7 @@
 #include <dNewtonCollision.h>
 #include <dNewtonDynamicBody.h>
 #include <dNewtonScopeBuffer.h>
-#include <dNewtonTranformLerp.h>
+#include <dNewtonTransformLerp.h>
 #include <dNewtonPlayerManager.h>
 
 

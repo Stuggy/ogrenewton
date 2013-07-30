@@ -30,10 +30,8 @@ using namespace Ogre;
 #define OGRE_RAY_PICKER_PLUGIN_NAME		"rayPickManager"
 
 
-class OGRE_NEWTON_API OgreNewtonRayPickController
+class OGRE_NEWTON_API OgreNewtonRayPickController: public CustomControllerBase
 {
-	CUSTOM_CONTROLLER_GLUE(OgreNewtonRayPickController);
-
 	public:
 	virtual void PreUpdate(dFloat timestep, int threadIndex)
 	{
