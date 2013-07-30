@@ -20,36 +20,29 @@
 */
 
 
-#ifndef _OGRE_NEWTON_PLAYER_MANAGER_H_
-#define _OGRE_NEWTON_PLAYER_MANAGER_H_
-
 #include "OgreNewtonStdAfx.h"
+#include "OgreNewtonWorld.h"
+#include "OgreNewtonTriggerManager.h"
 
-using namespace Ogre;
 
 
-class OgreNewtonWorld;
-
-class OGRE_NEWTON_API OgreNewtonPlayerManager: public dNewtonPlayerManager
+OgreNewtonTriggerManager::OgreNewtonTriggerManager (OgreNewtonWorld* const world)
+	:dNewtonTriggerManager (world)
 {
-	public:
-	class OGRE_NEWTON_API OgreNetwonPlayer: public dNewtonPlayer 
-	{
-		public:
-		OgreNetwonPlayer (OgreNewtonPlayerManager* const manager, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep);
-		~OgreNetwonPlayer();
+}
 
-		virtual void OnPlayerMove (Real timestep);
-
-		private:
-		static Vector3 m_upDir;
-		static Vector3 m_frontDir;
-	};
-	
-	OgreNewtonPlayerManager (OgreNewtonWorld* const world);
-	~OgreNewtonPlayerManager ();
-};
+OgreNewtonTriggerManager::~OgreNewtonTriggerManager ()
+{
+}
 
 
+OgreNewtonTriggerManager::OgreNewtonTrigger::OgreNewtonTrigger (OgreNewtonTriggerManager* const manager, const dNewtonCollision& convexShape, SceneNode* const node, const dFloat* const matrix)
+	:dNewtonTrigger (manager, convexShape, node, matrix)
+{
+}
 
-#endif
+OgreNewtonTriggerManager::OgreNewtonTrigger::~OgreNewtonTrigger()
+{
+}
+
+
