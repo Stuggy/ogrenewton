@@ -1,0 +1,298 @@
+
+material RomanBath/Default_Grey
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			texture_unit
+			{
+				texture RomanBathLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+
+		}
+
+	}
+
+}
+
+material RomanBath/PoolSidesHigh
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			texture_unit
+			{
+				texture marble1.jpg
+			}
+			texture_unit
+			{
+				texture RomanBathLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+
+		}
+
+	}
+
+}
+
+material RomanBath/PoolSidesLow
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			texture_unit
+			{
+				texture_alias 0
+				texture marble1.jpg
+			}
+			texture_unit
+			{
+				texture RomanBathLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+		}
+
+	}
+
+}
+
+material RomanBath/StoneBlock
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			texture_unit
+			{
+				texture stone1.jpg
+			}
+			texture_unit
+			{
+				texture RomanBathLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+		}
+
+	}
+
+}
+
+material RomanBath/MainFloor
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			texture_unit
+			{
+				texture cfloor.png
+			}
+			texture_unit
+			{
+				texture RomanBathLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+		}
+
+	}
+
+}
+
+material RomanBath/OuterWallLow
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			texture_unit
+			{
+				texture wall3.jpg
+			}
+
+//			texture_unit
+//			{
+//				anim_texture caustic.png 32 5
+//				colour_op_ex add src_current src_texture
+//			}
+
+			texture_unit
+			{
+				texture RomanBathLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+		}
+
+	}
+
+}
+
+material RomanBath/MarbleFloor
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			texture_unit
+			{
+				texture marble2.jpg
+			}
+//			texture_unit
+//			{
+//				anim_texture caustic.png 32 5
+//				colour_op_ex add src_current src_texture
+//			}
+
+			texture_unit
+			{
+				texture RomanBathLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+		}
+
+	}
+
+}
+
+material RomanBath/BlueTile
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+
+			texture_unit
+			{
+				texture bluetile.png
+			}
+
+			texture_unit
+			{
+				anim_texture caustic.png 32 5
+				colour_op_ex add src_current src_texture
+			}
+
+			texture_unit
+			{
+				texture RomanBathLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+		}
+
+	}
+
+}
+
+
+material RomanBath/RimSkirting
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			texture_unit
+			{
+				texture_alias 0
+				texture skirting.png
+			}
+			texture_unit
+			{
+				texture RomanBathLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+		}
+
+	}
+
+}
+
+
+material RomanBath/ColumnMarble
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			texture_unit
+			{
+				texture marble3.png
+			}
+			texture_unit
+			{
+				texture RomanBathColumnsLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+		}
+
+	}
+
+}
+
+material RomanBath/ColumnBlock
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.7 1
+			diffuse 0.7 0.7 0.7 1
+			specular 0.9 0.9 0.9 1 20
+
+			texture_unit
+			{
+				texture stone1.jpg
+			}
+			texture_unit
+			{
+				texture RomanBathColumnsLightingMap.dds 2d 0
+				tex_coord_set 1
+			}
+		}
+
+	}
+
+}
+
+material RomanBath/OgreStone
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.7 1
+			diffuse 0.7 0.7 0.7 1
+			specular 0.9 0.9 0.9 1 20
+
+			texture_unit
+			{
+				texture stone1.jpg
+			}
+		}
+
+	}
+
+}

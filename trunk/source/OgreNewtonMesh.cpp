@@ -36,7 +36,7 @@ OgreNewtonMesh::OgreNewtonMesh (dNewton* const world, const Entity* const entity
 	,m_materialMap()
 {
 	BeginPolygon();
-	ParseEntity (entity);
+	ParseEntity (entity, Matrix4::IDENTITY);
 	EndPolygon();
 }
 
@@ -76,12 +76,15 @@ OgreNewtonMesh::OgreNewtonMesh (dNewton* const world, SceneNode* const sceneNode
 		Vector3 thisPos (curPosit + (curOrient * (node->getPosition() * curScale)));
 		Vector3 thisScale (curScale * node->getScale());
 
+		Matrix4 matrix;
+		matrix.makeTransform(thisPos, thisScale, thisOrient);
+
 		// now add the polys from this node.
 		unsigned int num_obj = node->numAttachedObjects();
 		for (unsigned int co = 0; co < num_obj; co++) {
 			MovableObject* const obj = node->getAttachedObject(short(co));
 			if (obj->getMovableType() == "Entity") {
-				ParseEntity ((Entity*) obj);
+				ParseEntity ((Entity*) obj, matrix);
 			}
 		}
 
@@ -171,7 +174,7 @@ ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 	return object;
 }
 
-void OgreNewtonMesh::ParseEntity (const Entity* const entity)
+void OgreNewtonMesh::ParseEntity (const Entity* const entity, const Matrix4& matrix)
 {
 	MeshPtr mesh = entity->getMesh();
 
@@ -204,7 +207,7 @@ void OgreNewtonMesh::ParseEntity (const Entity* const entity)
 			for (int i = 0; i < points.GetElementsCount(); i ++) {
 				float* data;
 				vertexElem->baseVertexPointerToElement(ptr + i * size, &data);
-				points[i] = Vector3 (data[offset + 0], data[offset + 1], data[offset + 2]);
+				points[i] = matrix.transformAffine (Vector3 (data[offset + 0], data[offset + 1], data[offset + 2]));
 			}
 			vertexPtr->unlock();
 		}
@@ -219,7 +222,8 @@ void OgreNewtonMesh::ParseEntity (const Entity* const entity)
 			for (int i = 0; i < normals.GetElementsCount(); i ++) {
 				float* data;
 				vertexElem->baseVertexPointerToElement(ptr + i * size, &data);
-				normals[i] = Vector3 (data[offset + 0], data[offset + 1], data[offset + 2]);
+				normals[i] = matrix * Vector3 (data[offset + 0], data[offset + 1], data[offset + 2]);
+				normals[i] = normals[i].normalise();
 			}
 			normalPtr->unlock();
 		}
