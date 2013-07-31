@@ -343,35 +343,34 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
-		const int compoundCount = 10;
+		const int compoundCount = 8;
 
 		// add some compound collision shapes
-//		SpawnManualCompoundCollisionShapes    (10, origin + Vector3 (-20.0f, 1.0f, -40.0f));
+		SpawnManualCompoundCollisionShapes (compoundCount, origin + Vector3 (-14.0f, 1.0f, 10.0f));
 
 		// some automatically generated convex decompositions
-//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -20.0f), "cow.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -30.0f), "bessel.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -40.0f), "torus.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -50.0f), "torusKnot.mesh");
-
+		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-14.0f, 1.0f, 0.0f), "cow.mesh");
+		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-14.0f, 1.0f, -10.0f), "bessel.mesh");
+		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-14.0f, 1.0f, -20.0f), "torus.mesh");
+		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-14.0f, 1.0f, -30.0f), "torusKnot.mesh");
 
 		// make a convex hull from 200 random points
-//		dNewtonScopeBuffer<Vector3> points(200);
-//		for (int i = 0; i < points.GetElementsCount(); i ++) {
-//			points[i] = Vector3 (Rand (0.5f), Rand (0.5f), Rand (0.5f));
-//		}
+		dNewtonScopeBuffer<Vector3> points(200);
+		for (int i = 0; i < points.GetElementsCount(); i ++) {
+			points[i] = Vector3 (Rand (0.5f), Rand (0.5f), Rand (0.5f));
+		}
 
 		// add samples the single solid primitive with non uniform scaling
-		const int spawnCount = 10;
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 4.0f, -10.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 4.0f, -10.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 4.0f, -10.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  0.0f, 4.0f, -10.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, 0));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 4.0f, -10.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 4.0f, -10.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 4.0f, -10.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, 0));
+		const int spawnCount = 20;
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-8.0f, 4.0f, 20.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-6.0f, 4.0f, 20.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-4.0f, 4.0f, 20.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-2.0f, 4.0f, 20.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 0.0f, 4.0f, 20.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 2.0f, 4.0f, 20.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 4.0f, 4.0f, 20.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 6.0f, 4.0f, 20.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 8.0f, 4.0f, 20.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, 0));
 	}									  
 
 	void createFrameListener()
@@ -473,7 +472,7 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		//mCamera->setPolygonMode(Ogre::PM_WIREFRAME);
 
 		// now load the dynamics Scene
-		LoadDynamicScene(origin);
+		LoadDynamicScene(Vector3 (0.0f, 4.0f, 0.0f));
 
 		// create shutting components
 		m_shootRigidBody = new ShootRigidBody(m_physicsWorld);
