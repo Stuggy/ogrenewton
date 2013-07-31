@@ -143,7 +143,9 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		SceneNode* const waterNode = mSceneMgr->getRootSceneNode()->createChildSceneNode ("waterNode");
 
 		mWater = mSceneMgr->createEntity("Water", "water");
-		mWater->setMaterialName("Examples/FresnelReflectionRefraction");
+                // some how I can no get this material to work
+		//mWater->setMaterialName("Examples/FresnelReflectionRefraction");
+		mWater->setMaterialName("Simple/Translucent");
 		waterNode->attachObject(mWater);
 
 
