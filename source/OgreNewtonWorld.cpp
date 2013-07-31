@@ -23,14 +23,11 @@
 #include "OgreNewtonStdAfx.h"
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDynamicBody.h"
-#include "OgreNewtonApplication.h"
 
 
-
-OgreNewtonWorld::OgreNewtonWorld (OgreNewtonApplication* const application, int updateFramerate)
-	:FrameListener()
-	,dNewton()
-	,m_application(application)
+OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramerate)
+	:dNewton()
+	,m_sceneManager(manager)
 	,m_gravity (0.0f, -9.8f, 0.0f)
 	,m_concurrentUpdateMode(true)
 	,m_lastPhysicTimeInMicroseconds(GetTimeInMicrosenconds ())
@@ -66,31 +63,18 @@ dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
 	return m_physicUpdateTimestepInMocroseconds;
 }
 
-void OgreNewtonWorld::OnBeginUpdate (dFloat timestepInSecunds)
-{
-	m_application->OnPhysicUpdateBegin(timestepInSecunds);
-}
-
-void OgreNewtonWorld::OnEndUpdate (dFloat timestepInSecunds)
-{
-	m_application->OnPhysicUpdateEnd(timestepInSecunds);
-}
-
-
-
-bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
+void OgreNewtonWorld::Update ()
 {
 //NewtonSerializeToFile (GetNewton(), "xxxx.bin");
-
 	dLong simulationTime = GetTimeInMicrosenconds ();
 	if (m_concurrentUpdateMode) {
-		UpdateAsync (m_timestep);
+		dNewton::UpdateAsync (m_timestep);
 	} else {
-		Update (m_timestep);
+		dNewton::Update (m_timestep);
 	}
 
 	dFloat param = GetInteplationParam(m_timestep);
-	bool ret = m_application->OnRenderUpdateBegin (param);
+	OnNodesTransformBegin (param);
 
 	Real applicationTime = Real (simulationTime - m_lastPhysicTimeInMicroseconds) * 1.0e-6f;
 
@@ -117,9 +101,8 @@ bool OgreNewtonWorld::frameStarted(const FrameEvent &evt)
 			body->OnApplicationPostTransform (applicationTime);
 		}
 	}
-	m_application->OnRenderUpdateEnd (param);
+	OnNodesTransformEnd (param);
 
 	m_lastPhysicTimeInMicroseconds = simulationTime;
 	m_physicUpdateTimestepInMocroseconds = GetTimeInMicrosenconds () - simulationTime;
-	return ret;
 }

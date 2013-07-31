@@ -24,20 +24,81 @@
 #define _OGRE_NEWTON_EXAMPLE_APPLICATION_H_
 
 #include "OgreNewtonStdAfx.h"
-#include "OgreNewtonApplication.h"
+#include "OgreNewtonWorld.h"
+#include <ExampleApplication.h>
+#include <ExampleFrameListener.h>
 
 using namespace Ogre;
 
 class OgreNewtonDebugger;
 
-class OGRE_NEWTON_API OgreNewtonExampleApplication: public OgreNewtonApplication
+
+class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 {
 	public:
+	class OGRE_NEWTON_API OgreNewtonPhysicsListener: public FrameListener, public OgreNewtonWorld
+	{
+		public:
+		OgreNewtonPhysicsListener (OgreNewtonExampleApplication* const application, int updateFramerate = 120)
+			:FrameListener()
+			,OgreNewtonWorld (application->mSceneMgr, updateFramerate)
+			,m_application (application)
+			,m_terminate(false)
+		{
+		}
+
+		~OgreNewtonPhysicsListener()
+		{
+		}
+
+		bool frameStarted(const FrameEvent &evt)
+		{
+			Update();
+			return m_terminate;
+		}
+
+
+		virtual void OnBeginUpdate (dFloat timestepInSecunds)
+		{
+			m_application->OnPhysicUpdateBegin(timestepInSecunds);
+		}
+
+		virtual void OnEndUpdate (dFloat timestepInSecunds)
+		{
+			m_application->OnPhysicUpdateEnd(timestepInSecunds);
+		}
+
+		void OnNodesTransformBegin(Real interpolationParam)
+		{
+			m_terminate = m_application->OnRenderUpdateBegin(interpolationParam);
+		}
+
+		void OnNodesTransformEnd(Real interpolationParam)
+		{
+			m_application->OnRenderUpdateEnd(interpolationParam);
+		}
+
+		OgreNewtonExampleApplication* m_application;
+		bool m_terminate;
+	};
+
+
 	OgreNewtonExampleApplication();
 	virtual ~OgreNewtonExampleApplication();
 
-	virtual void OnPhysicUpdateBegin(dFloat timestepInSecunds);
-	virtual void OnPhysicUpdateEnd(dFloat timestepInSecunds);
+	OgreNewtonWorld* GetPhysics() const 
+	{ 
+		return m_physicsWorld;
+	}
+
+	virtual void OnPhysicUpdateBegin(dFloat timestepInSecunds)
+	{
+	}
+
+	virtual void OnPhysicUpdateEnd(dFloat timestepInSecunds)
+	{
+	}
+
 	virtual bool OnRenderUpdateBegin(dFloat updateParam);
 	virtual bool OnRenderUpdateEnd(dFloat updateParam);
 
@@ -53,6 +114,7 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public OgreNewtonApplication
 
 	protected:
 	OgreNewtonDebugger* m_debugRender;
+	OgreNewtonPhysicsListener* m_physicsWorld;
 
 	Radian m_cameraYawAngle;
 	Radian m_cameraPitchAngle;

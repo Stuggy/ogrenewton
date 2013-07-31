@@ -307,14 +307,6 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\source\OgreNewtonApplication.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\source\OgreNewtonApplication.h"
-			>
-		</File>
-		<File
 			RelativePath="..\..\source\OgreNewtonDebugger.cpp"
 			>
 		</File>

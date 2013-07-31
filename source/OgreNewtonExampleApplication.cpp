@@ -28,11 +28,10 @@
 #include "OgreNewtonExampleApplication.h"
 
 
-
 OgreNewtonExampleApplication::OgreNewtonExampleApplication()
-	:OgreNewtonApplication()
+	:ExampleApplication()
 	,m_debugRender(NULL)
-//	,m_cameraLock(0)
+	,m_physicsWorld(NULL)
 	,m_cameraYawAngle(0.0f)
 	,m_cameraPitchAngle(0.0f)
 	,m_cameraTranslation(0.0f, 0.0f, 0.0f)
@@ -45,12 +44,15 @@ OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 OgreNewtonExampleApplication::~OgreNewtonExampleApplication()
 {
 	delete m_debugRender;
+	delete m_physicsWorld;
 }
 
 
 void OgreNewtonExampleApplication::createScene()
 {
-	OgreNewtonApplication::createScene();
+	// create the physic world first
+	m_physicsWorld = new OgreNewtonPhysicsListener (this);
+	mRoot->addFrameListener(m_physicsWorld);
 
 	// create a debug Renderer for showing physics data visually
 	m_debugRender = new OgreNewtonDebugger (mSceneMgr, m_physicsWorld);
@@ -60,13 +62,13 @@ void OgreNewtonExampleApplication::createScene()
 void OgreNewtonExampleApplication::destroyScene(void)
 {
 	// make sure no update is in progress, before shutting down all systems
-	GetPhysics()->WaitForUpdateToFinish ();
+	m_physicsWorld->WaitForUpdateToFinish ();
 
 	// destroy the debugger
 	m_debugRender->HideDebugInformation();
 	
-	// destroy the physics world		
-	OgreNewtonApplication::destroyScene();
+	// destroy the rest of eth Ogre world
+	ExampleApplication::destroyScene();
 }
 
 
@@ -129,15 +131,6 @@ void OgreNewtonExampleApplication::GetInterpolatedCameraMatrix (Vector3& cameraP
 }
 
 
-void OgreNewtonExampleApplication::OnPhysicUpdateBegin(dFloat timestepInSecunds) 
-{
-	OgreNewtonApplication::OnPhysicUpdateBegin(timestepInSecunds);
-}
-
-void OgreNewtonExampleApplication::OnPhysicUpdateEnd(dFloat timestepInSecunds) 
-{
-	OgreNewtonApplication::OnPhysicUpdateEnd(timestepInSecunds);
-}
 
 bool OgreNewtonExampleApplication::OnRenderUpdateBegin(dFloat updateParam) 
 {

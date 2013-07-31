@@ -27,30 +27,32 @@
 
 using namespace Ogre;
 
-class OgreNewtonApplication;
-
-class OGRE_NEWTON_API OgreNewtonWorld: public FrameListener, public dNewton 
+class OGRE_NEWTON_API OgreNewtonWorld: public dNewton 
 {
 	public:
-	OgreNewtonWorld (OgreNewtonApplication* const application, int updateFramerate = 120);
+	OgreNewtonWorld (SceneManager* const manager, int updateFramerate);
 	virtual ~OgreNewtonWorld();
 
-	bool frameStarted(const FrameEvent &evt);
+	virtual void Update ();
+	virtual void OnBeginUpdate (dFloat timestepInSecunds) = 0; 
+	virtual void OnEndUpdate (dFloat timestepInSecunds) = 0; 
+	virtual void OnNodesTransformBegin(Real inteplationParam) = 0;
+	virtual void OnNodesTransformEnd(Real inteplationParam) = 0;
+
+	const Vector3& GetGravity() const 
+	{
+		return m_gravity;
+	}
 
 	void SetUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
 	void SetConcurrentUpdateMode (bool mode);
 	bool GetConcurrentUpdateMode () const; 
 	dNewtonBody* CreateBox(Ogre::SceneNode* const sourceNode);
 	dLong GetPhysicsTimeInMicroSeconds() const;
-	const Vector3& GetGravity() const {return m_gravity;}
+	
 
 	protected:
-	virtual void OnBeginUpdate (dFloat timestepInSecunds);
-	virtual void OnEndUpdate (dFloat timestepInSecunds);
-
-
-
-	OgreNewtonApplication* m_application;
+	SceneManager* m_sceneManager;
 
 	Vector3 m_gravity;
 	Real m_timestep;
