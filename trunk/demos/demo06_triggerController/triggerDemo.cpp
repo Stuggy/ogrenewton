@@ -30,6 +30,7 @@
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonPlayerManager.h>
+#include <OgreNewtonTriggerManager.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
 
@@ -41,9 +42,72 @@
 
 using namespace Ogre;
 
+#define WORLD_SCALE 0.05f 
+
 class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetListener
 {
 	public:
+
+
+	class WaterVolumeController: public dNewtonTriggerManager::dNewtonTrigger
+	{
+		public:
+		WaterVolumeController (OgreNewtonTriggerManager* const manager, const dNewtonCollision& convexShape, SceneNode* const waterNode, const Matrix4& matrix, const Plane& waterPlane)
+			:dNewtonTrigger (manager, convexShape, waterNode, &matrix[0][0])
+			,m_waterDentity(1.1f)
+			,m_waterViscosity (0.1f)
+		{
+			m_waterPlane = waterPlane.normal;
+			m_waterPlane.w = waterPlane.d;
+		}
+
+		virtual void OnEnter(dNewtonBody* const guess)
+		{
+		}
+
+		virtual void OnExit(dNewtonBody* const guess)
+		{
+		}
+
+		virtual void OnInside(dNewtonBody* const guess)
+		{
+			Real Ixx;
+			Real Iyy;
+			Real Izz;
+			Real mass;
+			guess->GetMassAndInertia (mass, Ixx, Iyy, Izz);
+
+			if (mass > 0.0f) {
+				Matrix4 matrix;
+				Vector3 cog;
+				Vector3 accelPerUnitMass;
+				Vector3 torquePerUnitMass;
+				const Vector3 gravity = ((OgreNewtonWorld*)guess->GetNewton())->GetGravity();
+
+				guess->GetMatrix(&matrix[0][0]);
+				guess->GetCenterOnMass (&cog.x);
+				cog = matrix.transpose() * cog;
+				dNewtonCollision* const collision = guess->GetCollision();
+
+				Real shapeVolume = collision->GetVolume();
+				Real fluidDentity = m_waterDentity / shapeVolume;
+				collision->CalculateBuoyancyAcceleration (&matrix[0][0], &cog[0], &gravity.x, &m_waterPlane.x, fluidDentity, m_waterViscosity, &accelPerUnitMass.x, &torquePerUnitMass.x);
+
+				Vector3 force (accelPerUnitMass * mass);
+				Vector3 torque (torquePerUnitMass * mass);
+
+				guess->AddForce(&force.x);
+				guess->AddTorque(&torque.x);
+			}
+		}
+
+		Vector4 m_waterPlane;
+		Real m_waterDentity;
+		Real m_waterViscosity;
+	};
+
+
+
 	OgreNewtonDemoApplication()
 		:DemoApplication()
 		,m_shootRigidBody(NULL)
@@ -73,12 +137,30 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 
 		// create our water plane mesh
 		mWaterPlane = Plane(Vector3::UNIT_Y, 0);
-		MeshManager::getSingleton().createPlane("water", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,	mWaterPlane, 700 * 0.1f, 1300 * 0.1f, 10, 10, true, 1, 3, 5, Vector3::UNIT_Z);
+		MeshManager::getSingleton().createPlane("water", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,	mWaterPlane, 700 * WORLD_SCALE, 1300 * WORLD_SCALE, 10, 10, true, 1, 3, 5, Vector3::UNIT_Z);
 
 		// create a water entity using our mesh, give it the shader material, and attach it to the origin
+		SceneNode* const waterNode = mSceneMgr->getRootSceneNode()->createChildSceneNode ("waterNode");
+
 		mWater = mSceneMgr->createEntity("Water", "water");
 		mWater->setMaterialName("Examples/FresnelReflectionRefraction");
-		mSceneMgr->getRootSceneNode()->attachObject(mWater);
+		waterNode->attachObject(mWater);
+
+
+		// Get the AABB of the water plane and use that for placing a trigger volume around it
+		// some how the AABB on the node is no ready, using the entity AABB 
+		//AxisAlignedBox bBox (waterNode->_getWorldAABB());
+		AxisAlignedBox bBox (mWater->getBoundingBox());
+		Real box_x =  bBox.getMaximum().x - bBox.getMinimum().x;
+		Real box_z =  bBox.getMaximum().z - bBox.getMinimum().z;
+		Real box_y =  5.0f;
+
+		Matrix4 waterMatrix (Matrix4::IDENTITY);
+		waterMatrix.setTrans(Vector3 (0, (bBox.getMaximum().y + bBox.getMinimum().y) * 0.5f - box_y * 0.5f, 0.0f));
+		waterMatrix = waterMatrix.transpose();
+
+		dNewtonCollisionBox waterVolume (m_physicsWorld, box_x, box_y, box_z, 0);
+		new WaterVolumeController (m_triggerManager, waterVolume, waterNode, waterMatrix, mWaterPlane);
 	}
 
 
@@ -91,12 +173,10 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		// start adding collision shape to the scene body
 		sceneBody->BeginAddRemoveCollision();
 
-		const Real scale = 0.1f;
-
 		Entity* ent;
 		SceneNode* const headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-		headNode->setScale (scale, scale, scale);
-		headNode->setPosition(-350.0f * scale, 55.0f * scale, 130.0f * scale);
+		headNode->setScale (WORLD_SCALE, WORLD_SCALE, WORLD_SCALE);
+		headNode->setPosition(-350.0f * WORLD_SCALE, 55.0f * WORLD_SCALE, 130.0f * WORLD_SCALE);
 		headNode->yaw(Degree(90));
 		ent = mSceneMgr->createEntity("Head", "ogrehead.mesh");
 		ent->setMaterialName("RomanBath/OgreStone");
@@ -104,8 +184,8 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		headNode->attachObject(ent);
 		sceneBody->AddCollisionTree (headNode);
 
-		SceneNode* const sceneNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "SceneNode" );
-		sceneNode->setScale (scale, scale, scale);
+		SceneNode* const sceneNode = mSceneMgr->getRootSceneNode()->createChildSceneNode ("SceneNode");
+		sceneNode->setScale (WORLD_SCALE, WORLD_SCALE, WORLD_SCALE);
 
 		ent = mSceneMgr->createEntity("UpperBath", "RomanBathUpper.mesh" );
 		sceneNode->attachObject(ent);        
@@ -124,8 +204,6 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
 
-
-		setupWater();
 	}
 
 	void SpawnRegularScaledCollisionShape (int count, const Vector3& origin, const dNewtonCollision& shape)
@@ -356,6 +434,9 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		// create the physic world first
 		DemoApplication::createScene();
 
+		// add a trigger Manager the world 
+		m_triggerManager = new OgreNewtonTriggerManager(m_physicsWorld);
+
 		//make a light
 		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
 
@@ -373,13 +454,17 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		// load all of the static geometry
 		loadStaticScene ();
 
+
+		// load a water plane and place an water trigger volume around it
+		setupWater();
+
 		// position camera using the ray cast functionality
-		Vector3 start(0.0f, 1000.0f, 10.0f);
-		Vector3 end(0.0f, -1000.0f, 10.0f);
+		Vector3 start(0.0f, 1000.0f, 42.0f);
+		Vector3 end(0.0f, -1000.0f, 42.0f);
 		OgreNewtonRayCast raycaster(m_physicsWorld); 
 		raycaster.CastRay (&start.x, &end.x);
 
-		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 2.0f, 0.0f));
+		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 3.0f, 0.0f));
 		mCamera->setPosition(origin);
 
 		// set the near and far clip plane
@@ -402,6 +487,8 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 	RenderTarget* mRefractionTarget;
 	RenderTarget* mReflectionTarget;
 	ShootRigidBody* m_shootRigidBody;
+
+	OgreNewtonTriggerManager* m_triggerManager;
 };
 
 
