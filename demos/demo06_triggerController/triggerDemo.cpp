@@ -349,10 +349,10 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 //		SpawnManualCompoundCollisionShapes    (10, origin + Vector3 (-20.0f, 1.0f, -40.0f));
 
 		// some automatically generated convex decompositions
-//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -50.0f), "cow.mesh");
-//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -60.0f), "bessel.mesh");
-//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -70.0f), "torus.mesh");
-//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -80.0f), "torusKnot.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -20.0f), "cow.mesh");
+		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -30.0f), "bessel.mesh");
+		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -40.0f), "torus.mesh");
+		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -50.0f), "torusKnot.mesh");
 
 
 		// make a convex hull from 200 random points
@@ -362,7 +362,7 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 //		}
 
 		// add samples the single solid primitive with non uniform scaling
-		const int spawnCount = 20;
+		const int spawnCount = 10;
 //		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 4.0f, -10.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
 //		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 4.0f, -10.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
 //		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 4.0f, -10.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
