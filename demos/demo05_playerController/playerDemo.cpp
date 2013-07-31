@@ -74,8 +74,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		// floor object!
 		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Floor"), "flatplane.mesh" );		
-		Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
-		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
+		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
+		Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
 
 		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
 		floorNode->attachObject( levelMap );
@@ -223,6 +223,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// create the physic world first
 		DemoApplication::createScene();
 
+		// create a player manager for controlling all players
+		m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
+
 		//make a light
 		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
 
@@ -270,8 +273,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 
-		// create a player manager for control all players
-		m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
 
 		// add some players
 		m_player = CreatePlayer();
