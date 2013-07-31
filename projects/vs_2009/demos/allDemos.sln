@@ -28,6 +28,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo05_playerController", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogreNewton", "..\ogreNewton.vcproj", "{4E75F9E3-764D-4162-870D-A923CB5C7DEC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo06_triggerController", "demo06_triggerController .vcproj", "{F24D3677-7F80-490F-949D-57933E2DFBC6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC} = {4E75F9E3-764D-4162-870D-A923CB5C7DEC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -84,6 +89,14 @@ Global
 		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.Release|Win32.Build.0 = Release|Win32
 		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
 		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.Debug|Win32.Build.0 = Debug|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.Release|Win32.ActiveCfg = Release|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.Release|Win32.Build.0 = Release|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

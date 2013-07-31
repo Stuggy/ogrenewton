@@ -33,8 +33,6 @@
 #include <OgreNewtonExampleApplication.h>
 
 #include "Utils.h"
-#include "BuildJenga.h"
-#include "BuildPyramid.h"
 #include "ShootRigidBody.h"
 #include "DemoApplication.h"
 

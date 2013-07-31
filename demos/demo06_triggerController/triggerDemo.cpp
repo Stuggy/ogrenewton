@@ -29,8 +29,10 @@
 #include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonDynamicBody.h>
+#include <OgreNewtonPlayerManager.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
+
 
 #include "Utils.h"
 #include "ShootRigidBody.h"
@@ -39,10 +41,9 @@
 
 using namespace Ogre;
 
-class OgreNewtonDemoApplication: public DemoApplication
+class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetListener
 {
 	public:
-
 	OgreNewtonDemoApplication()
 		:DemoApplication()
 		,m_shootRigidBody(NULL)
@@ -54,6 +55,34 @@ class OgreNewtonDemoApplication: public DemoApplication
 	}
 
 	protected:
+
+	void setupWater()
+	{
+		// create our reflection & refraction render textures, and setup their render targets
+		for (unsigned int i = 0; i < 2; i++)
+		{
+			TexturePtr tex = TextureManager::getSingleton().createManual(i == 0 ? "refraction" : "reflection", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, TEX_TYPE_2D, 512, 512, 0, PF_R8G8B8, TU_RENDERTARGET);
+
+			RenderTarget* rtt = tex->getBuffer()->getRenderTarget();
+			rtt->addViewport(mCamera)->setOverlaysEnabled(false);
+			rtt->addListener(this);
+
+			if (i == 0) mRefractionTarget = rtt;
+			else mReflectionTarget = rtt;
+		}
+
+		// create our water plane mesh
+		mWaterPlane = Plane(Vector3::UNIT_Y, 0);
+		MeshManager::getSingleton().createPlane("water", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,	mWaterPlane, 700 * 0.1f, 1300 * 0.1f, 10, 10, true, 1, 3, 5, Vector3::UNIT_Z);
+
+		// create a water entity using our mesh, give it the shader material, and attach it to the origin
+		mWater = mSceneMgr->createEntity("Water", "water");
+		mWater->setMaterialName("Examples/FresnelReflectionRefraction");
+		mSceneMgr->getRootSceneNode()->attachObject(mWater);
+	}
+
+
+
 	void loadStaticScene ()
 	{
 		// create a scene body to add all static collidable meshes in the world 
@@ -62,19 +91,41 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// start adding collision shape to the scene body
 		sceneBody->BeginAddRemoveCollision();
 
-		// floor object
-		Entity* const floor = mSceneMgr->createEntity(MakeName("Floor"), "flatplane.mesh" );		
-		//Entity* const floor = mSceneMgr->createEntity(MakeName("Floor"), "playground.mesh" );
+		const Real scale = 0.1f;
 
-		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
-		floorNode->attachObject( floor );
-		floor->setCastShadows( false );
+		Entity* ent;
+		SceneNode* const headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+		headNode->setScale (scale, scale, scale);
+		headNode->setPosition(-350.0f * scale, 55.0f * scale, 130.0f * scale);
+		headNode->yaw(Degree(90));
+		ent = mSceneMgr->createEntity("Head", "ogrehead.mesh");
+		ent->setMaterialName("RomanBath/OgreStone");
+		//mSurfaceEnts.push_back(ent);
+		headNode->attachObject(ent);
+		sceneBody->AddCollisionTree (headNode);
 
-		// add this collision to the scene body
-		sceneBody->AddCollisionTree (floorNode);
+		SceneNode* const sceneNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "SceneNode" );
+		sceneNode->setScale (scale, scale, scale);
+
+		ent = mSceneMgr->createEntity("UpperBath", "RomanBathUpper.mesh" );
+		sceneNode->attachObject(ent);        
+		//mSurfaceEnts.push_back(ent);
+
+		ent = mSceneMgr->createEntity("Columns", "columns.mesh");
+		sceneNode->attachObject(ent);        
+		//mSurfaceEnts.push_back(ent);
+
+		ent = mSceneMgr->createEntity("LowerBath", "RomanBathLower.mesh");
+		sceneNode->attachObject(ent);
+//		mSubmergedEnts.push_back(ent);
+
+		sceneBody->AddCollisionTree (sceneNode);
 
 		// done adding collision shape to the scene body, now optimize the scene
 		sceneBody->EndAddRemoveCollision();
+
+
+		setupWater();
 	}
 
 	void SpawnRegularScaledCollisionShape (int count, const Vector3& origin, const dNewtonCollision& shape)
@@ -130,20 +181,20 @@ class OgreNewtonDemoApplication: public DemoApplication
 		dNewtonCollisionCompound compoundShape (m_physicsWorld, 0);
 		compoundShape.BeginAddRemoveCollision();
 
-			Matrix4 matrix (Matrix4::IDENTITY);
-			matrix = matrix.transpose();
-			boxShape.SetMatrix(&matrix[0][0]);
-			compoundShape.AddCollision(&boxShape);
+		Matrix4 matrix (Matrix4::IDENTITY);
+		matrix = matrix.transpose();
+		boxShape.SetMatrix(&matrix[0][0]);
+		compoundShape.AddCollision(&boxShape);
 
-			matrix.makeTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Radian (Degree(90.0f)), Vector3 (0.0f, 1.0f, 0.0f)));
-			matrix = matrix.transpose();
-			boxShape.SetMatrix(&matrix[0][0]);
-			compoundShape.AddCollision(&boxShape);
+		matrix.makeTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Radian (Degree(90.0f)), Vector3 (0.0f, 1.0f, 0.0f)));
+		matrix = matrix.transpose();
+		boxShape.SetMatrix(&matrix[0][0]);
+		compoundShape.AddCollision(&boxShape);
 
-			matrix.makeTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Radian (Degree(90.0f)), Vector3 (0.0f, 0.0f, 1.0f)));
-			matrix = matrix.transpose();
-			boxShape.SetMatrix(&matrix[0][0]);
-			compoundShape.AddCollision(&boxShape);
+		matrix.makeTransform (Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Quaternion (Radian (Degree(90.0f)), Vector3 (0.0f, 0.0f, 1.0f)));
+		matrix = matrix.transpose();
+		boxShape.SetMatrix(&matrix[0][0]);
+		compoundShape.AddCollision(&boxShape);
 
 		compoundShape.EndAddRemoveCollision();
 
@@ -217,40 +268,76 @@ class OgreNewtonDemoApplication: public DemoApplication
 		const int compoundCount = 10;
 
 		// add some compound collision shapes
-		SpawnManualCompoundCollisionShapes    (10, origin + Vector3 (-20.0f, 1.0f, -40.0f));
+//		SpawnManualCompoundCollisionShapes    (10, origin + Vector3 (-20.0f, 1.0f, -40.0f));
 
 		// some automatically generated convex decompositions
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -50.0f), "cow.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -60.0f), "bessel.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -70.0f), "torus.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -80.0f), "torusKnot.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -50.0f), "cow.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -60.0f), "bessel.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -70.0f), "torus.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -80.0f), "torusKnot.mesh");
 
 
 		// make a convex hull from 200 random points
-		dNewtonScopeBuffer<Vector3> points(200);
-		for (int i = 0; i < points.GetElementsCount(); i ++) {
-			points[i] = Vector3 (Rand (0.5f), Rand (0.5f), Rand (0.5f));
-		}
-		
+//		dNewtonScopeBuffer<Vector3> points(200);
+//		for (int i = 0; i < points.GetElementsCount(); i ++) {
+//			points[i] = Vector3 (Rand (0.5f), Rand (0.5f), Rand (0.5f));
+//		}
+
 		// add samples the single solid primitive with non uniform scaling
 		const int spawnCount = 20;
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 4.0f, -10.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 4.0f, -10.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 4.0f, -10.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  0.0f, 4.0f, -10.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 4.0f, -10.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 4.0f, -10.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 4.0f, -10.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 4.0f, -10.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 4.0f, -10.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 4.0f, -10.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  0.0f, 4.0f, -10.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 4.0f, -10.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.35f, 0.75f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 4.0f, -10.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
+//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 4.0f, -10.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, 0));
 	}									  
 
 	void createFrameListener()
 	{
 		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-//		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
-//		mRoot->addFrameListener(m_listener);
+		//		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
+		//		mRoot->addFrameListener(m_listener);
 	}
+
+/*
+	void preRenderTargetUpdate(const RenderTargetEvent& evt)
+	{
+		mWater->setVisible(false);  // hide the water
+
+		if (evt.source == mReflectionTarget)  // for reflection, turn on camera reflection and hide submerged entities
+		{
+			mCamera->enableReflection(mWaterPlane);
+			for (std::vector<Entity*>::iterator i = mSubmergedEnts.begin(); i != mSubmergedEnts.end(); i++)
+				(*i)->setVisible(false);
+		}
+		else  // for refraction, hide surface entities
+		{
+			for (std::vector<Entity*>::iterator i = mSurfaceEnts.begin(); i != mSurfaceEnts.end(); i++)
+				(*i)->setVisible(false);
+		}
+	}
+
+	void postRenderTargetUpdate(const RenderTargetEvent& evt)
+	{
+		mWater->setVisible(true);  // unhide the water
+
+		if (evt.source == mReflectionTarget)  // for reflection, turn off camera reflection and unhide submerged entities
+		{
+			mCamera->disableReflection();
+			for (std::vector<Entity*>::iterator i = mSubmergedEnts.begin(); i != mSubmergedEnts.end(); i++)
+				(*i)->setVisible(true);
+		}
+		else  // for refraction, unhide surface entities
+		{
+			for (std::vector<Entity*>::iterator i = mSurfaceEnts.begin(); i != mSurfaceEnts.end(); i++)
+				(*i)->setVisible(true);
+		}
+	}
+*/
 
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
@@ -310,6 +397,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 	}
 
+	Entity* mWater;
+	Plane mWaterPlane;
+	RenderTarget* mRefractionTarget;
+	RenderTarget* mReflectionTarget;
 	ShootRigidBody* m_shootRigidBody;
 };
 
@@ -327,4 +418,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 
 	return 0;
 }
+
+
+
+ 
+ 
 

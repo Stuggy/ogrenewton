@@ -58,7 +58,7 @@ class OGRE_NEWTON_API OgreNewtonMesh: public dNewtonMesh
 	ManualObject* CreateEntity (const String& name) const;
 
 	private:
-	void ParseEntity (const Entity* const entity);
+	void ParseEntity (const Entity* const entity, const Matrix4& matrix);
 	
 
 	MaterialMap m_materialMap;	
