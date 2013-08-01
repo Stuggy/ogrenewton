@@ -20,8 +20,8 @@
 */
 
 
-#ifndef _OGRE_NEWTON_TRIGGER_MANAGER_H_
-#define _OGRE_NEWTON_TRIGGER_MANAGER_H_
+#ifndef _OGRE_NEWTON_HIERARCHICAL_TRANSFORM_CONTROLLER_MANAGER_H_
+#define _OGRE_NEWTON_HIERARCHICAL_TRANSFORM_CONTROLLER_MANAGER_H_
 
 #include "OgreNewtonStdAfx.h"
 
@@ -30,18 +30,18 @@ using namespace Ogre;
 
 class OgreNewtonWorld;
 
-class OGRE_NEWTON_API OgreNewtonHierachyTransformManager: public dNewtonHierachyTransformManager
+class OGRE_NEWTON_API OgreNewtonHierarchyTransformManager: public dNewtonHierarchyTransformManager
 {
 	public:
-	class OGRE_NEWTON_API OgreNewtonTransformController: public dNewtonHierachyTransformController
+	class OGRE_NEWTON_API OgreNewtonHierarchyTransformController: public dNewtonHierarchyTransformController
 	{
 		public:
-		OgreNewtonTransformController (OgreNewtonHierachyTransformManager* const manager);
-		~OgreNewtonTransformController();
+		OgreNewtonHierarchyTransformController (OgreNewtonHierarchyTransformManager* const manager);
+		~OgreNewtonHierarchyTransformController();
 	};
 	
-	OgreNewtonHierachyTransformManager (OgreNewtonWorld* const world);
-	~OgreNewtonHierachyTransformManager ();
+	OgreNewtonHierarchyTransformManager (OgreNewtonWorld* const world);
+	~OgreNewtonHierarchyTransformManager ();
 };
 
 
