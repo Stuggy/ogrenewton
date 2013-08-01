@@ -203,8 +203,33 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	void LoadForklift(const Vector3& origin)
 	{
+		// load teh mode as Ogre node
 		DotSceneLoader loader;
-		loader.parseDotScene ("forklift.scene", "Autodetect", mSceneMgr);
+		SceneNode* const forkliftRoot = CreateNode (mSceneMgr, NULL, Vector3::ZERO, Quaternion::IDENTITY);
+		loader.parseDotScene ("forklift.scene", "Autodetect", mSceneMgr, forkliftRoot);
+
+		// find all vehicle components
+		SceneNode* const bodyNode = (SceneNode*) forkliftRoot->getChild ("body");
+		dAssert (bodyNode);
+
+		SceneNode* const fl_tireNode = (SceneNode*) bodyNode->getChild ("fl_tire");
+		SceneNode* const fr_tireNode = (SceneNode*) bodyNode->getChild ("fr_tire");
+		SceneNode* const rl_tireNode = (SceneNode*) bodyNode->getChild ("rl_tire");
+		SceneNode* const rr_tireNode = (SceneNode*) bodyNode->getChild ("rr_tire");
+		dAssert (fl_tireNode);
+		dAssert (fr_tireNode);
+		dAssert (rl_tireNode);
+		dAssert (rr_tireNode);
+
+		//convert the body part to rigid bodies
+		Entity* const bodyEnt = (Entity*) bodyNode->getAttachedObject (0);
+		OgreNewtonMesh bodyMesh (m_physicsWorld, bodyEnt);
+		dNewtonCollisionConvexHull bodyCollision (m_physicsWorld, bodyMesh, 0);
+
+		// make a dynamic body
+		Matrix4 matrix (Matrix4::IDENTITY);
+		matrix.setTrans(origin);
+		OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_physicsWorld, 500.0f, &bodyCollision, bodyNode, matrix);
 	}
 
 
@@ -260,7 +285,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		LoadDynamicScene(origin);
 
 		// load articulated ForkLift
-		LoadForklift(origin + Vector3 (10.0f, 2.0f, 0.0f));
+		LoadForklift(raycaster.m_contact + Vector3 (0.0f, 0.5f, -10.0f));
 
 		// create shutting components
 		m_shootRigidBody = new ShootRigidBody(m_physicsWorld);

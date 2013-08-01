@@ -7,7 +7,7 @@
         <node name="body" id="0" isTarget="false">
             <position x="0" y="0.412957" z="0" />
             <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-            <scale x="4" y="4" z="4" />
+            <scale x="1" y="1" z="1" />
             <entity name="body" id="1" meshFile="body.mesh" castShadows="true">
                 <subentities>
                     <subentity index="0" materialName="Standard_2" />
@@ -15,9 +15,9 @@
                 </subentities>
             </entity>
             <node name="fr_tire" id="2" isTarget="false">
-                <position x="0.139066" y="-0.0148835" z="0.118389" />
+                <position x="0.556262" y="-0.0595341" z="0.473558" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="10" y="10" z="10" />
+                <scale x="40" y="40" z="40" />
                 <entity name="fr_tire" id="3" meshFile="fr_tire.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_1" />
@@ -25,9 +25,9 @@
                 </entity>
             </node>
             <node name="fl_tire" id="4" isTarget="false">
-                <position x="0.139066" y="-0.0148835" z="-0.13081" />
+                <position x="0.556262" y="-0.0595341" z="-0.52324" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="10" y="10" z="10" />
+                <scale x="40" y="40" z="40" />
                 <entity name="fl_tire" id="5" meshFile="fl_tire.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_1" />
@@ -35,9 +35,9 @@
                 </entity>
             </node>
             <node name="rl_tire" id="6" isTarget="false">
-                <position x="-0.279233" y="-0.0234729" z="-0.141152" />
+                <position x="-1.11693" y="-0.0938918" z="-0.564608" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="10" y="10" z="10" />
+                <scale x="40" y="40" z="40" />
                 <entity name="rl_tire" id="7" meshFile="rl_tire.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_1" />
@@ -45,9 +45,9 @@
                 </entity>
             </node>
             <node name="rr_tire" id="8" isTarget="false">
-                <position x="-0.279233" y="-0.0234729" z="0.137145" />
+                <position x="-1.11693" y="-0.0938918" z="0.548581" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="10" y="10" z="10" />
+                <scale x="40" y="40" z="40" />
                 <entity name="rr_tire" id="9" meshFile="rr_tire.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_1" />
@@ -55,9 +55,9 @@
                 </entity>
             </node>
             <node name="lift" id="10" isTarget="false">
-                <position x="0.211088" y="-0.043242" z="-0.000634996" />
+                <position x="0.844353" y="-0.172968" z="-0.00253998" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="10" y="10" z="10" />
+                <scale x="40" y="40" z="40" />
                 <entity name="lift" id="11" meshFile="lift.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_2" />
