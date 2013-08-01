@@ -331,6 +331,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\source\OgreNewtonHierachyTransformManager.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonHierachyTransformManager.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\OgreNewtonMesh.cpp"
 			>
 		</File>

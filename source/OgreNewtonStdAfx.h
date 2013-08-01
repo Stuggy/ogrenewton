@@ -60,6 +60,7 @@
 #include <dNewtonTransformLerp.h>
 #include <dNewtonPlayerManager.h>
 #include <dNewtonTriggerManager.h>
+#include <dNewtonHierachyTransformManager.h>
 
 
 #ifdef _OGRE_NEWTON_STATIC_LIB
