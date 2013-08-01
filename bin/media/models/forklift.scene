@@ -4,89 +4,89 @@
         <colourBackground r="0" g="0" b="0" />
     </environment>
     <nodes>
-        <node name="forklift_body" id="0" isTarget="false">
-            <position x="-0.000260409" y="0.0105511" z="-2.54042e-006" />
+        <node name="body" id="0" isTarget="false">
+            <position x="0" y="0.412957" z="0" />
             <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-            <scale x="1" y="1" z="1" />
-            <entity name="forklift_body" id="1" meshFile="forklift_body.mesh" castShadows="true">
+            <scale x="4" y="4" z="4" />
+            <entity name="body" id="1" meshFile="body.mesh" castShadows="true">
                 <subentities>
                     <subentity index="0" materialName="Standard_2" />
                     <subentity index="1" materialName="Standard_3" />
                 </subentities>
             </entity>
-            <node name="forklift_fr_tire" id="2" isTarget="false">
-                <position x="0.0139066" y="-0.00148835" z="0.0118389" />
+            <node name="fr_tire" id="2" isTarget="false">
+                <position x="0.139066" y="-0.0148835" z="0.118389" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="1" y="1" z="1" />
-                <entity name="forklift_fr_tire" id="3" meshFile="forklift_fr_tire.mesh" castShadows="true">
+                <scale x="10" y="10" z="10" />
+                <entity name="fr_tire" id="3" meshFile="fr_tire.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_1" />
                     </subentities>
                 </entity>
             </node>
-            <node name="forklift_fl_tire" id="4" isTarget="false">
-                <position x="0.0139066" y="-0.00148835" z="-0.013081" />
+            <node name="fl_tire" id="4" isTarget="false">
+                <position x="0.139066" y="-0.0148835" z="-0.13081" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="1" y="1" z="1" />
-                <entity name="forklift_fl_tire" id="5" meshFile="forklift_fl_tire.mesh" castShadows="true">
+                <scale x="10" y="10" z="10" />
+                <entity name="fl_tire" id="5" meshFile="fl_tire.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_1" />
                     </subentities>
                 </entity>
             </node>
-            <node name="forklift_rl_tire" id="6" isTarget="false">
-                <position x="-0.0279233" y="-0.00234729" z="-0.0141152" />
+            <node name="rl_tire" id="6" isTarget="false">
+                <position x="-0.279233" y="-0.0234729" z="-0.141152" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="1" y="1" z="1" />
-                <entity name="forklift_rl_tire" id="7" meshFile="forklift_rl_tire.mesh" castShadows="true">
+                <scale x="10" y="10" z="10" />
+                <entity name="rl_tire" id="7" meshFile="rl_tire.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_1" />
                     </subentities>
                 </entity>
             </node>
-            <node name="forklift_rr_tire" id="8" isTarget="false">
-                <position x="-0.0279233" y="-0.00234729" z="0.0137145" />
+            <node name="rr_tire" id="8" isTarget="false">
+                <position x="-0.279233" y="-0.0234729" z="0.137145" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="1" y="1" z="1" />
-                <entity name="forklift_rr_tire" id="9" meshFile="forklift_rr_tire.mesh" castShadows="true">
+                <scale x="10" y="10" z="10" />
+                <entity name="rr_tire" id="9" meshFile="rr_tire.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_1" />
                     </subentities>
                 </entity>
             </node>
-            <node name="forklift_lift" id="10" isTarget="false">
-                <position x="0.0211088" y="-0.0043242" z="-6.34996e-005" />
+            <node name="lift" id="10" isTarget="false">
+                <position x="0.211088" y="-0.043242" z="-0.000634996" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                <scale x="1" y="1" z="1" />
-                <entity name="forklift_lift" id="11" meshFile="forklift_lift.mesh" castShadows="true">
+                <scale x="10" y="10" z="10" />
+                <entity name="lift" id="11" meshFile="lift.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_2" />
                     </subentities>
                 </entity>
-                <node name="forklift_lift2" id="12" isTarget="false">
+                <node name="lift2" id="12" isTarget="false">
                     <position x="0" y="0" z="0" />
                     <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
                     <scale x="1" y="1" z="1" />
-                    <entity name="forklift_lift2" id="13" meshFile="forklift_lift2.mesh" castShadows="true">
+                    <entity name="lift2" id="13" meshFile="lift2.mesh" castShadows="true">
                         <subentities>
                             <subentity index="0" materialName="Standard_2" />
                         </subentities>
                     </entity>
-                    <node name="forklift_left_teeth" id="14" isTarget="false">
+                    <node name="left_teeth" id="14" isTarget="false">
                         <position x="0.0193194" y="-0.00571829" z="0.00745363" />
                         <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
                         <scale x="1" y="1" z="1" />
-                        <entity name="forklift_left_teeth" id="15" meshFile="forklift_left_teeth.mesh" castShadows="true">
+                        <entity name="left_teeth" id="15" meshFile="left_teeth.mesh" castShadows="true">
                             <subentities>
                                 <subentity index="0" materialName="Standard_2" />
                             </subentities>
                         </entity>
                     </node>
-                    <node name="forklift_right_teeth" id="16" isTarget="false">
+                    <node name="right_teeth" id="16" isTarget="false">
                         <position x="0.0198106" y="-0.00527565" z="-0.00745363" />
                         <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
                         <scale x="1" y="1" z="1" />
-                        <entity name="forklift_right_teeth" id="17" meshFile="forklift_right_teeth.mesh" castShadows="true">
+                        <entity name="right_teeth" id="17" meshFile="right_teeth.mesh" castShadows="true">
                             <subentities>
                                 <subentity index="0" materialName="Standard_2" />
                             </subentities>
