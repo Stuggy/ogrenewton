@@ -9,9 +9,6 @@ material "Standard_2"
 			specular 0.459 0.459 0.459 1 25.5
 			emissive 0 0 0 1
 
-			scene_blend alpha_blend
-			depth_write off
-
 			texture_unit Standard_2_Diffuse#0
 			{
 				texture forklift_d.dds
@@ -32,9 +29,6 @@ material "Standard_3"
 			specular 0.36 0.36 0.36 1 25.5
 			emissive 0 0 0 1
 
-			scene_blend alpha_blend
-			depth_write off
-
 			texture_unit Standard_3_Diffuse#0
 			{
 				texture forklift_underside_d.dds
@@ -54,9 +48,6 @@ material "Standard_1"
 			diffuse 1 1 1 1
 			specular 0.522 0.522 0.522 1 25.5
 			emissive 0 0 0 1
-
-			scene_blend alpha_blend
-			depth_write off
 
 			texture_unit Standard_1_Diffuse#0
 			{

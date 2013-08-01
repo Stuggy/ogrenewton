@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="demo02_levelMesh"
-	ProjectGUID="{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}"
+	Name="demo07_joints"
+	ProjectGUID="{120CBD33-81E6-4346-BEDC-C9F555394786}"
 	RootNamespace="Quake3Map_vc9"
 	TargetFrameworkVersion="131072"
 	>
@@ -387,16 +387,44 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath="..\..\..\demos\demo02_leveMesh\bspMeshDemo.cpp"
+		<Filter
+			Name="dotSceneLoader"
 			>
-		</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\OgreDotScene.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\OgreDotScene.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\rapidxml.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\rapidxml_iterators.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\rapidxml_print.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\rapidxml_utils.hpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\demos\common\DemoApplication.cpp"
 			>
 		</File>
 		<File
 			RelativePath="..\..\..\demos\common\DemoApplication.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\demo07_joints\jointsDemo.cpp"
 			>
 		</File>
 		<File
