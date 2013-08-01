@@ -22,31 +22,26 @@
 
 #include "OgreNewtonStdAfx.h"
 #include "OgreNewtonWorld.h"
-#include "OgreNewtonHierachyTransformManager.h"
+#include "OgreNewtonHierarchyTransformManager.h"
 
 
 
-OgreNewtonHierachyTransformManager::OgreNewtonHierachyTransformManager (OgreNewtonWorld* const world)
-	:dNewtonHierachyTransformManager (world)
+OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformManager (OgreNewtonWorld* const world)
+	:dNewtonHierarchyTransformManager (world)
 {
-	dAssert (0);
 }
 
-OgreNewtonHierachyTransformManager::~OgreNewtonHierachyTransformManager ()
+OgreNewtonHierarchyTransformManager::~OgreNewtonHierarchyTransformManager ()
 {
-	dAssert (0);
 }
 
 
-OgreNewtonHierachyTransformManager::OgreNewtonTransformController::OgreNewtonTransformController (OgreNewtonHierachyTransformManager* const manager)
-	:dNewtonHierachyTransformController (manager)
+OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController::OgreNewtonHierarchyTransformController (OgreNewtonHierarchyTransformManager* const manager)
+	:dNewtonHierarchyTransformController (manager)
 {
-	dAssert (0);
 }
 
-OgreNewtonHierachyTransformManager::OgreNewtonTransformController::~OgreNewtonTransformController()
+OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController::~OgreNewtonHierarchyTransformController()
 {
-	dAssert (0);
 }
-
 

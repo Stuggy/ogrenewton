@@ -31,6 +31,7 @@
 #include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
+#include <OgreNewtonHierarchyTransformManager.h>
 
 #include "Utils.h"
 #include "OgreDotScene.h"
@@ -44,9 +45,23 @@ class OgreNewtonDemoApplication: public DemoApplication
 {
 	public:
 
+	class LocalTransformCalculator: public OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController
+	{
+		public:
+		LocalTransformCalculator (OgreNewtonHierarchyTransformManager* const manager)
+			:OgreNewtonHierarchyTransformController(manager)
+		{
+		}
+
+		~LocalTransformCalculator()
+		{
+		}
+	};
+
 	OgreNewtonDemoApplication()
 		:DemoApplication()
 		,m_shootRigidBody(NULL)
+		,m_localTransformManager(NULL)
 	{
 	}
 
@@ -238,6 +253,9 @@ return;
 		SceneNode* const forkliftRoot = CreateNode (mSceneMgr, NULL, Vector3::ZERO, Quaternion::IDENTITY);
 		loader.parseDotScene ("forklift.scene", "Autodetect", mSceneMgr, forkliftRoot);
 
+		// make a local trnasofr ocontroller to control this body
+		LocalTransformCalculator* const transformCalculator = new LocalTransformCalculator(m_localTransformManager);
+
 		// find all vehicle components
 		SceneNode* const bodyNode = (SceneNode*) forkliftRoot->getChild ("body");
 		dAssert (bodyNode);
@@ -289,6 +307,10 @@ return;
 		// create the physic world first
 		DemoApplication::createScene();
 
+		// create a local transform manager for calculate local matrices of child sceneNodes attached to rigid bodies
+		m_localTransformManager = new OgreNewtonHierarchyTransformManager (m_physicsWorld);
+
+
 		// sky box.
 		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 		mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");
@@ -335,6 +357,7 @@ return;
 	}
 
 	ShootRigidBody* m_shootRigidBody;
+	OgreNewtonHierarchyTransformManager* m_localTransformManager;
 };
 
 

@@ -331,11 +331,11 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\OgreNewtonHierachyTransformManager.cpp"
+			RelativePath="..\..\source\OgreNewtonHierarchyTransformManager.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\OgreNewtonHierachyTransformManager.h"
+			RelativePath="..\..\source\OgreNewtonHierarchyTransformManager.h"
 			>
 		</File>
 		<File
