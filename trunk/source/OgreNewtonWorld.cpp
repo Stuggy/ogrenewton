@@ -97,7 +97,6 @@ void OgreNewtonWorld::Update ()
 			node->setOrientation (derivedRotationInv * nodeRotation);
 
 			// update the application user data (that need to be update at rendering time, ex animations, particles emmitions, etc)
-			//body->OnApplicationPostTransform (evt.timeSinceLastFrame);
 			body->OnApplicationPostTransform (applicationTime);
 		}
 	}
