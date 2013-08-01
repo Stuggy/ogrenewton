@@ -1,0 +1,69 @@
+material "Standard_2"
+{
+	technique Standard_2_technique
+	{
+		pass Standard_2_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.459 0.459 0.459 1 25.5
+			emissive 0 0 0 1
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit Standard_2_Diffuse#0
+			{
+				texture forklift_d.dds
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "Standard_3"
+{
+	technique Standard_3_technique
+	{
+		pass Standard_3_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.36 0.36 0.36 1 25.5
+			emissive 0 0 0 1
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit Standard_3_Diffuse#0
+			{
+				texture forklift_underside_d.dds
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "Standard_1"
+{
+	technique Standard_1_technique
+	{
+		pass Standard_1_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.522 0.522 0.522 1 25.5
+			emissive 0 0 0 1
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit Standard_1_Diffuse#0
+			{
+				texture forklift_wheels_d.dds
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
