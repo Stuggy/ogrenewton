@@ -125,7 +125,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 	void LoadWoodPallete (int count, const Vector3& origin)
 	{
 // for now do no place any object until I finish the CCD for compound collision
-//return;
+return;
 		Real scale = 0.25f;
 		Entity* const entity = mSceneMgr->createEntity(MakeName("compound"), "woodPallet.mesh");		
 		entity->setCastShadows (true);
@@ -201,6 +201,36 @@ class OgreNewtonDemoApplication: public DemoApplication
 */
 	}									  
 
+	OgreNewtonDynamicBody* LoadForkliftMakeMainBody (SceneNode* const node, const Vector3& origin)
+	{
+		Entity* const ent = (Entity*) node->getAttachedObject (0);
+		Vector3 bodyScale (node->getScale());
+		OgreNewtonMesh bodyMesh (m_physicsWorld, ent);
+		bodyMesh.ApplyTransform (Vector3::ZERO, bodyScale, Quaternion::IDENTITY);
+		dNewtonCollisionConvexHull bodyCollision (m_physicsWorld, bodyMesh, 0);
+		Matrix4 bodyMatrix;
+		bodyMatrix.makeTransform (node->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), node->_getDerivedOrientation());
+		return new OgreNewtonDynamicBody (m_physicsWorld, 500.0f, &bodyCollision, node, bodyMatrix);
+	}
+
+	OgreNewtonDynamicBody* LoadForkliftMakeTire (SceneNode* const tireNode, const Vector3& origin)
+	{
+		Entity* const ent = (Entity*) tireNode->getAttachedObject (0);
+		Vector3 scale (tireNode->getScale());
+		AxisAlignedBox box (ent->getBoundingBox());
+		Real height = scale.z * (box.getMaximum().z - box.getMinimum().z);
+		Real radius = scale.x * (box.getMaximum().x - box.getMinimum().x) * 0.5f - height * 0.5f;
+		dNewtonCollisionChamferedCylinder shape (m_physicsWorld, radius, height, 0);
+
+		Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
+		aligmentMatrix = aligmentMatrix.transpose();
+		shape.SetMatrix (&aligmentMatrix[0][0]);
+
+		Matrix4 matrix;
+		matrix.makeTransform(tireNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), tireNode->_getDerivedOrientation());
+		return new OgreNewtonDynamicBody (m_physicsWorld, 80.0f, &shape, tireNode, matrix);
+	}
+
 	void LoadForklift(const Vector3& origin)
 	{
 		// load teh mode as Ogre node
@@ -222,14 +252,13 @@ class OgreNewtonDemoApplication: public DemoApplication
 		dAssert (rr_tireNode);
 
 		//convert the body part to rigid bodies
-		Entity* const bodyEnt = (Entity*) bodyNode->getAttachedObject (0);
-		OgreNewtonMesh bodyMesh (m_physicsWorld, bodyEnt);
-		dNewtonCollisionConvexHull bodyCollision (m_physicsWorld, bodyMesh, 0);
+//		OgreNewtonDynamicBody* const mainBody = LoadForkliftMakeMainBody (bodyNode, origin);
 
-		// make a dynamic body
-		Matrix4 matrix (Matrix4::IDENTITY);
-		matrix.setTrans(origin);
-		OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_physicsWorld, 500.0f, &bodyCollision, bodyNode, matrix);
+		// make the tires
+		OgreNewtonDynamicBody* const frontLeftTireBody = LoadForkliftMakeTire (fl_tireNode, origin);
+		OgreNewtonDynamicBody* const frontRightTireBody = LoadForkliftMakeTire (fr_tireNode, origin);
+		OgreNewtonDynamicBody* const rearLeftTireBody = LoadForkliftMakeTire (rl_tireNode, origin);
+		OgreNewtonDynamicBody* const rearRightTireBody = LoadForkliftMakeTire (rr_tireNode, origin);
 	}
 
 
