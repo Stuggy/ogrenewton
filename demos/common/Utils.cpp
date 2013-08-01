@@ -52,7 +52,9 @@ String MakeName (const char* const name)
 SceneNode* CreateNode (SceneManager* const sceneMgr, Entity* const entity, const Vector3& position, const Quaternion& orientation)
 {
 	SceneNode* const node = sceneMgr->getRootSceneNode()->createChildSceneNode();
-	node->attachObject(entity);
+	if (entity) {
+		node->attachObject(entity);
+	}
 	node->setScale(Vector3 (1.0f, 1.0f, 1.0f));
 	node->setPosition(position);
 	node->setOrientation(orientation);
