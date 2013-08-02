@@ -54,7 +54,6 @@
 #include <dNewton.h>
 #include <dNewtonMesh.h>
 #include <dNewtonJoint.h>
-
 #include <dNewtonRayCast.h>
 #include <dNewtonCollision.h>
 #include <dNewtonDynamicBody.h>
@@ -63,6 +62,7 @@
 #include <dNewtonTransformLerp.h>
 #include <dNewtonPlayerManager.h>
 #include <dNewtonTriggerManager.h>
+#include <dNewtonActuatorJoints.h>
 #include <dNewtonHierarchyTransformManager.h>
 
 
