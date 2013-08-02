@@ -54,10 +54,12 @@
 #include <dNewton.h>
 #include <dNewtonMesh.h>
 #include <dNewtonJoint.h>
+
 #include <dNewtonRayCast.h>
 #include <dNewtonCollision.h>
 #include <dNewtonDynamicBody.h>
 #include <dNewtonScopeBuffer.h>
+#include <dNewtonInputManager.h>
 #include <dNewtonTransformLerp.h>
 #include <dNewtonPlayerManager.h>
 #include <dNewtonTriggerManager.h>

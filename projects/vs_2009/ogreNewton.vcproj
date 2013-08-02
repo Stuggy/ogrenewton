@@ -339,6 +339,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\source\OgreNewtonInputManager.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\source\OgreNewtonInputManager.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\source\OgreNewtonMesh.cpp"
 			>
 		</File>

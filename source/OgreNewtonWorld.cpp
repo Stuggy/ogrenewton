@@ -23,6 +23,7 @@
 #include "OgreNewtonStdAfx.h"
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDynamicBody.h"
+#include "OgreNewtonInputManager.h"
 
 
 OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramerate)
@@ -34,6 +35,7 @@ OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramera
 	,m_physicUpdateTimestepInMocroseconds(0)
 {
 	SetUpdateFPS (Real (updateFramerate), 3);
+	new OgreNewtonInputManager(this);
 }
 
 OgreNewtonWorld::~OgreNewtonWorld()
