@@ -49,13 +49,20 @@ class OgreNewtonDemoApplication: public DemoApplication
 	public:
 	class ForkliftBaseActuator: public dNewtonHingeActuator
 	{
-		public:
 		ForkliftBaseActuator (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const base, dNewtonDynamicBody* const mainBody, OgreNewtonDemoApplication* const application)
 			:dNewtonHingeActuator (pinAndPivotFrame, -30.0f * 3.141592f / 180.0f, -30.0f * 3.141592f / 180.0f, base, mainBody)
 			,m_base(base)
 			,m_mainBody(mainBody)
 			,m_application(application)
 		{
+		}
+
+
+		public:
+		static void ConnectBase (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const base, OgreNewtonDemoApplication* const application)  
+		{
+			Matrix4 baseMatrix(base->GetMatrix().transpose());
+			new ForkliftBaseActuator (&baseMatrix[0][0], base, body, application);
 		}
 
 		dNewtonDynamicBody* const m_base;
@@ -474,6 +481,7 @@ return;
 		ForkliftRearTireJoint::ConnectTire (mainBody, rearRightTireBody, this);
 
 		// connect the forklift base
+		ForkliftBaseActuator::ConnectBase (mainBody, base1, this);
 
 		// save the main body as the player
 		m_player = mainBody;
