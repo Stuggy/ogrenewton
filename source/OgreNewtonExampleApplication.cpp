@@ -28,6 +28,56 @@
 #include "OgreNewtonExampleApplication.h"
 
 
+
+OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OgreNewtonPhysicsListener (OgreNewtonExampleApplication* const application, int updateFramerate)
+	:FrameListener()
+	,OgreNewtonWorld (application->mSceneMgr, updateFramerate)
+	,m_application (application)
+	,m_terminate(false)
+{
+}
+
+OgreNewtonExampleApplication::OgreNewtonPhysicsListener::~OgreNewtonPhysicsListener()
+{
+}
+
+bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::frameStarted(const FrameEvent &evt)
+{
+	Update();
+	return m_terminate;
+}
+
+
+void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBeginUpdate (dFloat timestepInSecunds)
+{
+	m_application->OnPhysicUpdateBegin(timestepInSecunds);
+}
+
+void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnEndUpdate (dFloat timestepInSecunds)
+{
+	m_application->OnPhysicUpdateEnd(timestepInSecunds);
+}
+
+void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformBegin(Real interpolationParam)
+{
+	m_terminate = m_application->OnRenderUpdateBegin(interpolationParam);
+}
+
+void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformEnd(Real interpolationParam)
+{
+	m_application->OnRenderUpdateEnd(interpolationParam);
+}
+
+int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex)
+{
+//	dNewtonCollision* const collision0 = body0->GetCollision();
+//	dNewtonCollision* const collision1 = body1->GetCollision();
+
+	return 1;
+}
+
+
+
 OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 	:ExampleApplication()
 	,m_debugRender(NULL)
