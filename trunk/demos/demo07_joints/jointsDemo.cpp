@@ -254,9 +254,25 @@ return;
 		return new OgreNewtonDynamicBody (m_physicsWorld, 80.0f, &shape, tireNode, matrix);
 	}
 
+	void ConnectFrontTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire)  
+	{
+		Matrix4 tireMatrix;
+		Matrix4 matrixOffset;
+
+		tire->GetCollision()->GetMatrix(&matrixOffset[0][0]);
+		tireMatrix = (tire->GetMatrix() * matrixOffset.transpose()).transpose();
+		new dNewtonHingeJoint (&tireMatrix[0][0], tire, body);
+	}
+
+	void ConnectRearTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire)  
+	{
+		ConnectFrontTire (body, tire);
+	}
+
+
 	void LoadForklift(const Vector3& origin)
 	{
-		// load teh mode as Ogre node
+		// load the mode as Ogre node
 		DotSceneLoader loader;
 		SceneNode* const forkliftRoot = CreateNode (mSceneMgr, NULL, Vector3::ZERO, Quaternion::IDENTITY);
 		loader.parseDotScene ("forklift.scene", "Autodetect", mSceneMgr, forkliftRoot);
@@ -274,7 +290,7 @@ return;
 		dAssert (rl_tireNode);
 		dAssert (rr_tireNode);
 
-		// make a local trnasofr ocontroller to control this body
+		// make a local transform controller to control this body
 		LocalTransformCalculator* const transformCalculator = new LocalTransformCalculator(m_localTransformManager);
 
 		//convert the body part to rigid bodies
@@ -293,6 +309,14 @@ return;
 		transformCalculator->AddBone (frontRightTireBody, &bindMatrix[0][0], parentBone);
 		transformCalculator->AddBone (rearLeftTireBody, &bindMatrix[0][0], parentBone);
 		transformCalculator->AddBone (rearRightTireBody, &bindMatrix[0][0], parentBone);
+
+
+		// connect the part with joints
+		ConnectFrontTire (mainBody, frontLeftTireBody);
+		ConnectFrontTire (mainBody, frontRightTireBody);
+		
+		ConnectRearTire (mainBody, rearLeftTireBody);
+		ConnectRearTire (mainBody, rearRightTireBody);
 	}
 
 

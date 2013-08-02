@@ -53,6 +53,7 @@
 #include <Newton.h>
 #include <dNewton.h>
 #include <dNewtonMesh.h>
+#include <dNewtonJoint.h>
 #include <dNewtonRayCast.h>
 #include <dNewtonCollision.h>
 #include <dNewtonDynamicBody.h>
