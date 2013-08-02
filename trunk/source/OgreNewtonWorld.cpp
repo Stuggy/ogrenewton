@@ -66,7 +66,9 @@ dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
 void OgreNewtonWorld::Update ()
 {
 //NewtonSerializeToFile (GetNewton(), "xxxx.bin");
-	dLong simulationTime = GetTimeInMicrosenconds ();
+	dLong lastTime = m_lastPhysicTimeInMicroseconds;
+	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds ();
+	Real applicationTime = Real (m_lastPhysicTimeInMicroseconds - lastTime) * 1.0e-6f;
 	if (m_concurrentUpdateMode) {
 		dNewton::UpdateAsync (m_timestep);
 	} else {
@@ -75,26 +77,29 @@ void OgreNewtonWorld::Update ()
 
 	dFloat param = GetInteplationParam(m_timestep);
 	OnNodesTransformBegin (param);
-
-	Real applicationTime = Real (simulationTime - m_lastPhysicTimeInMicroseconds) * 1.0e-6f;
+	dAssert (applicationTime > 0.0f);
 
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
 		SceneNode* const node = (SceneNode*) body->GetUserData();
-		if (node && !body->GetSleepState()) {
+		//if (node && !body->GetSleepState()) {
+		if (node) {
 			dMatrix matrix;
 			body->GetVisualMatrix (param, &matrix[0][0]);
-			dQuaternion rotation (matrix);
+			dQuaternion rot (matrix);
+
 			Vector3 posit (matrix.m_posit.m_x, matrix.m_posit.m_y, matrix.m_posit.m_z);
-			Quaternion nodeRotation (rotation.m_q0, rotation.m_q1, rotation.m_q2, rotation.m_q3);
+			Quaternion rotation (rot.m_q0, rot.m_q1, rot.m_q2, rot.m_q3);
 
-			Node* const nodeParent = node->getParent();
-			const Vector3& derivedScale = nodeParent->_getDerivedScale();
-			const Vector3& derivedPosition = nodeParent->_getDerivedPosition();
-			const Quaternion derivedRotationInv (nodeParent->_getDerivedOrientation().Inverse());
+			//Node* const nodeParent = node->getParent();
+			//const Vector3& derivedScale = nodeParent->_getDerivedScale();
+			//const Vector3& derivedPosition = nodeParent->_getDerivedPosition();
+			//const Quaternion derivedRotationInv (nodeParent->_getDerivedOrientation().Inverse());
+			//node->setPosition (derivedRotationInv * (posit - derivedPosition) / derivedScale);
+			//node->setOrientation (derivedRotationInv * nodeRotation);
 
-			node->setPosition (derivedRotationInv * (posit - derivedPosition) / derivedScale);
-			node->setOrientation (derivedRotationInv * nodeRotation);
+			node->setPosition (posit);
+			node->setOrientation (rotation);
 
 			// update the application user data (that need to be update at rendering time, ex animations, particles emmitions, etc)
 			body->OnApplicationPostTransform (applicationTime);
@@ -102,6 +107,5 @@ void OgreNewtonWorld::Update ()
 	}
 	OnNodesTransformEnd (param);
 
-	m_lastPhysicTimeInMicroseconds = simulationTime;
-	m_physicUpdateTimestepInMocroseconds = GetTimeInMicrosenconds () - simulationTime;
+	m_physicUpdateTimestepInMocroseconds = GetTimeInMicrosenconds () - m_lastPhysicTimeInMicroseconds;
 }
