@@ -79,7 +79,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 			m_maxEngineTorque = 0.25f * mass * radius * gravity.length();
 
 			// calculate the coefficient of drag for top speed of 20 m/s
-
+			Real maxOmega = 200.0f / radius;
+			m_omegaResistance = 1.0f / maxOmega;
 		}
 
 		// apply the tractor torque to the tires here
@@ -96,15 +97,23 @@ class OgreNewtonDemoApplication: public DemoApplication
 				engineTorque = m_maxEngineTorque; 
 			}
 
+			Matrix4 matrix;
+			m_mainBody->GetMatrix(&matrix[0][0]);
+			matrix = matrix.transpose();
+			matrix.setTrans(Vector3::ZERO);
+			
+			Vector3 tirePing (matrix * Vector3(0.0f, 0.0f, 1.0f));
 			if (engineTorque != 0.0f) {
-				Matrix4 matrix;
-				m_mainBody->GetMatrix(&matrix[0][0]);
-				matrix = matrix.transpose();
-
-				matrix.setTrans(Vector3::ZERO);
-				Vector3 torque (matrix * Vector3(0.0f, 0.0f, engineTorque));
+				Vector3 torque (tirePing * engineTorque);
 				m_tire->AddTorque (&torque.x);
 			}
+
+			Vector3 omega;
+			m_tire->GetOmega (&omega.x);
+			Real omegaMag = omega.dotProduct(tirePing);
+			Real sign = (omegaMag >= 0.0f) ? 1.0 : -1.0f;
+			omega -= tirePing * (sign * omegaMag * omegaMag * m_omegaResistance);
+			m_tire->SetOmega(&omega.x);
 		}
 
 		public:
@@ -122,6 +131,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		dNewtonDynamicBody* const m_mainBody;
 		OgreNewtonDemoApplication* m_application;
 
+		Real m_omegaResistance;
 		Real m_maxEngineTorque;
 	};
 
