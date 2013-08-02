@@ -104,9 +104,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 				matrix.setTrans(Vector3::ZERO);
 				Vector3 torque (matrix * Vector3(0.0f, 0.0f, engineTorque));
 				m_tire->AddTorque (&torque.x);
-
-				torque = torque * -1.0f;
-				m_mainBody->SetTorque(&torque.x);
 			}
 		}
 

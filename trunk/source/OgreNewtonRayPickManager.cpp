@@ -60,7 +60,7 @@ class OgreNewtonRayPickManager::OgreNewtonRayPicker: public OgreNewtonRayCast
 
 
 OgreNewtonRayPickManager::OgreNewtonRayPickManager (OgreNewtonWorld* const world)
-	:CustomControllerManager<OgreNewtonRayPickController>(world->GetNewton(), OGRE_RAY_PICKER_PLUGIN_NAME)
+	:CustomControllerManager<OgreNewtonRayPickController>(world->GetNewton(), OGRE_NEWTON_RAY_PICKER_PLUGIN_NAME)
 	,m_globalTarget (0.0f, 0.0f, 0.0f) 
 	,m_localpHandlePoint (0.0f, 0.0f, 0.0f) 
 	,m_world(world)

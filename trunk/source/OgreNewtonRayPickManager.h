@@ -27,7 +27,7 @@
 
 using namespace Ogre;
 
-#define OGRE_RAY_PICKER_PLUGIN_NAME		"rayPickManager"
+#define OGRE_NEWTON_RAY_PICKER_PLUGIN_NAME	"__rayPickManager__"
 
 
 class OGRE_NEWTON_API OgreNewtonRayPickController: public CustomControllerBase
