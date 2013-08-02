@@ -56,6 +56,14 @@ class OgreNewtonDemoApplication: public DemoApplication
 		~LocalTransformCalculator()
 		{
 		}
+
+		virtual void UpdateTransform (dNewtonBody* const bone, const dFloat* const localMatrix)
+		{
+			if (bone->GetSleepState()) {
+				bone->Update (localMatrix);
+			}
+			bone->SetTargetMatrix (localMatrix);
+		}
 	};
 
 	OgreNewtonDemoApplication()
@@ -253,13 +261,10 @@ return;
 		SceneNode* const forkliftRoot = CreateNode (mSceneMgr, NULL, Vector3::ZERO, Quaternion::IDENTITY);
 		loader.parseDotScene ("forklift.scene", "Autodetect", mSceneMgr, forkliftRoot);
 
-		// make a local trnasofr ocontroller to control this body
-		LocalTransformCalculator* const transformCalculator = new LocalTransformCalculator(m_localTransformManager);
-
 		// find all vehicle components
 		SceneNode* const bodyNode = (SceneNode*) forkliftRoot->getChild ("body");
 		dAssert (bodyNode);
-
+		
 		SceneNode* const fl_tireNode = (SceneNode*) bodyNode->getChild ("fl_tire");
 		SceneNode* const fr_tireNode = (SceneNode*) bodyNode->getChild ("fr_tire");
 		SceneNode* const rl_tireNode = (SceneNode*) bodyNode->getChild ("rl_tire");
@@ -269,14 +274,25 @@ return;
 		dAssert (rl_tireNode);
 		dAssert (rr_tireNode);
 
+		// make a local trnasofr ocontroller to control this body
+		LocalTransformCalculator* const transformCalculator = new LocalTransformCalculator(m_localTransformManager);
+
 		//convert the body part to rigid bodies
-//		OgreNewtonDynamicBody* const mainBody = LoadForkliftMakeMainBody (bodyNode, origin);
+		Matrix4 bindMatrix (Matrix4::IDENTITY);
+		OgreNewtonDynamicBody* const mainBody = LoadForkliftMakeMainBody (bodyNode, origin);
+		void* const parentBone = transformCalculator->AddBone (mainBody, &bindMatrix[0][0], NULL);
 
 		// make the tires
 		OgreNewtonDynamicBody* const frontLeftTireBody = LoadForkliftMakeTire (fl_tireNode, origin);
 		OgreNewtonDynamicBody* const frontRightTireBody = LoadForkliftMakeTire (fr_tireNode, origin);
 		OgreNewtonDynamicBody* const rearLeftTireBody = LoadForkliftMakeTire (rl_tireNode, origin);
 		OgreNewtonDynamicBody* const rearRightTireBody = LoadForkliftMakeTire (rr_tireNode, origin);
+
+		// add the tire as children bodies
+		transformCalculator->AddBone (frontLeftTireBody, &bindMatrix[0][0], parentBone);
+		transformCalculator->AddBone (frontRightTireBody, &bindMatrix[0][0], parentBone);
+		transformCalculator->AddBone (rearLeftTireBody, &bindMatrix[0][0], parentBone);
+		transformCalculator->AddBone (rearRightTireBody, &bindMatrix[0][0], parentBone);
 	}
 
 

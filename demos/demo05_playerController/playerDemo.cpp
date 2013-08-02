@@ -32,7 +32,7 @@
 #include <OgreNewtonPlayerManager.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
-
+#include <OgreNewtonHierarchyTransformManager.h>
 
 #include "Utils.h"
 #include "PlayerExample.h"
@@ -56,6 +56,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		,m_shootRigidBody(NULL)
 		,m_player(NULL)
 		,m_playerManager(NULL)
+		,m_localTransformManager(NULL)
 	{
 	}
 
@@ -225,6 +226,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		// create a player manager for controlling all players
 		m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
+		//m_localTransformManager = new OgreNewtonHierarchyTransformManager (m_physicsWorld);
 
 		//make a light
 		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
@@ -281,6 +283,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 	ShootRigidBody* m_shootRigidBody;
 	MyPlayerContyroller* m_player;
 	OgreNewtonPlayerManager* m_playerManager;
+	OgreNewtonHierarchyTransformManager* m_localTransformManager;
 };
 
 
