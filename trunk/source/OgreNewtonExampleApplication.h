@@ -39,45 +39,17 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 	class OGRE_NEWTON_API OgreNewtonPhysicsListener: public FrameListener, public OgreNewtonWorld
 	{
 		public:
-		OgreNewtonPhysicsListener (OgreNewtonExampleApplication* const application, int updateFramerate = 120)
-			:FrameListener()
-			,OgreNewtonWorld (application->mSceneMgr, updateFramerate)
-			,m_application (application)
-			,m_terminate(false)
-		{
-		}
+		OgreNewtonPhysicsListener (OgreNewtonExampleApplication* const application, int updateFramerate = 120);
+		~OgreNewtonPhysicsListener();
+		bool frameStarted(const FrameEvent &evt);
+		virtual void OnBeginUpdate (dFloat timestepInSecunds);
+		virtual void OnEndUpdate (dFloat timestepInSecunds);
+		void OnNodesTransformBegin(Real interpolationParam);
+		void OnNodesTransformEnd(Real interpolationParam);
 
-		~OgreNewtonPhysicsListener()
-		{
-		}
+		virtual int OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex);
 
-		bool frameStarted(const FrameEvent &evt)
-		{
-			Update();
-			return m_terminate;
-		}
-
-
-		virtual void OnBeginUpdate (dFloat timestepInSecunds)
-		{
-			m_application->OnPhysicUpdateBegin(timestepInSecunds);
-		}
-
-		virtual void OnEndUpdate (dFloat timestepInSecunds)
-		{
-			m_application->OnPhysicUpdateEnd(timestepInSecunds);
-		}
-
-		void OnNodesTransformBegin(Real interpolationParam)
-		{
-			m_terminate = m_application->OnRenderUpdateBegin(interpolationParam);
-		}
-
-		void OnNodesTransformEnd(Real interpolationParam)
-		{
-			m_application->OnRenderUpdateEnd(interpolationParam);
-		}
-
+		protected:
 		OgreNewtonExampleApplication* m_application;
 		bool m_terminate;
 	};
