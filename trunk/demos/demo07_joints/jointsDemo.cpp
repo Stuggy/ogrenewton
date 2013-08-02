@@ -48,6 +48,119 @@ class OgreNewtonDemoApplication: public DemoApplication
 {
 	public:
 
+	class ForkliftFrontTireJoint: public dNewtonHingeJoint
+	{
+		ForkliftFrontTireJoint (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const tire, dNewtonDynamicBody* const mainBody, OgreNewtonDemoApplication* const application)
+			:dNewtonHingeJoint (pinAndPivotFrame, tire, mainBody)
+			,m_tire(tire)
+			,m_mainBody(mainBody)
+			,m_application(application)
+		{
+			// calculate the maximum torque that the engine will produce
+			dNewtonCollision* const tireShape = tire->GetCollision();
+			dAssert (tireShape->GetType() == dNewtonCollision::m_chamferedCylinder);
+
+			Vector3 p0;
+			Vector3 p1;
+			Matrix4 matrix (Matrix4::IDENTITY);
+			tireShape->CalculateAABB (&matrix[0][0], &p0.x, &p1.x);
+
+			Real Ixx;
+			Real Iyy;
+			Real Izz;
+			Real mass;
+			mainBody->GetMassAndInertia (mass, Ixx, Iyy, Izz);
+
+			const Vector3& gravity = ((OgreNewtonWorld*) mainBody->GetNewton())->GetGravity();
+
+			Real radius = (p1.y - p0.y) * 0.5f;
+
+			// calculate a torque the will produce a 0.5f of the force of gravity
+			m_maxEngineTorque = 0.25f * mass * radius * gravity.length();
+
+			// calculate the coefficient of drag for top speed of 20 m/s
+
+		}
+
+		// apply the tractor torque to the tires here
+		virtual void OnSubmitConstraint (dFloat timestep, int threadIndex) 
+		{
+			m_application->m_keyboard->capture();
+
+			Real engineTorque = 0.0f;
+			if (m_application->m_keyboard->isKeyDown(OIS::KC_W)) {
+				engineTorque = -m_maxEngineTorque; 
+			}
+
+			if (m_application->m_keyboard->isKeyDown(OIS::KC_S)) {
+				engineTorque = m_maxEngineTorque; 
+			}
+
+			if (engineTorque != 0.0f) {
+				Matrix4 matrix;
+				m_mainBody->GetMatrix(&matrix[0][0]);
+				matrix = matrix.transpose();
+
+				matrix.setTrans(Vector3::ZERO);
+				Vector3 torque (matrix * Vector3(0.0f, 0.0f, engineTorque));
+				m_tire->AddTorque (&torque.x);
+
+				torque = torque * -1.0f;
+				m_mainBody->SetTorque(&torque.x);
+			}
+		}
+
+		public:
+		static void ConnectTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire, OgreNewtonDemoApplication* const application)  
+		{
+			Matrix4 tireMatrix;
+			Matrix4 matrixOffset;
+
+			tire->GetCollision()->GetMatrix(&matrixOffset[0][0]);
+			tireMatrix = (tire->GetMatrix() * matrixOffset.transpose()).transpose();
+			new ForkliftFrontTireJoint (&tireMatrix[0][0], tire, body, application);
+		}
+
+		dNewtonDynamicBody* const m_tire;
+		dNewtonDynamicBody* const m_mainBody;
+		OgreNewtonDemoApplication* m_application;
+
+		Real m_maxEngineTorque;
+	};
+
+
+	class ForkliftRearTireJoint: public dNewtonHingeJoint
+	{
+		ForkliftRearTireJoint (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const tire, dNewtonDynamicBody* const mainBody)
+			:dNewtonHingeJoint (pinAndPivotFrame, tire, mainBody)
+			,m_tire(tire)
+			,m_mainBody(mainBody)
+		{
+		}
+
+		// control the steering angle here
+		virtual void OnSubmitConstraint (dFloat timestep, int threadIndex) 
+		{
+
+		}
+
+		public:
+		static void ConnectTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire)  
+		{
+			Matrix4 tireMatrix;
+			Matrix4 matrixOffset;
+
+			tire->GetCollision()->GetMatrix(&matrixOffset[0][0]);
+			tireMatrix = (tire->GetMatrix() * matrixOffset.transpose()).transpose();
+			new ForkliftRearTireJoint (&tireMatrix[0][0], tire, body);
+		}
+
+		dNewtonDynamicBody* const m_tire;
+		dNewtonDynamicBody* const m_mainBody;
+	};
+
+
+
 	class LocalTransformCalculator: public OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController
 	{
 		public:
@@ -268,12 +381,6 @@ return;
 		new dNewtonHingeJoint (&tireMatrix[0][0], tire, body);
 	}
 
-	void ConnectRearTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire)  
-	{
-		ConnectFrontTire (body, tire);
-	}
-
-
 	void LoadForklift(const Vector3& origin)
 	{
 		// load the mode as Ogre node
@@ -284,7 +391,6 @@ return;
 		// find all vehicle components
 		SceneNode* const bodyNode = (SceneNode*) forkliftRoot->getChild ("body");
 		dAssert (bodyNode);
-		
 		
 		SceneNode* const fl_tireNode = (SceneNode*) bodyNode->getChild ("fl_tire");
 		SceneNode* const fr_tireNode = (SceneNode*) bodyNode->getChild ("fr_tire");
@@ -319,11 +425,11 @@ return;
 
 
 		// connect the part with joints
-		ConnectFrontTire (mainBody, frontLeftTireBody);
-		ConnectFrontTire (mainBody, frontRightTireBody);
+		ForkliftFrontTireJoint::ConnectTire (mainBody, frontLeftTireBody, this);
+		ForkliftFrontTireJoint::ConnectTire (mainBody, frontRightTireBody, this);
 		
-		ConnectRearTire (mainBody, rearLeftTireBody);
-		ConnectRearTire (mainBody, rearRightTireBody);
+		ForkliftRearTireJoint::ConnectTire (mainBody, rearLeftTireBody);
+		ForkliftRearTireJoint::ConnectTire (mainBody, rearRightTireBody);
 
 		// save the main body as the player
 		m_player = mainBody;
@@ -341,8 +447,14 @@ return;
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
-
 		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
+
+
+		// check if there are some vehicle input, if there is, then wakeup the vehicle
+		m_keyboard->capture();
+		if (m_keyboard->isKeyDown(OIS::KC_W) || m_keyboard->isKeyDown(OIS::KC_S) || m_keyboard->isKeyDown(OIS::KC_A) || m_keyboard->isKeyDown(OIS::KC_D)) {
+			m_player->SetSleepState(false);
+		}
 	}
 
 
