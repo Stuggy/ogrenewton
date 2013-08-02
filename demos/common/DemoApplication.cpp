@@ -147,12 +147,6 @@ bool DemoApplication::OnRenderUpdateBegin(dFloat updateParam)
 	// set the camera matrix for rendering time
 	OgreNewtonExampleApplication::OnRenderUpdateBegin(updateParam);
 
-	Vector3 cameraPosit;
-	Quaternion cameraRotation;
-	GetInterpolatedCameraMatrix(cameraPosit, cameraRotation);
-	mCamera->setPosition(cameraPosit);
-	mCamera->setOrientation(cameraRotation);
-
 	// update visual debug 
 	m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
 
@@ -167,6 +161,14 @@ bool DemoApplication::OnRenderUpdateBegin(dFloat updateParam)
 bool DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 {
 	const RenderTarget::FrameStats& stats = mWindow->getStatistics();
+
+	// set the camera interpolated matrix
+	Vector3 cameraPosit;
+	Quaternion cameraRotation;
+	GetInterpolatedCameraMatrix(cameraPosit, cameraRotation);
+	mCamera->setPosition(cameraPosit);
+	mCamera->setOrientation(cameraRotation);
+
 
 	OgreNewtonWorld* const physics = GetPhysics();
 	m_screen->write(20, 20, "FPS: %05.3f", stats.lastFPS);

@@ -39,6 +39,9 @@
 #include "DemoApplication.h"
 
 
+#define PLAYER_CAMERA_DISTANCE			10.0f
+#define PLAYER_CAMERA_HIGHT_ABOVE_HEAD	2.5f
+
 using namespace Ogre;
 
 class OgreNewtonDemoApplication: public DemoApplication
@@ -68,6 +71,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
+		,m_player(NULL)
 		,m_shootRigidBody(NULL)
 		,m_localTransformManager(NULL)
 	{
@@ -281,6 +285,7 @@ return;
 		SceneNode* const bodyNode = (SceneNode*) forkliftRoot->getChild ("body");
 		dAssert (bodyNode);
 		
+		
 		SceneNode* const fl_tireNode = (SceneNode*) bodyNode->getChild ("fl_tire");
 		SceneNode* const fr_tireNode = (SceneNode*) bodyNode->getChild ("fr_tire");
 		SceneNode* const rl_tireNode = (SceneNode*) bodyNode->getChild ("rl_tire");
@@ -296,6 +301,8 @@ return;
 		//convert the body part to rigid bodies
 		Matrix4 bindMatrix (Matrix4::IDENTITY);
 		OgreNewtonDynamicBody* const mainBody = LoadForkliftMakeMainBody (bodyNode, origin);
+		
+
 		void* const parentBone = transformCalculator->AddBone (mainBody, &bindMatrix[0][0], NULL);
 
 		// make the tires
@@ -317,6 +324,9 @@ return;
 		
 		ConnectRearTire (mainBody, rearLeftTireBody);
 		ConnectRearTire (mainBody, rearRightTireBody);
+
+		// save the main body as the player
+		m_player = mainBody;
 	}
 
 
@@ -334,6 +344,29 @@ return;
 
 		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
 	}
+
+
+	void OnPhysicUpdateEnd(dFloat timestepInSecunds)
+	{
+		OgreNewtonExampleApplication::OnPhysicUpdateEnd (timestepInSecunds);
+
+		// reposition the camera origin to point to the player
+		Matrix4 camMatrix;
+		m_cameraTransform.GetTargetMatrix (&camMatrix[0][0]);
+		camMatrix = camMatrix.transpose();
+
+		Matrix4 playerMatrix(m_player->GetMatrix());
+		//playerMatrix = playerMatrix.transpose();
+
+		Vector3 frontDir (camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
+		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, PLAYER_CAMERA_HIGHT_ABOVE_HEAD, 0.0f)));
+		camOrigin += frontDir * PLAYER_CAMERA_DISTANCE;
+		camMatrix.setTrans(camOrigin); 
+
+		camMatrix = camMatrix.transpose();
+		m_cameraTransform.SetTargetMatrix (&camMatrix[0][0]);
+	}
+
 
 	virtual void destroyScene()
 	{
@@ -397,6 +430,7 @@ return;
 	}
 
 	ShootRigidBody* m_shootRigidBody;
+	OgreNewtonDynamicBody* m_player;
 	OgreNewtonHierarchyTransformManager* m_localTransformManager;
 };
 

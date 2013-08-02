@@ -118,12 +118,23 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// handle shotting objects
 		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
 
-
 		// now update the free camera
 		UpdateFreeCamera ();
 
 		// update main player first
 		m_player->ApplyPlayerInputs (this, timestepInSecunds);
+
+		// update all players controller 
+		for (MyPlayerContyroller* player = (MyPlayerContyroller*) m_playerManager->GetFirstPlayer(); player; player = (MyPlayerContyroller*) m_playerManager->GetNextPlayer(player)) {
+			if (player != m_player) {
+				player->ApplyNPCInputs (this, timestepInSecunds);
+			}
+		}
+	}
+
+	void OnPhysicUpdateEnd(dFloat timestepInSecunds)
+	{
+		OgreNewtonExampleApplication::OnPhysicUpdateEnd (timestepInSecunds);
 
 		// reposition the camera origin to point to the player
 		Matrix4 camMatrix;
@@ -137,23 +148,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 		Vector3 frontDir (camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
 		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, m_player->GetPlayerHigh() + PLAYER_CAMERA_HIGHT_ABOVE_HEAD, 0.0f)));
 		camOrigin += frontDir * PLAYER_CAMERA_DISTANCE;
-
-		camMatrix[0][3] = camOrigin.x; 
-		camMatrix[1][3] = camOrigin.y; 
-		camMatrix[2][3] = camOrigin.z; 
+		camMatrix.setTrans(camOrigin); 
 
 		camMatrix = camMatrix.transpose();
 		m_cameraTransform.SetTargetMatrix (&camMatrix[0][0]);
-
-
-
-		// update all players controller 
-		for (MyPlayerContyroller* player = (MyPlayerContyroller*) m_playerManager->GetFirstPlayer(); player; player = (MyPlayerContyroller*) m_playerManager->GetNextPlayer(player)) {
-			if (player != m_player) {
-				player->ApplyNPCInputs (this, timestepInSecunds);
-			}
-		}
-
 	}
 
 	virtual void destroyScene()
