@@ -47,7 +47,22 @@ using namespace Ogre;
 class OgreNewtonDemoApplication: public DemoApplication
 {
 	public:
+	class ForkliftBaseActuator: public dNewtonHingeActuator
+	{
+		public:
+		ForkliftBaseActuator (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const base, dNewtonDynamicBody* const mainBody, OgreNewtonDemoApplication* const application)
+			:dNewtonHingeActuator (pinAndPivotFrame, -30.0f * 3.141592f / 180.0f, -30.0f * 3.141592f / 180.0f, base, mainBody)
+			,m_base(base)
+			,m_mainBody(mainBody)
+			,m_application(application)
+		{
+		}
 
+		dNewtonDynamicBody* const m_base;
+		dNewtonDynamicBody* const m_mainBody;
+		OgreNewtonDemoApplication* m_application;
+	};
+	
 	class ForkliftFrontTireJoint: public dNewtonHingeJoint
 	{
 		ForkliftFrontTireJoint (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const tire, dNewtonDynamicBody* const mainBody, OgreNewtonDemoApplication* const application)
@@ -138,10 +153,11 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	class ForkliftRearTireJoint: public dNewtonHingeJoint
 	{
-		ForkliftRearTireJoint (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const tire, dNewtonDynamicBody* const mainBody)
+		ForkliftRearTireJoint (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const tire, dNewtonDynamicBody* const mainBody, OgreNewtonDemoApplication* const application)
 			:dNewtonHingeJoint (pinAndPivotFrame, tire, mainBody)
 			,m_tire(tire)
 			,m_mainBody(mainBody)
+			,m_application(application)
 		{
 		}
 
@@ -152,18 +168,19 @@ class OgreNewtonDemoApplication: public DemoApplication
 		}
 
 		public:
-		static void ConnectTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire)  
+		static void ConnectTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire, OgreNewtonDemoApplication* const application)  
 		{
 			Matrix4 tireMatrix;
 			Matrix4 matrixOffset;
 
 			tire->GetCollision()->GetMatrix(&matrixOffset[0][0]);
 			tireMatrix = (tire->GetMatrix() * matrixOffset.transpose()).transpose();
-			new ForkliftRearTireJoint (&tireMatrix[0][0], tire, body);
+			new ForkliftRearTireJoint (&tireMatrix[0][0], tire, body, application);
 		}
 
 		dNewtonDynamicBody* const m_tire;
 		dNewtonDynamicBody* const m_mainBody;
+		OgreNewtonDemoApplication* m_application;
 	};
 
 
@@ -348,19 +365,34 @@ return;
 */
 	}									  
 
-	OgreNewtonDynamicBody* LoadForkliftMakeMainBody (SceneNode* const node, const Vector3& origin)
+	OgreNewtonDynamicBody* ForkliftMakeMainBody (SceneNode* const node, const Vector3& origin)
 	{
 		Entity* const ent = (Entity*) node->getAttachedObject (0);
-		Vector3 bodyScale (node->getScale());
+		Vector3 scale (node->getScale());
 		OgreNewtonMesh bodyMesh (m_physicsWorld, ent);
-		bodyMesh.ApplyTransform (Vector3::ZERO, bodyScale, Quaternion::IDENTITY);
+		bodyMesh.ApplyTransform (Vector3::ZERO, scale, Quaternion::IDENTITY);
 		dNewtonCollisionConvexHull bodyCollision (m_physicsWorld, bodyMesh, 0);
 		Matrix4 bodyMatrix;
 		bodyMatrix.makeTransform (node->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), node->_getDerivedOrientation());
 		return new OgreNewtonDynamicBody (m_physicsWorld, 500.0f, &bodyCollision, node, bodyMatrix);
 	}
 
-	OgreNewtonDynamicBody* LoadForkliftMakeTire (SceneNode* const tireNode, const Vector3& origin)
+	OgreNewtonDynamicBody* ForkliftMakeBase (SceneNode* const baseNode, const Vector3& origin)
+	{
+		Entity* const ent = (Entity*) baseNode->getAttachedObject (0);
+		Vector3 scale (baseNode->getScale());
+		OgreNewtonMesh bodyMesh (m_physicsWorld, ent);
+		bodyMesh.ApplyTransform (Vector3::ZERO, scale, Quaternion::IDENTITY);
+		dNewtonCollisionConvexHull collision (m_physicsWorld, bodyMesh, 0);
+
+		Matrix4 matrix;
+		matrix.makeTransform(baseNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), baseNode->_getDerivedOrientation());
+		return new OgreNewtonDynamicBody (m_physicsWorld, 200.0f, &collision, baseNode, matrix);
+	}
+
+
+
+	OgreNewtonDynamicBody* ForkliftMakeTire (SceneNode* const tireNode, const Vector3& origin)
 	{
 		Entity* const ent = (Entity*) tireNode->getAttachedObject (0);
 		Vector3 scale (tireNode->getScale());
@@ -378,15 +410,8 @@ return;
 		return new OgreNewtonDynamicBody (m_physicsWorld, 80.0f, &shape, tireNode, matrix);
 	}
 
-	void ConnectFrontTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire)  
-	{
-		Matrix4 tireMatrix;
-		Matrix4 matrixOffset;
 
-		tire->GetCollision()->GetMatrix(&matrixOffset[0][0]);
-		tireMatrix = (tire->GetMatrix() * matrixOffset.transpose()).transpose();
-		new dNewtonHingeJoint (&tireMatrix[0][0], tire, body);
-	}
+
 
 	void LoadForklift(const Vector3& origin)
 	{
@@ -408,21 +433,29 @@ return;
 		dAssert (rl_tireNode);
 		dAssert (rr_tireNode);
 
+		SceneNode* const base1Node = (SceneNode*) bodyNode->getChild ("lift");
+		SceneNode* const base2Node = (SceneNode*) base1Node->getChild ("lift2");
+		dAssert (base1Node);
+		dAssert (base2Node);
+
 		// make a local transform controller to control this body
 		LocalTransformCalculator* const transformCalculator = new LocalTransformCalculator(m_localTransformManager);
 
 		//convert the body part to rigid bodies
 		Matrix4 bindMatrix (Matrix4::IDENTITY);
-		OgreNewtonDynamicBody* const mainBody = LoadForkliftMakeMainBody (bodyNode, origin);
+		OgreNewtonDynamicBody* const mainBody = ForkliftMakeMainBody (bodyNode, origin);
 		
-
 		void* const parentBone = transformCalculator->AddBone (mainBody, &bindMatrix[0][0], NULL);
 
 		// make the tires
-		OgreNewtonDynamicBody* const frontLeftTireBody = LoadForkliftMakeTire (fl_tireNode, origin);
-		OgreNewtonDynamicBody* const frontRightTireBody = LoadForkliftMakeTire (fr_tireNode, origin);
-		OgreNewtonDynamicBody* const rearLeftTireBody = LoadForkliftMakeTire (rl_tireNode, origin);
-		OgreNewtonDynamicBody* const rearRightTireBody = LoadForkliftMakeTire (rr_tireNode, origin);
+		OgreNewtonDynamicBody* const frontLeftTireBody = ForkliftMakeTire (fl_tireNode, origin);
+		OgreNewtonDynamicBody* const frontRightTireBody = ForkliftMakeTire (fr_tireNode, origin);
+		OgreNewtonDynamicBody* const rearLeftTireBody = ForkliftMakeTire (rl_tireNode, origin);
+		OgreNewtonDynamicBody* const rearRightTireBody = ForkliftMakeTire (rr_tireNode, origin);
+
+		// make the lift base
+		OgreNewtonDynamicBody* const base1 = ForkliftMakeBase (base1Node, origin);
+		OgreNewtonDynamicBody* const base2 = ForkliftMakeBase (base2Node, origin);
 
 		// add the tire as children bodies
 		transformCalculator->AddBone (frontLeftTireBody, &bindMatrix[0][0], parentBone);
@@ -430,13 +463,17 @@ return;
 		transformCalculator->AddBone (rearLeftTireBody, &bindMatrix[0][0], parentBone);
 		transformCalculator->AddBone (rearRightTireBody, &bindMatrix[0][0], parentBone);
 
+		// add the base bones
+		void* const base1Bone = transformCalculator->AddBone (base1, &bindMatrix[0][0], parentBone);
+		void* const base2Bone = transformCalculator->AddBone (base2, &bindMatrix[0][0], base1Bone);
 
 		// connect the part with joints
 		ForkliftFrontTireJoint::ConnectTire (mainBody, frontLeftTireBody, this);
 		ForkliftFrontTireJoint::ConnectTire (mainBody, frontRightTireBody, this);
-		
-		ForkliftRearTireJoint::ConnectTire (mainBody, rearLeftTireBody);
-		ForkliftRearTireJoint::ConnectTire (mainBody, rearRightTireBody);
+		ForkliftRearTireJoint::ConnectTire (mainBody, rearLeftTireBody, this);
+		ForkliftRearTireJoint::ConnectTire (mainBody, rearRightTireBody, this);
+
+		// connect the forklift base
 
 		// save the main body as the player
 		m_player = mainBody;
