@@ -82,7 +82,6 @@ class DemoApplication: public OgreNewtonExampleApplication, public OIS::KeyListe
 	virtual void OnPhysicUpdateBegin(dFloat timestepInSecunds);
 	virtual void OnPhysicUpdateEnd(dFloat timestepInSecunds);
 
-
 	virtual bool OnRenderUpdateBegin(dFloat updateParam);
 	virtual bool OnRenderUpdateEnd(dFloat updateParam);
 
@@ -90,10 +89,11 @@ class DemoApplication: public OgreNewtonExampleApplication, public OIS::KeyListe
 	virtual void createScene(void);
 	virtual void destroyScene(void);
 
-
 	void UpdateMousePick ();
 	void UpdateFreeCamera ();
-	
+
+
+	SceneManager* GetSceneManager() {return mSceneMgr;}
 
 	virtual void windowMoved (RenderWindow* rw); 
 	virtual void windowFocusChange(RenderWindow* rw);

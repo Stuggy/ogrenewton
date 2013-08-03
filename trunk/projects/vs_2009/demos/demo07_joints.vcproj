@@ -424,6 +424,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\demos\demo07_joints\forklift.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\demo07_joints\forklift.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\demos\demo07_joints\jointsDemo.cpp"
 			>
 		</File>
