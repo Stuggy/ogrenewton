@@ -205,6 +205,19 @@ class OgreNewtonDemoApplication: public DemoApplication
 		{
 		}
 
+		virtual void* AddBone (dNewtonBody* const bone, const dFloat* const bindMatrix, void* const parentBodne)
+		{	
+			// add the bode to the controller
+			void* const boneNode = OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController::AddBone (bone, bindMatrix, parentBodne);
+
+			// save the body handle as the used data pf the body collision for using in later in eh collision callback
+			dNewtonCollision* const collision = bone->GetCollision();
+			dAssert (!collision->GetUserData());
+			collision->SetUserData (boneNode);
+
+			return boneNode;
+		}
+
 		virtual void UpdateTransform (dNewtonBody* const bone, const dFloat* const localMatrix)
 		{
 			if (bone->GetSleepState()) {
@@ -218,7 +231,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		:DemoApplication()
 		,m_player(NULL)
 		,m_shootRigidBody(NULL)
-		,m_localTransformManager(NULL)
 	{
 	}
 
@@ -441,10 +453,14 @@ return;
 		dAssert (rl_tireNode);
 		dAssert (rr_tireNode);
 
-		SceneNode* const base1Node = (SceneNode*) bodyNode->getChild ("lift");
-		SceneNode* const base2Node = (SceneNode*) base1Node->getChild ("lift2");
+		SceneNode* const base1Node = (SceneNode*) bodyNode->getChild ("lift_1");
+		SceneNode* const base2Node = (SceneNode*) base1Node->getChild ("lift_2");
+		SceneNode* const base3Node = (SceneNode*) base2Node->getChild ("lift_3");
+		SceneNode* const base4Node = (SceneNode*) base3Node->getChild ("lift_4");
 		dAssert (base1Node);
 		dAssert (base2Node);
+		dAssert (base3Node);
+		dAssert (base4Node);
 
 		// make a local transform controller to control this body
 		LocalTransformCalculator* const transformCalculator = new LocalTransformCalculator(m_localTransformManager);
@@ -483,6 +499,9 @@ return;
 
 		// connect the forklift base
 		ForkliftBaseActuator::ConnectBase (mainBody, base1, this);
+
+		// disable self collision between all body parts
+		transformCalculator->DisableAllSelfCollision();
 
 		// save the main body as the player
 		m_player = mainBody;
@@ -545,10 +564,6 @@ return;
 		// create the physic world first
 		DemoApplication::createScene();
 
-		// create a local transform manager for calculate local matrices of child sceneNodes attached to rigid bodies
-		m_localTransformManager = new OgreNewtonHierarchyTransformManager (m_physicsWorld);
-
-
 		// sky box.
 		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 		mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");
@@ -596,7 +611,6 @@ return;
 
 	ShootRigidBody* m_shootRigidBody;
 	OgreNewtonDynamicBody* m_player;
-	OgreNewtonHierarchyTransformManager* m_localTransformManager;
 };
 
 

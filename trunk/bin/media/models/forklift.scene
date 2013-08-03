@@ -54,53 +54,63 @@
                     </subentities>
                 </entity>
             </node>
-            <node name="lift" id="10" isTarget="false">
+            <node name="lift_1" id="10" isTarget="false">
                 <position x="0.844353" y="-0.172968" z="-0.00253998" />
                 <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
                 <scale x="1" y="1" z="1" />
-                <entity name="lift" id="11" meshFile="lift.mesh" castShadows="true">
+                <entity name="lift_1" id="11" meshFile="lift_1.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="Standard_2" />
                     </subentities>
                 </entity>
-                <node name="lift2" id="12" isTarget="false">
-                    <position x="-3.87573e-006" y="-9.68933e-007" z="7.56979e-009" />
+                <node name="lift_2" id="12" isTarget="false">
+                    <position x="0" y="0" z="0" />
                     <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                    <scale x="40" y="40" z="40" />
-                    <entity name="lift2" id="13" meshFile="lift2.mesh" castShadows="true">
+                    <scale x="1" y="1" z="1" />
+                    <entity name="lift_2" id="13" meshFile="lift_2.mesh" castShadows="true">
                         <subentities>
                             <subentity index="0" materialName="Standard_2" />
                         </subentities>
                     </entity>
-                    <node name="right_teeth" id="14" isTarget="false">
-                        <position x="0.0198107" y="-0.00527563" z="-0.00745364" />
+                    <node name="lift_3" id="14" isTarget="false">
+                        <position x="0" y="0" z="0" />
                         <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
                         <scale x="1" y="1" z="1" />
-                        <entity name="right_teeth" id="15" meshFile="right_teeth.mesh" castShadows="true">
+                        <entity name="lift_3" id="15" meshFile="lift_3.mesh" castShadows="true">
                             <subentities>
                                 <subentity index="0" materialName="Standard_2" />
                             </subentities>
                         </entity>
-                    </node>
-                    <node name="left_teeth" id="16" isTarget="false">
-                        <position x="0.0193195" y="-0.00571826" z="0.00745361" />
-                        <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                        <scale x="1" y="1" z="1" />
-                        <entity name="left_teeth" id="17" meshFile="left_teeth.mesh" castShadows="true">
-                            <subentities>
-                                <subentity index="0" materialName="Standard_2" />
-                            </subentities>
-                        </entity>
-                    </node>
-                    <node name="Object01" id="18" isTarget="false">
-                        <position x="0" y="0" z="-1.89245e-010" />
-                        <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
-                        <scale x="0.025" y="0.025" z="0.025" />
-                        <entity name="Object01" id="19" meshFile="Object01.mesh" castShadows="true">
-                            <subentities>
-                                <subentity index="0" materialName="Standard_2" />
-                            </subentities>
-                        </entity>
+                        <node name="lift_4" id="16" isTarget="false">
+                            <position x="-3.87573e-006" y="0.0628509" z="0" />
+                            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+                            <scale x="1" y="1" z="1" />
+                            <entity name="lift_4" id="17" meshFile="lift_4.mesh" castShadows="true">
+                                <subentities>
+                                    <subentity index="0" materialName="Standard_2" />
+                                </subentities>
+                            </entity>
+                            <node name="right_teeth" id="18" isTarget="false">
+                                <position x="0.792428" y="-0.12249" z="-0.298146" />
+                                <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+                                <scale x="40" y="40" z="40" />
+                                <entity name="right_teeth" id="19" meshFile="right_teeth.mesh" castShadows="true">
+                                    <subentities>
+                                        <subentity index="0" materialName="Standard_2" />
+                                    </subentities>
+                                </entity>
+                            </node>
+                            <node name="left_teeth" id="20" isTarget="false">
+                                <position x="0.772778" y="-0.140195" z="0.298145" />
+                                <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+                                <scale x="40" y="40" z="40" />
+                                <entity name="left_teeth" id="21" meshFile="left_teeth.mesh" castShadows="true">
+                                    <subentities>
+                                        <subentity index="0" materialName="Standard_2" />
+                                    </subentities>
+                                </entity>
+                            </node>
+                        </node>
                     </node>
                 </node>
             </node>
