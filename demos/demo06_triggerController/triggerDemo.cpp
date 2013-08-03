@@ -435,9 +435,6 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		// create the physic world first
 		DemoApplication::createScene();
 
-		// add a trigger Manager the world 
-		m_triggerManager = new OgreNewtonTriggerManager(m_physicsWorld);
-
 		//make a light
 		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
 
@@ -488,8 +485,6 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 	RenderTarget* mRefractionTarget;
 	RenderTarget* mReflectionTarget;
 	ShootRigidBody* m_shootRigidBody;
-
-	OgreNewtonTriggerManager* m_triggerManager;
 };
 
 

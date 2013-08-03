@@ -25,6 +25,9 @@
 
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDebugger.h"
+#include "OgreNewtonPlayerManager.h"
+#include "OgreNewtonRayPickManager.h"
+#include "OgreNewtonTriggerManager.h"
 #include "OgreNewtonExampleApplication.h"
 #include "OgreNewtonHierarchyTransformManager.h"
 
@@ -99,6 +102,9 @@ OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 	:ExampleApplication()
 	,m_debugRender(NULL)
 	,m_physicsWorld(NULL)
+	,m_rayPicker(NULL)
+	,m_playerManager(NULL)
+	,m_triggerManager(NULL)
 	,m_localTransformManager(NULL)
 	,m_cameraYawAngle(0.0f)
 	,m_cameraPitchAngle(0.0f)
@@ -126,7 +132,10 @@ void OgreNewtonExampleApplication::createScene()
 	m_debugRender = new OgreNewtonDebugger (mSceneMgr, m_physicsWorld);
 	mRoot->addFrameListener(m_debugRender);
 
-	// create a local transform manager for calculate local matrices of child sceneNodes attached to rigid bodies
+	// add some of the essential managers
+	m_rayPicker = new OgreNewtonRayPickManager (m_physicsWorld);
+	m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
+	m_triggerManager = new OgreNewtonTriggerManager(m_physicsWorld);
 	m_localTransformManager = new OgreNewtonHierarchyTransformManager (m_physicsWorld);
 }
 
@@ -138,7 +147,7 @@ void OgreNewtonExampleApplication::destroyScene(void)
 	// destroy the debugger
 	m_debugRender->HideDebugInformation();
 	
-	// destroy the rest of eth Ogre world
+	// destroy the rest of the Ogre world
 	ExampleApplication::destroyScene();
 }
 

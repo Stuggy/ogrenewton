@@ -36,7 +36,6 @@ DemoApplication::DemoApplication()
 	,OIS::KeyListener()
 	,OIS::MouseListener()
 	,WindowEventListener()
-	,m_rayPicker (NULL)
 	,m_debugTriggerKey(false)
 	,m_onScreeHelp(true)
 	,m_mousePickMemory(false)
@@ -61,7 +60,7 @@ void DemoApplication::createScene(void)
 {
 	OgreNewtonExampleApplication::createScene();
 
-	m_rayPicker = new OgreNewtonRayPickManager (GetPhysics());
+
 
 	unsigned long windowHandle;
 	mWindow->getCustomAttribute("WINDOW", &windowHandle);
