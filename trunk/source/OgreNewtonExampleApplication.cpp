@@ -68,7 +68,7 @@ void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformEn
 	m_application->OnRenderUpdateEnd(interpolationParam);
 }
 
-int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex)
+int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap (const dNewtonMaterial* const material, const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex)
 {
 //	dNewtonCollision* const collision0 = body0->GetCollision();
 //	dNewtonCollision* const collision1 = body1->GetCollision();
@@ -76,7 +76,14 @@ int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap
 	return 1;
 }
 
+int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnCompoundSubCollisionAABBOverlap (const dNewtonMaterial* const material, const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex)
+{
+	return 1;
+}
 
+void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnContactProcess (dNewtonContactMaterial* const contacts, dFloat timestep, int threadIndex)
+{
+}
 
 OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 	:ExampleApplication()
