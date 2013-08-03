@@ -55,7 +55,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		:DemoApplication()
 		,m_shootRigidBody(NULL)
 		,m_player(NULL)
-		,m_playerManager(NULL)
 		,m_localTransformManager(NULL)
 	{
 	}
@@ -222,10 +221,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// create the physic world first
 		DemoApplication::createScene();
 
-		// create a player manager for controlling all players
-		m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
-		//m_localTransformManager = new OgreNewtonHierarchyTransformManager (m_physicsWorld);
-
 		//make a light
 		mSceneMgr->setAmbientLight(ColourValue(0.2f, 0.2f, 0.2f));
 
@@ -280,7 +275,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	ShootRigidBody* m_shootRigidBody;
 	MyPlayerContyroller* m_player;
-	OgreNewtonPlayerManager* m_playerManager;
+	
 	OgreNewtonHierarchyTransformManager* m_localTransformManager;
 };
 

@@ -106,8 +106,6 @@ class DemoApplication: public OgreNewtonExampleApplication, public OIS::KeyListe
 	virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 	virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 
-
-	OgreNewtonRayPickManager* m_rayPicker;
 	KeyTrigger m_debugTriggerKey;
 	KeyTrigger m_onScreeHelp;
 	bool m_mousePickMemory;

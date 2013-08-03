@@ -31,6 +31,9 @@
 using namespace Ogre;
 
 class OgreNewtonDebugger;
+class OgreNewtonPlayerManager;
+class OgreNewtonRayPickManager;
+class OgreNewtonTriggerManager;
 class OgreNewtonHierarchyTransformManager;
 
 
@@ -90,7 +93,12 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 	protected:
 	OgreNewtonDebugger* m_debugRender;
 	OgreNewtonPhysicsListener* m_physicsWorld;
+
+	OgreNewtonRayPickManager* m_rayPicker;
+	OgreNewtonPlayerManager* m_playerManager;
+	OgreNewtonTriggerManager* m_triggerManager;
 	OgreNewtonHierarchyTransformManager* m_localTransformManager;
+	
 
 	Radian m_cameraYawAngle;
 	Radian m_cameraPitchAngle;
