@@ -217,13 +217,13 @@ class OgreNewtonDemoApplication: public DemoApplication
 		const int compoundCount = 10;
 
 		// add some compound collision shapes
-		SpawnManualCompoundCollisionShapes    (10, origin + Vector3 (-20.0f, 1.0f, -40.0f));
+		SpawnManualCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -40.0f));
 
 		// some automatically generated convex decompositions
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -50.0f), "cow.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -60.0f), "bessel.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -70.0f), "torus.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -80.0f), "torusKnot.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -50.0f), "cow.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -60.0f), "bessel.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -70.0f), "torus.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -80.0f), "torusKnot.mesh");
 
 
 		// make a convex hull from 200 random points
