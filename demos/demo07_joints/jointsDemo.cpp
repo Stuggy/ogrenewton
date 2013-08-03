@@ -48,12 +48,50 @@ using namespace Ogre;
 class OgreNewtonDemoApplication: public DemoApplication
 {
 	public:
+
+	class ForkliftSliderActuator: public dNewtonSliderActuator
+	{
+		ForkliftSliderActuator (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const child, dNewtonDynamicBody* const parent, OgreNewtonDemoApplication* const application)
+			:dNewtonSliderActuator (pinAndPivotFrame, -0.25f, 1.5f, child, parent)
+			,m_base(parent)
+			,m_movingPart(child)
+			,m_application(application)
+		{
+		}
+	
+		public:
+		CNEWTON_API virtual void OnSubmitConstraint (dFloat timestep, int threadIndex)
+		{
+			const Real rate = 25.0f;
+			if (m_application->m_keyboard->isKeyDown(OIS::KC_Q)) {
+				SetTargetPosit (GetActuatorPosit() + rate * timestep);
+			} else if (m_application->m_keyboard->isKeyDown(OIS::KC_E)) {
+				SetTargetPosit (GetActuatorPosit() - rate * timestep);
+			} else {
+				SetTargetPosit (GetActuatorPosit());
+			}
+			dNewtonSliderActuator::OnSubmitConstraint (timestep, threadIndex);
+		}
+
+
+		static void ConnectBase (OgreNewtonDynamicBody* const parent, OgreNewtonDynamicBody* const child, OgreNewtonDemoApplication* const application)  
+		{
+			Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 0.0f, 1.0f)));
+			Matrix4 baseMatrix((child->GetMatrix() * aligmentMatrix).transpose());
+			new ForkliftSliderActuator (&baseMatrix[0][0], child, parent, application);
+		}
+
+		dNewtonDynamicBody* const m_base;
+		dNewtonDynamicBody* const m_movingPart;
+		OgreNewtonDemoApplication* m_application;
+	};
+
 	class ForkliftHingeActuator: public dNewtonHingeActuator
 	{
-		ForkliftHingeActuator (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const base, dNewtonDynamicBody* const mainBody, OgreNewtonDemoApplication* const application)
-			:dNewtonHingeActuator (pinAndPivotFrame, -20.0f * 3.141592f / 180.0f, 20.0f * 3.141592f / 180.0f, base, mainBody)
-			,m_base(base)
-			,m_mainBody(mainBody)
+		ForkliftHingeActuator (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const child, dNewtonDynamicBody* const parent, OgreNewtonDemoApplication* const application)
+			:dNewtonHingeActuator (pinAndPivotFrame, -20.0f * 3.141592f / 180.0f, 20.0f * 3.141592f / 180.0f, child, parent)
+			,m_base(parent)
+			,m_movingPart(child)
 			,m_application(application)
 		{
 		}
@@ -62,9 +100,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 		CNEWTON_API virtual void OnSubmitConstraint (dFloat timestep, int threadIndex)
 		{
 			const Real rate = 25.0f;
-			if (m_application->m_keyboard->isKeyDown(OIS::KC_Q)) {
+			if (m_application->m_keyboard->isKeyDown(OIS::KC_Z)) {
 				SetTargetAngle (GetActuatorAngle() + rate * timestep);
-			} else if (m_application->m_keyboard->isKeyDown(OIS::KC_E)) {
+			} else if (m_application->m_keyboard->isKeyDown(OIS::KC_C)) {
 				SetTargetAngle (GetActuatorAngle() - rate * timestep);
 			} else {
 				SetTargetAngle (GetActuatorAngle());
@@ -81,7 +119,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		}
 
 		dNewtonDynamicBody* const m_base;
-		dNewtonDynamicBody* const m_mainBody;
+		dNewtonDynamicBody* const m_movingPart;
 		OgreNewtonDemoApplication* m_application;
 	};
 	
@@ -421,7 +459,7 @@ return;
 
 		Matrix4 matrix;
 		matrix.makeTransform(baseNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), baseNode->_getDerivedOrientation());
-		return new OgreNewtonDynamicBody (m_physicsWorld, 200.0f, &collision, baseNode, matrix);
+		return new OgreNewtonDynamicBody (m_physicsWorld, 100.0f, &collision, baseNode, matrix);
 	}
 
 
@@ -493,7 +531,9 @@ return;
 
 		// make the lift base
 		OgreNewtonDynamicBody* const base1 = ForkliftMakeBase (base1Node, origin);
-		//OgreNewtonDynamicBody* const base2 = ForkliftMakeBase (base2Node, origin);
+		OgreNewtonDynamicBody* const base2 = ForkliftMakeBase (base2Node, origin);
+		OgreNewtonDynamicBody* const base3 = ForkliftMakeBase (base3Node, origin);
+		OgreNewtonDynamicBody* const base4 = ForkliftMakeBase (base4Node, origin);
 
 		// add the tire as children bodies
 		transformCalculator->AddBone (frontLeftTireBody, &bindMatrix[0][0], parentBone);
@@ -503,7 +543,9 @@ return;
 
 		// add the base bones
 		void* const base1Bone = transformCalculator->AddBone (base1, &bindMatrix[0][0], parentBone);
-		//void* const base2Bone = transformCalculator->AddBone (base2, &bindMatrix[0][0], base1Bone);
+		void* const base2Bone = transformCalculator->AddBone (base2, &bindMatrix[0][0], base1Bone);
+		void* const base3Bone = transformCalculator->AddBone (base3, &bindMatrix[0][0], base2Bone);
+		void* const base4Bone = transformCalculator->AddBone (base4, &bindMatrix[0][0], base3Bone);
 
 		// connect the part with joints
 		ForkliftFrontTireJoint::ConnectTire (mainBody, frontLeftTireBody, this);
@@ -513,6 +555,9 @@ return;
 
 		// connect the forklift base
 		ForkliftHingeActuator::ConnectBase (mainBody, base1, this);
+		ForkliftSliderActuator::ConnectBase (base1, base2, this);
+		ForkliftSliderActuator::ConnectBase (base2, base3, this);
+		ForkliftSliderActuator::ConnectBase (base3, base4, this);
 
 		// disable self collision between all body parts
 		transformCalculator->DisableAllSelfCollision();
@@ -542,6 +587,8 @@ return;
 			m_keyboard->isKeyDown(OIS::KC_S) || 
 			m_keyboard->isKeyDown(OIS::KC_A) || 
 			m_keyboard->isKeyDown(OIS::KC_D) ||	
+			m_keyboard->isKeyDown(OIS::KC_Z) ||	
+			m_keyboard->isKeyDown(OIS::KC_C) ||	
 			m_keyboard->isKeyDown(OIS::KC_Q) ||	
 			m_keyboard->isKeyDown(OIS::KC_E)) {
 			m_player->SetSleepState(false);
@@ -578,9 +625,10 @@ return;
 			m_screen->write(20,  80, "F1:  Hide debug help text");
 			m_screen->write(20, 100, "F3:  Toggle display physic debug");
 			m_screen->write(20, 120, "W, S, A, D:  Drive Vehicle");
-			m_screen->write(20, 140, "Q E:  Rotate Lifter Apparatus");
-			m_screen->write(20, 160, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick object from screen (do not pick vehicle please!)");
-			m_screen->write(20, 180, "ESC:  Exit application");
+			m_screen->write(20, 140, "Q E:  Rise and lower Lifter Apparatus");
+			m_screen->write(20, 160, "Z C:  Rotate Lifter Apparatus");
+			m_screen->write(20, 180, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick object from screen (do not pick vehicle please!)");
+			m_screen->write(20, 120, "ESC:  Exit application");
 		}
 		m_screen->update();
 		return true;
