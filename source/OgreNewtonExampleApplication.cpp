@@ -26,7 +26,7 @@
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDebugger.h"
 #include "OgreNewtonExampleApplication.h"
-
+#include "OgreNewtonHierarchyTransformManager.h"
 
 
 OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OgreNewtonPhysicsListener (OgreNewtonExampleApplication* const application, int updateFramerate)
@@ -70,9 +70,19 @@ void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformEn
 
 int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap (const dNewtonMaterial* const material, const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex)
 {
-//	dNewtonCollision* const collision0 = body0->GetCollision();
-//	dNewtonCollision* const collision1 = body1->GetCollision();
+	dNewtonCollision* const collision0 = body0->GetCollision();
+	dNewtonCollision* const collision1 = body1->GetCollision();
 
+	// check if these twp collision shape are part of a hierarchical model
+	void* const node0 = collision0->GetUserData();
+	void* const node1 = collision1->GetUserData();
+	if (node0 && node1) {
+		//both collision are child nodes, check if there are self colliding
+		return m_application->m_localTransformManager->SelfCollisionTest (node0, node1);
+	}
+	
+	// check all other collision using the bitfield mask, 
+	//for now simple return true
 	return 1;
 }
 
@@ -89,6 +99,7 @@ OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 	:ExampleApplication()
 	,m_debugRender(NULL)
 	,m_physicsWorld(NULL)
+	,m_localTransformManager(NULL)
 	,m_cameraYawAngle(0.0f)
 	,m_cameraPitchAngle(0.0f)
 	,m_cameraTranslation(0.0f, 0.0f, 0.0f)
@@ -114,11 +125,14 @@ void OgreNewtonExampleApplication::createScene()
 	// create a debug Renderer for showing physics data visually
 	m_debugRender = new OgreNewtonDebugger (mSceneMgr, m_physicsWorld);
 	mRoot->addFrameListener(m_debugRender);
+
+	// create a local transform manager for calculate local matrices of child sceneNodes attached to rigid bodies
+	m_localTransformManager = new OgreNewtonHierarchyTransformManager (m_physicsWorld);
 }
 
 void OgreNewtonExampleApplication::destroyScene(void)
 {
-	// make sure no update is in progress, before shutting down all systems
+	// make sure that no physics updated is in progress before shutting down all systems
 	m_physicsWorld->WaitForUpdateToFinish ();
 
 	// destroy the debugger

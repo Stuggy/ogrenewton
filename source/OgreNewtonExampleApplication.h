@@ -31,6 +31,7 @@
 using namespace Ogre;
 
 class OgreNewtonDebugger;
+class OgreNewtonHierarchyTransformManager;
 
 
 class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
@@ -89,6 +90,7 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 	protected:
 	OgreNewtonDebugger* m_debugRender;
 	OgreNewtonPhysicsListener* m_physicsWorld;
+	OgreNewtonHierarchyTransformManager* m_localTransformManager;
 
 	Radian m_cameraYawAngle;
 	Radian m_cameraPitchAngle;
