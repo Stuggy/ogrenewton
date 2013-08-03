@@ -59,11 +59,11 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 
 		public:
-		static void ConnectBase (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const base, OgreNewtonDemoApplication* const application)  
+		static void ConnectBase (OgreNewtonDynamicBody* const parent, OgreNewtonDynamicBody* const child, OgreNewtonDemoApplication* const application)  
 		{
 			Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
-			Matrix4 baseMatrix(base->GetMatrix().transpose() * aligmentMatrix);
-			new ForkliftBaseActuator (&baseMatrix[0][0], base, body, application);
+			Matrix4 baseMatrix((child->GetMatrix() * aligmentMatrix).transpose());
+			new ForkliftBaseActuator (&baseMatrix[0][0], child, parent, application);
 		}
 
 		dNewtonDynamicBody* const m_base;
