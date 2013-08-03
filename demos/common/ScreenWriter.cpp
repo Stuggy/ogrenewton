@@ -62,11 +62,13 @@ void ScreenWriter::initialise()
 	{
 		textAreas[i] = static_cast<TextAreaOverlayElement*>(OverlayManager::getSingleton().createOverlayElement("TextArea", StringConverter::toString(i) + "TextAreaName"));
 		textAreas[i]->setMetricsMode(GMM_RELATIVE);
-		textAreas[i]->setFontName("DebugText");
+		//textAreas[i]->setFontName("DebugText");
+		textAreas[i]->setFontName("TrebuchetMSBold");
 		textAreas[i]->setColourBottom(ColourValue(1,1,1));
 		textAreas[i]->setColourTop(ColourValue(1,1,1));
 		textAreas[i]->setDimensions(1.0f, 1.0f);
 		textAreas[i]->setCharHeight(defaultSize);
+		textAreas[i]->setSpaceWidth(defaultSize * 0.5f);
 		panel->addChild(textAreas[i]);
 	}
 

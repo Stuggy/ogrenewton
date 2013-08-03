@@ -106,6 +106,7 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 	Vector3 m_interpolatedCameraPosition;
 	Quaternion m_interpolatedCameraRotation;
 	dNewtonTransformLerp m_cameraTransform;
+	unsigned m_cameraLock;
 };
 
 

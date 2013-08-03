@@ -34,6 +34,7 @@
 #include <OgreNewtonHierarchyTransformManager.h>
 
 #include "Utils.h"
+#include "ScreenWriter.h"
 #include "OgreDotScene.h"
 #include "ShootRigidBody.h"
 #include "DemoApplication.h"
@@ -47,23 +48,36 @@ using namespace Ogre;
 class OgreNewtonDemoApplication: public DemoApplication
 {
 	public:
-	class ForkliftBaseActuator: public dNewtonHingeActuator
+	class ForkliftHingeActuator: public dNewtonHingeActuator
 	{
-		ForkliftBaseActuator (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const base, dNewtonDynamicBody* const mainBody, OgreNewtonDemoApplication* const application)
-			:dNewtonHingeActuator (pinAndPivotFrame, -30.0f * 3.141592f / 180.0f, -30.0f * 3.141592f / 180.0f, base, mainBody)
+		ForkliftHingeActuator (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const base, dNewtonDynamicBody* const mainBody, OgreNewtonDemoApplication* const application)
+			:dNewtonHingeActuator (pinAndPivotFrame, -20.0f * 3.141592f / 180.0f, 20.0f * 3.141592f / 180.0f, base, mainBody)
 			,m_base(base)
 			,m_mainBody(mainBody)
 			,m_application(application)
 		{
 		}
 
-
 		public:
+		CNEWTON_API virtual void OnSubmitConstraint (dFloat timestep, int threadIndex)
+		{
+			const Real rate = 25.0f;
+			if (m_application->m_keyboard->isKeyDown(OIS::KC_Q)) {
+				SetTargetAngle (GetActuatorAngle() + rate * timestep);
+			} else if (m_application->m_keyboard->isKeyDown(OIS::KC_E)) {
+				SetTargetAngle (GetActuatorAngle() - rate * timestep);
+			} else {
+				SetTargetAngle (GetActuatorAngle());
+			}
+			dNewtonHingeActuator::OnSubmitConstraint (timestep, threadIndex);
+		}
+
+
 		static void ConnectBase (OgreNewtonDynamicBody* const parent, OgreNewtonDynamicBody* const child, OgreNewtonDemoApplication* const application)  
 		{
 			Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
 			Matrix4 baseMatrix((child->GetMatrix() * aligmentMatrix).transpose());
-			new ForkliftBaseActuator (&baseMatrix[0][0], child, parent, application);
+			new ForkliftHingeActuator (&baseMatrix[0][0], child, parent, application);
 		}
 
 		dNewtonDynamicBody* const m_base;
@@ -479,7 +493,7 @@ return;
 
 		// make the lift base
 		OgreNewtonDynamicBody* const base1 = ForkliftMakeBase (base1Node, origin);
-		OgreNewtonDynamicBody* const base2 = ForkliftMakeBase (base2Node, origin);
+		//OgreNewtonDynamicBody* const base2 = ForkliftMakeBase (base2Node, origin);
 
 		// add the tire as children bodies
 		transformCalculator->AddBone (frontLeftTireBody, &bindMatrix[0][0], parentBone);
@@ -489,7 +503,7 @@ return;
 
 		// add the base bones
 		void* const base1Bone = transformCalculator->AddBone (base1, &bindMatrix[0][0], parentBone);
-		void* const base2Bone = transformCalculator->AddBone (base2, &bindMatrix[0][0], base1Bone);
+		//void* const base2Bone = transformCalculator->AddBone (base2, &bindMatrix[0][0], base1Bone);
 
 		// connect the part with joints
 		ForkliftFrontTireJoint::ConnectTire (mainBody, frontLeftTireBody, this);
@@ -498,7 +512,7 @@ return;
 		ForkliftRearTireJoint::ConnectTire (mainBody, rearRightTireBody, this);
 
 		// connect the forklift base
-		ForkliftBaseActuator::ConnectBase (mainBody, base1, this);
+		ForkliftHingeActuator::ConnectBase (mainBody, base1, this);
 
 		// disable self collision between all body parts
 		transformCalculator->DisableAllSelfCollision();
@@ -524,7 +538,12 @@ return;
 
 		// check if there are some vehicle input, if there is, then wakeup the vehicle
 		m_keyboard->capture();
-		if (m_keyboard->isKeyDown(OIS::KC_W) || m_keyboard->isKeyDown(OIS::KC_S) || m_keyboard->isKeyDown(OIS::KC_A) || m_keyboard->isKeyDown(OIS::KC_D)) {
+		if (m_keyboard->isKeyDown(OIS::KC_W) || 
+			m_keyboard->isKeyDown(OIS::KC_S) || 
+			m_keyboard->isKeyDown(OIS::KC_A) || 
+			m_keyboard->isKeyDown(OIS::KC_D) ||	
+			m_keyboard->isKeyDown(OIS::KC_Q) ||	
+			m_keyboard->isKeyDown(OIS::KC_E)) {
 			m_player->SetSleepState(false);
 		}
 	}
@@ -549,6 +568,22 @@ return;
 
 		camMatrix = camMatrix.transpose();
 		m_cameraTransform.SetTargetMatrix (&camMatrix[0][0]);
+	}
+
+
+	bool OnRenderUpdateEnd(dFloat updateParam)
+	{
+		DemoApplication::OnRenderUpdateEnd(updateParam);
+		if (m_onScreeHelp.m_state) {
+			m_screen->write(20,  80, "F1:  Hide debug help text");
+			m_screen->write(20, 100, "F3:  Toggle display physic debug");
+			m_screen->write(20, 120, "W, S, A, D:  Drive Vehicle");
+			m_screen->write(20, 140, "Q E:  Rotate Lifter Apparatus");
+			m_screen->write(20, 160, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick object from screen (do not pick vehicle please!)");
+			m_screen->write(20, 180, "ESC:  Exit application");
+		}
+		m_screen->update();
+		return true;
 	}
 
 
