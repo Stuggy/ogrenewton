@@ -85,6 +85,11 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 	void GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation);
 
 	Real GetCameraYawAngle() const ;
+
+	OgreNewtonHierarchyTransformManager* GetHierarchyTransformManager() const 
+	{
+		return m_localTransformManager;
+	}
 	
 	protected:
 	virtual void createScene(void);
