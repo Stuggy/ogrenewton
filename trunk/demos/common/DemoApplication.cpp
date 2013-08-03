@@ -168,17 +168,16 @@ bool DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 	mCamera->setPosition(cameraPosit);
 	mCamera->setOrientation(cameraRotation);
 
-
 	OgreNewtonWorld* const physics = GetPhysics();
-	m_screen->write(20, 20, "FPS: %05.3f", stats.lastFPS);
-	m_screen->write(20, 36, "Physics time: %05.3f ms", float (double (physics->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
-	m_screen->write(20, 52, "Number of rigid bodies: %d", physics->GetBodyCount());
+	m_screen->write(20, 20, "FPS:  %05.3f", stats.lastFPS);
+	m_screen->write(20, 40, "Physics time:  %05.3f ms", float (double (physics->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
+	m_screen->write(20, 60, "Number of rigid bodies:  %d", physics->GetBodyCount());
 	if (m_onScreeHelp.m_state) {
-		m_screen->write(20,  68, "F1: Hide debug help text");
-		m_screen->write(20,  84, "F3: toggle display physic debug");
-		m_screen->write(20, 100, "W, S, A, D: Free camera navigation");
-		m_screen->write(20, 116, "Hold CTRL and Left Mouse Key: show mouse cursor and pick");
-		m_screen->write(20, 132, "ESC: Exit application");
+		m_screen->write(20,  80, "F1:  Hide debug help text");
+		m_screen->write(20, 100, "F3:  Toggle display physic debug");
+		m_screen->write(20, 120, "W, S, A, D:  Free camera navigation");
+		m_screen->write(20, 140, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objcts from screen");
+		m_screen->write(20, 160, "ESC:  Exit application");
 
 	} else if (m_onScreeHelp.TriggerDown()){
 		m_screen->removeAll();

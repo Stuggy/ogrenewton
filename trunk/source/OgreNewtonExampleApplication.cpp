@@ -112,6 +112,7 @@ OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 	,m_interpolatedCameraPosition(0.0f, 0.0f, 0.0f)
 	,m_interpolatedCameraRotation (Quaternion::IDENTITY)
 	,m_cameraTransform()
+	,m_cameraLock(0)
 {
 }
 
@@ -181,7 +182,7 @@ void OgreNewtonExampleApplication::ResetCamera (const Vector3& posit, const Quat
 void OgreNewtonExampleApplication::MoveCamera (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep)
 {
 	// here we update the camera movement at simulation rate
-//	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
+	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
 
 	m_cameraYawAngle = fmodf (m_cameraYawAngle.valueRadians() + yawAngleStep.valueRadians(), 3.141592f * 2.0f);
 	m_cameraPitchAngle = Math::Clamp (m_cameraPitchAngle.valueRadians() + pitchAngleStep.valueRadians(), - 80.0f * 3.141592f / 180.0f, 80.0f * 3.141592f / 180.0f);
@@ -205,7 +206,7 @@ Real OgreNewtonExampleApplication::GetCameraYawAngle() const
 
 void OgreNewtonExampleApplication::GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation)
 {
-//	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
+	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
 	cameraPosit = m_interpolatedCameraPosition;
 	cameraRotation = m_interpolatedCameraRotation;
 }
@@ -215,7 +216,7 @@ void OgreNewtonExampleApplication::GetInterpolatedCameraMatrix (Vector3& cameraP
 bool OgreNewtonExampleApplication::OnRenderUpdateBegin(dFloat updateParam) 
 {
 	Matrix4 cameraMatrix;
-//	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
+	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
 	m_cameraTransform.InterplateMatrix (updateParam, cameraMatrix[0]);
 	cameraMatrix = cameraMatrix.transpose();
 	m_interpolatedCameraPosition = cameraMatrix.getTrans();
