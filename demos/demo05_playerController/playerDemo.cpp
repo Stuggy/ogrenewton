@@ -103,28 +103,17 @@ class OgreNewtonDemoApplication: public DemoApplication
 	void OnPhysicUpdateBegin (dFloat timestepInSecunds)
 	{
 		// bypass the call to DemoApplication::OnPhysicUpdateBegin
-		OgreNewtonExampleApplication::OnPhysicUpdateBegin(timestepInSecunds);
-
-		// get the inputs
-		m_mouse->capture();
-		m_keyboard->capture();
-		WindowEventUtilities::messagePump();
-
-		// set the debug render mode
-		m_debugTriggerKey.Update (m_keyboard->isKeyDown(OIS::KC_F3) ? true : false);
-		m_onScreeHelp.Update (m_keyboard->isKeyDown(OIS::KC_F1) ? true : false);
+		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
 
 		// handle shotting objects
 		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
-
-		// now update the free camera
-		UpdateFreeCamera ();
 
 		// update main player first
 		m_player->ApplyPlayerInputs (this, timestepInSecunds);
 
 		// update all players controller 
-		for (MyPlayerContyroller* player = (MyPlayerContyroller*) m_playerManager->GetFirstPlayer(); player; player = (MyPlayerContyroller*) m_playerManager->GetNextPlayer(player)) {
+		OgreNewtonPlayerManager* const playerManager = m_physicsWorld->GetPlayerManager();
+		for (MyPlayerContyroller* player = (MyPlayerContyroller*) playerManager->GetFirstPlayer(); player; player = (MyPlayerContyroller*) playerManager->GetNextPlayer(player)) {
 			if (player != m_player) {
 				player->ApplyNPCInputs (this, timestepInSecunds);
 			}
@@ -133,7 +122,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	void OnPhysicUpdateEnd(dFloat timestepInSecunds)
 	{
-		OgreNewtonExampleApplication::OnPhysicUpdateEnd (timestepInSecunds);
+		DemoApplication::OnPhysicUpdateEnd (timestepInSecunds);
 
 		// reposition the camera origin to point to the player
 		Matrix4 camMatrix;
@@ -208,10 +197,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 		Real innerRadius = outerRadius * 0.25f;
 		Vector3 playerPivotOffset (0.0f, - scale * bBox.getMinimum().y, 0.0f);
 		Quaternion aligmentRot (Radian (Degree (180.0f)), Vector3 (0.0f, 1.0f, 0.0f));
-		MyPlayerContyroller* const player = new MyPlayerContyroller(m_playerManager, playerMesh, playerNode, mass, outerRadius, innerRadius, high, stairStep, playerPivotOffset, aligmentRot, PLAYER_SPEED);
 
-		// test deleting the player
-		//delete player;
+		OgreNewtonPlayerManager* const playerManager = m_physicsWorld->GetPlayerManager();
+		MyPlayerContyroller* const player = new MyPlayerContyroller(playerManager, playerMesh, playerNode, mass, outerRadius, innerRadius, high, stairStep, playerPivotOffset, aligmentRot, PLAYER_SPEED);
 
 		return player;
 	}

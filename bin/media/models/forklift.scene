@@ -15,8 +15,8 @@
                 </subentities>
             </entity>
             <node name="fr_tire" id="2" isTarget="false">
-                <position x="0.556262" y="-0.0595341" z="0.473558" />
-                <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+                <position x="0.473558" y="-0.0595341" z="-0.556262" />
+                <rotation qx="-0" qy="-0.707107" qz="-0" qw="-0.707107" />
                 <scale x="1" y="1" z="1" />
                 <entity name="fr_tire" id="3" meshFile="fr_tire.mesh" castShadows="true">
                     <subentities>
@@ -25,8 +25,8 @@
                 </entity>
             </node>
             <node name="fl_tire" id="4" isTarget="false">
-                <position x="0.556262" y="-0.0595341" z="-0.52324" />
-                <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+                <position x="-0.52324" y="-0.0595341" z="-0.556262" />
+                <rotation qx="-0" qy="-0.707107" qz="-0" qw="-0.707107" />
                 <scale x="1" y="1" z="1" />
                 <entity name="fl_tire" id="5" meshFile="fl_tire.mesh" castShadows="true">
                     <subentities>
@@ -35,8 +35,8 @@
                 </entity>
             </node>
             <node name="rl_tire" id="6" isTarget="false">
-                <position x="-1.11693" y="-0.0938918" z="-0.564608" />
-                <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+                <position x="-0.564608" y="-0.0938918" z="1.11693" />
+                <rotation qx="-0" qy="-0.707107" qz="-0" qw="-0.707107" />
                 <scale x="1" y="1" z="1" />
                 <entity name="rl_tire" id="7" meshFile="rl_tire.mesh" castShadows="true">
                     <subentities>
@@ -45,8 +45,8 @@
                 </entity>
             </node>
             <node name="rr_tire" id="8" isTarget="false">
-                <position x="-1.11693" y="-0.0938918" z="0.548581" />
-                <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+                <position x="0.548581" y="-0.0938918" z="1.11693" />
+                <rotation qx="-0" qy="-0.707107" qz="-0" qw="-0.707107" />
                 <scale x="1" y="1" z="1" />
                 <entity name="rr_tire" id="9" meshFile="rr_tire.mesh" castShadows="true">
                     <subentities>
@@ -55,8 +55,8 @@
                 </entity>
             </node>
             <node name="lift_1" id="10" isTarget="false">
-                <position x="0.844353" y="-0.172968" z="-0.00253998" />
-                <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+                <position x="-0.00254002" y="-0.172968" z="-0.844353" />
+                <rotation qx="-0" qy="-0.707107" qz="-0" qw="-0.707107" />
                 <scale x="1" y="1" z="1" />
                 <entity name="lift_1" id="11" meshFile="lift_1.mesh" castShadows="true">
                     <subentities>

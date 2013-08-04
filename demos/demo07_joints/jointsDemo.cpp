@@ -221,6 +221,8 @@ return;
 			m_keyboard->isKeyDown(OIS::KC_S) || 
 			m_keyboard->isKeyDown(OIS::KC_A) || 
 			m_keyboard->isKeyDown(OIS::KC_D) ||	
+			m_keyboard->isKeyDown(OIS::KC_F) ||	
+			m_keyboard->isKeyDown(OIS::KC_G) ||	
 			m_keyboard->isKeyDown(OIS::KC_Z) ||	
 			m_keyboard->isKeyDown(OIS::KC_C) ||	
 			m_keyboard->isKeyDown(OIS::KC_Q) ||	
@@ -232,7 +234,7 @@ return;
 
 	void OnPhysicUpdateEnd(dFloat timestepInSecunds)
 	{
-		OgreNewtonExampleApplication::OnPhysicUpdateEnd (timestepInSecunds);
+		DemoApplication::OnPhysicUpdateEnd (timestepInSecunds);
 
 		// reposition the camera origin to point to the player
 		Matrix4 camMatrix;
@@ -240,8 +242,6 @@ return;
 		camMatrix = camMatrix.transpose();
 
 		Matrix4 playerMatrix(m_player->GetMatrix());
-		//playerMatrix = playerMatrix.transpose();
-
 		Vector3 frontDir (camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
 		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, PLAYER_CAMERA_HIGHT_ABOVE_HEAD, 0.0f)));
 		camOrigin += frontDir * PLAYER_CAMERA_DISTANCE;

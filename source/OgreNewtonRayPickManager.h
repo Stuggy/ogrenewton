@@ -20,8 +20,8 @@
 */
 
 
-#ifndef _OGRE_NEWTON_RAY_PEEKING_H_
-#define _OGRE_NEWTON_RAY_PEEKING_H_
+#ifndef _OGRE_NEWTON_RAY_PICKING_MANAGER_H_
+#define _OGRE_NEWTON_RAY_PICKING_MANAGER_H_
 
 #include "OgreNewtonStdAfx.h"
 
@@ -29,6 +29,7 @@ using namespace Ogre;
 
 #define OGRE_NEWTON_RAY_PICKER_PLUGIN_NAME	"__rayPickManager__"
 
+class OgreNewtonWorld;
 
 class OGRE_NEWTON_API OgreNewtonRayPickController: public CustomControllerBase
 {
@@ -48,7 +49,6 @@ class OGRE_NEWTON_API OgreNewtonRayPickController: public CustomControllerBase
 class OGRE_NEWTON_API OgreNewtonRayPickManager: public CustomControllerManager<OgreNewtonRayPickController> 
 {
 	public:
-
 	class OgreNewtonRayPicker;
 
 	OgreNewtonRayPickManager (OgreNewtonWorld* const world);

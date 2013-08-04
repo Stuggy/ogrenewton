@@ -27,6 +27,7 @@
 
 using namespace Ogre;
 
+class OgreNewtonWorld;
 
 class OGRE_NEWTON_API OgreNewtonInputManager: public dNewtonInputManager
 {

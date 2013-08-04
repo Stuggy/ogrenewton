@@ -193,6 +193,7 @@ void DemoApplication::UpdateMousePick ()
 	const OIS::MouseState& mouseState = m_mouse->getMouseState();
 	bool mouseKey1 = mouseState.buttonDown(OIS::MB_Left);
 
+	OgreNewtonRayPickManager* const rayPicker = m_physicsWorld->GetRayPickManager();
 	if (m_keyboard->isKeyDown(OIS::KC_LCONTROL) || m_keyboard->isKeyDown(OIS::KC_RCONTROL)) {
 		m_cursor->setVisible(true);
 		if (mouseKey1) {
@@ -204,21 +205,21 @@ void DemoApplication::UpdateMousePick ()
 			Vector3 end (camray.getPoint (200.0f));
 
 			if (!m_mousePickMemory) {
-				m_rayPicker->SetPickedBody (NULL);
-				dNewtonBody* const body = m_rayPicker->RayCast (start, end, m_pickParam);
+				rayPicker->SetPickedBody (NULL);
+				dNewtonBody* const body = rayPicker->RayCast (start, end, m_pickParam);
 				if (body) {
-					m_rayPicker->SetPickedBody (body, start + (end - start) * m_pickParam);
+					rayPicker->SetPickedBody (body, start + (end - start) * m_pickParam);
 				}
 			} else {
-				m_rayPicker->SetTarget (start + (end - start) * m_pickParam);
+				rayPicker->SetTarget (start + (end - start) * m_pickParam);
 			}
 
 		} else {
-			m_rayPicker->SetPickedBody (NULL);
+			rayPicker->SetPickedBody (NULL);
 		}
 	} else {
 		m_cursor->setVisible(false);
-		m_rayPicker->SetPickedBody (NULL);
+		rayPicker->SetPickedBody (NULL);
 	}
 	m_mousePickMemory = mouseKey1;
 }
@@ -292,11 +293,12 @@ void DemoApplication::OnPhysicUpdateBegin(dFloat timestepInSecunds)
 
 	// see if we have a object on the pick queue
 	UpdateMousePick ();
-	UpdateFreeCamera ();
 }
 
-// this is calle at simulation time
+// this is called at simulation time
 void DemoApplication::OnPhysicUpdateEnd(dFloat timestepInSecunds)
 {
 	OgreNewtonExampleApplication::OnPhysicUpdateEnd(timestepInSecunds);
+	m_keyboard->capture();
+	UpdateFreeCamera ();
 }

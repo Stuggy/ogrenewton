@@ -25,9 +25,6 @@
 
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDebugger.h"
-#include "OgreNewtonPlayerManager.h"
-#include "OgreNewtonRayPickManager.h"
-#include "OgreNewtonTriggerManager.h"
 #include "OgreNewtonExampleApplication.h"
 #include "OgreNewtonHierarchyTransformManager.h"
 
@@ -80,8 +77,9 @@ int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap
 	void* const node0 = collision0->GetUserData();
 	void* const node1 = collision1->GetUserData();
 	if (node0 && node1) {
+		OgreNewtonPhysicsListener* const world = this;
 		//both collision are child nodes, check if there are self colliding
-		return m_application->m_localTransformManager->SelfCollisionTest (node0, node1);
+		return world->GetHierarchyTransformManager()->SelfCollisionTest (node0, node1);
 	}
 	
 	// check all other collision using the bitfield mask, 
@@ -102,17 +100,12 @@ OgreNewtonExampleApplication::OgreNewtonExampleApplication()
 	:ExampleApplication()
 	,m_debugRender(NULL)
 	,m_physicsWorld(NULL)
-	,m_rayPicker(NULL)
-	,m_playerManager(NULL)
-	,m_triggerManager(NULL)
-	,m_localTransformManager(NULL)
 	,m_cameraYawAngle(0.0f)
 	,m_cameraPitchAngle(0.0f)
 	,m_cameraTranslation(0.0f, 0.0f, 0.0f)
 	,m_interpolatedCameraPosition(0.0f, 0.0f, 0.0f)
 	,m_interpolatedCameraRotation (Quaternion::IDENTITY)
 	,m_cameraTransform()
-	,m_cameraLock(0)
 {
 }
 
@@ -132,12 +125,6 @@ void OgreNewtonExampleApplication::createScene()
 	// create a debug Renderer for showing physics data visually
 	m_debugRender = new OgreNewtonDebugger (mSceneMgr, m_physicsWorld);
 	mRoot->addFrameListener(m_debugRender);
-
-	// add some of the essential managers
-	m_rayPicker = new OgreNewtonRayPickManager (m_physicsWorld);
-	m_playerManager = new OgreNewtonPlayerManager (m_physicsWorld);
-	m_triggerManager = new OgreNewtonTriggerManager(m_physicsWorld);
-	m_localTransformManager = new OgreNewtonHierarchyTransformManager (m_physicsWorld);
 }
 
 void OgreNewtonExampleApplication::destroyScene(void)
@@ -182,13 +169,10 @@ void OgreNewtonExampleApplication::ResetCamera (const Vector3& posit, const Quat
 void OgreNewtonExampleApplication::MoveCamera (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep)
 {
 	// here we update the camera movement at simulation rate
-	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
-
 	m_cameraYawAngle = fmodf (m_cameraYawAngle.valueRadians() + yawAngleStep.valueRadians(), 3.141592f * 2.0f);
 	m_cameraPitchAngle = Math::Clamp (m_cameraPitchAngle.valueRadians() + pitchAngleStep.valueRadians(), - 80.0f * 3.141592f / 180.0f, 80.0f * 3.141592f / 180.0f);
 
 	Matrix3 rot; 
-	//rot.FromEulerAnglesZYX (m_yawAngle, m_pitchAngle, Radian (0.0f));
 	rot.FromEulerAnglesZYX (Radian (0.0f), m_cameraYawAngle, m_cameraPitchAngle);
 	Matrix4 matrix (rot);
 	m_cameraTranslation += Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * deltaTranslation;   
@@ -206,19 +190,16 @@ Real OgreNewtonExampleApplication::GetCameraYawAngle() const
 
 void OgreNewtonExampleApplication::GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation)
 {
-	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
 	cameraPosit = m_interpolatedCameraPosition;
 	cameraRotation = m_interpolatedCameraRotation;
 }
 
-
-
 bool OgreNewtonExampleApplication::OnRenderUpdateBegin(dFloat updateParam) 
 {
 	Matrix4 cameraMatrix;
-	OgreNewtonWorld::ScopeLock lock (&m_cameraLock);
 	m_cameraTransform.InterplateMatrix (updateParam, cameraMatrix[0]);
 	cameraMatrix = cameraMatrix.transpose();
+
 	m_interpolatedCameraPosition = cameraMatrix.getTrans();
 	m_interpolatedCameraRotation = cameraMatrix.extractQuaternion();
 	return true;

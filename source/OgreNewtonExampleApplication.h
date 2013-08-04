@@ -85,11 +85,6 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 	void GetInterpolatedCameraMatrix (Vector3& cameraPosit, Quaternion& cameraRotation);
 
 	Real GetCameraYawAngle() const ;
-
-	OgreNewtonHierarchyTransformManager* GetHierarchyTransformManager() const 
-	{
-		return m_localTransformManager;
-	}
 	
 	protected:
 	virtual void createScene(void);
@@ -99,19 +94,12 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 	OgreNewtonDebugger* m_debugRender;
 	OgreNewtonPhysicsListener* m_physicsWorld;
 
-	OgreNewtonRayPickManager* m_rayPicker;
-	OgreNewtonPlayerManager* m_playerManager;
-	OgreNewtonTriggerManager* m_triggerManager;
-	OgreNewtonHierarchyTransformManager* m_localTransformManager;
-	
-
 	Radian m_cameraYawAngle;
 	Radian m_cameraPitchAngle;
 	Vector3 m_cameraTranslation;
 	Vector3 m_interpolatedCameraPosition;
 	Quaternion m_interpolatedCameraRotation;
 	dNewtonTransformLerp m_cameraTransform;
-	unsigned m_cameraLock;
 };
 
 
