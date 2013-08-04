@@ -203,6 +203,8 @@ class ForkliftFrontTireJoint: public dNewtonHingeJoint
 		Real sign = (omegaMag >= 0.0f) ? 1.0 : -1.0f;
 		omega -= tirePing * (sign * omegaMag * omegaMag * m_omegaResistance);
 		m_tire->SetOmega(&omega.x);
+
+		dNewtonHingeJoint::OnSubmitConstraint (timestep, threadIndex);
 	}
 
 	public:
@@ -233,12 +235,15 @@ class ForkliftRearTireJoint: public dNewtonUniversalActuator
 		,m_mainBody(mainBody)
 		,m_application(application)
 	{
+		// disable the limits of the first row, so that it cna spinn free
+		SetEnableFlag0 (false);
 	}
 
 	// control the steering angle here
 	virtual void OnSubmitConstraint (dFloat timestep, int threadIndex) 
 	{
 
+		dNewtonUniversalActuator::OnSubmitConstraint (timestep, threadIndex);
 	}
 
 	public:
