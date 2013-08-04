@@ -52,7 +52,7 @@ ShootRigidBody::ShootRigidBody (OgreNewtonWorld* const physicsWorld)
 
 	{
 		// make sphere;
-		m_shootingCollisions[0] = new dNewtonCollisionSphere (physicsWorld, 0.25f, 0);
+		m_shootingCollisions[0] = new dNewtonCollisionSphere (physicsWorld, 0.25f, m_all);
 
 		OgreNewtonMesh mesh (m_shootingCollisions[0]);
 		mesh.Triangulate();
@@ -66,7 +66,7 @@ ShootRigidBody::ShootRigidBody (OgreNewtonWorld* const physicsWorld)
 
 	{
 		// make capsule;
-		m_shootingCollisions[1] = new dNewtonCollisionCapsule (physicsWorld, 0.25f, 1.0f, 0);
+		m_shootingCollisions[1] = new dNewtonCollisionCapsule (physicsWorld, 0.25f, 1.0f, m_all);
 
 		OgreNewtonMesh mesh (m_shootingCollisions[1]);
 		mesh.Triangulate();

@@ -26,8 +26,8 @@
 #include "OgreNewtonDynamicBody.h"
 
 
-OgreNewtonRayCast::OgreNewtonRayCast(dNewton* const world)
-	:dNewtonRayCast(world)
+OgreNewtonRayCast::OgreNewtonRayCast(dNewton* const world, dLong collisionMask)
+	:dNewtonRayCast(world, collisionMask)
 	,m_param(1.0f)
 {
 }

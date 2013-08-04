@@ -300,7 +300,7 @@ static OgreNewtonDynamicBody* ForkliftMakeMainBody (DemoApplication* const appli
 	Vector3 scale (node->getScale());
 	OgreNewtonMesh bodyMesh (application->GetPhysics(), ent);
 	bodyMesh.ApplyTransform (Vector3::ZERO, scale, Quaternion::IDENTITY);
-	dNewtonCollisionConvexHull bodyCollision (application->GetPhysics(), bodyMesh, 0);
+	dNewtonCollisionConvexHull bodyCollision (application->GetPhysics(), bodyMesh, m_allExcludingMousePick);
 	Matrix4 bodyMatrix;
 	bodyMatrix.makeTransform (node->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), node->_getDerivedOrientation());
 	return new OgreNewtonDynamicBody (application->GetPhysics(), 500.0f, &bodyCollision, node, bodyMatrix);
@@ -313,7 +313,7 @@ static OgreNewtonDynamicBody* ForkliftMakeBase (DemoApplication* const applicati
 	Vector3 scale (baseNode->getScale());
 	OgreNewtonMesh bodyMesh (application->GetPhysics(), ent);
 	bodyMesh.ApplyTransform (Vector3::ZERO, scale, Quaternion::IDENTITY);
-	dNewtonCollisionConvexHull collision (application->GetPhysics(), bodyMesh, 0);
+	dNewtonCollisionConvexHull collision (application->GetPhysics(), bodyMesh, m_allExcludingMousePick);
 
 	Matrix4 matrix;
 	matrix.makeTransform(baseNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), baseNode->_getDerivedOrientation());
@@ -329,7 +329,7 @@ static OgreNewtonDynamicBody* ForkliftMakeTeeth (DemoApplication* const applicat
 
 	OgreNewtonMesh convexAproximation (application->GetPhysics());
 	convexAproximation.CreateApproximateConvexDecomposition(mesh, 0.01f, 0.2f, 32, 100);
-	dNewtonCollisionCompound compoundShape (application->GetPhysics(), convexAproximation, 0);
+	dNewtonCollisionCompound compoundShape (application->GetPhysics(), convexAproximation, m_allExcludingMousePick);
 
 	Matrix4 matrix;
 	matrix.makeTransform(baseNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), baseNode->_getDerivedOrientation());
@@ -345,7 +345,7 @@ static OgreNewtonDynamicBody* ForkliftMakeTire (DemoApplication* const applicati
 	AxisAlignedBox box (ent->getBoundingBox());
 	Real height = scale.z * (box.getMaximum().z - box.getMinimum().z);
 	Real radius = scale.x * (box.getMaximum().x - box.getMinimum().x) * 0.5f - height * 0.5f;
-	dNewtonCollisionChamferedCylinder shape (application->GetPhysics(), radius, height, 0);
+	dNewtonCollisionChamferedCylinder shape (application->GetPhysics(), radius, height, m_allExcludingMousePick);
 
 	Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
 	aligmentMatrix = aligmentMatrix.transpose();

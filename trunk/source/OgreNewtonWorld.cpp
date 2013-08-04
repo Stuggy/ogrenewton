@@ -45,7 +45,7 @@ OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramera
 	m_triggerManager = new OgreNewtonTriggerManager(this);
 	m_localTransformManager = new OgreNewtonHierarchyTransformManager (this);
 	m_playerManager = new OgreNewtonPlayerManager (this);
-	m_rayPickerManager = new OgreNewtonRayPickManager (this);
+	m_rayPickerManager = new OgreNewtonRayPickManager (this, 0);
 	m_inputManager = new OgreNewtonInputManager(this);
 }
 

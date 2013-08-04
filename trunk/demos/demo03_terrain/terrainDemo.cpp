@@ -62,7 +62,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 	{
 
 		// create a scene body to add all static collidable meshes in the world 
-		OgreNewtonSceneBody* const sceneBody = new OgreNewtonSceneBody (m_physicsWorld);
+		OgreNewtonSceneBody* const sceneBody = new OgreNewtonSceneBody (m_physicsWorld, m_allExcludingMousePick);
 
 		// start adding collision shape to the scene body
 		sceneBody->BeginAddRemoveCollision();
@@ -91,7 +91,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		Vector3 start (location + Vector3 (0.0f, 500.0f, 0.0f));
 		Vector3 end (location + Vector3 (0.0f, -500.0f, 0.0f));
-		OgreNewtonRayCast raycaster(m_physicsWorld); 
+		OgreNewtonRayCast raycaster(m_physicsWorld, m_rayCast); 
 		raycaster.CastRay (&start.x, &end.x);
 		Quaternion rot;
 		rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
@@ -324,7 +324,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// taken from Ogre SDK demos, but using a ray cast to find the ground
 		Vector3 start (1683.0f, 1000.0f, 1800.0f);
 		Vector3 end (1683.0f, -1000.0f, 1800.0f);
-		OgreNewtonRayCast raycaster(m_physicsWorld); 
+		OgreNewtonRayCast raycaster(m_physicsWorld, m_rayCast); 
 		raycaster.CastRay (&start.x, &end.x);
 
 		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 10.0f, 0.0f));

@@ -67,7 +67,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 	void loadStaticScene ()
 	{
 		// create a scene body to add all static collidable meshes in the world 
-		OgreNewtonSceneBody* const sceneBody = new OgreNewtonSceneBody (m_physicsWorld);
+		OgreNewtonSceneBody* const sceneBody = new OgreNewtonSceneBody (m_physicsWorld, m_allExcludingMousePick);
 
 		// start adding collision shape to the scene body
 		sceneBody->BeginAddRemoveCollision();
@@ -237,7 +237,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// position camera using the ray cast functionality
 		Vector3 start(1.0f,  1000.0f, 4.0f);
 		Vector3 end  (1.0f, -1000.0f, 4.0f);
-		OgreNewtonRayCast raycaster(m_physicsWorld); 
+		OgreNewtonRayCast raycaster(m_physicsWorld, m_rayCast); 
 		raycaster.CastRay (&start.x, &end.x);
 
 		Vector3 origin (raycaster.m_contact + Vector3 (0.0f, 1.0f, 0.0f));
