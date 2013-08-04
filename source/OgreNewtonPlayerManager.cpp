@@ -38,8 +38,8 @@ OgreNewtonPlayerManager::~OgreNewtonPlayerManager ()
 }
 
 
-OgreNewtonPlayerManager::OgreNetwonPlayer::OgreNetwonPlayer (OgreNewtonPlayerManager* const manager, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep)
-	:dNewtonPlayer (manager, node, mass, outerRadius, innerRadius, height, stairStep, &m_upDir.x, &m_frontDir.x)
+OgreNewtonPlayerManager::OgreNetwonPlayer::OgreNetwonPlayer (OgreNewtonPlayerManager* const manager, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep, dLong collisionMask)
+	:dNewtonPlayer (manager, node, mass, outerRadius, innerRadius, height, stairStep, &m_upDir.x, &m_frontDir.x, collisionMask)
 {
 }
 

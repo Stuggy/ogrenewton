@@ -22,6 +22,7 @@
 
 
 #include <OgreNewtonStdAfx.h>
+#include "Utils.h"
 #include "MouseCursor.h"
 #include "ScreenWriter.h"
 #include "DemoApplication.h"
@@ -60,6 +61,8 @@ void DemoApplication::createScene(void)
 {
 	OgreNewtonExampleApplication::createScene();
 
+	// enable mouse picking 
+	GetPhysics()->GetRayPickManager()->SetCollisionMask(m_mousePick);
 
 
 	unsigned long windowHandle;
@@ -176,7 +179,7 @@ bool DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 		m_screen->write(20,  80, "F1:  Hide debug help text");
 		m_screen->write(20, 100, "F3:  Toggle display physic debug");
 		m_screen->write(20, 120, "W, S, A, D:  Free camera navigation");
-		m_screen->write(20, 140, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objcts from screen");
+		m_screen->write(20, 140, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objects from the screen");
 		m_screen->write(20, 160, "ESC:  Exit application");
 
 	} else if (m_onScreeHelp.TriggerDown()){

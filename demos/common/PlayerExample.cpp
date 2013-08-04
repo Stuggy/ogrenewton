@@ -23,6 +23,7 @@
 
 
 #include <OgreNewtonStdAfx.h>
+#include "Utils.h"
 #include "PlayerExample.h"
 #include "DemoApplication.h"
 
@@ -31,7 +32,7 @@ using namespace Ogre;
 String MyPlayerContyroller::m_animNames[] = {"IdleBase", "IdleTop", "RunBase", "RunTop", "HandsClosed", "HandsRelaxed", "DrawSwords",  "SliceVertical", "SliceHorizontal", "Dance", "JumpStart", "JumpLoop", "JumpEnd"};
 
 MyPlayerContyroller::MyPlayerContyroller (OgreNewtonPlayerManager* const manager, Entity* const playerMesh, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat playerHigh, dFloat stairStep, const Vector3& playerPivotOffset, const Quaternion& alignment, Real maxSpeed)
-	:OgreNewtonPlayerManager::OgreNetwonPlayer (manager, node, mass, outerRadius, innerRadius, playerHigh, stairStep)
+	:OgreNewtonPlayerManager::OgreNetwonPlayer (manager, node, mass, outerRadius, innerRadius, playerHigh, stairStep, m_allExcludingMousePick)
 	,m_localOffset(playerPivotOffset)
 	,m_localRotation (alignment)
 //	,m_currentSpeed(0.0f)

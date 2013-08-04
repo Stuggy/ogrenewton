@@ -51,11 +51,14 @@ class OGRE_NEWTON_API OgreNewtonRayPickManager: public CustomControllerManager<O
 	public:
 	class OgreNewtonRayPicker;
 
-	OgreNewtonRayPickManager (OgreNewtonWorld* const world);
+	OgreNewtonRayPickManager (OgreNewtonWorld* const world, dLong collisionMask);
 	virtual ~OgreNewtonRayPickManager();
 
 	void PreUpdate(dFloat timestep);
 	void PostUpdate (dFloat timestep);
+
+	void SetCollisionMask(dLong mask);
+	dLong GetCollisionMask() const;
 
 	dNewtonBody* RayCast (const Vector3& lineP0, const Vector3& lineP1, Real& pickParam) const;
 
@@ -69,6 +72,7 @@ class OGRE_NEWTON_API OgreNewtonRayPickManager: public CustomControllerManager<O
 	Vector3 m_localpHandlePoint;
 	OgreNewtonWorld* m_world;
 	dNewtonBody* m_pickedBody;
+	dLong m_collisionMask;
 	Real m_stiffness;
 	unsigned m_lock;
 };

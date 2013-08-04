@@ -36,7 +36,7 @@ class OGRE_NEWTON_API OgreNewtonPlayerManager: public dNewtonPlayerManager
 	class OGRE_NEWTON_API OgreNetwonPlayer: public dNewtonPlayer 
 	{
 		public:
-		OgreNetwonPlayer (OgreNewtonPlayerManager* const manager, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep);
+		OgreNetwonPlayer (OgreNewtonPlayerManager* const manager, SceneNode* const node, dFloat mass, dFloat outerRadius, dFloat innerRadius, dFloat height, dFloat stairStep, dLong collisionMask);
 		~OgreNetwonPlayer();
 
 		virtual void OnPlayerMove (Real timestep);

@@ -26,11 +26,11 @@
 #include "OgreNewtonSceneBody.h"
 
 
-OgreNewtonSceneBody::OgreNewtonSceneBody (OgreNewtonWorld* const ogreWorld)
+OgreNewtonSceneBody::OgreNewtonSceneBody (OgreNewtonWorld* const ogreWorld, dLong collisionMask)
 	:dNewtonDynamicBody ()
 {
 	Matrix4 matrix (Matrix4::IDENTITY);
-	dNewtonCollisionScene collision (ogreWorld);
+	dNewtonCollisionScene collision (ogreWorld, collisionMask);
 	SetBody (NewtonCreateDynamicBody (ogreWorld->GetNewton (), collision.GetShape(), matrix[0]));
 }
 

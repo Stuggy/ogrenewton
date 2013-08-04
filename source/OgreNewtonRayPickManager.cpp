@@ -29,8 +29,8 @@
 class OgreNewtonRayPickManager::OgreNewtonRayPicker: public OgreNewtonRayCast
 {
 	public:
-	OgreNewtonRayPicker(dNewton* const world)
-		:OgreNewtonRayCast(world)
+	OgreNewtonRayPicker(dNewton* const world, long collisionMask)
+		:OgreNewtonRayCast(world, collisionMask)
 	{
 	}
 
@@ -59,12 +59,13 @@ class OgreNewtonRayPickManager::OgreNewtonRayPicker: public OgreNewtonRayCast
 
 
 
-OgreNewtonRayPickManager::OgreNewtonRayPickManager (OgreNewtonWorld* const world)
+OgreNewtonRayPickManager::OgreNewtonRayPickManager (OgreNewtonWorld* const world, dLong collisionMask)
 	:CustomControllerManager<OgreNewtonRayPickController>(world->GetNewton(), OGRE_NEWTON_RAY_PICKER_PLUGIN_NAME)
 	,m_globalTarget (0.0f, 0.0f, 0.0f) 
 	,m_localpHandlePoint (0.0f, 0.0f, 0.0f) 
 	,m_world(world)
 	,m_pickedBody(NULL)
+	,m_collisionMask(collisionMask)
 	,m_stiffness(0.25f)
 	,m_lock(0)
 {
@@ -83,7 +84,7 @@ void OgreNewtonRayPickManager::PostUpdate (dFloat timestep)
 
 dNewtonBody* OgreNewtonRayPickManager::RayCast (const Vector3& lineP0, const Vector3& lineP1, Real& pickParam) const
 {
-	OgreNewtonRayPicker rayPicker (m_world);
+	OgreNewtonRayPicker rayPicker (m_world, m_collisionMask);
 
 	rayPicker.CastRay(&lineP0.x, &lineP1.x, 0);
 	pickParam = rayPicker.m_param;
@@ -111,6 +112,16 @@ void OgreNewtonRayPickManager::SetTarget (const Vector3& targetPoint)
 {
 	dNewton::ScopeLock scopelock (&m_lock);
 	m_globalTarget = targetPoint;
+}
+
+void OgreNewtonRayPickManager::SetCollisionMask(dLong mask)
+{
+	m_collisionMask = mask;
+}
+
+dLong OgreNewtonRayPickManager::GetCollisionMask() const
+{
+	return m_collisionMask;
 }
 
 

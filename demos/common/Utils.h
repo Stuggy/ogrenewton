@@ -30,6 +30,18 @@
 
 using namespace Ogre;
 
+enum OgreDemoCollisionTypes
+{
+	m_rayCast = 1<<0,
+	m_mousePick = 1<<1,
+	m_gravidyBody = 1<<2,
+
+
+
+	m_all = m_rayCast | m_gravidyBody | m_mousePick,
+	m_allExcludingMousePick = m_all & ~ m_mousePick,
+};
+
 
 Real Rand (Real base);
 

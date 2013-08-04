@@ -46,13 +46,13 @@ void BuildPyramid (SceneManager* const sceneMgr, OgreNewtonWorld* const world, c
 	// find the floor position
 	Vector3 start(location + Vector3 (0.0f, 10.0f, 0.0f));
 	Vector3 end (start - Vector3 (0.0f, 20.0f, 0.0f));
-	OgreNewtonRayCast raycaster(world); 
+	OgreNewtonRayCast raycaster(world, m_rayCast); 
 	raycaster.CastRay (&start.x, &end.x);
 	Vector3 position (raycaster.m_contact + Vector3 (0.0f, blockBoxSize.y * 0.5f, 0.0f));
 
 	// build the visual mesh out of a collision box
 	// make a box collision shape
-	dNewtonCollisionBox boxShape (world, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, 0);
+	dNewtonCollisionBox boxShape (world, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, m_all);
 
 	// create a texture for using with this material
 	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("crate.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
