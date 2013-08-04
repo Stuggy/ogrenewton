@@ -42,10 +42,11 @@
 
 using namespace Ogre;
 
+
 class ForkliftSliderActuator: public dNewtonSliderActuator
 {
-	ForkliftSliderActuator (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const child, dNewtonDynamicBody* const parent, DemoApplication* const application)
-		:dNewtonSliderActuator (pinAndPivotFrame, -0.25f, 1.5f, child, parent)
+	ForkliftSliderActuator (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const child, dNewtonDynamicBody* const parent, DemoApplication* const application, Real minPosit, Real maxPosit)
+		:dNewtonSliderActuator (pinAndPivotFrame, minPosit, maxPosit, child, parent)
 		,m_base(parent)
 		,m_movingPart(child)
 		,m_application(application)
@@ -55,25 +56,45 @@ class ForkliftSliderActuator: public dNewtonSliderActuator
 	public:
 	CNEWTON_API virtual void OnSubmitConstraint (dFloat timestep, int threadIndex)
 	{
-		const Real rate = 25.0f;
-		if (m_application->m_keyboard->isKeyDown(OIS::KC_Q)) {
-			SetTargetPosit (GetActuatorPosit() + rate * timestep);
-		} else if (m_application->m_keyboard->isKeyDown(OIS::KC_E)) {
-			SetTargetPosit (GetActuatorPosit() - rate * timestep);
+		if (m_isTeeth) {
+			const Real rate = 10.0f;
+			if (m_application->m_keyboard->isKeyDown(OIS::KC_F)) {
+				SetTargetPosit (GetActuatorPosit() + rate * timestep);
+			} else if (m_application->m_keyboard->isKeyDown(OIS::KC_G)) {
+				SetTargetPosit (GetActuatorPosit() - rate * timestep);
+			} else {
+				SetTargetPosit (GetActuatorPosit());
+			}
 		} else {
-			SetTargetPosit (GetActuatorPosit());
+			const Real rate = 25.0f;
+			if (m_application->m_keyboard->isKeyDown(OIS::KC_Q)) {
+				SetTargetPosit (GetActuatorPosit() + rate * timestep);
+			} else if (m_application->m_keyboard->isKeyDown(OIS::KC_E)) {
+				SetTargetPosit (GetActuatorPosit() - rate * timestep);
+			} else {
+				SetTargetPosit (GetActuatorPosit());
+			}
 		}
 		dNewtonSliderActuator::OnSubmitConstraint (timestep, threadIndex);
 	}
-
 
 	static void ConnectBase (OgreNewtonDynamicBody* const parent, OgreNewtonDynamicBody* const child, DemoApplication* const application)  
 	{
 		Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 0.0f, 1.0f)));
 		Matrix4 baseMatrix((child->GetMatrix() * aligmentMatrix).transpose());
-		new ForkliftSliderActuator (&baseMatrix[0][0], child, parent, application);
+		ForkliftSliderActuator* const joint = new ForkliftSliderActuator (&baseMatrix[0][0], child, parent, application, -0.25f, 1.5f);
+		joint->m_isTeeth = false;
 	}
 
+	static void ConnectTeeth (OgreNewtonDynamicBody* const parent, OgreNewtonDynamicBody* const child, DemoApplication* const application, Real dir)  
+	{
+		Matrix4 aligmentMatrix (Quaternion (Radian (dir * 3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
+		Matrix4 baseMatrix((child->GetMatrix() * aligmentMatrix).transpose());
+		ForkliftSliderActuator* const joint = new ForkliftSliderActuator (&baseMatrix[0][0], child, parent, application, -0.25, 0.25f);
+		joint->m_isTeeth = true;
+	}
+
+	bool m_isTeeth;
 	dNewtonDynamicBody* const m_base;
 	dNewtonDynamicBody* const m_movingPart;
 	DemoApplication* m_application;
@@ -170,7 +191,7 @@ class ForkliftFrontTireJoint: public dNewtonHingeJoint
 		matrix = matrix.transpose();
 		matrix.setTrans(Vector3::ZERO);
 
-		Vector3 tirePing (matrix * Vector3(0.0f, 0.0f, 1.0f));
+		Vector3 tirePing (matrix * Vector3(1.0f, 0.0f, 0.0f));
 		if (engineTorque != 0.0f) {
 			Vector3 torque (tirePing * engineTorque);
 			m_tire->AddTorque (&torque.x);
@@ -184,15 +205,15 @@ class ForkliftFrontTireJoint: public dNewtonHingeJoint
 		m_tire->SetOmega(&omega.x);
 	}
 
-public:
+	public:
 	static void ConnectTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire, DemoApplication* const application)  
 	{
-		Matrix4 tireMatrix;
-		Matrix4 matrixOffset;
+		Matrix4 tireMatrix(tire->GetMatrix());
+		Matrix4 axisMatrix(body->GetMatrix());
 
-		tire->GetCollision()->GetMatrix(&matrixOffset[0][0]);
-		tireMatrix = (tire->GetMatrix() * matrixOffset.transpose()).transpose();
-		new ForkliftFrontTireJoint (&tireMatrix[0][0], tire, body, application);
+		axisMatrix.setTrans(tireMatrix.getTrans());
+		axisMatrix = axisMatrix.transpose();
+		new ForkliftFrontTireJoint (&axisMatrix[0][0], tire, body, application);
 	}
 
 	dNewtonDynamicBody* const m_tire;
@@ -204,10 +225,10 @@ public:
 };
 
 
-class ForkliftRearTireJoint: public dNewtonHingeJoint
+class ForkliftRearTireJoint: public dNewtonUniversalActuator
 {
 	ForkliftRearTireJoint (const dFloat* const pinAndPivotFrame, dNewtonDynamicBody* const tire, dNewtonDynamicBody* const mainBody, DemoApplication* const application)
-		:dNewtonHingeJoint (pinAndPivotFrame, tire, mainBody)
+		:dNewtonUniversalActuator (pinAndPivotFrame, -30.0f * 3.141592f / 180.0f, 30.0f * 3.141592f / 180.0f, -30.0f * 3.141592f / 180.0f, 30.0f * 3.141592f / 180.0f, tire, mainBody)
 		,m_tire(tire)
 		,m_mainBody(mainBody)
 		,m_application(application)
@@ -220,7 +241,7 @@ class ForkliftRearTireJoint: public dNewtonHingeJoint
 
 	}
 
-public:
+	public:
 	static void ConnectTire (OgreNewtonDynamicBody* const body, OgreNewtonDynamicBody* const tire, DemoApplication* const application)  
 	{
 		Matrix4 tireMatrix;
@@ -240,7 +261,7 @@ public:
 
 class LocalTransformCalculator: public OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController
 {
-public:
+	public:
 	LocalTransformCalculator (OgreNewtonHierarchyTransformManager* const manager)
 		:OgreNewtonHierarchyTransformController(manager)
 	{
@@ -296,8 +317,25 @@ static OgreNewtonDynamicBody* ForkliftMakeBase (DemoApplication* const applicati
 
 	Matrix4 matrix;
 	matrix.makeTransform(baseNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), baseNode->_getDerivedOrientation());
-	return new OgreNewtonDynamicBody (application->GetPhysics(), 100.0f, &collision, baseNode, matrix);
+	return new OgreNewtonDynamicBody (application->GetPhysics(), 50.0f, &collision, baseNode, matrix);
 }
+
+static OgreNewtonDynamicBody* ForkliftMakeTeeth (DemoApplication* const application, SceneNode* const baseNode, const Vector3& origin)
+{
+	Entity* const ent = (Entity*) baseNode->getAttachedObject (0);
+	Vector3 scale (baseNode->getScale());
+	OgreNewtonMesh mesh (application->GetPhysics(), ent);
+	mesh.ApplyTransform (Vector3::ZERO, scale, Quaternion::IDENTITY);
+
+	OgreNewtonMesh convexAproximation (application->GetPhysics());
+	convexAproximation.CreateApproximateConvexDecomposition(mesh, 0.01f, 0.2f, 32, 100);
+	dNewtonCollisionCompound compoundShape (application->GetPhysics(), convexAproximation, 0);
+
+	Matrix4 matrix;
+	matrix.makeTransform(baseNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), baseNode->_getDerivedOrientation());
+	return new OgreNewtonDynamicBody (application->GetPhysics(), 50.0f, &compoundShape, baseNode, matrix);
+}
+
 
 
 static OgreNewtonDynamicBody* ForkliftMakeTire (DemoApplication* const application, SceneNode* const tireNode, const Vector3& origin)
@@ -315,7 +353,7 @@ static OgreNewtonDynamicBody* ForkliftMakeTire (DemoApplication* const applicati
 
 	Matrix4 matrix;
 	matrix.makeTransform(tireNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), tireNode->_getDerivedOrientation());
-	return new OgreNewtonDynamicBody (application->GetPhysics(), 80.0f, &shape, tireNode, matrix);
+	return new OgreNewtonDynamicBody (application->GetPhysics(), 50.0f, &shape, tireNode, matrix);
 }
 
 
@@ -350,8 +388,14 @@ OgreNewtonDynamicBody* LoadForklift (DemoApplication* const application, const V
 	dAssert (base3Node);
 	dAssert (base4Node);
 
+	SceneNode* const leftTeethNode = (SceneNode*) base4Node->getChild ("left_teeth");
+	SceneNode* const rightTeethNode = (SceneNode*) base4Node->getChild ("right_teeth");
+	dAssert (leftTeethNode);
+	dAssert (leftTeethNode);
+
+
 	// make a local transform controller to control this body
-	OgreNewtonHierarchyTransformManager* const localTransformManager = application->GetHierarchyTransformManager();
+	OgreNewtonHierarchyTransformManager* const localTransformManager = application->GetPhysics()->GetHierarchyTransformManager();
 	LocalTransformCalculator* const transformCalculator = new LocalTransformCalculator(localTransformManager);
 
 	//convert the body part to rigid bodies
@@ -372,6 +416,10 @@ OgreNewtonDynamicBody* LoadForklift (DemoApplication* const application, const V
 	OgreNewtonDynamicBody* const base3 = ForkliftMakeBase (application, base3Node, origin);
 	OgreNewtonDynamicBody* const base4 = ForkliftMakeBase (application, base4Node, origin);
 
+	// make the left and right palette teeth
+	OgreNewtonDynamicBody* const leftTeeth = ForkliftMakeTeeth (application, leftTeethNode, origin);
+	OgreNewtonDynamicBody* const rightTeeth = ForkliftMakeTeeth (application, rightTeethNode, origin);
+
 	// add the tire as children bodies
 	transformCalculator->AddBone (frontLeftTireBody, &bindMatrix[0][0], parentBone);
 	transformCalculator->AddBone (frontRightTireBody, &bindMatrix[0][0], parentBone);
@@ -384,6 +432,10 @@ OgreNewtonDynamicBody* LoadForklift (DemoApplication* const application, const V
 	void* const base3Bone = transformCalculator->AddBone (base3, &bindMatrix[0][0], base2Bone);
 	void* const base4Bone = transformCalculator->AddBone (base4, &bindMatrix[0][0], base3Bone);
 
+	// add the teeth bode
+	transformCalculator->AddBone (leftTeeth, &bindMatrix[0][0], base4Bone);
+	transformCalculator->AddBone (rightTeeth, &bindMatrix[0][0], base4Bone);
+
 	// connect the part with joints
 	ForkliftFrontTireJoint::ConnectTire (mainBody, frontLeftTireBody, application);
 	ForkliftFrontTireJoint::ConnectTire (mainBody, frontRightTireBody, application);
@@ -395,6 +447,14 @@ OgreNewtonDynamicBody* LoadForklift (DemoApplication* const application, const V
 	ForkliftSliderActuator::ConnectBase (base1, base2, application);
 	ForkliftSliderActuator::ConnectBase (base2, base3, application);
 	ForkliftSliderActuator::ConnectBase (base3, base4, application);
+
+	// connect the teeth
+	ForkliftSliderActuator::ConnectTeeth (base4, leftTeeth, application, 1.0f);
+	ForkliftSliderActuator::ConnectTeeth (base4, rightTeeth, application, -1.0f);
+
+//ForkliftSliderActuator::ConnectTeeth (base2, leftTeeth, application, 1.0f);
+//mainBody->SetSleepState(false);
+//leftTeeth->SetSleepState(false);
 
 	// disable self collision between all body parts
 	transformCalculator->DisableAllSelfCollision();

@@ -27,6 +27,13 @@
 
 using namespace Ogre;
 
+class OgreNewtonInputManager;
+class OgreNewtonPlayerManager;
+class OgreNewtonRayPickManager;
+class OgreNewtonTriggerManager;
+class OgreNewtonHierarchyTransformManager;
+
+
 class OGRE_NEWTON_API OgreNewtonWorld: public dNewton 
 {
 	public:
@@ -44,6 +51,32 @@ class OGRE_NEWTON_API OgreNewtonWorld: public dNewton
 		return m_gravity;
 	}
 
+	OgreNewtonInputManager* GetInputManager() const 
+	{
+		return m_inputManager;
+	}
+
+	OgreNewtonHierarchyTransformManager* GetHierarchyTransformManager() const 
+	{
+		return m_localTransformManager;
+	}
+
+	OgreNewtonTriggerManager* GetTriggerManager() const 
+	{
+		return m_triggerManager;
+	}
+
+	OgreNewtonPlayerManager* GetPlayerManager() const 
+	{
+		return m_playerManager;
+	}
+
+	OgreNewtonRayPickManager* GetRayPickManager() const 
+	{
+		return m_rayPickerManager;
+	}
+
+
 	void SetUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
 	void SetConcurrentUpdateMode (bool mode);
 	bool GetConcurrentUpdateMode () const; 
@@ -53,6 +86,11 @@ class OGRE_NEWTON_API OgreNewtonWorld: public dNewton
 
 	protected:
 	SceneManager* m_sceneManager;
+	OgreNewtonInputManager* m_inputManager;
+	OgreNewtonPlayerManager* m_playerManager;
+	OgreNewtonTriggerManager* m_triggerManager;
+	OgreNewtonRayPickManager* m_rayPickerManager;
+	OgreNewtonHierarchyTransformManager* m_localTransformManager;
 
 	Vector3 m_gravity;
 	Real m_timestep;

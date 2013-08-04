@@ -24,6 +24,11 @@
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDynamicBody.h"
 #include "OgreNewtonInputManager.h"
+#include "OgreNewtonPlayerManager.h"
+
+#include "OgreNewtonRayPickManager.h"
+#include "OgreNewtonTriggerManager.h"
+#include "OgreNewtonHierarchyTransformManager.h"
 
 
 OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramerate)
@@ -35,7 +40,13 @@ OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramera
 	,m_physicUpdateTimestepInMocroseconds(0)
 {
 	SetUpdateFPS (Real (updateFramerate), 3);
-	new OgreNewtonInputManager(this);
+
+	// add some of the essential managers, in order of execution
+	m_triggerManager = new OgreNewtonTriggerManager(this);
+	m_localTransformManager = new OgreNewtonHierarchyTransformManager (this);
+	m_playerManager = new OgreNewtonPlayerManager (this);
+	m_rayPickerManager = new OgreNewtonRayPickManager (this);
+	m_inputManager = new OgreNewtonInputManager(this);
 }
 
 OgreNewtonWorld::~OgreNewtonWorld()
@@ -77,10 +88,14 @@ void OgreNewtonWorld::Update ()
 		dNewton::Update (m_timestep);
 	}
 
+	unsigned* const lockHandle = m_inputManager->GetLockHandle();
 	dFloat param = GetInteplationParam(m_timestep);
-	OnNodesTransformBegin (param);
 	dAssert (applicationTime > 0.0f);
-
+	{
+		dNewton::ScopeLock lock (lockHandle);
+		OnNodesTransformBegin (param);
+	}
+	
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
 		SceneNode* const node = (SceneNode*) body->GetUserData();
@@ -107,6 +122,7 @@ void OgreNewtonWorld::Update ()
 			body->OnApplicationPostTransform (applicationTime);
 		}
 	}
+	dNewton::ScopeLock lock (lockHandle);
 	OnNodesTransformEnd (param);
 
 	m_physicUpdateTimestepInMocroseconds = GetTimeInMicrosenconds () - m_lastPhysicTimeInMicroseconds;

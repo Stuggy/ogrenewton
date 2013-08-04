@@ -162,7 +162,7 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		waterMatrix = waterMatrix.transpose();
 
 		dNewtonCollisionBox waterVolume (m_physicsWorld, box_x, box_y, box_z, 0);
-		new WaterVolumeController (m_triggerManager, waterVolume, waterNode, waterMatrix, mWaterPlane);
+		new WaterVolumeController (m_physicsWorld->GetTriggerManager(), waterVolume, waterNode, waterMatrix, mWaterPlane);
 	}
 
 
