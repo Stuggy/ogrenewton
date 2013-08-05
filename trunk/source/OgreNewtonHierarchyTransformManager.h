@@ -38,6 +38,9 @@ class OGRE_NEWTON_API OgreNewtonHierarchyTransformManager: public dNewtonHierarc
 		public:
 		OgreNewtonHierarchyTransformController (OgreNewtonHierarchyTransformManager* const manager);
 		~OgreNewtonHierarchyTransformController();
+
+		virtual void OnPreUpdate (dFloat timestep) = 0;
+		virtual void OnUpdateBoneTransform (dNewtonBody* const bone, const dFloat* const localMatrix) = 0;
 	};
 	
 	OgreNewtonHierarchyTransformManager (OgreNewtonWorld* const world);
