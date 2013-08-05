@@ -87,55 +87,55 @@ ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, 
 	void* const parentBone = AddBone (m_rootBody, &bindMatrix[0][0], NULL);
 
 	// make the tires
-	m_frontTireBody[0] = CreateTireBody (fl_tireNode, origin);
-	m_frontTireBody[1] = CreateTireBody (fr_tireNode, origin);
 	OgreNewtonDynamicBody* const rearLeftTireBody = CreateTireBody (rl_tireNode, origin);
-	OgreNewtonDynamicBody* const rearRightTireBody = CreateTireBody (rr_tireNode, origin);
+//	OgreNewtonDynamicBody* const rearRightTireBody = CreateTireBody (rr_tireNode, origin);
+//	m_frontTireBody[0] = CreateTireBody (fl_tireNode, origin);
+//	m_frontTireBody[1] = CreateTireBody (fr_tireNode, origin);
 
 	// make the lift base
-	OgreNewtonDynamicBody* const base1 = CreateBasePlatform (base1Node, origin);
-	OgreNewtonDynamicBody* const base2 = CreateBasePlatform (base2Node, origin);
-	OgreNewtonDynamicBody* const base3 = CreateBasePlatform (base3Node, origin);
-	OgreNewtonDynamicBody* const base4 = CreateBasePlatform (base4Node, origin);
+//	OgreNewtonDynamicBody* const base1 = CreateBasePlatform (base1Node, origin);
+//	OgreNewtonDynamicBody* const base2 = CreateBasePlatform (base2Node, origin);
+//	OgreNewtonDynamicBody* const base3 = CreateBasePlatform (base3Node, origin);
+//	OgreNewtonDynamicBody* const base4 = CreateBasePlatform (base4Node, origin);
 
 	// make the left and right palette teeth
-	OgreNewtonDynamicBody* const leftTooth = CreateTooth (leftTeethNode, origin);
-	OgreNewtonDynamicBody* const rightTooth = CreateTooth (rightTeethNode, origin);
+//	OgreNewtonDynamicBody* const leftTooth = CreateTooth (leftTeethNode, origin);
+//	OgreNewtonDynamicBody* const rightTooth = CreateTooth (rightTeethNode, origin);
 
 	// add the tire as children bodies
-	AddBone (m_frontTireBody[0], &bindMatrix[0][0], parentBone);
-	AddBone (m_frontTireBody[1], &bindMatrix[0][0], parentBone);
 	AddBone (rearLeftTireBody, &bindMatrix[0][0], parentBone);
-	AddBone (rearRightTireBody, &bindMatrix[0][0], parentBone);
+//	AddBone (rearRightTireBody, &bindMatrix[0][0], parentBone);
+//	AddBone (m_frontTireBody[0], &bindMatrix[0][0], parentBone);
+//	AddBone (m_frontTireBody[1], &bindMatrix[0][0], parentBone);
 
 	// add the base bones
-	void* const base1Bone = AddBone (base1, &bindMatrix[0][0], parentBone);
-	void* const base2Bone = AddBone (base2, &bindMatrix[0][0], base1Bone);
-	void* const base3Bone = AddBone (base3, &bindMatrix[0][0], base2Bone);
-	void* const base4Bone = AddBone (base4, &bindMatrix[0][0], base3Bone);
+//	void* const base1Bone = AddBone (base1, &bindMatrix[0][0], parentBone);
+//	void* const base2Bone = AddBone (base2, &bindMatrix[0][0], base1Bone);
+//	void* const base3Bone = AddBone (base3, &bindMatrix[0][0], base2Bone);
+//	void* const base4Bone = AddBone (base4, &bindMatrix[0][0], base3Bone);
 
 	// add the teeth bode
-	AddBone (leftTooth, &bindMatrix[0][0], base4Bone);
-	AddBone (rightTooth, &bindMatrix[0][0], base4Bone);
+//	AddBone (leftTooth, &bindMatrix[0][0], base4Bone);
+//	AddBone (rightTooth, &bindMatrix[0][0], base4Bone);
 
 	// connect the part with joints
 	m_rearTire[0] = LinkRearTire (rearLeftTireBody);
-	m_rearTire[1] = LinkRearTire (rearRightTireBody);
-	m_frontTire[0] = LinkFrontTire (m_frontTireBody[0]);
-	m_frontTire[1] = LinkFrontTire (m_frontTireBody[1]);
+//	m_rearTire[1] = LinkRearTire (rearRightTireBody);
+//	m_frontTire[0] = LinkFrontTire (m_frontTireBody[0]);
+//	m_frontTire[1] = LinkFrontTire (m_frontTireBody[1]);
 
 	// connect the forklift base
-	revolvePlatform = LinkBasePlatform (base1);
-	slidePlaforms[0] = LinkBasePlatform (base1, base2);
-	slidePlaforms[1] = LinkBasePlatform (base2, base3);
-	slidePlaforms[2] = LinkBasePlatform (base3, base4);
+//	revolvePlatform = LinkBasePlatform (base1);
+//	slidePlaforms[0] = LinkBasePlatform (base1, base2);
+//	slidePlaforms[1] = LinkBasePlatform (base2, base3);
+//	slidePlaforms[2] = LinkBasePlatform (base3, base4);
 
 	// connect the teeth
-	slideTooth[0] = LinkTooth (base4, leftTooth, 1.0f);
-	slideTooth[1] = LinkTooth (base4, rightTooth, -1.0f);
+//	slideTooth[0] = LinkTooth (base4, leftTooth, 1.0f);
+//	slideTooth[1] = LinkTooth (base4, rightTooth, -1.0f);
 
 	// calculate a fake engine 
-	CalculateEngine (m_frontTireBody[0]);
+//	CalculateEngine (m_frontTireBody[0]);
 
 	// disable self collision between all body parts
 	DisableAllSelfCollision();
@@ -179,7 +179,8 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateRootBody (SceneNode* const no
 	dNewtonCollisionConvexHull bodyCollision (m_application->GetPhysics(), bodyMesh, m_allExcludingMousePick);
 	Matrix4 bodyMatrix;
 	bodyMatrix.makeTransform (node->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), node->_getDerivedOrientation());
-	return new OgreNewtonDynamicBody (m_application->GetPhysics(), 500.0f, &bodyCollision, node, bodyMatrix);
+//	return new OgreNewtonDynamicBody (m_application->GetPhysics(), 500.0f, &bodyCollision, node, bodyMatrix);
+	return new OgreNewtonDynamicBody (m_application->GetPhysics(), 0.0f, &bodyCollision, node, bodyMatrix);
 }
 
 
@@ -250,12 +251,10 @@ dNewtonUniversalActuator* ForkliftPhysicsModel::LinkRearTire (OgreNewtonDynamicB
 	tire->GetCollision()->GetMatrix(&matrixOffset[0][0]);
 	tireMatrix = (tire->GetMatrix() * matrixOffset.transpose()).transpose();
 
-//	return new ForkliftRearTireJoint (&tireMatrix[0][0], tire, m_rootBody);
 	dNewtonUniversalActuator* const joint = new dNewtonUniversalActuator (&tireMatrix[0][0], -30.0f * 3.141592f / 180.0f, 30.0f * 3.141592f / 180.0f, -30.0f * 3.141592f / 180.0f, 30.0f * 3.141592f / 180.0f, tire, m_rootBody);
 
 	// disable the limits of the first row, so that it can spin free
 	joint->SetEnableFlag0 (false);
-
 	return joint;
 }
 
@@ -318,13 +317,15 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	m_application->m_keyboard->capture();
 
 	// apply steering control
-	const Real steeringRate = 10.0f;
-	Real steeringAngle = slideTooth[0]->GetActuatorPosit();
-	if (m_application->m_keyboard->isKeyDown(OIS::KC_F)) {
+	const Real steeringRate = 30.0f;
+	Real steeringAngle = m_rearTire[0]->GetActuatorAngle1();
+	if (m_application->m_keyboard->isKeyDown(OIS::KC_A)) {
 		steeringAngle = steeringAngle + steeringRate * timestep;
-	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_G)) {
+	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_D)) {
 		steeringAngle = steeringAngle - steeringRate * timestep;
 	}
+m_rearTire[0]->SetTargetAngle1(0.25);
+/*
 	m_rearTire[0]->SetTargetAngle1(steeringAngle);
 	m_rearTire[1]->SetTargetAngle1(steeringAngle);
 
@@ -390,4 +391,5 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	}
 	slideTooth[0]->SetTargetPosit(toothPosit);
 	slideTooth[1]->SetTargetPosit(toothPosit);
+*/
 }
