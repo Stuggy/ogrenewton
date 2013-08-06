@@ -326,7 +326,7 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 
 	m_rearTire[0]->SetTargetAngle1(steeringAngle);
 	m_rearTire[1]->SetTargetAngle1(steeringAngle);
-
+*/
 
 	// apply engine torque
 	Real engineTorque = 0.0f;
@@ -337,6 +337,7 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	if (m_application->m_keyboard->isKeyDown(OIS::KC_S)) {
 		engineTorque = m_maxEngineTorque; 
 	}
+engineTorque = 200.0f;
 
 	Matrix4 matrix(m_rootBody->GetMatrix());
 	matrix.setTrans(Vector3::ZERO);
@@ -356,7 +357,7 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 		m_frontTireBody[i]->SetOmega(omega);
 	}
 
-
+/*
 	// control tilt angle
 	const Real tiltRate = 25.0f;
 	if (m_application->m_keyboard->isKeyDown(OIS::KC_Z)) {
