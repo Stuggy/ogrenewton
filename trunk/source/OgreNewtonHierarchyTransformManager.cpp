@@ -36,8 +36,8 @@ OgreNewtonHierarchyTransformManager::~OgreNewtonHierarchyTransformManager ()
 }
 
 
-OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController::OgreNewtonHierarchyTransformController (OgreNewtonHierarchyTransformManager* const manager)
-	:dNewtonHierarchyTransformController (manager)
+OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController::OgreNewtonHierarchyTransformController (OgreNewtonHierarchyTransformManager* const manager, bool projectError)
+	:dNewtonHierarchyTransformController (manager, projectError)
 {
 }
 

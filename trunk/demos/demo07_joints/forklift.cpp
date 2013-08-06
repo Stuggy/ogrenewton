@@ -44,7 +44,7 @@ using namespace Ogre;
 
 
 ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin)
-	:OgreNewtonHierarchyTransformController(application->GetPhysics()->GetHierarchyTransformManager())
+	:OgreNewtonHierarchyTransformController(application->GetPhysics()->GetHierarchyTransformManager(), true)
 	,m_application(application)
 {
 	SceneManager* const sceneMgr = application->GetSceneManager();
@@ -324,7 +324,7 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_D)) {
 		steeringAngle = steeringAngle - steeringRate * timestep;
 	}
-m_rearTire[0]->SetTargetAngle1(0.25);
+//m_rearTire[0]->SetTargetAngle1(0.25);
 /*
 	m_rearTire[0]->SetTargetAngle1(steeringAngle);
 	m_rearTire[1]->SetTargetAngle1(steeringAngle);

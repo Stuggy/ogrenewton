@@ -36,7 +36,7 @@ class OGRE_NEWTON_API OgreNewtonHierarchyTransformManager: public dNewtonHierarc
 	class OGRE_NEWTON_API OgreNewtonHierarchyTransformController: public dNewtonHierarchyTransformController
 	{
 		public:
-		OgreNewtonHierarchyTransformController (OgreNewtonHierarchyTransformManager* const manager);
+		OgreNewtonHierarchyTransformController (OgreNewtonHierarchyTransformManager* const manager, bool projectError);
 		~OgreNewtonHierarchyTransformController();
 
 		virtual void OnPreUpdate (dFloat timestep) = 0;
