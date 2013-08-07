@@ -84,6 +84,7 @@ ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, 
 	//convert the body part to rigid bodies
 	Matrix4 bindMatrix (Matrix4::IDENTITY);
 	m_rootBody = CreateRootBody (bodyNode, origin);
+m_rootBody->SetSleepState(false);
 	void* const parentBone = AddBone (m_rootBody, &bindMatrix[0][0], NULL);
 
 	// make the tires
@@ -120,19 +121,19 @@ ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, 
 
 	// connect the part with joints
 	m_rearTire[0] = LinkRearTire (rearLeftTireBody);
-	m_rearTire[1] = LinkRearTire (rearRightTireBody);
-	m_frontTire[0] = LinkFrontTire (m_frontTireBody[0]);
-	m_frontTire[1] = LinkFrontTire (m_frontTireBody[1]);
+//	m_rearTire[1] = LinkRearTire (rearRightTireBody);
+//	m_frontTire[0] = LinkFrontTire (m_frontTireBody[0]);
+//	m_frontTire[1] = LinkFrontTire (m_frontTireBody[1]);
 
 	// connect the forklift base
-	revolvePlatform = LinkBasePlatform (base1);
-	slidePlaforms[0] = LinkBasePlatform (base1, base2);
-	slidePlaforms[1] = LinkBasePlatform (base2, base3);
-	slidePlaforms[2] = LinkBasePlatform (base3, base4);
+//	revolvePlatform = LinkBasePlatform (base1);
+//	slidePlaforms[0] = LinkBasePlatform (base1, base2);
+//	slidePlaforms[1] = LinkBasePlatform (base2, base3);
+//	slidePlaforms[2] = LinkBasePlatform (base3, base4);
 
 	// connect the teeth
-	slideTooth[0] = LinkTooth (base4, leftTooth, 1.0f);
-	slideTooth[1] = LinkTooth (base4, rightTooth, -1.0f);
+//	slideTooth[0] = LinkTooth (base4, leftTooth, 1.0f);
+//	slideTooth[1] = LinkTooth (base4, rightTooth, -1.0f);
 
 	// calculate a fake engine 
 	CalculateEngine (m_frontTireBody[0]);
@@ -179,7 +180,8 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateRootBody (SceneNode* const no
 	dNewtonCollisionConvexHull bodyCollision (m_application->GetPhysics(), bodyMesh, m_allExcludingMousePick);
 	Matrix4 bodyMatrix;
 	bodyMatrix.makeTransform (node->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), node->_getDerivedOrientation());
-	return new OgreNewtonDynamicBody (m_application->GetPhysics(), 500.0f, &bodyCollision, node, bodyMatrix);
+//	return new OgreNewtonDynamicBody (m_application->GetPhysics(), 500.0f, &bodyCollision, node, bodyMatrix);
+return new OgreNewtonDynamicBody (m_application->GetPhysics(), 0.0f, &bodyCollision, node, bodyMatrix);
 }
 
 
@@ -323,11 +325,11 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_D)) {
 		steeringAngle = steeringAngle - steeringRate * timestep;
 	}
-
+steeringAngle = 20.0f * 3.141592f/180.0f; 
 	m_rearTire[0]->SetTargetAngle1(steeringAngle);
-	m_rearTire[1]->SetTargetAngle1(steeringAngle);
+//	m_rearTire[1]->SetTargetAngle1(steeringAngle);
 
-
+/*
 	// apply engine torque
 	Real engineTorque = 0.0f;
 	if (m_application->m_keyboard->isKeyDown(OIS::KC_W)) {
@@ -389,5 +391,5 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	}
 	slideTooth[0]->SetTargetPosit(toothPosit);
 	slideTooth[1]->SetTargetPosit(toothPosit);
-
+*/
 }
