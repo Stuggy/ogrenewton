@@ -327,9 +327,10 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	}
 steeringAngle = 20.0f * 3.141592f/180.0f; 
 	m_rearTire[0]->SetTargetAngle1(steeringAngle);
-//	m_rearTire[1]->SetTargetAngle1(steeringAngle);
-
 /*
+	m_rearTire[1]->SetTargetAngle1(steeringAngle);
+
+
 	// apply engine torque
 	Real engineTorque = 0.0f;
 	if (m_application->m_keyboard->isKeyDown(OIS::KC_W)) {
