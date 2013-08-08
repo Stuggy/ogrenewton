@@ -51,9 +51,9 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 		void OnNodesTransformBegin(Real interpolationParam);
 		void OnNodesTransformEnd(Real interpolationParam);
 
-		virtual int OnBodiesAABBOverlap (const dNewtonMaterial* const material, const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex);
-		virtual int OnCompoundSubCollisionAABBOverlap (const dNewtonMaterial* const material, const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex);
-		virtual void OnContactProcess (dNewtonContactMaterial* const contacts, dFloat timestep, int threadIndex);
+		virtual bool OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex) const;
+		virtual bool OnCompoundSubCollisionAABBOverlap (const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex) const;
+		virtual void OnContactProcess (dNewtonContactMaterial* const contacts, dFloat timestep, int threadIndex) const;
 
 		protected:
 		OgreNewtonExampleApplication* m_application;
