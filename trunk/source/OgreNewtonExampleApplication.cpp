@@ -68,7 +68,7 @@ void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformEn
 	m_application->OnRenderUpdateEnd(interpolationParam);
 }
 
-int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap (const dNewtonMaterial* const material, const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex)
+bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex) const
 {
 	dNewtonCollision* const collision0 = body0->GetCollision();
 	dNewtonCollision* const collision1 = body1->GetCollision();
@@ -77,23 +77,24 @@ int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap
 	void* const node0 = collision0->GetUserData();
 	void* const node1 = collision1->GetUserData();
 	if (node0 && node1) {
-		OgreNewtonPhysicsListener* const world = this;
+		const OgreNewtonPhysicsListener* const world = this;
 		//both collision are child nodes, check if there are self colliding
 		return world->GetHierarchyTransformManager()->SelfCollisionTest (node0, node1);
 	}
 	
 	// check all other collision using the bitfield mask, 
 	//for now simple return true
-	return 1;
+	return true;
 }
 
-int OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnCompoundSubCollisionAABBOverlap (const dNewtonMaterial* const material, const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex)
+bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnCompoundSubCollisionAABBOverlap (const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex) const
 {
-	return 1;
+	return true;
 }
 
-void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnContactProcess (dNewtonContactMaterial* const contacts, dFloat timestep, int threadIndex)
+void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnContactProcess (dNewtonContactMaterial* const contacts, dFloat timestep, int threadIndex) const
 {
+	OgreNewtonWorld::OnContactProcess (contacts, timestep, threadIndex);
 }
 
 OgreNewtonExampleApplication::OgreNewtonExampleApplication()
