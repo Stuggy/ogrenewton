@@ -179,7 +179,16 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateRootBody (SceneNode* const no
 	dNewtonCollisionConvexHull bodyCollision (m_application->GetPhysics(), bodyMesh, m_allExcludingMousePick);
 	Matrix4 bodyMatrix;
 	bodyMatrix.makeTransform (node->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), node->_getDerivedOrientation());
-	return new OgreNewtonDynamicBody (m_application->GetPhysics(), 500.0f, &bodyCollision, node, bodyMatrix);
+	OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_application->GetPhysics(), 500.0f, &bodyCollision, node, bodyMatrix);
+
+	// move the center of mass a little to the back	of the chassis
+	Vector3 com;
+	body->GetCenterOfMass (&com.x);
+	com.z += 0.5f;
+	com.y -= 0.2f;
+	body->SetCenterOfMass (&com.x);
+	
+	return body;
 }
 
 
@@ -302,7 +311,7 @@ void ForkliftPhysicsModel::CalculateEngine(OgreNewtonDynamicBody* const tire)
 	Real radius = (p1.y - p0.y) * 0.5f;
 
 	// calculate a torque the will produce a 0.5f of the force of gravity
-	m_maxEngineTorque = 0.125f * mass * radius * gravity.length();
+	m_maxEngineTorque = 0.25f * mass * radius * gravity.length();
 
 	// calculate the coefficient of drag for top speed of 20 m/s
 	Real maxOmega = 200.0f / radius;

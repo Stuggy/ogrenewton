@@ -85,7 +85,7 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 				const Vector3 gravity = ((OgreNewtonWorld*)guess->GetNewton())->GetGravity();
 
 				guess->GetMatrix(&matrix[0][0]);
-				guess->GetCenterOnMass (&cog.x);
+				guess->GetCenterOfMass (&cog.x);
 				cog = matrix.transpose() * cog;
 				dNewtonCollision* const collision = guess->GetCollision();
 
