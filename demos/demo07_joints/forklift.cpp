@@ -42,6 +42,34 @@
 
 using namespace Ogre;
 
+class ForkliftTire: public OgreNewtonDynamicBody
+{
+	public:
+	ForkliftTire (OgreNewtonWorld* const world, Real mass, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location, OgreNewtonDynamicBody* const rootBody)
+		:OgreNewtonDynamicBody (world, mass, collision, node, location)
+		,m_rootBody(rootBody)
+	{
+	}
+
+	virtual void OnContactProcess (dNewtonContactMaterial* const contactMaterial, dFloat timestep, int threadIndex) const
+	{
+		Matrix4 tireMatrix (GetMatrix());
+		Matrix4 chassis (m_rootBody->GetMatrix());
+		
+		chassis.setTrans (Vector3 (0.0f, 0.0f, 0.0f));
+		tireMatrix.setTrans (Vector3 (0.0f, 0.0f, 0.0f));
+		Vector3 upPin (chassis * Vector3 (0.0f, 1.0f, 0.0f));
+		Vector3 axisPin (chassis * Vector3 (1.0f, 0.0f, 0.0f));
+
+		Vector3 dir (axisPin.crossProduct (upPin));
+		for (void* contact = contactMaterial->GetFirstContact(); contact; contact = contactMaterial->GetNextContact(contact)) {
+			contactMaterial->RotateTangentDirections (contact, &dir.x);
+		}
+	}
+
+	OgreNewtonDynamicBody* m_rootBody;
+};
+
 
 ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin)
 	:OgreNewtonHierarchyTransformController(application->GetPhysics()->GetHierarchyTransformManager(), true)
@@ -207,7 +235,7 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateTireBody (SceneNode* const ti
 
 	Matrix4 matrix;
 	matrix.makeTransform(tireNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), tireNode->_getDerivedOrientation());
-	return new OgreNewtonDynamicBody (m_application->GetPhysics(), 50.0f, &shape, tireNode, matrix);
+	return new ForkliftTire (m_application->GetPhysics(), 50.0f, &shape, tireNode, matrix, m_rootBody);
 }
 
 OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateBasePlatform (SceneNode* const baseNode, const Vector3& origin)
