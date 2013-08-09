@@ -34,8 +34,6 @@ class DemoApplication;
 class ForkliftPhysicsModel: public OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController
 {
 	public:
-	class ForkliftRearTireJoint;
-	
 	ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin);
 	~ForkliftPhysicsModel();
 

@@ -42,10 +42,10 @@
 
 using namespace Ogre;
 
-class ForkliftTire: public OgreNewtonDynamicBody
+class ForkliftTireBody: public OgreNewtonDynamicBody
 {
 	public:
-	ForkliftTire (OgreNewtonWorld* const world, Real mass, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location, OgreNewtonDynamicBody* const rootBody)
+	ForkliftTireBody (OgreNewtonWorld* const world, Real mass, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location, OgreNewtonDynamicBody* const rootBody)
 		:OgreNewtonDynamicBody (world, mass, collision, node, location)
 		,m_rootBody(rootBody)
 	{
@@ -66,7 +66,6 @@ class ForkliftTire: public OgreNewtonDynamicBody
 			contactMaterial->RotateTangentDirections (contact, &dir.x);
 		}
 	}
-
 	OgreNewtonDynamicBody* m_rootBody;
 };
 
@@ -235,7 +234,7 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateTireBody (SceneNode* const ti
 
 	Matrix4 matrix;
 	matrix.makeTransform(tireNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), tireNode->_getDerivedOrientation());
-	return new ForkliftTire (m_application->GetPhysics(), 50.0f, &shape, tireNode, matrix, m_rootBody);
+	return new ForkliftTireBody (m_application->GetPhysics(), 50.0f, &shape, tireNode, matrix, m_rootBody);
 }
 
 OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateBasePlatform (SceneNode* const baseNode, const Vector3& origin)
@@ -275,7 +274,8 @@ dNewtonHingeJoint* ForkliftPhysicsModel::LinkFrontTire (OgreNewtonDynamicBody* c
 
 	axisMatrix.setTrans(tireMatrix.getTrans());
 	axisMatrix = axisMatrix.transpose();
-	return new dNewtonHingeJoint (&axisMatrix[0][0], tire, m_rootBody);
+	dNewtonHingeJoint* const hinge = new dNewtonHingeJoint (&axisMatrix[0][0], tire, m_rootBody);
+	return hinge;
 }
 
 
@@ -377,14 +377,17 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	revolvePlatform->SetTargetAngle (tillAngle);
 
 	// apply engine torque
+	Real brakeTorque = 0.0f;
 	Real engineTorque = 0.0f;
 	if (m_application->m_keyboard->isKeyDown(OIS::KC_W)) {
 		engineTorque = -m_maxEngineTorque; 
-	}
-
-	if (m_application->m_keyboard->isKeyDown(OIS::KC_S)) {
+	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_S)) {
 		engineTorque = m_maxEngineTorque; 
+	} else {
+		brakeTorque = 1000.0f;
 	}
+	m_frontTire[0]->SetFriction(brakeTorque);
+	m_frontTire[1]->SetFriction(brakeTorque);
 
 	Matrix4 matrix(m_rootBody->GetMatrix());
 	matrix.setTrans(Vector3::ZERO);
