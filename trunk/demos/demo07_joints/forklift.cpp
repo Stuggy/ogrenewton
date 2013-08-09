@@ -311,7 +311,7 @@ dNewtonSliderActuator* ForkliftPhysicsModel::LinkBasePlatform (OgreNewtonDynamic
 {
 	Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 0.0f, 1.0f)));
 	Matrix4 baseMatrix((platform->GetMatrix() * aligmentMatrix).transpose());
-	return new dNewtonSliderActuator (&baseMatrix[0][0], 2.0f, -0.25f, 1.5f, platform, parent);
+	return new dNewtonSliderActuator (&baseMatrix[0][0], 0.5f, -0.25f, 1.5f, platform, parent);
 }
 
 
@@ -319,7 +319,7 @@ dNewtonSliderActuator* ForkliftPhysicsModel::LinkTooth(OgreNewtonDynamicBody* co
 {
 	Matrix4 aligmentMatrix (Quaternion (Radian (dir * 3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
 	Matrix4 baseMatrix((child->GetMatrix() * aligmentMatrix).transpose());
-	return new dNewtonSliderActuator (&baseMatrix[0][0], 0.1f, -0.25f, 0.25f, child, parent);
+	return new dNewtonSliderActuator (&baseMatrix[0][0], 0.25f, -0.25f, 0.25f, child, parent);
 }
 
 void ForkliftPhysicsModel::CalculateEngine(OgreNewtonDynamicBody* const tire)
@@ -404,7 +404,6 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 		m_frontTireBody[i]->SetOmega(omega);
 	}
 
-
 	// control lift position
 	Real liftPosit = slidePlaforms[0]->GetActuatorPosit();
 	if (m_application->m_keyboard->isKeyDown(OIS::KC_Q)) {
@@ -415,7 +414,7 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	for (int i = 0; i < 3; i ++) {
 		slidePlaforms[i]->SetTargetPosit(liftPosit);
 	}
-/*
+
 	// control teeth position
 	const Real toothRate = 10.0f;
 	Real toothPosit = slideTooth[0]->GetActuatorPosit();
@@ -426,5 +425,4 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	}
 	slideTooth[0]->SetTargetPosit(toothPosit);
 	slideTooth[1]->SetTargetPosit(toothPosit);
-*/
 }
