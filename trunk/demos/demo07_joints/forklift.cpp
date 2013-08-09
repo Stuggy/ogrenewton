@@ -287,7 +287,9 @@ dNewtonUniversalActuator* ForkliftPhysicsModel::LinkRearTire (OgreNewtonDynamicB
 	tire->GetCollision()->GetMatrix(&matrixOffset[0][0]);
 	tireMatrix = (tire->GetMatrix() * matrixOffset.transpose()).transpose();
 
-	dNewtonUniversalActuator* const joint = new dNewtonUniversalActuator (&tireMatrix[0][0], -30.0f * 3.141592f / 180.0f, 30.0f * 3.141592f / 180.0f, -30.0f * 3.141592f / 180.0f, 30.0f * 3.141592f / 180.0f, tire, m_rootBody);
+	dFloat angleLimit = 30.0f * 3.141592f / 180.0f;
+	dFloat angularRate = 60.0f * 3.141592f / 180.0f;
+	dNewtonUniversalActuator* const joint = new dNewtonUniversalActuator (&tireMatrix[0][0], angularRate, -angleLimit, angleLimit, angularRate, -angleLimit, angleLimit, tire, m_rootBody);
 
 	// disable the limits of the first row, so that it can spin free
 	joint->SetEnableFlag0 (false);
@@ -299,14 +301,17 @@ dNewtonHingeActuator* ForkliftPhysicsModel::LinkBasePlatform (OgreNewtonDynamicB
 {
 	Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
 	Matrix4 baseMatrix((platform->GetMatrix() * aligmentMatrix).transpose());
-	return new dNewtonHingeActuator (&baseMatrix[0][0], -20.0f * 3.141592f / 180.0f, 20.0f * 3.141592f / 180.0f, platform, m_rootBody);
+
+	dFloat angleLimit = 20.0f * 3.141592f / 180.0f;
+	dFloat angularRate = 30.0f * 3.141592f / 180.0f;
+	return new dNewtonHingeActuator (&baseMatrix[0][0], angularRate, -angleLimit, angleLimit, platform, m_rootBody);
 }
 
 dNewtonSliderActuator* ForkliftPhysicsModel::LinkBasePlatform (OgreNewtonDynamicBody* const parent, OgreNewtonDynamicBody* const platform)
 {
 	Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 0.0f, 1.0f)));
 	Matrix4 baseMatrix((platform->GetMatrix() * aligmentMatrix).transpose());
-	return new dNewtonSliderActuator (&baseMatrix[0][0], -0.25f, 1.5f, platform, parent);
+	return new dNewtonSliderActuator (&baseMatrix[0][0], 2.0f, -0.25f, 1.5f, platform, parent);
 }
 
 
@@ -314,7 +319,7 @@ dNewtonSliderActuator* ForkliftPhysicsModel::LinkTooth(OgreNewtonDynamicBody* co
 {
 	Matrix4 aligmentMatrix (Quaternion (Radian (dir * 3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
 	Matrix4 baseMatrix((child->GetMatrix() * aligmentMatrix).transpose());
-	return new dNewtonSliderActuator (&baseMatrix[0][0], -0.25, 0.25f, child, parent);
+	return new dNewtonSliderActuator (&baseMatrix[0][0], 0.1f, -0.25f, 0.25f, child, parent);
 }
 
 void ForkliftPhysicsModel::CalculateEngine(OgreNewtonDynamicBody* const tire)
@@ -353,15 +358,23 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	m_application->m_keyboard->capture();
 
 	// apply steering control
-	const Real steeringRate = 30.0f;
 	Real steeringAngle = m_rearTire[0]->GetActuatorAngle1();
 	if (m_application->m_keyboard->isKeyDown(OIS::KC_A)) {
-		steeringAngle = steeringAngle - steeringRate * timestep;
+		steeringAngle = m_rearTire[0]->GetMinAngularLimit0(); 
 	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_D)) {
-		steeringAngle = steeringAngle + steeringRate * timestep;
+		steeringAngle = m_rearTire[0]->GetMaxAngularLimit0(); 
 	}
 	m_rearTire[0]->SetTargetAngle1(steeringAngle);
 	m_rearTire[1]->SetTargetAngle1(steeringAngle);
+
+	// control tilt angle
+	Real tillAngle = revolvePlatform->GetActuatorAngle();
+	if (m_application->m_keyboard->isKeyDown(OIS::KC_Z)) {
+		tillAngle = revolvePlatform->GetMinAngularLimit();
+	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_C)) {
+		tillAngle = revolvePlatform->GetMaxAngularLimit();
+	}
+	revolvePlatform->SetTargetAngle (tillAngle);
 
 	// apply engine torque
 	Real engineTorque = 0.0f;
@@ -392,28 +405,17 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	}
 
 
-	// control tilt angle
-	const Real tiltRate = 25.0f;
-	if (m_application->m_keyboard->isKeyDown(OIS::KC_Z)) {
-		revolvePlatform->SetTargetAngle (revolvePlatform->GetActuatorAngle() + tiltRate * timestep);
-	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_C)) {
-		revolvePlatform->SetTargetAngle (revolvePlatform->GetActuatorAngle() - tiltRate * timestep);
-	} else {
-		revolvePlatform->SetTargetAngle (revolvePlatform->GetActuatorAngle());
-	}
-
 	// control lift position
-	const Real liftRate = 25.0f;
 	Real liftPosit = slidePlaforms[0]->GetActuatorPosit();
 	if (m_application->m_keyboard->isKeyDown(OIS::KC_Q)) {
-		liftPosit = liftPosit + liftRate * timestep;
+		liftPosit = slidePlaforms[0]->GetMinPositLimit();
 	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_E)) {
-		liftPosit = liftPosit - liftRate * timestep;
+		liftPosit = slidePlaforms[0]->GetMaxPositLimit();
 	}
 	for (int i = 0; i < 3; i ++) {
 		slidePlaforms[i]->SetTargetPosit(liftPosit);
 	}
-
+/*
 	// control teeth position
 	const Real toothRate = 10.0f;
 	Real toothPosit = slideTooth[0]->GetActuatorPosit();
@@ -424,4 +426,5 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	}
 	slideTooth[0]->SetTargetPosit(toothPosit);
 	slideTooth[1]->SetTargetPosit(toothPosit);
+*/
 }
