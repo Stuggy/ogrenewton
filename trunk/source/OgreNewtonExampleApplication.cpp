@@ -92,9 +92,43 @@ bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnCompoundSubColli
 	return true;
 }
 
-void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnContactProcess (dNewtonContactMaterial* const contacts, dFloat timestep, int threadIndex) const
+void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnContactProcess (dNewtonContactMaterial* const contactMaterial, dFloat timestep, int threadIndex) const
 {
-	OgreNewtonWorld::OnContactProcess (contacts, timestep, threadIndex);
+	OgreNewtonWorld::OnContactProcess (contactMaterial, timestep, threadIndex);
+/*
+	dNewtonBody* const body0 = contactMaterial->GetBody0();
+	dNewtonBody* const body1 = contactMaterial->GetBody1();
+	dNewtonBody::dBodyType* const type0 = body0->GetType();
+	dNewtonBody::dBodyType* const type1 = body1->GetType();
+
+	switch (type0) 
+	{
+		case dNewtonBody::m_dynamic:
+		{
+			break;
+		}
+
+		default:
+	}
+
+	switch (type1) 
+	{
+		case dNewtonBody::m_dynamic:
+		{
+			break;
+		}
+
+		default:
+	}
+
+
+	dNewtonCollision* const shape0 = body0->GetCollision();
+	dNewtonCollision* const shape1 = body1->GetCollision();
+	for (void* contact = contactMaterial->GetFirstContact(); contact; contact = contactMaterial->GetNextContact(contact)) {
+
+
+	}
+*/
 }
 
 OgreNewtonExampleApplication::OgreNewtonExampleApplication()
