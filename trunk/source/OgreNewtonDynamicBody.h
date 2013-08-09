@@ -31,7 +31,7 @@ class OgreNewtonWorld;
 class OGRE_NEWTON_API OgreNewtonDynamicBody: public dNewtonDynamicBody
 {
 	public:
-	OgreNewtonDynamicBody (OgreNewtonWorld* const dWorld, Real mass, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location);
+	OgreNewtonDynamicBody (OgreNewtonWorld* const world, Real mass, const dNewtonCollision* const collision, SceneNode* const node, const Matrix4& location);
 	~OgreNewtonDynamicBody();
 	virtual void OnForceAndTorque (dFloat timestep, int threadIndex);
 	
