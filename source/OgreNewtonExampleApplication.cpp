@@ -26,7 +26,7 @@
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDebugger.h"
 #include "OgreNewtonExampleApplication.h"
-#include "OgreNewtonHierarchyTransformManager.h"
+#include "OgreNewtonArticulatedTransformManager.h"
 
 
 OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OgreNewtonPhysicsListener (OgreNewtonExampleApplication* const application, int updateFramerate)

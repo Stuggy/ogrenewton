@@ -34,7 +34,7 @@ class OgreNewtonDebugger;
 class OgreNewtonPlayerManager;
 class OgreNewtonRayPickManager;
 class OgreNewtonTriggerManager;
-class OgreNewtonHierarchyTransformManager;
+class OgreNewtonArticulatedTransformManager;
 
 
 class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication

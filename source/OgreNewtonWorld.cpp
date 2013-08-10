@@ -28,7 +28,7 @@
 
 #include "OgreNewtonRayPickManager.h"
 #include "OgreNewtonTriggerManager.h"
-#include "OgreNewtonHierarchyTransformManager.h"
+#include "OgreNewtonArticulatedTransformManager.h"
 
 
 OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramerate)
@@ -43,7 +43,7 @@ OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramera
 
 	// add some of the essential managers, in order of execution
 	m_triggerManager = new OgreNewtonTriggerManager(this);
-	m_localTransformManager = new OgreNewtonHierarchyTransformManager (this);
+	m_localTransformManager = new OgreNewtonArticulatedTransformManager (this);
 	m_playerManager = new OgreNewtonPlayerManager (this);
 	m_rayPickerManager = new OgreNewtonRayPickManager (this, 0);
 	m_inputManager = new OgreNewtonInputManager(this);

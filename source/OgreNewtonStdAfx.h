@@ -63,7 +63,7 @@
 #include <dNewtonPlayerManager.h>
 #include <dNewtonTriggerManager.h>
 #include <dNewtonActuatorJoints.h>
-#include <dNewtonHierarchyTransformManager.h>
+#include <dNewtonArticulatedTransformManager.h>
 
 
 #ifdef _OGRE_NEWTON_STATIC_LIB
