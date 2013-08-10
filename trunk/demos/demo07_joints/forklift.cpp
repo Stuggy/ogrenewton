@@ -31,7 +31,7 @@
 #include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
-#include <OgreNewtonHierarchyTransformManager.h>
+#include <OgreNewtonArticulatedTransformManager.h>
 
 #include "Utils.h"
 #include "ScreenWriter.h"
@@ -71,7 +71,7 @@ class ForkliftTireBody: public OgreNewtonDynamicBody
 
 
 ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin)
-	:OgreNewtonHierarchyTransformController(application->GetPhysics()->GetHierarchyTransformManager(), true)
+	:OgreNewtonArticulatedTransformController(application->GetPhysics()->GetHierarchyTransformManager(), true)
 	,m_application(application)
 {
 	SceneManager* const sceneMgr = application->GetSceneManager();
@@ -177,7 +177,7 @@ ForkliftPhysicsModel::~ForkliftPhysicsModel()
 void* ForkliftPhysicsModel::AddBone (dNewtonBody* const bone, const dFloat* const bindMatrix, void* const parentBodne)
 {	
 	// add the bode to the controller
-	void* const boneNode = OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController::AddBone (bone, bindMatrix, parentBodne);
+	void* const boneNode = OgreNewtonArticulatedTransformManager::OgreNewtonArticulatedTransformController::AddBone (bone, bindMatrix, parentBodne);
 
 	// save the body handle as the used data pf the body collision for using in later in eh collision callback
 	dNewtonCollision* const collision = bone->GetCollision();

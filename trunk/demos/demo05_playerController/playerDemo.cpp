@@ -32,7 +32,7 @@
 #include <OgreNewtonPlayerManager.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonExampleApplication.h>
-#include <OgreNewtonHierarchyTransformManager.h>
+#include <OgreNewtonArticulatedTransformManager.h>
 
 #include "Utils.h"
 #include "PlayerExample.h"
@@ -42,7 +42,7 @@
 
 #define PLAYER_SPEED					4.0f
 #define PLAYER_CAMERA_DISTANCE			6.0f
-#define PLAYER_CAMERA_HIGHT_ABOVE_HEAD	0.5f
+#define PLAYER_CAMERA_HIGH_ABOVE_HEAD	0.5f
 
 
 using namespace Ogre;
@@ -134,7 +134,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		playerMatrix = playerMatrix.transpose();
 
 		Vector3 frontDir (camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
-		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, m_player->GetPlayerHigh() + PLAYER_CAMERA_HIGHT_ABOVE_HEAD, 0.0f)));
+		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, m_player->GetPlayerHigh() + PLAYER_CAMERA_HIGH_ABOVE_HEAD, 0.0f)));
 		camOrigin += frontDir * PLAYER_CAMERA_DISTANCE;
 		camMatrix.setTrans(camOrigin); 
 
@@ -264,7 +264,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 	ShootRigidBody* m_shootRigidBody;
 	MyPlayerContyroller* m_player;
 	
-	OgreNewtonHierarchyTransformManager* m_localTransformManager;
+	OgreNewtonArticulatedTransformManager* m_localTransformManager;
 };
 
 

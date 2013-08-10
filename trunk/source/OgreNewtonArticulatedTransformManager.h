@@ -20,28 +20,33 @@
 */
 
 
+#ifndef _OGRE_NEWTON_ARTICULATED_TRANSFORM_CONTROLLER_MANAGER_H_
+#define _OGRE_NEWTON_ARTICULATED_TRANSFORM_CONTROLLER_MANAGER_H_
+
 #include "OgreNewtonStdAfx.h"
-#include "OgreNewtonWorld.h"
-#include "OgreNewtonHierarchyTransformManager.h"
+
+using namespace Ogre;
 
 
+class OgreNewtonWorld;
 
-OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformManager (OgreNewtonWorld* const world)
-	:dNewtonHierarchyTransformManager (world)
+class OGRE_NEWTON_API OgreNewtonArticulatedTransformManager: public dNewtonArticulatedTransformManager
 {
-}
+	public:
+	class OGRE_NEWTON_API OgreNewtonArticulatedTransformController: public dNewtonArticulatedTransformController
+	{
+		public:
+		OgreNewtonArticulatedTransformController (OgreNewtonArticulatedTransformManager* const manager, bool projectError);
+		~OgreNewtonArticulatedTransformController();
 
-OgreNewtonHierarchyTransformManager::~OgreNewtonHierarchyTransformManager ()
-{
-}
+		virtual void OnPreUpdate (dFloat timestep) = 0;
+		virtual void OnUpdateBoneTransform (dNewtonBody* const bone, const dFloat* const localMatrix) = 0;
+	};
+	
+	OgreNewtonArticulatedTransformManager (OgreNewtonWorld* const world);
+	~OgreNewtonArticulatedTransformManager ();
+};
 
 
-OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController::OgreNewtonHierarchyTransformController (OgreNewtonHierarchyTransformManager* const manager, bool projectError)
-	:dNewtonHierarchyTransformController (manager, projectError)
-{
-}
 
-OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController::~OgreNewtonHierarchyTransformController()
-{
-}
-
+#endif

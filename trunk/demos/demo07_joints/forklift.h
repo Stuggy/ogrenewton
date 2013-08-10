@@ -24,14 +24,14 @@
 
 #include <OgreNewtonStdAfx.h>
 #include <OgreNewtonWorld.h>
-#include <OgreNewtonHierarchyTransformManager.h>
+#include <OgreNewtonArticulatedTransformManager.h>
 
 
 using namespace Ogre;
 
 class DemoApplication;
 
-class ForkliftPhysicsModel: public OgreNewtonHierarchyTransformManager::OgreNewtonHierarchyTransformController
+class ForkliftPhysicsModel: public OgreNewtonArticulatedTransformManager::OgreNewtonArticulatedTransformController
 {
 	public:
 	ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin);
