@@ -206,7 +206,7 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateRootBody (SceneNode* const no
 	dNewtonCollisionConvexHull bodyCollision (m_application->GetPhysics(), bodyMesh, m_allExcludingMousePick);
 	Matrix4 bodyMatrix;
 	bodyMatrix.makeTransform (node->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), node->_getDerivedOrientation());
-	OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_application->GetPhysics(), 500.0f, &bodyCollision, node, bodyMatrix);
+	OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_application->GetPhysics(), 800.0f, &bodyCollision, node, bodyMatrix);
 
 	// move the center of mass a little to the back	of the chassis
 	Vector3 com;
@@ -304,7 +304,7 @@ dNewtonHingeActuator* ForkliftPhysicsModel::LinkBasePlatform (OgreNewtonDynamicB
 
 	dFloat minAngleLimit = -20.0f * 3.141592f / 180.0f;
 	dFloat maxAngleLimit =  30.0f * 3.141592f / 180.0f;
-	dFloat angularRate = 30.0f * 3.141592f / 180.0f;
+	dFloat angularRate = 10.0f * 3.141592f / 180.0f;
 	return new dNewtonHingeActuator (&baseMatrix[0][0], angularRate, minAngleLimit, maxAngleLimit, platform, m_rootBody);
 }
 
@@ -312,7 +312,7 @@ dNewtonSliderActuator* ForkliftPhysicsModel::LinkBasePlatform (OgreNewtonDynamic
 {
 	Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 0.0f, 1.0f)));
 	Matrix4 baseMatrix((platform->GetMatrix() * aligmentMatrix).transpose());
-	return new dNewtonSliderActuator (&baseMatrix[0][0], 0.3f, -0.25f, 1.5f, platform, parent);
+	return new dNewtonSliderActuator (&baseMatrix[0][0], 0.1f, -0.25f, 1.5f, platform, parent);
 }
 
 

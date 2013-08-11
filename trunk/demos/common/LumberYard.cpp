@@ -43,6 +43,24 @@ void LumberYard (SceneManager* const sceneMgr, OgreNewtonWorld* const world, con
 	DotSceneLoader loader;
 	SceneNode* const lumberYardRoot = CreateNode (sceneMgr, NULL, Vector3::ZERO, Quaternion::IDENTITY);
 	loader.parseDotScene ("lumberyard.scene", "Autodetect", sceneMgr, lumberYardRoot);
+
+
+	Real mass = 5.0f;
+
+	int count = lumberYardRoot->numChildren();
+	for (int i = 0; i < count; i ++) {
+		SceneNode* const node = (SceneNode*)lumberYardRoot->getChild(i);
+
+		Entity* const ent = (Entity*) node->getAttachedObject (0);
+		Vector3 scale (node->getScale());
+
+		OgreNewtonMesh bodyMesh (world, ent);
+		bodyMesh.ApplyTransform (Vector3::ZERO, scale, Quaternion::IDENTITY);
+		dNewtonCollisionConvexHull bodyCollision (world, bodyMesh, m_all);
+		Matrix4 bodyMatrix;
+		bodyMatrix.makeTransform (node->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), node->_getDerivedOrientation());
+		new OgreNewtonDynamicBody (world, mass, &bodyCollision, node, bodyMatrix);
+	}
 }
 
 
