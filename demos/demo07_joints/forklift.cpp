@@ -302,9 +302,10 @@ dNewtonHingeActuator* ForkliftPhysicsModel::LinkBasePlatform (OgreNewtonDynamicB
 	Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
 	Matrix4 baseMatrix((platform->GetMatrix() * aligmentMatrix).transpose());
 
-	dFloat angleLimit = 20.0f * 3.141592f / 180.0f;
+	dFloat minAngleLimit = -20.0f * 3.141592f / 180.0f;
+	dFloat maxAngleLimit =  30.0f * 3.141592f / 180.0f;
 	dFloat angularRate = 30.0f * 3.141592f / 180.0f;
-	return new dNewtonHingeActuator (&baseMatrix[0][0], angularRate, -angleLimit, angleLimit, platform, m_rootBody);
+	return new dNewtonHingeActuator (&baseMatrix[0][0], angularRate, minAngleLimit, maxAngleLimit, platform, m_rootBody);
 }
 
 dNewtonSliderActuator* ForkliftPhysicsModel::LinkBasePlatform (OgreNewtonDynamicBody* const parent, OgreNewtonDynamicBody* const platform)
