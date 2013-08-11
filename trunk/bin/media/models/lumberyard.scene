@@ -1,0 +1,1238 @@
+<scene upAxis="y" unitsPerMeter="1" unitType="meters" formatVersion="1.0" minOgreVersion="Latest version" author="EasyOgreExporter">
+    <environment>
+        <colourAmbient r="0.3" g="0.3" b="0.3" />
+        <colourBackground r="0" g="0" b="0" />
+    </environment>
+    <nodes>
+        <node name="base1" id="0" isTarget="false">
+            <position x="-1.30383" y="0.478028" z="-0.643526" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="base1" id="1" meshFile="base1.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="base2" id="2" isTarget="false">
+            <position x="1.56375" y="0.478028" z="-0.643526" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="base2" id="3" meshFile="base2.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="base3" id="4" isTarget="false">
+            <position x="1.56375" y="0.478028" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="base3" id="5" meshFile="base3.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="base0" id="6" isTarget="false">
+            <position x="-1.30383" y="0.478028" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="base0" id="7" meshFile="base0.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap0" id="8" isTarget="false">
+            <position x="0.154333" y="1.15521" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap0" id="9" meshFile="slap0.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap1" id="10" isTarget="false">
+            <position x="0.154333" y="1.15521" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap1" id="11" meshFile="slap1.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross0" id="12" isTarget="false">
+            <position x="-1.27044" y="1.29602" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross0" id="13" meshFile="cross0.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross01" id="14" isTarget="false">
+            <position x="-0.630206" y="1.29602" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross01" id="15" meshFile="cross01.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross02" id="16" isTarget="false">
+            <position x="0.0100234" y="1.29602" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross02" id="17" meshFile="cross02.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross03" id="18" isTarget="false">
+            <position x="0.650253" y="1.29602" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross03" id="19" meshFile="cross03.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross04" id="20" isTarget="false">
+            <position x="1.49985" y="1.29602" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross04" id="21" meshFile="cross04.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap02" id="22" isTarget="false">
+            <position x="0.154333" y="1.4383" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap02" id="23" meshFile="slap02.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross05" id="24" isTarget="false">
+            <position x="-1.27044" y="1.57911" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross05" id="25" meshFile="cross05.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross06" id="26" isTarget="false">
+            <position x="-0.630206" y="1.57911" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross06" id="27" meshFile="cross06.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross07" id="28" isTarget="false">
+            <position x="0.0100234" y="1.57911" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross07" id="29" meshFile="cross07.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross08" id="30" isTarget="false">
+            <position x="0.650253" y="1.57911" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross08" id="31" meshFile="cross08.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross09" id="32" isTarget="false">
+            <position x="1.49985" y="1.57911" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross09" id="33" meshFile="cross09.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap03" id="34" isTarget="false">
+            <position x="0.154333" y="1.4383" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap03" id="35" meshFile="slap03.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap04" id="36" isTarget="false">
+            <position x="0.154333" y="1.7214" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap04" id="37" meshFile="slap04.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross10" id="38" isTarget="false">
+            <position x="-1.27044" y="1.86221" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross10" id="39" meshFile="cross10.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross11" id="40" isTarget="false">
+            <position x="-0.630206" y="1.86221" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross11" id="41" meshFile="cross11.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross12" id="42" isTarget="false">
+            <position x="0.0100234" y="1.86221" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross12" id="43" meshFile="cross12.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross13" id="44" isTarget="false">
+            <position x="0.650253" y="1.86221" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross13" id="45" meshFile="cross13.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross14" id="46" isTarget="false">
+            <position x="1.49985" y="1.86221" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross14" id="47" meshFile="cross14.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap05" id="48" isTarget="false">
+            <position x="0.154333" y="1.7214" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap05" id="49" meshFile="slap05.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap06" id="50" isTarget="false">
+            <position x="0.154333" y="2.0045" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap06" id="51" meshFile="slap06.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross15" id="52" isTarget="false">
+            <position x="-1.27044" y="2.1453" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross15" id="53" meshFile="cross15.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross16" id="54" isTarget="false">
+            <position x="-0.630206" y="2.1453" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross16" id="55" meshFile="cross16.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross17" id="56" isTarget="false">
+            <position x="0.0100234" y="2.1453" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross17" id="57" meshFile="cross17.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross18" id="58" isTarget="false">
+            <position x="0.650253" y="2.1453" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross18" id="59" meshFile="cross18.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross19" id="60" isTarget="false">
+            <position x="1.49985" y="2.1453" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross19" id="61" meshFile="cross19.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap07" id="62" isTarget="false">
+            <position x="0.154333" y="2.0045" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap07" id="63" meshFile="slap07.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap08" id="64" isTarget="false">
+            <position x="0.154333" y="2.2781" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap08" id="65" meshFile="slap08.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross20" id="66" isTarget="false">
+            <position x="-1.27044" y="2.41891" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross20" id="67" meshFile="cross20.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross21" id="68" isTarget="false">
+            <position x="-0.630206" y="2.41891" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross21" id="69" meshFile="cross21.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross22" id="70" isTarget="false">
+            <position x="0.0100234" y="2.41891" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross22" id="71" meshFile="cross22.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross23" id="72" isTarget="false">
+            <position x="0.650253" y="2.41891" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross23" id="73" meshFile="cross23.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross24" id="74" isTarget="false">
+            <position x="1.49985" y="2.41891" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross24" id="75" meshFile="cross24.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap09" id="76" isTarget="false">
+            <position x="0.154333" y="2.2781" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap09" id="77" meshFile="slap09.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap10" id="78" isTarget="false">
+            <position x="0.154333" y="2.5612" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap10" id="79" meshFile="slap10.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross25" id="80" isTarget="false">
+            <position x="-1.27044" y="2.702" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross25" id="81" meshFile="cross25.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross26" id="82" isTarget="false">
+            <position x="-0.630206" y="2.702" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross26" id="83" meshFile="cross26.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross27" id="84" isTarget="false">
+            <position x="0.0100234" y="2.702" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross27" id="85" meshFile="cross27.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross28" id="86" isTarget="false">
+            <position x="0.650253" y="2.702" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross28" id="87" meshFile="cross28.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross29" id="88" isTarget="false">
+            <position x="1.49985" y="2.702" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross29" id="89" meshFile="cross29.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap11" id="90" isTarget="false">
+            <position x="0.154333" y="2.5612" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap11" id="91" meshFile="slap11.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap12" id="92" isTarget="false">
+            <position x="0.154333" y="2.84429" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap12" id="93" meshFile="slap12.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross30" id="94" isTarget="false">
+            <position x="-1.27044" y="2.9851" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross30" id="95" meshFile="cross30.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross31" id="96" isTarget="false">
+            <position x="-0.630206" y="2.9851" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross31" id="97" meshFile="cross31.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross32" id="98" isTarget="false">
+            <position x="0.0100234" y="2.9851" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross32" id="99" meshFile="cross32.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross33" id="100" isTarget="false">
+            <position x="0.650253" y="2.9851" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross33" id="101" meshFile="cross33.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross34" id="102" isTarget="false">
+            <position x="1.49985" y="2.9851" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross34" id="103" meshFile="cross34.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap13" id="104" isTarget="false">
+            <position x="0.154333" y="2.84429" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap13" id="105" meshFile="slap13.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap14" id="106" isTarget="false">
+            <position x="0.154333" y="3.12739" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap14" id="107" meshFile="slap14.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross35" id="108" isTarget="false">
+            <position x="-1.27044" y="3.26695" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross35" id="109" meshFile="cross35.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross36" id="110" isTarget="false">
+            <position x="-0.630206" y="3.26695" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross36" id="111" meshFile="cross36.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross37" id="112" isTarget="false">
+            <position x="0.0100234" y="3.26695" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross37" id="113" meshFile="cross37.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross38" id="114" isTarget="false">
+            <position x="0.650253" y="3.26695" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross38" id="115" meshFile="cross38.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross39" id="116" isTarget="false">
+            <position x="1.49985" y="3.26695" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross39" id="117" meshFile="cross39.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap15" id="118" isTarget="false">
+            <position x="0.154333" y="3.12739" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap15" id="119" meshFile="slap15.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap16" id="120" isTarget="false">
+            <position x="0.154333" y="3.40924" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap16" id="121" meshFile="slap16.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross40" id="122" isTarget="false">
+            <position x="-1.27044" y="3.55004" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross40" id="123" meshFile="cross40.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross41" id="124" isTarget="false">
+            <position x="-0.630206" y="3.55004" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross41" id="125" meshFile="cross41.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross42" id="126" isTarget="false">
+            <position x="0.0100234" y="3.55004" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross42" id="127" meshFile="cross42.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross43" id="128" isTarget="false">
+            <position x="0.650253" y="3.55004" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross43" id="129" meshFile="cross43.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross44" id="130" isTarget="false">
+            <position x="1.49985" y="3.55004" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross44" id="131" meshFile="cross44.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap17" id="132" isTarget="false">
+            <position x="0.154333" y="3.40924" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap17" id="133" meshFile="slap17.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap18" id="134" isTarget="false">
+            <position x="0.154333" y="3.69233" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap18" id="135" meshFile="slap18.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross45" id="136" isTarget="false">
+            <position x="-1.27044" y="3.83314" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross45" id="137" meshFile="cross45.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross46" id="138" isTarget="false">
+            <position x="-0.630206" y="3.83314" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross46" id="139" meshFile="cross46.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross47" id="140" isTarget="false">
+            <position x="0.0100234" y="3.83314" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross47" id="141" meshFile="cross47.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross48" id="142" isTarget="false">
+            <position x="0.650253" y="3.83314" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross48" id="143" meshFile="cross48.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross49" id="144" isTarget="false">
+            <position x="1.49985" y="3.83314" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross49" id="145" meshFile="cross49.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap19" id="146" isTarget="false">
+            <position x="0.154333" y="3.69233" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap19" id="147" meshFile="slap19.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap20" id="148" isTarget="false">
+            <position x="0.154333" y="3.97543" z="-0.644007" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap20" id="149" meshFile="slap20.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross50" id="150" isTarget="false">
+            <position x="-1.27044" y="4.11624" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross50" id="151" meshFile="cross50.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross51" id="152" isTarget="false">
+            <position x="-0.630206" y="4.11624" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross51" id="153" meshFile="cross51.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross52" id="154" isTarget="false">
+            <position x="0.0100234" y="4.11624" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross52" id="155" meshFile="cross52.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross53" id="156" isTarget="false">
+            <position x="0.650253" y="4.11624" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross53" id="157" meshFile="cross53.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="cross54" id="158" isTarget="false">
+            <position x="1.49985" y="4.11624" z="0.00176436" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="cross54" id="159" meshFile="cross54.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap21" id="160" isTarget="false">
+            <position x="0.154333" y="3.97543" z="0.64471" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap21" id="161" meshFile="slap21.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+        <node name="slap22" id="162" isTarget="false">
+            <position x="0.154333" y="1.02019" z="0.00281423" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="slap22" id="163" meshFile="slap22.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lumberYard" />
+                    <subentity index="1" materialName="lumberYard" />
+                    <subentity index="2" materialName="lumberYard" />
+                    <subentity index="3" materialName="lumberYard" />
+                    <subentity index="4" materialName="lumberYard" />
+                    <subentity index="5" materialName="lumberYard" />
+                </subentities>
+            </entity>
+        </node>
+    </nodes>
+</scene>

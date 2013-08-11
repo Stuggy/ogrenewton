@@ -35,6 +35,7 @@
 
 #include "Utils.h"
 #include "forklift.h"
+#include "LumberYard.h"
 #include "ScreenWriter.h"
 #include "ShootRigidBody.h"
 #include "DemoApplication.h"
@@ -127,81 +128,16 @@ class OgreNewtonDemoApplication: public DemoApplication
 	}
 
 
-	void LoadWoodPallete (int count, const Vector3& origin)
-	{
-// for now do no place any object until I finish the CCD for compound collision
-return;
-		Real scale = 0.25f;
-		Entity* const entity = mSceneMgr->createEntity(MakeName("compound"), "woodPallet.mesh");		
-		entity->setCastShadows (true);
-
-		// convert the ogre entity to a newton mesh
-		OgreNewtonMesh mesh (m_physicsWorld, entity);
-		mesh.ApplyTransform(Vector3 (0.0f, 0.0f, 0.0f), Vector3 (scale, scale, scale), Quaternion::IDENTITY);
-
-		// make a convex approximation for the newton mesh 
-		OgreNewtonMesh convexAproximation (m_physicsWorld);
-		convexAproximation.CreateApproximateConvexDecomposition(mesh, 0.01f, 0.2f, 32, 100);
-
-		// now make a compound collision form the convex approximation
-		dNewtonCollisionCompound compoundShape (m_physicsWorld, convexAproximation, m_all);
-
-		const int stackHigh = 1;
-
-		// now use this shape a place few instances in the world
-		MeshPtr visualMesh = entity->getMesh();
-		for (int j = 0; j < count; j ++) {
-			for (int i = 0; i < count; i ++) {
-				for (int k = 0; k < stackHigh; k ++) {
-					Matrix4 matrix;
-					Vector3 posit (origin + Vector3 (i * 4.0f, k * 0.2f, j * 4.0f));
-
-					// make a ogre node
-					Entity* const ent = mSceneMgr->createEntity(MakeName ("spawnMesh"), visualMesh);
-					SceneNode* const node = CreateNode (mSceneMgr, ent, posit, Quaternion::IDENTITY);
-					node->setScale(Vector3 (scale, scale, scale));
-					matrix.makeTransform (posit, Vector3(1.0f, 1.0f, 1.0f), Quaternion::IDENTITY);
-
-					// make a dynamic body
-					OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_physicsWorld, 30.0f, &compoundShape, node, matrix);
-
-					// the collision sub pasts are too small, set continue collision mode 
-					body->SetCCDMode (true);
-				}
-			}
-		}
-	}
-
-
 	void LoadDynamicScene (const Vector3& origin)
 	{
-		const int compoundCount = 5;
+		const int compoundCount = 1;
 
 		// some automatically generated convex decompositions
 		Vector3 start(origin + Vector3 (0.0f, 100.0f, 0.0f));
 		Vector3 end (origin - Vector3 (0.0f, 100.0f, 0.0f));
 		OgreNewtonRayCast raycaster(m_physicsWorld, m_rayCast); 
 		raycaster.CastRay (&start.x, &end.x);
-		LoadWoodPallete (compoundCount, raycaster.m_contact + Vector3 (-10.0f, 0.25f, -50.0f));
-
-
-		// make a convex hull from 200 random points
-		dNewtonScopeBuffer<Vector3> points(200);
-		for (int i = 0; i < points.GetElementsCount(); i ++) {
-			points[i] = Vector3 (Rand (0.5f), Rand (0.5f), Rand (0.5f));
-		}
-		
-		// add samples the single solid primitive with non uniform scaling
-//		const int spawnCount = 20;
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-16.0f, 4.0f, -10.0f), dNewtonCollisionSphere (m_physicsWorld, 0.5f, m_all));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (-12.0f, 4.0f, -10.0f), dNewtonCollisionBox (m_physicsWorld, 0.5f, 0.5f, 0.5f, m_all));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 4.0f, -10.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, 0));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.35f, 0.75f, m_all));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  0.0f, 4.0f, -10.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, m_all));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 4.0f, -10.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, m_all));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.35f, 0.75f, m_all));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 4.0f, -10.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, m_all));
-//		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 4.0f, -10.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, m_all));
+		LumberYard (mSceneMgr, m_physicsWorld, raycaster.m_contact, compoundCount, compoundCount, 10);
 	}									  
 
 	void createFrameListener()
@@ -301,10 +237,10 @@ return;
 		//mCamera->setPolygonMode(Ogre::PM_WIREFRAME);
 
 		// now load the dynamics Scene
-		LoadDynamicScene(origin);
+		LoadDynamicScene(origin + Vector3 (0.0f, 0.0f, -30.0f));
 
 		// load articulated ForkLift
-		ForkliftPhysicsModel* const forkLift = new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (0.0f, 0.5f, -10.0f));
+		ForkliftPhysicsModel* const forkLift = new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (0.0f, 0.5f, 10.0f));
 		m_player = forkLift->m_rootBody;
 
 		// create shutting components

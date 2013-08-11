@@ -312,7 +312,7 @@ dNewtonSliderActuator* ForkliftPhysicsModel::LinkBasePlatform (OgreNewtonDynamic
 {
 	Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 0.0f, 1.0f)));
 	Matrix4 baseMatrix((platform->GetMatrix() * aligmentMatrix).transpose());
-	return new dNewtonSliderActuator (&baseMatrix[0][0], 0.5f, -0.25f, 1.5f, platform, parent);
+	return new dNewtonSliderActuator (&baseMatrix[0][0], 0.3f, -0.25f, 1.5f, platform, parent);
 }
 
 
