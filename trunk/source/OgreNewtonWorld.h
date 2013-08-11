@@ -43,8 +43,8 @@ class OGRE_NEWTON_API OgreNewtonWorld: public dNewton
 	virtual void Update ();
 	virtual void OnBeginUpdate (dFloat timestepInSecunds) = 0; 
 	virtual void OnEndUpdate (dFloat timestepInSecunds) = 0; 
-	virtual bool OnNodesTransformBegin(Real inteplationParam) = 0;
-	virtual bool OnNodesTransformEnd(Real inteplationParam) = 0;
+	virtual void OnNodesTransformBegin(Real inteplationParam) = 0;
+	virtual void OnNodesTransformEnd(Real inteplationParam) = 0;
 
 	const Vector3& GetGravity() const 
 	{
