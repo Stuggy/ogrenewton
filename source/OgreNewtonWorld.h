@@ -97,7 +97,6 @@ class OGRE_NEWTON_API OgreNewtonWorld: public dNewton
 	bool m_concurrentUpdateMode;
 	dLong m_lastPhysicTimeInMicroseconds;
 	dLong m_physicUpdateTimestepInMocroseconds;
-	bool m_terminateApp;
 };
 
 #endif
