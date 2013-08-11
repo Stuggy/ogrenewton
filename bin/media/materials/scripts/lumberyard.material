@@ -1,0 +1,20 @@
+material "lumberYard"
+{
+	technique Standard_2_technique
+	{
+		pass Standard_2_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.459 0.459 0.459 1 25.5
+			emissive 0 0 0 1
+
+			texture_unit Standard_2_Diffuse#0
+			{
+				texture wood_4.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
