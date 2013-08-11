@@ -91,6 +91,8 @@ void OgreNewtonWorld::Update ()
 	}
 
 	dFloat param = GetInteplationParam(m_timestep);
+// for the moment make param always 1.0 untiul i find teh bug with teh camera
+	param = 1.0f;
 	dAssert (applicationTime > 0.0f);
 	{
 		dNewton::ScopeLock lock (&m_inputManager->m_lock);
