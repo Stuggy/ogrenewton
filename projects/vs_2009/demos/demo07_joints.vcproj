@@ -436,6 +436,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\..\demos\common\LumberYard.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\LumberYard.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\demos\common\MouseCursor.cpp"
 			>
 		</File>
