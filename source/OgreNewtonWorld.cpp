@@ -90,7 +90,6 @@ void OgreNewtonWorld::Update ()
 		dNewton::Update (m_timestep);
 	}
 
-//	bool continueUpdate = true;
 	unsigned* const lockHandle = m_inputManager->GetLockHandle();
 	dFloat param = GetInteplationParam(m_timestep);
 	dAssert (applicationTime > 0.0f);
@@ -99,10 +98,6 @@ void OgreNewtonWorld::Update ()
 		OnNodesTransformBegin (param);
 	}
 
-//	if (!continueUpdate) {
-//		m_terminateApp = true;
-//		WaitForUpdateToFinish();
-//	}
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
 		SceneNode* const node = (SceneNode*) body->GetUserData();

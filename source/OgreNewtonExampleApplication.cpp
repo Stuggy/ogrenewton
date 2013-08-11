@@ -58,15 +58,14 @@ void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnEndUpdate (dFloa
 	m_application->OnPhysicUpdateEnd(timestepInSecunds);
 }
 
-bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformBegin(Real interpolationParam)
+void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformBegin(Real interpolationParam)
 {
 	m_continueApplication = m_application->OnRenderUpdateBegin(interpolationParam);
-	return m_continueApplication;
 }
 
-bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformEnd(Real interpolationParam)
+void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformEnd(Real interpolationParam)
 {
-	return m_application->OnRenderUpdateEnd(interpolationParam);
+	m_application->OnRenderUpdateEnd(interpolationParam);
 }
 
 bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex) const
