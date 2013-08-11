@@ -1,0 +1,111 @@
+material "default_0"
+{
+	technique default_0_technique
+	{
+		pass default_0_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 8e-006 8e-006 8e-006 1 25.5
+			emissive 0 0 0 1
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit default_0_Diffuse#0
+			{
+				texture viper01.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_4"
+{
+	technique default_4_technique
+	{
+		pass default_4_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 8e-006 8e-006 8e-006 1 25.5
+			emissive 0 0 0 1
+		}
+	}
+}
+material "glass"
+{
+	technique glass_technique
+	{
+		pass glass_standard
+		{
+			ambient 0.588235 0.839216 0.894118 0.57
+			diffuse 0.588235 0.839216 0.894118 0.57
+			specular 0 0 0 0 25.5
+			emissive 0 0 0 0.57
+
+			scene_blend alpha_blend
+			depth_write off
+		}
+	}
+}
+material "glass1"
+{
+	technique glass1_technique
+	{
+		pass glass1_standard
+		{
+			ambient 0.588235 0.827451 0.870588 0.5
+			diffuse 0.588235 0.827451 0.870588 0.5
+			specular 0 0 0 0 25.5
+			emissive 0 0 0 0.5
+
+			scene_blend alpha_blend
+			depth_write off
+		}
+	}
+}
+material "default_11"
+{
+	technique default_11_technique
+	{
+		pass default_11_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 1 25.5
+			emissive 0 0 0 1
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit default_11_Diffuse#0
+			{
+				texture viper01.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "default_12"
+{
+	technique default_12_technique
+	{
+		pass default_12_standard
+		{
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0 0 0 1 25.5
+			emissive 0 0 0 1
+
+			texture_unit default_12_Diffuse#0
+			{
+				texture wheel2.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
