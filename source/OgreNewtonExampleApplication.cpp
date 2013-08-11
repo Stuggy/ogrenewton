@@ -33,7 +33,7 @@ OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OgreNewtonPhysicsListen
 	:FrameListener()
 	,OgreNewtonWorld (application->mSceneMgr, updateFramerate)
 	,m_application (application)
-	,m_terminate(false)
+	,m_continueApplication(false)
 {
 }
 
@@ -44,7 +44,7 @@ OgreNewtonExampleApplication::OgreNewtonPhysicsListener::~OgreNewtonPhysicsListe
 bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::frameStarted(const FrameEvent &evt)
 {
 	Update();
-	return m_terminate;
+	return m_continueApplication;
 }
 
 
@@ -58,14 +58,15 @@ void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnEndUpdate (dFloa
 	m_application->OnPhysicUpdateEnd(timestepInSecunds);
 }
 
-void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformBegin(Real interpolationParam)
+bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformBegin(Real interpolationParam)
 {
-	m_terminate = m_application->OnRenderUpdateBegin(interpolationParam);
+	m_continueApplication = m_application->OnRenderUpdateBegin(interpolationParam);
+	return m_continueApplication;
 }
 
-void OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformEnd(Real interpolationParam)
+bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnNodesTransformEnd(Real interpolationParam)
 {
-	m_application->OnRenderUpdateEnd(interpolationParam);
+	return m_application->OnRenderUpdateEnd(interpolationParam);
 }
 
 bool OgreNewtonExampleApplication::OgreNewtonPhysicsListener::OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex) const

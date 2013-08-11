@@ -48,8 +48,9 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 		bool frameStarted(const FrameEvent &evt);
 		virtual void OnBeginUpdate (dFloat timestepInSecunds);
 		virtual void OnEndUpdate (dFloat timestepInSecunds);
-		void OnNodesTransformBegin(Real interpolationParam);
-		void OnNodesTransformEnd(Real interpolationParam);
+
+		bool OnNodesTransformBegin(Real interpolationParam);
+		bool OnNodesTransformEnd(Real interpolationParam);
 
 		virtual bool OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex) const;
 		virtual bool OnCompoundSubCollisionAABBOverlap (const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex) const;
@@ -57,7 +58,7 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 
 		protected:
 		OgreNewtonExampleApplication* m_application;
-		bool m_terminate;
+		bool m_continueApplication;
 	};
 
 
