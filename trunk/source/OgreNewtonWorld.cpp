@@ -90,18 +90,16 @@ void OgreNewtonWorld::Update ()
 		dNewton::Update (m_timestep);
 	}
 
-	unsigned* const lockHandle = m_inputManager->GetLockHandle();
 	dFloat param = GetInteplationParam(m_timestep);
 	dAssert (applicationTime > 0.0f);
 	{
-		dNewton::ScopeLock lock (lockHandle);
+		dNewton::ScopeLock lock (&m_inputManager->m_lock);
 		OnNodesTransformBegin (param);
 	}
 
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
 		SceneNode* const node = (SceneNode*) body->GetUserData();
-		//if (node && !body->GetSleepState()) {
 		if (node) {
 			dMatrix matrix;
 			body->GetVisualMatrix (param, &matrix[0][0]);
@@ -110,13 +108,6 @@ void OgreNewtonWorld::Update ()
 			Vector3 posit (matrix.m_posit.m_x, matrix.m_posit.m_y, matrix.m_posit.m_z);
 			Quaternion rotation (rot.m_q0, rot.m_q1, rot.m_q2, rot.m_q3);
 
-			//Node* const nodeParent = node->getParent();
-			//const Vector3& derivedScale = nodeParent->_getDerivedScale();
-			//const Vector3& derivedPosition = nodeParent->_getDerivedPosition();
-			//const Quaternion derivedRotationInv (nodeParent->_getDerivedOrientation().Inverse());
-			//node->setPosition (derivedRotationInv * (posit - derivedPosition) / derivedScale);
-			//node->setOrientation (derivedRotationInv * nodeRotation);
-
 			node->setPosition (posit);
 			node->setOrientation (rotation);
 
@@ -124,9 +115,8 @@ void OgreNewtonWorld::Update ()
 			body->OnApplicationPostTransform (applicationTime);
 		}
 	}
-	dNewton::ScopeLock lock (lockHandle);
+
+	dNewton::ScopeLock lock (&m_inputManager->m_lock);
 	OnNodesTransformEnd (param);
-
 	m_physicUpdateTimestepInMocroseconds = GetTimeInMicrosenconds () - m_lastPhysicTimeInMicroseconds;
-
 }
