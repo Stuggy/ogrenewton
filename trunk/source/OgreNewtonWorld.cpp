@@ -38,7 +38,6 @@ OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramera
 	,m_concurrentUpdateMode(true)
 	,m_lastPhysicTimeInMicroseconds(GetTimeInMicrosenconds ())
 	,m_physicUpdateTimestepInMocroseconds(0)
-	,m_terminateApp(false)
 {
 	SetUpdateFPS (Real (updateFramerate), 3);
 
@@ -52,6 +51,7 @@ OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramera
 
 OgreNewtonWorld::~OgreNewtonWorld()
 {
+	m_inputManager->m_continueExecution = false;
 }
 
 
@@ -80,58 +80,58 @@ dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
 void OgreNewtonWorld::Update ()
 {
 //NewtonSerializeToFile (GetNewton(), "xxxx.bin");
-	if (!m_terminateApp) {
-		dLong lastTime = m_lastPhysicTimeInMicroseconds;
-		m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds ();
-		Real applicationTime = Real (m_lastPhysicTimeInMicroseconds - lastTime) * 1.0e-6f;
-		if (m_concurrentUpdateMode) {
-			dNewton::UpdateAsync (m_timestep);
-		} else {
-			dNewton::Update (m_timestep);
-		}
 
-		bool continueUpdate = true;
-		unsigned* const lockHandle = m_inputManager->GetLockHandle();
-		dFloat param = GetInteplationParam(m_timestep);
-		dAssert (applicationTime > 0.0f);
-		{
-			dNewton::ScopeLock lock (lockHandle);
-			continueUpdate = OnNodesTransformBegin (param);
-		}
-
-		if (!continueUpdate) {
-			m_terminateApp = true;
-			WaitForUpdateToFinish();
-		}
-		// iterate over all physics bodies and get the tranformtaion matrix;
-		for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
-			SceneNode* const node = (SceneNode*) body->GetUserData();
-			//if (node && !body->GetSleepState()) {
-			if (node) {
-				dMatrix matrix;
-				body->GetVisualMatrix (param, &matrix[0][0]);
-				dQuaternion rot (matrix);
-
-				Vector3 posit (matrix.m_posit.m_x, matrix.m_posit.m_y, matrix.m_posit.m_z);
-				Quaternion rotation (rot.m_q0, rot.m_q1, rot.m_q2, rot.m_q3);
-
-				//Node* const nodeParent = node->getParent();
-				//const Vector3& derivedScale = nodeParent->_getDerivedScale();
-				//const Vector3& derivedPosition = nodeParent->_getDerivedPosition();
-				//const Quaternion derivedRotationInv (nodeParent->_getDerivedOrientation().Inverse());
-				//node->setPosition (derivedRotationInv * (posit - derivedPosition) / derivedScale);
-				//node->setOrientation (derivedRotationInv * nodeRotation);
-
-				node->setPosition (posit);
-				node->setOrientation (rotation);
-
-				// update the application user data (that need to be update at rendering time, ex animations, particles emmitions, etc)
-				body->OnApplicationPostTransform (applicationTime);
-			}
-		}
-		dNewton::ScopeLock lock (lockHandle);
-		OnNodesTransformEnd (param);
-
-		m_physicUpdateTimestepInMocroseconds = GetTimeInMicrosenconds () - m_lastPhysicTimeInMicroseconds;
+	dLong lastTime = m_lastPhysicTimeInMicroseconds;
+	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds ();
+	Real applicationTime = Real (m_lastPhysicTimeInMicroseconds - lastTime) * 1.0e-6f;
+	if (m_concurrentUpdateMode) {
+		dNewton::UpdateAsync (m_timestep);
+	} else {
+		dNewton::Update (m_timestep);
 	}
+
+//	bool continueUpdate = true;
+	unsigned* const lockHandle = m_inputManager->GetLockHandle();
+	dFloat param = GetInteplationParam(m_timestep);
+	dAssert (applicationTime > 0.0f);
+	{
+		dNewton::ScopeLock lock (lockHandle);
+		OnNodesTransformBegin (param);
+	}
+
+//	if (!continueUpdate) {
+//		m_terminateApp = true;
+//		WaitForUpdateToFinish();
+//	}
+	// iterate over all physics bodies and get the tranformtaion matrix;
+	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
+		SceneNode* const node = (SceneNode*) body->GetUserData();
+		//if (node && !body->GetSleepState()) {
+		if (node) {
+			dMatrix matrix;
+			body->GetVisualMatrix (param, &matrix[0][0]);
+			dQuaternion rot (matrix);
+
+			Vector3 posit (matrix.m_posit.m_x, matrix.m_posit.m_y, matrix.m_posit.m_z);
+			Quaternion rotation (rot.m_q0, rot.m_q1, rot.m_q2, rot.m_q3);
+
+			//Node* const nodeParent = node->getParent();
+			//const Vector3& derivedScale = nodeParent->_getDerivedScale();
+			//const Vector3& derivedPosition = nodeParent->_getDerivedPosition();
+			//const Quaternion derivedRotationInv (nodeParent->_getDerivedOrientation().Inverse());
+			//node->setPosition (derivedRotationInv * (posit - derivedPosition) / derivedScale);
+			//node->setOrientation (derivedRotationInv * nodeRotation);
+
+			node->setPosition (posit);
+			node->setOrientation (rotation);
+
+			// update the application user data (that need to be update at rendering time, ex animations, particles emmitions, etc)
+			body->OnApplicationPostTransform (applicationTime);
+		}
+	}
+	dNewton::ScopeLock lock (lockHandle);
+	OnNodesTransformEnd (param);
+
+	m_physicUpdateTimestepInMocroseconds = GetTimeInMicrosenconds () - m_lastPhysicTimeInMicroseconds;
+
 }
