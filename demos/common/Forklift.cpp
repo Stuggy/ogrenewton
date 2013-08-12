@@ -37,7 +37,7 @@
 #include "ScreenWriter.h"
 #include "OgreDotScene.h"
 #include "DemoApplication.h"
-#include "forklift.h"
+#include "Forklift.h"
 
 
 using namespace Ogre;

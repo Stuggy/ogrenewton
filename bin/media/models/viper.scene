@@ -6,7 +6,7 @@
     <nodes>
         <node name="car_body" id="0" isTarget="false">
             <position x="1.44074e-008" y="0.329603" z="-6.29768e-016" />
-            <rotation qx="-0" qy="-2.18557e-008" qz="-0" qw="-1" />
+            <rotation qx="2.38419e-007" qy="5.68434e-014" qz="-2.38419e-007" qw="-1" />
             <scale x="1" y="1" z="1" />
             <entity name="car_body" id="1" meshFile="car_body.mesh" castShadows="true">
                 <subentities>
@@ -16,44 +16,44 @@
                     <subentity index="3" materialName="glass1" />
                 </subentities>
             </entity>
-            <node name="fr_tire" id="2" isTarget="false">
-                <position x="0.707012" y="0.00572899" z="-1.16612" />
-                <rotation qx="-0" qy="0.707107" qz="-0" qw="-0.707107" />
+            <node name="fl_tire_" id="2" isTarget="false">
+                <position x="-0.706878" y="0.00572923" z="-1.17515" />
+                <rotation qx="6.96884e-015" qy="-0.707107" qz="-6.96883e-015" qw="-0.707107" />
                 <scale x="38.475" y="38.475" z="38.475" />
-                <entity name="fr_tire" id="3" meshFile="fr_tire.mesh" castShadows="true">
+                <entity name="fl_tire_" id="3" meshFile="fl_tire_.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="default_11" />
                         <subentity index="1" materialName="default_12" />
                     </subentities>
                 </entity>
             </node>
-            <node name="rr_tire" id="4" isTarget="false">
-                <position x="0.732412" y="0.00572899" z="1.22204" />
-                <rotation qx="-0" qy="0.707107" qz="-0" qw="-0.707107" />
+            <node name="rl_tire_" id="4" isTarget="false">
+                <position x="-0.732278" y="0.0057289" z="1.213" />
+                <rotation qx="6.96884e-015" qy="-0.707107" qz="-6.96883e-015" qw="-0.707107" />
                 <scale x="38.475" y="38.475" z="38.475" />
-                <entity name="rr_tire" id="5" meshFile="fr_tire.mesh" castShadows="true">
+                <entity name="rl_tire_" id="5" meshFile="fl_tire_.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="default_11" />
                         <subentity index="1" materialName="default_12" />
                     </subentities>
                 </entity>
             </node>
-            <node name="rl_tire" id="6" isTarget="false">
-                <position x="-0.732278" y="0.00572902" z="1.213" />
-                <rotation qx="-9.8352e-009" qy="-0.707107" qz="9.83519e-009" qw="-0.707107" />
+            <node name="rr_tire_" id="6" isTarget="false">
+                <position x="0.732412" y="0.00572872" z="1.22204" />
+                <rotation qx="5.87956e-016" qy="0.707107" qz="5.87956e-016" qw="-0.707107" />
                 <scale x="38.475" y="38.475" z="38.475" />
-                <entity name="rl_tire" id="7" meshFile="fr_tire.mesh" castShadows="true">
+                <entity name="rr_tire_" id="7" meshFile="fl_tire_.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="default_11" />
                         <subentity index="1" materialName="default_12" />
                     </subentities>
                 </entity>
             </node>
-            <node name="fl_tire" id="8" isTarget="false">
-                <position x="-0.706878" y="0.00572902" z="-1.17515" />
-                <rotation qx="-9.8352e-009" qy="-0.707107" qz="9.83519e-009" qw="-0.707107" />
+            <node name="fr_tire_" id="8" isTarget="false">
+                <position x="0.707012" y="0.00572914" z="-1.16612" />
+                <rotation qx="5.87956e-016" qy="0.707107" qz="5.87956e-016" qw="-0.707107" />
                 <scale x="38.475" y="38.475" z="38.475" />
-                <entity name="fl_tire" id="9" meshFile="fr_tire.mesh" castShadows="true">
+                <entity name="fr_tire_" id="9" meshFile="fl_tire_.mesh" castShadows="true">
                     <subentities>
                         <subentity index="0" materialName="default_11" />
                         <subentity index="1" materialName="default_12" />

@@ -290,6 +290,7 @@ void OgreNewtonMesh::ParseEntity (const Entity* const entity, const Matrix4& mat
 			AddFace(3, &poly_verts[0][0], 12 * sizeof (Real), cs);
 			i_offset += 3;
 		}
+		i_sptr->unlock();
 	}
 }
 
