@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="demo03_terrain"
-	ProjectGUID="{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}"
+	Name="demo01_theBasics"
+	ProjectGUID="{382370CB-9178-4A9C-9ECE-894C54C6FCBE}"
 	RootNamespace="Quake3Map_vc9"
 	TargetFrameworkVersion="131072"
 	>
@@ -388,7 +388,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\demos\demo03_terrain\terrainDemo.cpp"
+			RelativePath="..\..\..\demos\demo01_theBasics\engineSetupDemo.cpp"
 			>
 		</File>
 	</Files>

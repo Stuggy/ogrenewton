@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="demo01_theBasics"
+	Name="demo00_helpers"
 	ProjectGUID="{D1A464A2-D479-458C-98A2-60965D823CD1}"
 	RootNamespace="Quake3Map_vc9"
 	TargetFrameworkVersion="131072"
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(PlatformName)/$(ProjectName)/$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)/$(ProjectName)/$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -71,24 +71,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="newton_d.lib dMath_d.lib dNewton_d.lib dJointLibrary_d.lib OIS_d.lib OgreMain_d.lib OgreTerrain_d.lib"
-				OutputFile="../../../bin/$(InputName)_d.exe"
-				LinkIncremental="0"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\debug&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\debug&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\debug_mdd&quot;"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/$(InputName).pdb"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -100,9 +86,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -110,7 +93,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(PlatformName)/$(ProjectName)/$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)/$(ProjectName)/$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -164,24 +147,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="newton.lib dMath.lib dNewton.lib dJointLibrary.lib OIS.lib OgreMain.lib OgreTerrain.lib"
-				OutputFile="../../../bin/$(InputName).exe"
-				LinkIncremental="0"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\release&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\release&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\release_md&quot;"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/$(InputName).pdb"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -193,9 +162,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -203,7 +169,7 @@
 			Name="DebugDll|Win32"
 			OutputDirectory="$(PlatformName)/$(ProjectName)/$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)/$(ProjectName)/$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -255,24 +221,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="newton_d.lib dMath_d.lib dNewton_d.lib dJointLibrary_d.lib OIS_d.lib OgreMain_d.lib OgreTerrain_d.lib"
-				OutputFile="../../../bin/$(InputName)_d.exe"
-				LinkIncremental="0"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\debug&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\debug&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\debug_mdd&quot;"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/$(InputName).pdb"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -284,9 +236,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -294,7 +243,7 @@
 			Name="ReleaseDll|Win32"
 			OutputDirectory="$(PlatformName)/$(ProjectName)/$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)/$(ProjectName)/$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -348,24 +297,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="newton.lib dMath.lib dNewton.lib dJointLibrary.lib OIS.lib OgreMain.lib OgreTerrain.lib"
-				OutputFile="../../../bin/$(InputName).exe"
-				LinkIncremental="0"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\release&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\release&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\release_md&quot;"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/$(InputName).pdb"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -377,9 +312,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -387,6 +319,34 @@
 	<References>
 	</References>
 	<Files>
+		<Filter
+			Name="dotScene"
+			>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\OgreDotScene.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\OgreDotScene.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\rapidxml.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\rapidxml_iterators.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\rapidxml_print.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\demos\common\dotSceneLoader\rapidxml_utils.hpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\..\demos\common\BuildJenga.cpp"
 			>
@@ -412,7 +372,19 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\demos\demo01_theBasics\engineSetupDemo.cpp"
+			RelativePath="..\..\..\demos\common\Forklift.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\Forklift.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\LumberYard.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\LumberYard.h"
 			>
 		</File>
 		<File
@@ -421,6 +393,14 @@
 		</File>
 		<File
 			RelativePath="..\..\..\demos\common\MouseCursor.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\PlayerExample.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\common\PlayerExample.h"
 			>
 		</File>
 		<File

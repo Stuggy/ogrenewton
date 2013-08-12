@@ -388,47 +388,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\demos\common\DemoApplication.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\DemoApplication.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\MouseCursor.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\MouseCursor.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\ScreenWriter.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\ScreenWriter.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\ShootRigidBody.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\ShootRigidBody.h"
-			>
-		</File>
-		<File
 			RelativePath="..\..\..\demos\demo06_triggerController\triggerDemo.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\Utils.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\common\Utils.h"
 			>
 		</File>
 	</Files>
