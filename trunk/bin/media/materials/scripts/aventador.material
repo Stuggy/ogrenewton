@@ -1,0 +1,297 @@
+material "lights0"
+{
+	technique lights0_technique
+	{
+		pass lights0_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 1 1 1 1 117.3
+			emissive 0 0 0 1
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit lights0_Diffuse#0
+			{
+				texture lights.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "nodmg"
+{
+	technique nodmg_technique
+	{
+		pass nodmg_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.883922 0.883922 0.883922 0.98 84.15
+			emissive 0 0 0 1
+
+			texture_unit nodmg_Diffuse#0
+			{
+				texture nodamage.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "black"
+{
+	technique black_technique
+	{
+		pass black_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.487451 0.487451 0.487451 0.55 86.7
+			emissive 0 0 0 1
+
+			texture_unit black_Diffuse#0
+			{
+				texture black.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "c0"
+{
+	technique c0_technique
+	{
+		pass c0_standard
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.537255 0.607843 0.419608 1
+			specular 0.5 0.5 0.5 1 51
+			emissive 0 0 0 1
+		}
+	}
+}
+material "undercarriage"
+{
+	technique undercarriage_technique
+	{
+		pass undercarriage_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.815686 0.815686 0.815686 1 84.15
+			emissive 0 0 0 1
+
+			texture_unit undercarriage_Diffuse#0
+			{
+				texture undercarriage.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "grille2"
+{
+	technique grille2_technique
+	{
+		pass grille2_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.992157 0.992157 0.992157 1 104.55
+			emissive 0 0 0 1
+
+			texture_unit grille2_Diffuse#0
+			{
+				texture grille2.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "carbon_fiber"
+{
+	technique carbon_fiber_technique
+	{
+		pass carbon_fiber_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.325 0.325 0.325 0.65 84.15
+			emissive 0 0 0 1
+
+			texture_unit carbon_fiber_Diffuse#0
+			{
+				texture carbonfiber.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "glass"
+{
+	technique glass_technique
+	{
+		pass glass_standard
+		{
+			cull_hardware none
+			cull_software none
+			shading phong
+			ambient 1 1 1 0.38
+			diffuse 1 1 1 0.38
+			specular 1 1 1 1 91.8
+			emissive 0 0 0 0.38
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit glass_Diffuse#0
+			{
+				texture glass0.tga
+				tex_coord_set 0
+				colour_op_ex blend_manual src_texture src_current 0.38
+				colour_op_multipass_fallback one zero
+			}
+		}
+	}
+}
+material "badge"
+{
+	technique badge_technique
+	{
+		pass badge_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.5 0.5 0.5 1 51
+			emissive 0 0 0 1
+
+			alpha_rejection greater 128
+
+			texture_unit badge_Diffuse#0
+			{
+				texture nodamage.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+
+			texture_unit badge_Unknown#1
+			{
+				texture nodamage.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "lights1"
+{
+	technique lights1_technique
+	{
+		pass lights1_standard
+		{
+			shading phong
+			ambient 1 1 1 0.94
+			diffuse 1 1 1 0.94
+			specular 1.05169 1.05169 1.05169 1.06 76.5
+			emissive 0 0 0 0.94
+
+			scene_blend alpha_blend
+			depth_write off
+
+			alpha_rejection greater 128
+
+			texture_unit lights1_Diffuse#0
+			{
+				texture lights.tga
+				tex_coord_set 0
+				colour_op_ex blend_manual src_texture src_current 0.94
+				colour_op_multipass_fallback one zero
+			}
+
+			texture_unit lights1_Unknown#1
+			{
+				texture lights.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "inner_rim"
+{
+	technique inner_rim_technique
+	{
+		pass inner_rim_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.5 0.5 0.5 1 79.05
+			emissive 0 0 0 1
+
+			texture_unit inner_rim_Diffuse#0
+			{
+				texture wheel0.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "rim"
+{
+	technique rim_technique
+	{
+		pass rim_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.882353 0.882353 0.882353 1 73.95
+			emissive 0 0 0 1
+
+			texture_unit rim_Diffuse#0
+			{
+				texture wheel.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}
+material "tire"
+{
+	technique tire_technique
+	{
+		pass tire_standard
+		{
+			shading phong
+			ambient 1 1 1 1
+			diffuse 1 1 1 1
+			specular 0.382667 0.382667 0.382667 0.41 73.95
+			emissive 0 0 0 1
+
+			texture_unit tire_Diffuse#0
+			{
+				texture tirea0.tga
+				tex_coord_set 0
+				colour_op modulate
+			}
+		}
+	}
+}

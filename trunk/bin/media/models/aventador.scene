@@ -1,0 +1,75 @@
+<scene upAxis="y" unitsPerMeter="1" unitType="meters" formatVersion="1.0" minOgreVersion="Latest version" author="EasyOgreExporter">
+    <environment>
+        <colourAmbient r="0" g="0" b="0" />
+        <colourBackground r="0" g="0" b="0" />
+    </environment>
+    <nodes>
+        <node name="chassis" id="0" isTarget="false">
+            <position x="1.52425e-008" y="0.134744" z="-0.348558" />
+            <rotation qx="-0" qy="-0" qz="-0" qw="-1" />
+            <scale x="1" y="1" z="1" />
+            <entity name="chassis" id="1" meshFile="chassis.mesh" castShadows="true">
+                <subentities>
+                    <subentity index="0" materialName="lights0" />
+                    <subentity index="1" materialName="nodmg" />
+                    <subentity index="2" materialName="black" />
+                    <subentity index="3" materialName="c0" />
+                    <subentity index="4" materialName="undercarriage" />
+                    <subentity index="5" materialName="grille2" />
+                    <subentity index="6" materialName="carbon_fiber" />
+                    <subentity index="7" materialName="glass" />
+                    <subentity index="8" materialName="badge" />
+                    <subentity index="9" materialName="lights1" />
+                </subentities>
+            </entity>
+            <node name="w2" id="2" isTarget="false">
+                <position x="-0.905821" y="0.206406" z="1.40929" />
+                <rotation qx="-5.33851e-008" qy="0.707107" qz="-0.707107" qw="-5.33851e-008" />
+                <scale x="1" y="1" z="1" />
+                <entity name="w2" id="3" meshFile="w2.mesh" castShadows="true">
+                    <subentities>
+                        <subentity index="0" materialName="inner_rim" />
+                        <subentity index="1" materialName="rim" />
+                        <subentity index="2" materialName="tire" />
+                    </subentities>
+                </entity>
+            </node>
+            <node name="w1" id="4" isTarget="false">
+                <position x="0.835873" y="0.206405" z="-1.25481" />
+                <rotation qx="-5.33851e-008" qy="0.707107" qz="-0.707107" qw="-5.33851e-008" />
+                <scale x="1" y="1" z="1" />
+                <entity name="w1" id="5" meshFile="w1.mesh" castShadows="true">
+                    <subentities>
+                        <subentity index="0" materialName="inner_rim" />
+                        <subentity index="1" materialName="rim" />
+                        <subentity index="2" materialName="tire" />
+                    </subentities>
+                </entity>
+            </node>
+            <node name="w3" id="6" isTarget="false">
+                <position x="0.905822" y="0.206406" z="1.40929" />
+                <rotation qx="-5.33851e-008" qy="0.707107" qz="-0.707107" qw="-5.33851e-008" />
+                <scale x="1" y="1" z="1" />
+                <entity name="w3" id="7" meshFile="w3.mesh" castShadows="true">
+                    <subentities>
+                        <subentity index="0" materialName="inner_rim" />
+                        <subentity index="1" materialName="rim" />
+                        <subentity index="2" materialName="tire" />
+                    </subentities>
+                </entity>
+            </node>
+            <node name="w0" id="8" isTarget="false">
+                <position x="-0.835874" y="0.206405" z="-1.25481" />
+                <rotation qx="-5.33851e-008" qy="0.707107" qz="-0.707107" qw="-5.33851e-008" />
+                <scale x="1" y="1" z="1" />
+                <entity name="w0" id="9" meshFile="w0.mesh" castShadows="true">
+                    <subentities>
+                        <subentity index="0" materialName="inner_rim" />
+                        <subentity index="1" materialName="rim" />
+                        <subentity index="2" materialName="tire" />
+                    </subentities>
+                </entity>
+            </node>
+        </node>
+    </nodes>
+</scene>

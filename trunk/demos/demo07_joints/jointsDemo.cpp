@@ -34,7 +34,7 @@
 #include <OgreNewtonArticulatedTransformManager.h>
 
 #include "Utils.h"
-#include "forklift.h"
+#include "Forklift.h"
 #include "LumberYard.h"
 #include "ScreenWriter.h"
 #include "ShootRigidBody.h"
