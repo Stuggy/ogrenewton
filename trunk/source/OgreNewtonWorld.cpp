@@ -51,7 +51,6 @@ OgreNewtonWorld::OgreNewtonWorld (int updateFramerate)
 
 OgreNewtonWorld::~OgreNewtonWorld()
 {
-	m_inputManager->m_continueExecution = false;
 }
 
 
