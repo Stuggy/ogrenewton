@@ -104,7 +104,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		// handle shotting objects
 		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
-			dNewton::ScopeLock lock (&m_scopeLock);
 			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
 		}
 

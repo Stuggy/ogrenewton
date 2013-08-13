@@ -104,6 +104,7 @@ void DemoApplication::OgreNewtonExample::OnBeginUpdate (dFloat timestepInSecunds
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
+	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnPhysicUpdateBegin (timestepInSecunds);
 }
 
@@ -112,6 +113,7 @@ void DemoApplication::OgreNewtonExample::OnEndUpdate (dFloat timestepInSecunds)
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
+	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnPhysicUpdateEnd (timestepInSecunds);
 }
 
