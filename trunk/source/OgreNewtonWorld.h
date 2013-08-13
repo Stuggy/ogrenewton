@@ -37,45 +37,30 @@ class OgreNewtonArticulatedTransformManager;
 class OGRE_NEWTON_API OgreNewtonWorld: public dNewton 
 {
 	public:
-	OgreNewtonWorld (SceneManager* const manager, int updateFramerate);
+	OgreNewtonWorld (int updateFramerate = 120.0f);
 	virtual ~OgreNewtonWorld();
 
+	// call each frame update to advance the physical world
 	virtual void Update ();
-	virtual void OnBeginUpdate (dFloat timestepInSecunds) = 0; 
-	virtual void OnEndUpdate (dFloat timestepInSecunds) = 0; 
-	virtual void OnNodesTransformBegin(Real inteplationParam) = 0;
-	virtual void OnNodesTransformEnd(Real inteplationParam) = 0;
 
-	const Vector3& GetGravity() const 
-	{
-		return m_gravity;
-	}
+	// called asynchronous at the beginning of a physics update. 
+	virtual void OnBeginUpdate (dFloat timestepInSecunds){}
 
-	OgreNewtonInputManager* GetInputManager() const 
-	{
-		return m_inputManager;
-	}
+	// called asynchronous at the beginning end a physics update. 
+	virtual void OnEndUpdate (dFloat timestepInSecunds){}
 
-	OgreNewtonArticulatedTransformManager* GetHierarchyTransformManager() const 
-	{
-		return m_localTransformManager;
-	}
+	// called synchronous with ogre update loop, at the beginning of setting all node transform after a physics update  
+	virtual void OnNodesTransformBegin(Real interpolationParam){}
 
-	OgreNewtonTriggerManager* GetTriggerManager() const 
-	{
-		return m_triggerManager;
-	}
+	// called synchronous with ogre update loop, at the end of setting all node transform after a physics update  
+	virtual void OnNodesTransformEnd(Real interpolationParam){}
 
-	OgreNewtonPlayerManager* GetPlayerManager() const 
-	{
-		return m_playerManager;
-	}
-
-	OgreNewtonRayPickManager* GetRayPickManager() const 
-	{
-		return m_rayPickerManager;
-	}
-
+	const Vector3& GetGravity() const;
+	OgreNewtonInputManager* GetInputManager() const ;
+	OgreNewtonArticulatedTransformManager* GetHierarchyTransformManager() const; 
+	OgreNewtonTriggerManager* GetTriggerManager() const; 
+	OgreNewtonPlayerManager* GetPlayerManager() const; 
+	OgreNewtonRayPickManager* GetRayPickManager() const; 
 
 	void SetUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
 	void SetConcurrentUpdateMode (bool mode);
@@ -85,7 +70,6 @@ class OGRE_NEWTON_API OgreNewtonWorld: public dNewton
 	
 
 	protected:
-	SceneManager* m_sceneManager;
 	OgreNewtonInputManager* m_inputManager;
 	OgreNewtonPlayerManager* m_playerManager;
 	OgreNewtonTriggerManager* m_triggerManager;

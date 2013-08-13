@@ -331,14 +331,6 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\OgreNewtonExampleApplication.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\source\OgreNewtonExampleApplication.h"
-			>
-		</File>
-		<File
 			RelativePath="..\..\source\OgreNewtonInputManager.cpp"
 			>
 		</File>

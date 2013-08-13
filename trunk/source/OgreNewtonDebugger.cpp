@@ -171,13 +171,11 @@ void OgreNewtonDebugger::BodyDebugData::Init(OgreNewtonDebugger* const debugger,
 }
 
 
-OgreNewtonDebugger::OgreNewtonDebugger (SceneManager* const sceneMgr, OgreNewtonWorld* const world)
-	:m_sceneMgr (sceneMgr)
+OgreNewtonDebugger::OgreNewtonDebugger (SceneNode* const debuggerNode, OgreNewtonWorld* const world)
+	:m_debugNode(debuggerNode)
 	,m_world(world)
 	,m_lru(0)
-	,m_debugMode(false)
 {
-	m_debugNode = m_sceneMgr->getRootSceneNode()->createChildSceneNode("_OgreNewton_Debugger_Node_");
 }
 
 OgreNewtonDebugger::~OgreNewtonDebugger()
@@ -189,21 +187,12 @@ OgreNewtonDebugger::~OgreNewtonDebugger()
 
 void OgreNewtonDebugger::SetDebugMode(bool onOff)
 {
-	m_debugMode = onOff;
-}
-
-
-
-bool OgreNewtonDebugger::frameStarted(const FrameEvent &evt)
-{
-	if (m_debugMode) {
+	if (onOff) {
 		ShowDebugInformation();
 	} else {
 		HideDebugInformation();
 	}
-	return true;
 }
-
 
 
 void OgreNewtonDebugger::ShowDebugInformation()

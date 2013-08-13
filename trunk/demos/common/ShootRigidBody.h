@@ -43,8 +43,6 @@ class ShootRigidBody
 	Real m_shootingTimer;
 	MeshPtr m_shootingMesh[2];
 	dNewtonCollision* m_shootingCollisions[2];
-
-	
 };
 
 #endif

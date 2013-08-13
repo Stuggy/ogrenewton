@@ -20,8 +20,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-
-
 #include <OgreNewtonStdAfx.h>
 #include <OgreNewtonMesh.h>
 #include <OgreNewtonWorld.h>
@@ -31,7 +29,6 @@
 #include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonPlayerManager.h>
 #include <OgreNewtonRayPickManager.h>
-#include <OgreNewtonExampleApplication.h>
 #include <OgreNewtonArticulatedTransformManager.h>
 
 #include "Utils.h"
@@ -41,8 +38,8 @@
 
 
 #define PLAYER_SPEED					4.0f
-#define PLAYER_CAMERA_DISTANCE			6.0f
-#define PLAYER_CAMERA_HIGH_ABOVE_HEAD	0.5f
+#define ARTICULATED_VEHICLE_CAMERA_DISTANCE			6.0f
+#define ARTICULATED_VEHICLE_CAMERA_HIGH_ABOVE_HEAD	0.5f
 
 
 using namespace Ogre;
@@ -106,7 +103,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
 
 		// handle shotting objects
-		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
+		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
+			dNewton::ScopeLock lock (&m_scopeLock);
+			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
+		}
 
 		// update main player first
 		m_player->ApplyPlayerInputs (this, timestepInSecunds);
@@ -125,21 +125,18 @@ class OgreNewtonDemoApplication: public DemoApplication
 		DemoApplication::OnPhysicUpdateEnd (timestepInSecunds);
 
 		// reposition the camera origin to point to the player
-		Matrix4 camMatrix;
-		m_cameraTransform.GetTargetMatrix (&camMatrix[0][0]);
-		camMatrix = camMatrix.transpose();
+		Matrix4 camMatrix(GetCameraTransform());
 
 		Matrix4 playerMatrix;
 		m_player->GetMatrix (&playerMatrix[0][0]);
 		playerMatrix = playerMatrix.transpose();
 
 		Vector3 frontDir (camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
-		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, m_player->GetPlayerHigh() + PLAYER_CAMERA_HIGH_ABOVE_HEAD, 0.0f)));
-		camOrigin += frontDir * PLAYER_CAMERA_DISTANCE;
+		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, m_player->GetPlayerHigh() + ARTICULATED_VEHICLE_CAMERA_HIGH_ABOVE_HEAD, 0.0f)));
+		camOrigin += frontDir * ARTICULATED_VEHICLE_CAMERA_DISTANCE;
 		camMatrix.setTrans(camOrigin); 
 
-		camMatrix = camMatrix.transpose();
-		m_cameraTransform.SetTargetMatrix (&camMatrix[0][0]);
+		SeCameraTransform (camMatrix);
 	}
 
 	virtual void destroyScene()
@@ -275,7 +272,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 	try {
 		application.go();
 	} catch(Exception &e) {
-		MessageBox(NULL, e.getFullDescription().c_str(), "Well, this is embarrassing.. an Ogre exception has occurred.", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		MessageBox( NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 	}
 
 	return 0;

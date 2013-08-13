@@ -30,13 +30,46 @@
 
 using namespace Ogre;
 
+
+class KeyTrigger
+{
+	public:
+	KeyTrigger (bool state = false)
+		:m_state(state)
+		,m_mem0(false)
+		,m_mem1(false)
+	{
+	}
+
+	bool TriggerUp() const
+	{
+		return !m_mem0 & m_mem1;
+	}
+
+	bool TriggerDown() const
+	{
+		return m_mem0 & !m_mem1;
+	}
+
+	void Update (bool input)
+	{
+		m_mem0 = m_mem1;
+		m_mem1 = input;
+		m_state = (!m_mem0 & m_mem1) ^ m_state;
+	}
+
+	bool m_state;
+	private:
+	bool m_mem0;
+	bool m_mem1;
+};
+
+
 enum OgreDemoCollisionTypes
 {
 	m_rayCast = 1<<0,
 	m_mousePick = 1<<1,
 	m_gravidyBody = 1<<2,
-
-
 
 	m_all = m_rayCast | m_gravidyBody | m_mousePick,
 	m_allExcludingMousePick = m_all & ~ m_mousePick,

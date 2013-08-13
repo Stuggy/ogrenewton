@@ -30,7 +30,6 @@
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
-#include <OgreNewtonExampleApplication.h>
 #include <OgreNewtonArticulatedTransformManager.h>
 
 #include "Utils.h"
@@ -41,8 +40,8 @@
 #include "DemoApplication.h"
 
 
-#define PLAYER_CAMERA_DISTANCE			10.0f
-#define PLAYER_CAMERA_HIGH_ABOVE_HEAD	2.5f
+#define ARTICULATED_VEHICLE_CAMERA_DISTANCE			10.0f
+#define ARTICULATED_VEHICLE_CAMERA_HIGH_ABOVE_HEAD	2.5f
 
 using namespace Ogre;
 
@@ -147,10 +146,13 @@ class OgreNewtonDemoApplication: public DemoApplication
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
-		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
+
+		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
+			dNewton::ScopeLock lock (&m_scopeLock);
+			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
+		}
 
 		// check if there are some vehicle input, if there is, then wakeup the vehicle
-		m_keyboard->capture();
 		if (m_keyboard->isKeyDown(OIS::KC_W) || 
 			m_keyboard->isKeyDown(OIS::KC_S) || 
 			m_keyboard->isKeyDown(OIS::KC_A) || 
@@ -171,22 +173,19 @@ class OgreNewtonDemoApplication: public DemoApplication
 		DemoApplication::OnPhysicUpdateEnd (timestepInSecunds);
 
 		// reposition the camera origin to point to the player
-		Matrix4 camMatrix;
-		m_cameraTransform.GetTargetMatrix (&camMatrix[0][0]);
-		camMatrix = camMatrix.transpose();
+		Matrix4 camMatrix(GetCameraTransform());
 
 		Matrix4 playerMatrix(m_player->GetMatrix());
 		Vector3 frontDir (camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
-		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, PLAYER_CAMERA_HIGH_ABOVE_HEAD, 0.0f)));
-		camOrigin += frontDir * PLAYER_CAMERA_DISTANCE;
+		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, ARTICULATED_VEHICLE_CAMERA_HIGH_ABOVE_HEAD, 0.0f)));
+		camOrigin += frontDir * ARTICULATED_VEHICLE_CAMERA_DISTANCE;
 		camMatrix.setTrans(camOrigin); 
 
-		camMatrix = camMatrix.transpose();
-		m_cameraTransform.SetTargetMatrix (&camMatrix[0][0]);
+		SeCameraTransform (camMatrix);
 	}
 
 
-	bool OnRenderUpdateEnd(dFloat updateParam)
+	void OnRenderUpdateEnd(dFloat updateParam)
 	{
 		DemoApplication::OnRenderUpdateEnd(updateParam);
 		if (m_onScreeHelp.m_state) {
@@ -199,7 +198,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 			m_screen->write(20, 120, "ESC:  Exit application");
 		}
 		m_screen->update();
-		return true;
 	}
 
 
@@ -274,7 +272,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 	try {
 		application.go();
 	} catch(Exception &e) {
-		MessageBox(NULL, e.getFullDescription().c_str(), "Well, this is embarrassing.. an Ogre exception has occurred.", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		MessageBox( NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 	}
 
 	return 0;
