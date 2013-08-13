@@ -20,9 +20,9 @@
 */
 
 
-#include "OgreNewtonStdAfx.h"
+#include "OgreNewtonExample.h"
 
-
+/*
 #include "OgreNewtonWorld.h"
 #include "OgreNewtonDebugger.h"
 #include "OgreNewtonExampleApplication.h"
@@ -211,4 +211,7 @@ bool OgreNewtonExampleApplication::OnRenderUpdateEnd(dFloat updateParam)
 {
 	return true;
 }
+
+*/
+
 

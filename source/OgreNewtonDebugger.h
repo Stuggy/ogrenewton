@@ -26,7 +26,7 @@ using namespace Ogre;
 
 class OgreNewtonBody;
 
-class OGRE_NEWTON_API OgreNewtonDebugger: public FrameListener
+class OGRE_NEWTON_API OgreNewtonDebugger
 {
     public:
 
@@ -68,7 +68,7 @@ class OGRE_NEWTON_API OgreNewtonDebugger: public FrameListener
 		BodyDebugData* m_data; 
 	};
 
-	OgreNewtonDebugger (SceneManager* const sceneMgr, OgreNewtonWorld* const world);
+	OgreNewtonDebugger (SceneNode* const debuggerNode, OgreNewtonWorld* const world);
 	virtual ~OgreNewtonDebugger();
 
 	void SetDebugMode(bool onOff);
@@ -76,20 +76,12 @@ class OGRE_NEWTON_API OgreNewtonDebugger: public FrameListener
 	void HideDebugInformation();
 
 	private:
-	bool frameStarted(const FrameEvent &evt);
-
-	SceneManager* m_sceneMgr;
 	OgreNewtonWorld* m_world;
 	SceneNode* m_debugNode;
 
 	int m_lru;
 	int m_uniqueID;
 	BodyDebugDataMap m_cachemap;
-	bool m_debugMode;
 };
-
-
-
-
 #endif  
 

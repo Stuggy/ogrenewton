@@ -20,16 +20,27 @@
 */
 
 
-#ifndef _OGRE_NEWTON_EXAMPLE_APPLICATION_H_
-#define _OGRE_NEWTON_EXAMPLE_APPLICATION_H_
+#ifndef _OGRE_NEWTON_EXAMPLE_H_
+#define _OGRE_NEWTON_EXAMPLE_H_
 
-#include "OgreNewtonStdAfx.h"
-#include "OgreNewtonWorld.h"
-#include <ExampleApplication.h>
-#include <ExampleFrameListener.h>
+
+//#include <OgreNewtonStdAfx.h>
+#include <OgreNewtonWorld.h>
+#include <OgreNewtonRayCast.h>
+#include <OgreNewtonDebugger.h>
+#include <OgreNewtonSceneBody.h>
+#include <OgreNewtonRayPickManager.h>
+
+//#include <ExampleApplication.h>
+//#include <ExampleFrameListener.h>
+
+#define OIS_DYNAMIC_LIB
+#include <OIS/OIS.h>
+
 
 using namespace Ogre;
 
+/*
 class OgreNewtonDebugger;
 class OgreNewtonPlayerManager;
 class OgreNewtonRayPickManager;
@@ -102,7 +113,7 @@ class OGRE_NEWTON_API OgreNewtonExampleApplication: public ExampleApplication
 	Quaternion m_interpolatedCameraRotation;
 	dNewtonTransformLerp m_cameraTransform;
 };
-
+*/
 
 
 #endif

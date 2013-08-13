@@ -24,8 +24,6 @@
 
 #include <OgreNewtonStdAfx.h>
 #include <OgreNewtonPlayerManager.h>
-#include <OgreNewtonExampleApplication.h>
-
 
 using namespace Ogre;
 

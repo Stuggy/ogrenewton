@@ -30,7 +30,6 @@
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
-#include <OgreNewtonExampleApplication.h>
 
 #include "Utils.h"
 

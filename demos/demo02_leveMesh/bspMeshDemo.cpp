@@ -30,7 +30,6 @@
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
-#include <OgreNewtonExampleApplication.h>
 
 #include "Utils.h"
 #include "ShootRigidBody.h"
@@ -82,19 +81,17 @@ class OgreNewtonDemoApplication: public DemoApplication
 	{
 	}
 
-
 	void createFrameListener()
 	{
-		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-//		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
-//		mRoot->addFrameListener(m_listener);
 	}
 
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
-
-		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
+		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
+			dNewton::ScopeLock lock (&m_scopeLock);
+			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
+		}
 	}
 
 	virtual void destroyScene()
@@ -164,7 +161,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 	try {
 		application.go();
 	} catch(Exception &e) {
-		MessageBox(NULL, e.getFullDescription().c_str(), "Well, this is embarrassing.. an Ogre exception has occurred.", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		MessageBox( NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 	}
 
 	return 0;

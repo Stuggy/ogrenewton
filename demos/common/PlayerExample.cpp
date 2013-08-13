@@ -144,21 +144,22 @@ void MyPlayerContyroller::ApplyPlayerInputs (const DemoApplication* const applic
 	// lock the body while modifying values 
 	dNewton::ScopeLock scopelock (&m_lock);
 
-
 	m_walkDirection = Vector3 (0.0f, 0.0f, 0.0f);
-	if (application->m_keyboard->isKeyDown(OIS::KC_W)) {
+
+	OIS::Keyboard* const keyboard = application->GetKeyboard();
+	if (keyboard->isKeyDown(OIS::KC_W)) {
 		m_walkDirection.z = 1.0f;
 	} 
 
-	if (application->m_keyboard->isKeyDown(OIS::KC_S)) {
+	if (keyboard->isKeyDown(OIS::KC_S)) {
 		m_walkDirection.z = -1.0f;
 	} 
 
-	if (application->m_keyboard->isKeyDown(OIS::KC_A)) {
+	if (keyboard->isKeyDown(OIS::KC_A)) {
 		m_walkDirection.x = 1.0f;
 	} 
 
-	if (application->m_keyboard->isKeyDown(OIS::KC_D)) {
+	if (keyboard->isKeyDown(OIS::KC_D)) {
 		m_walkDirection.x = -1.0f;
 	}
 

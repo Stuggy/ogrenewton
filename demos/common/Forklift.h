@@ -23,6 +23,7 @@
 
 
 #include <OgreNewtonStdAfx.h>
+
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonArticulatedTransformManager.h>
 

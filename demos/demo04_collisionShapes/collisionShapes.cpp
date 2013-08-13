@@ -30,7 +30,6 @@
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
-#include <OgreNewtonExampleApplication.h>
 
 #include "Utils.h"
 #include "ShootRigidBody.h"
@@ -256,7 +255,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 	{
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
 
-		m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
+		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
+			dNewton::ScopeLock lock (&m_scopeLock);
+			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
+		}
 	}
 
 	virtual void destroyScene()
@@ -322,7 +324,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT )
 	try {
 		application.go();
 	} catch(Exception &e) {
-		MessageBox(NULL, e.getFullDescription().c_str(), "Well, this is embarrassing.. an Ogre exception has occurred.", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		MessageBox( NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 	}
 
 	return 0;

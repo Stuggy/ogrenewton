@@ -31,9 +31,9 @@
 #include "OgreNewtonArticulatedTransformManager.h"
 
 
-OgreNewtonWorld::OgreNewtonWorld (SceneManager* const manager, int updateFramerate)
+
+OgreNewtonWorld::OgreNewtonWorld (int updateFramerate)
 	:dNewton()
-	,m_sceneManager(manager)
 	,m_gravity (0.0f, -9.8f, 0.0f)
 	,m_concurrentUpdateMode(true)
 	,m_lastPhysicTimeInMicroseconds(GetTimeInMicrosenconds ())
@@ -53,6 +53,38 @@ OgreNewtonWorld::~OgreNewtonWorld()
 {
 	m_inputManager->m_continueExecution = false;
 }
+
+
+const Vector3& OgreNewtonWorld::GetGravity() const 
+{
+	return m_gravity;
+}
+
+OgreNewtonInputManager* OgreNewtonWorld::GetInputManager() const 
+{
+	return m_inputManager;
+}
+
+OgreNewtonArticulatedTransformManager* OgreNewtonWorld::GetHierarchyTransformManager() const 
+{
+	return m_localTransformManager;
+}
+
+OgreNewtonTriggerManager* OgreNewtonWorld::GetTriggerManager() const 
+{
+	return m_triggerManager;
+}
+
+OgreNewtonPlayerManager* OgreNewtonWorld::GetPlayerManager() const 
+{
+	return m_playerManager;
+}
+
+OgreNewtonRayPickManager* OgreNewtonWorld::GetRayPickManager() const 
+{
+	return m_rayPickerManager;
+}
+
 
 
 void OgreNewtonWorld::SetUpdateFPS(Real desiredFps, int maxUpdatesPerFrames)
@@ -90,9 +122,7 @@ void OgreNewtonWorld::Update ()
 		dNewton::Update (m_timestep);
 	}
 
-	dFloat param = GetInteplationParam(m_timestep);
-// for the moment make param always 1.0 untiul i find teh bug with teh camera
-	param = 1.0f;
+	dFloat param = GetInterpolationParam(m_timestep);
 	dAssert (applicationTime > 0.0f);
 	{
 		dNewton::ScopeLock lock (&m_inputManager->m_lock);

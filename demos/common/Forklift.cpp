@@ -30,7 +30,6 @@
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonDynamicBody.h>
 #include <OgreNewtonRayPickManager.h>
-#include <OgreNewtonExampleApplication.h>
 #include <OgreNewtonArticulatedTransformManager.h>
 
 #include "Utils.h"
@@ -356,13 +355,14 @@ void ForkliftPhysicsModel::CalculateEngine(OgreNewtonDynamicBody* const tire)
 
 void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 {
-	m_application->m_keyboard->capture();
+	OIS::Keyboard* const keyboard = m_application->GetKeyboard();
+	keyboard->capture();
 
 	// apply steering control
 	Real steeringAngle = m_rearTire[0]->GetActuatorAngle1();
-	if (m_application->m_keyboard->isKeyDown(OIS::KC_A)) {
+	if (keyboard->isKeyDown(OIS::KC_A)) {
 		steeringAngle = m_rearTire[0]->GetMinAngularLimit0(); 
-	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_D)) {
+	} else if (keyboard->isKeyDown(OIS::KC_D)) {
 		steeringAngle = m_rearTire[0]->GetMaxAngularLimit0(); 
 	}
 	m_rearTire[0]->SetTargetAngle1(steeringAngle);
@@ -370,9 +370,9 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 
 	// control tilt angle
 	Real tillAngle = revolvePlatform->GetActuatorAngle();
-	if (m_application->m_keyboard->isKeyDown(OIS::KC_Z)) {
+	if (keyboard->isKeyDown(OIS::KC_Z)) {
 		tillAngle = revolvePlatform->GetMinAngularLimit();
-	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_C)) {
+	} else if (keyboard->isKeyDown(OIS::KC_C)) {
 		tillAngle = revolvePlatform->GetMaxAngularLimit();
 	}
 	revolvePlatform->SetTargetAngle (tillAngle);
@@ -380,9 +380,9 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	// apply engine torque
 	Real brakeTorque = 0.0f;
 	Real engineTorque = 0.0f;
-	if (m_application->m_keyboard->isKeyDown(OIS::KC_W)) {
+	if (keyboard->isKeyDown(OIS::KC_W)) {
 		engineTorque = -m_maxEngineTorque; 
-	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_S)) {
+	} else if (keyboard->isKeyDown(OIS::KC_S)) {
 		engineTorque = m_maxEngineTorque; 
 	} else {
 		brakeTorque = 1000.0f;
@@ -410,9 +410,9 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 
 	// control lift position
 	Real liftPosit = slidePlaforms[0]->GetActuatorPosit();
-	if (m_application->m_keyboard->isKeyDown(OIS::KC_Q)) {
+	if (keyboard->isKeyDown(OIS::KC_Q)) {
 		liftPosit = slidePlaforms[0]->GetMinPositLimit();
-	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_E)) {
+	} else if (keyboard->isKeyDown(OIS::KC_E)) {
 		liftPosit = slidePlaforms[0]->GetMaxPositLimit();
 	}
 	for (int i = 0; i < 3; i ++) {
@@ -422,9 +422,9 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	// control teeth position
 	const Real toothRate = 10.0f;
 	Real toothPosit = slideTooth[0]->GetActuatorPosit();
-	if (m_application->m_keyboard->isKeyDown(OIS::KC_F)) {
+	if (keyboard->isKeyDown(OIS::KC_F)) {
 		toothPosit = toothPosit + toothRate * timestep;
-	} else if (m_application->m_keyboard->isKeyDown(OIS::KC_G)) {
+	} else if (keyboard->isKeyDown(OIS::KC_G)) {
 		toothPosit = toothPosit - toothRate * timestep;
 	}
 	slideTooth[0]->SetTargetPosit(toothPosit);

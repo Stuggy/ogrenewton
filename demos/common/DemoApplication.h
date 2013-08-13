@@ -19,105 +19,155 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-
+#ifndef _DEMO_APPLICATION_H_
+#define _DEMO_APPLICATION_H_
 
 #include <OgreNewtonStdAfx.h>
+
+#include <OgreRoot.h>
+#include <OgreCamera.h>
+#include <OgreSceneManager.h>
+#include <OgreRenderWindow.h>
+#define OIS_DYNAMIC_LIB
+#include <OIS/OIS.h>
+
 #include <OgreNewtonWorld.h>
 #include <OgreNewtonRayCast.h>
 #include <OgreNewtonDebugger.h>
 #include <OgreNewtonSceneBody.h>
 #include <OgreNewtonRayPickManager.h>
-#include <OgreNewtonExampleApplication.h>
+#include <OgreNewtonArticulatedTransformManager.h>
 
-#ifndef _DEMO_APPLICATION_H_
-#define _DEMO_APPLICATION_H_
+#include "Utils.h"
 
 using namespace Ogre;
 
 class MouseCursor;
 class ScreenWriter;
 
-class DemoApplication: public OgreNewtonExampleApplication, public OIS::KeyListener, public OIS::MouseListener, public WindowEventListener
+
+class DemoApplication: public OIS::MouseListener, public OIS::KeyListener, public WindowEventListener
 {
-	class KeyTrigger
+	public:
+	class SmoothCamera: public dNewtonTransformLerp
 	{
 		public:
-		KeyTrigger (bool state = false)
-			:m_state(state)
-			,m_mem0(false)
-			,m_mem1(false)
-		{
-		}
-
-		bool TriggerUp() const
-		{
-			return !m_mem0 & m_mem1;
-		}
-
-		bool TriggerDown() const
-		{
-			return m_mem0 & !m_mem1;
-		}
-
+		SmoothCamera();
+		void Reset (const Vector3& posit, const Quaternion& rotation);
+		void Move (Real deltaTranslation, Real deltaStrafe, Radian pitchAngleStep, Radian yawAngleStep);
 		
-		void Update (bool input)
-		{
-			m_mem0 = m_mem1;
-			m_mem1 = input;
-			m_state = (!m_mem0 & m_mem1) ^ m_state;
-		}
+		Radian m_cameraYawAngle;
+		Radian m_cameraPitchAngle;
+		Vector3 m_cameraTranslation;
+	};
 
-		bool m_state;
+	class OgreNewtonExample: public OgreNewtonWorld
+	{
+		public:
+		OgreNewtonExample(DemoApplication* const application);
+		~OgreNewtonExample();
 
-		private:
-		bool m_mem0;
-		bool m_mem1;
+		// called asynchronous at the beginning of a physics update. 
+		virtual void OnBeginUpdate (dFloat timestepInSecunds);
+
+		// called asynchronous at the beginning end a physics update. 
+		virtual void OnEndUpdate (dFloat timestepInSecunds);
+
+		// called synchronous with ogre update loop, at the beginning of setting all node transform after a physics update  
+		virtual void OnNodesTransformBegin(Real interpolationParam);
+
+		// called synchronous with ogre update loop, at the end of setting all node transform after a physics update  
+		virtual void OnNodesTransformEnd(Real interpolationParam);
+
+
+		// broad phase AABB overlap
+		virtual bool OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex) const;
+		virtual bool OnCompoundSubCollisionAABBOverlap (const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex) const;
+		virtual void OnContactProcess (dNewtonContactMaterial* const contacts, dFloat timestep, int threadIndex) const;
+
+
+		DemoApplication* const m_application;
 	};
 
 
-	public:
-	DemoApplication	();
+	DemoApplication ();
 	virtual ~DemoApplication(void);
 
+	bool go(void);
+	virtual void createScene();
+	virtual void destroyScene();
+
+	SceneManager* GetSceneManager() const;
+	OgreNewtonWorld* GetPhysics() const;
+	OIS::Keyboard* GetKeyboard() const;
+
+	Real GetCameraYawAngle() const;
+	Matrix4 GetCameraTransform () const;
+	void SeCameraTransform (const Matrix4& matrix);
+	void ResetCamera (const Vector3& posit, const Quaternion& rot);
+	virtual OgreNewtonExample* OnCreateWorld (DemoApplication* const application);
+
+	protected:
+	void InitCamera();
+	void InitInputSystem();
+	void UpdateMousePick ();
+
+	virtual void UpdateFreeCamera ();
+
+	// called asynchronous at the beginning of a physics update. do any pre-physics update here  
 	virtual void OnPhysicUpdateBegin(dFloat timestepInSecunds);
+
+	// called asynchronous at the beginning of a physics update. do any post-physics update here, moving the camera matrix  
 	virtual void OnPhysicUpdateEnd(dFloat timestepInSecunds);
 
-	virtual bool OnRenderUpdateBegin(dFloat updateParam);
-	virtual bool OnRenderUpdateEnd(dFloat updateParam);
+	// called synchronous from ogre update loop before updating all sceneNodes controlled by a physic body  
+	virtual void OnRenderUpdateBegin(dFloat updateParam);
+
+	// called synchronous from ogre update loop after of updating updating all sceneNodes controlled by a physic body  
+	virtual void OnRenderUpdateEnd(dFloat updateParam);
 
 
-	virtual void createScene(void);
-	virtual void destroyScene(void);
-
-	void UpdateMousePick ();
-	void UpdateFreeCamera ();
-
-
-	SceneManager* GetSceneManager() {return mSceneMgr;}
-
+	// collect operating system events
 	virtual void windowMoved (RenderWindow* rw); 
-	virtual void windowFocusChange(RenderWindow* rw);
 	virtual void windowResized(RenderWindow* rw);
+	virtual void windowFocusChange(RenderWindow* rw);
 	virtual void windowClosed(RenderWindow* rw);
-
 	virtual bool keyPressed(const OIS::KeyEvent &evt);
 	virtual bool keyReleased(const OIS::KeyEvent &evt);
-	virtual bool mouseMoved (const OIS::MouseEvent &arg);
-	virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id);
-	virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id);
+	virtual bool mouseMoved (const OIS::MouseEvent &evt);
+	virtual bool mousePressed( const OIS::MouseEvent &evt, OIS::MouseButtonID id);
+	virtual bool mouseReleased( const OIS::MouseEvent &evt, OIS::MouseButtonID id);
 
-	KeyTrigger m_debugTriggerKey;
-	KeyTrigger m_onScreeHelp;
-	bool m_mousePickMemory;
 
-	MouseCursor* m_cursor;
-	OIS::Mouse* m_mouse;
+
+	Root* mRoot;
+	Camera* mCamera;
+	RenderWindow* mWindow;
+	SceneManager* mSceneMgr;
+	OgreNewtonWorld* m_physicsWorld;
+	OgreNewtonDebugger* m_debugRender;
 	OIS::InputManager* m_ois;
+	OIS::Mouse* m_mouse;
 	OIS::Keyboard* m_keyboard;
+	MouseCursor* m_cursor;
 	ScreenWriter* m_screen;
-	bool m_shutDwoun;
+	SmoothCamera m_cameraSmoothing;
+
+	KeyTrigger m_onScreeHelp;
+	KeyTrigger m_debugTriggerKey;
+	String mResourcesCfg;
+	String mPluginsCfg;
+	OIS::MouseState m_mouseState;
+
 	Real m_pickParam;
+	unsigned m_scopeLock;
+	bool m_mousePickMemory;
+	bool m_exitApplication;
+	bool m_initializationSuccessful;
+
+	friend class OgreNewtonExample;
 };
+
 
 
 #endif
