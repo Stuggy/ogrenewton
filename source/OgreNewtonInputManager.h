@@ -37,7 +37,6 @@ class OGRE_NEWTON_API OgreNewtonInputManager: public dNewtonInputManager
 
 	void OnBeginUpdate (dFloat timestepInSecunds);
 	void OnEndUpdate (dFloat timestepInSecunds);
-	unsigned m_lock;
 };
 
 #endif

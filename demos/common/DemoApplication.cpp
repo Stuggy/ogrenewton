@@ -122,6 +122,7 @@ void DemoApplication::OgreNewtonExample::OnNodesTransformBegin(Real interpolatio
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
+	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnRenderUpdateBegin(interpolationParam);
 }
 
@@ -130,6 +131,7 @@ void DemoApplication::OgreNewtonExample::OnNodesTransformEnd(Real interpolationP
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
+	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnRenderUpdateEnd(interpolationParam);
 }
 
@@ -457,6 +459,9 @@ void DemoApplication::OnPhysicUpdateEnd(dFloat timestepInSecunds)
 	// camera update at physics simulation time
 	UpdateFreeCamera ();
 
+	// see if debug display was activated
+	m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
+
 	// see if we want to quit application
 	m_exitApplication = m_keyboard->isKeyDown(OIS::KC_ESCAPE);
 }
@@ -465,8 +470,6 @@ void DemoApplication::OnPhysicUpdateEnd(dFloat timestepInSecunds)
 // called synchronous from ogre update loop before updating all sceneNodes controlled by a physic body  
 void DemoApplication::OnRenderUpdateBegin(dFloat updateParam)
 {
-	// see if debug display was activated
-	m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
 }
 
 // called synchronous from ogre update loop after of updating updating all sceneNodes controlled by a physic body  
