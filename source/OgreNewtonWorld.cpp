@@ -117,7 +117,8 @@ void OgreNewtonWorld::Update ()
 	m_lastPhysicTimeInMicroseconds = GetTimeInMicrosenconds ();
 	Real applicationTime = Real (m_lastPhysicTimeInMicroseconds - lastTime) * 1.0e-6f;
 	if (m_concurrentUpdateMode) {
-		dNewton::UpdateAsync (m_timestep);
+		//dNewton::UpdateAsync (m_timestep);
+		dNewton::Update (m_timestep);
 	} else {
 		dNewton::Update (m_timestep);
 	}
