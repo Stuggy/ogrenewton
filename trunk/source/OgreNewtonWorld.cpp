@@ -123,10 +123,7 @@ void OgreNewtonWorld::Update ()
 
 	dFloat param = GetInterpolationParam(m_timestep);
 	dAssert (applicationTime > 0.0f);
-	{
-		dNewton::ScopeLock lock (&m_inputManager->m_lock);
-		OnNodesTransformBegin (param);
-	}
+	OnNodesTransformBegin (param);
 
 	// iterate over all physics bodies and get the tranformtaion matrix;
 	for (dNewtonBody* body = GetFirstBody(); body; body = GetNextBody(body)) {
@@ -146,8 +143,7 @@ void OgreNewtonWorld::Update ()
 			body->OnApplicationPostTransform (applicationTime);
 		}
 	}
-
-	dNewton::ScopeLock lock (&m_inputManager->m_lock);
+	
 	OnNodesTransformEnd (param);
 	m_physicUpdateTimestepInMocroseconds = GetTimeInMicrosenconds () - m_lastPhysicTimeInMicroseconds;
 }
