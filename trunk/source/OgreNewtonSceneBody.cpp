@@ -27,7 +27,7 @@
 
 
 OgreNewtonSceneBody::OgreNewtonSceneBody (OgreNewtonWorld* const ogreWorld, dLong collisionMask)
-	:dNewtonDynamicBody ()
+	:dNewtonDynamicBody (NULL)
 {
 	Matrix4 matrix (Matrix4::IDENTITY);
 	dNewtonCollisionScene collision (ogreWorld, collisionMask);

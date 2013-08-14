@@ -25,12 +25,12 @@
 #include "OgreNewtonDynamicBody.h"
 
 OgreNewtonDynamicBody::OgreNewtonDynamicBody (OgreNewtonWorld* const world, Real mass, const dNewtonCollision* const collision, SceneNode* const treeNode, const Matrix4& location)
-	:dNewtonDynamicBody (world, mass, collision, treeNode, location.transpose()[0])
+	:dNewtonDynamicBody (world, mass, collision, treeNode, location.transpose()[0], NULL)
 {
 }
 
 OgreNewtonDynamicBody::OgreNewtonDynamicBody()
-	:dNewtonDynamicBody()
+	:dNewtonDynamicBody(NULL)
 {
 }
 
