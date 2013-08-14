@@ -40,8 +40,8 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		public:
 		WaterVolumeController (OgreNewtonTriggerManager* const manager, const dNewtonCollision& convexShape, SceneNode* const waterNode, const Matrix4& matrix, const Plane& waterPlane)
 			:dNewtonTrigger (manager, convexShape, waterNode, &matrix[0][0])
-			,m_waterDentity(1.1f)
 			,m_waterViscosity (0.1f)
+			,solidToFluidVolumeRatio(0.9f)
 		{
 			m_waterPlane = waterPlane.normal;
 			m_waterPlane.w = waterPlane.d;
@@ -76,7 +76,7 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 				dNewtonCollision* const collision = guess->GetCollision();
 
 				Real shapeVolume = collision->GetVolume();
-				Real fluidDentity = m_waterDentity / shapeVolume;
+				Real fluidDentity = 1.0f / (shapeVolume * solidToFluidVolumeRatio);
 				collision->CalculateBuoyancyAcceleration (&matrix[0][0], &cog[0], &gravity.x, &m_waterPlane.x, fluidDentity, m_waterViscosity, &accelPerUnitMass.x, &torquePerUnitMass.x);
 
 				Vector3 force (accelPerUnitMass * mass);
@@ -88,8 +88,8 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		}
 
 		Vector4 m_waterPlane;
-		Real m_waterDentity;
 		Real m_waterViscosity;
+		Real solidToFluidVolumeRatio;
 	};
 
 
