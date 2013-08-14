@@ -22,22 +22,7 @@
 #ifndef _DEMO_APPLICATION_H_
 #define _DEMO_APPLICATION_H_
 
-#include <OgreNewtonStdAfx.h>
-
-#include <OgreRoot.h>
-#include <OgreCamera.h>
-#include <OgreSceneManager.h>
-#include <OgreRenderWindow.h>
-#define OIS_DYNAMIC_LIB
-#include <OIS/OIS.h>
-
-#include <OgreNewtonWorld.h>
-#include <OgreNewtonRayCast.h>
-#include <OgreNewtonDebugger.h>
-#include <OgreNewtonSceneBody.h>
-#include <OgreNewtonRayPickManager.h>
-#include <OgreNewtonArticulatedTransformManager.h>
-
+#include "HelpersStdAfx.h"
 #include "Utils.h"
 
 using namespace Ogre;

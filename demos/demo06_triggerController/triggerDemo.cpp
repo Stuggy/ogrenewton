@@ -20,18 +20,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <OgreNewtonStdAfx.h>
-#include <OgreNewtonMesh.h>
-#include <OgreNewtonWorld.h>
-#include <OgreNewtonRayCast.h>
-#include <OgreNewtonDebugger.h>
-#include <OgreNewtonSceneBody.h>
-#include <OgreNewtonDynamicBody.h>
-#include <OgreNewtonPlayerManager.h>
-#include <OgreNewtonTriggerManager.h>
-#include <OgreNewtonRayPickManager.h>
-
-
+#include <HelpersStdAfx.h>
 #include "Utils.h"
 #include "ShootRigidBody.h"
 #include "DemoApplication.h"

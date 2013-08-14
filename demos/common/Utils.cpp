@@ -21,17 +21,7 @@
 */
 
 
-
-#include <OgreNewtonStdAfx.h>
-#include <OgreNewtonMesh.h>
-#include <OgreNewtonWorld.h>
-#include <OgreNewtonRayCast.h>
-#include <OgreNewtonDebugger.h>
-#include <OgreNewtonSceneBody.h>
-#include <OgreNewtonDynamicBody.h>
-#include <OgreNewtonRayPickManager.h>
-
-#include "Utils.h"
+#include <HelpersStdAfx.h>
 
 Real Rand (Real base)
 {

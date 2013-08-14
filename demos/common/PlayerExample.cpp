@@ -22,7 +22,7 @@
 
 
 
-#include <OgreNewtonStdAfx.h>
+#include "HelpersStdAfx.h"
 #include "Utils.h"
 #include "PlayerExample.h"
 #include "DemoApplication.h"

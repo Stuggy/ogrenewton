@@ -22,7 +22,7 @@
 
 
 
-#include <OgreNewtonStdAfx.h>
+#include "HelpersStdAfx.h"
 
 #ifndef _BUILD_PYRAMID_H_
 #define _BUILD_PYRAMID_H_

@@ -20,12 +20,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-
-
-#include <OgreNewtonStdAfx.h>
-
 #ifndef _BUILD_JENGA_H_
 #define _BUILD_JENGA_H_
+
+
+#include "HelpersStdAfx.h"
 
 using namespace Ogre;
 void BuildJenga (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location, int high);

@@ -21,11 +21,8 @@
 */
 
 
+#include "HelpersStdAfx.h"
 
-#include <OgreNewtonStdAfx.h>
-
-#include <OgreNewtonWorld.h>
-#include <OgreNewtonArticulatedTransformManager.h>
 
 
 using namespace Ogre;

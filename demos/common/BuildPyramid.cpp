@@ -21,20 +21,10 @@
 */
 
 
-
-#include <OgreNewtonStdAfx.h>
-#include <OgreNewtonMesh.h>
-#include <OgreNewtonWorld.h>
-#include <OgreNewtonRayCast.h>
-#include <OgreNewtonDebugger.h>
-#include <OgreNewtonSceneBody.h>
-#include <OgreNewtonDynamicBody.h>
-#include <OgreNewtonRayPickManager.h>
-
+#include "HelpersStdAfx.h"
 #include "Utils.h"
 #include "BuildPyramid.h"
 #include "DemoApplication.h"
-
 
 
 void BuildPyramid (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location, Real mass, int base, int high)

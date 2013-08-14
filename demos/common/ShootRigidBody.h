@@ -22,11 +22,12 @@
 #ifndef _SHOOT_ROGID_BODY_H__
 #define _SHOOT_ROGID_BODY_H__
 
-#include <OgreNewtonStdAfx.h>
-#include <OgreTexture.h>
-#include <OgreOverlayManager.h>
-#include <OgreMaterialManager.h>
-#include <OgrePanelOverlayElement.h>
+#include <HelpersStdAfx.h>
+//#include <OgreNewtonStdAfx.h>
+//#include <OgreTexture.h>
+//#include <OgreOverlayManager.h>
+//#include <OgreMaterialManager.h>
+//#include <OgrePanelOverlayElement.h>
 
 using namespace Ogre;
 
