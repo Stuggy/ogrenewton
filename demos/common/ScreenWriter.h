@@ -52,9 +52,9 @@ public:
 	
 	void updateWindowExtents(int winWidth, int winHeight);
 	
-	void write(float x, float y, const char*, ...);
-	void write(float x, float y, String, ...);
-	void write(float x, float y, float size, const char*, ...);
+	int write(float x, float y, const char*, ...);
+	int write(float x, float y, String, ...);
+	int write(float x, float y, float size, const char*, ...);
 	void write(Entry& entry);
 
 	void begin(float x, float y, float size);

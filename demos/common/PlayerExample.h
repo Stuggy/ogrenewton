@@ -62,7 +62,7 @@ class MyPlayerContyroller: public OgreNewtonPlayerManager::OgreNetwonPlayer
 	void ApplyPlayerInputs (const DemoApplication* const application, Real timestepInSecunds);
 
 	// this is call from the Ogre main thread, you should not put too much work here
-	// just set the desired speed and heading as determien by the AI so that OnPlayerMove use these values later on
+	// just set the desired speed and heading as determine by the AI so that OnPlayerMove use these values later on
 	void ApplyNPCInputs (const DemoApplication* const application, Real timestepInSecunds);
 
 	// called at physics time form the Physic thread, we most update the player motion here, 
@@ -91,7 +91,7 @@ class MyPlayerContyroller: public OgreNewtonPlayerManager::OgreNetwonPlayer
 	Vector3 m_walkDirection;
 	Real m_desiredStrafeSpeed;
 
-
+	unsigned m_lock;
 
 	static String m_animNames[];
 };

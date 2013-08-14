@@ -42,6 +42,7 @@ MyPlayerContyroller::MyPlayerContyroller (OgreNewtonPlayerManager* const manager
 	,m_strafeSpeed(1.0f)
 	,m_walkDirection(0.0f, 0.0f, 0.0f)
 	,m_desiredStrafeSpeed(0.0f)
+	,m_lock(0)
 {
 	// set the blend mode here
 	playerMesh->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);

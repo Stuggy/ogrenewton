@@ -140,6 +140,7 @@ class DemoApplication: public OIS::MouseListener, public OIS::KeyListener, publi
 
 	KeyTrigger m_onScreeHelp;
 	KeyTrigger m_debugTriggerKey;
+	KeyTrigger m_asyncronousUpdateKey;
 	String mResourcesCfg;
 	String mPluginsCfg;
 	OIS::MouseState m_mouseState;
