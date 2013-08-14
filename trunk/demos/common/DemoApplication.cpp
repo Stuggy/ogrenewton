@@ -21,15 +21,7 @@
 */
 
 
-#include <OgreNewtonStdAfx.h>
-
-
-#include <OgreLogManager.h>
-#include <OgreViewport.h>
-#include <OgreConfigFile.h>
-#include <OgreEntity.h>
-#include <OgreWindowEventUtilities.h>
-
+#include "HelpersStdAfx.h"
 
 #include "MouseCursor.h"
 #include "ScreenWriter.h"

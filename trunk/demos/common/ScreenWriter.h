@@ -22,15 +22,7 @@
 #ifndef SCREEN_WRITER_H
 #define SCREEN_WRITER_H
 
-#include <Ogre.h>
-#include <OgreOverlay.h>
-#include <OgreOverlayElement.h>
-#include <OgreOverlayManager.h>
-#include <OgreOverlayContainer.h>
-#include <OgreTextAreaOverlayElement.h>
-
-#include <string>
-#include <map>
+#include <HelpersStdAfx.h>
 
 using namespace Ogre;
 

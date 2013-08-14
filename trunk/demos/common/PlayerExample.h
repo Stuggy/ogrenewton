@@ -21,9 +21,7 @@
 */
 
 
-
-#include <OgreNewtonStdAfx.h>
-#include <OgreNewtonPlayerManager.h>
+#include "HelpersStdAfx.h"
 
 using namespace Ogre;
 

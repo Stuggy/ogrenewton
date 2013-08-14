@@ -1,10 +1,7 @@
-#include <OgreNewtonStdAfx.h>
+#include "HelpersStdAfx.h"
 
 #include "OgreDotScene.h"
-#include <Ogre.h>
-//#include <Terrain/OgreTerrain.h>
-//#include <Terrain/OgreTerrainGroup.h>
-//#include <Terrain/OgreTerrainMaterialGeneratorA.h>
+
 #pragma warning(disable:4390)
 #pragma warning(disable:4305)
 

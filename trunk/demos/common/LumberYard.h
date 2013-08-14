@@ -22,10 +22,10 @@
 
 
 
-#include <OgreNewtonStdAfx.h>
+#include "HelpersStdAfx.h"
 
-#ifndef _BUILD_JENGA_H_
-#define _BUILD_JENGA_H_
+#ifndef _BUILD_LUMBER_YARD_H_
+#define _BUILD_LUMBER_YARD_H_
 
 using namespace Ogre;
 void LumberYard (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& origin, int count_x, int count_z, int high);

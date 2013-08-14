@@ -22,11 +22,7 @@
 #ifndef _MOUSECURSOR_H_
 #define _MOUSECURSOR_H_
 
-#include <OgreNewtonStdAfx.h>
-#include <OgreTexture.h>
-#include <OgreOverlayManager.h>
-#include <OgreMaterialManager.h>
-#include <OgrePanelOverlayElement.h>
+#include "HelpersStdAfx.h"
 
 using namespace Ogre;
 

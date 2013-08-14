@@ -19,19 +19,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "MouseCursor.h"
 
-#include <OgreNewtonMesh.h>
-#include <OgreNewtonWorld.h>
-#include <OgreNewtonRayCast.h>
-#include <OgreNewtonDebugger.h>
-#include <OgreNewtonSceneBody.h>
-#include <OgreNewtonDynamicBody.h>
-#include <OgreNewtonRayPickManager.h>
-
-#include <OgreTextureManager.h>
-#include <OgreTechnique.h>
-
+#include <HelpersStdAfx.h>
 #include "Utils.h"
 #include "DemoApplication.h"
 #include "ShootRigidBody.h"
