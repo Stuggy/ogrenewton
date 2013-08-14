@@ -155,7 +155,7 @@ const char* ScreenWriter::vprint(const char* format, va_list args)
 	return buffer;
 }
 
-void ScreenWriter::write(float x, float y, const char* format, ...)
+int ScreenWriter::write(float x, float y, const char* format, ...)
 {
 	Entry entry;
 	entry.x = x;
@@ -166,9 +166,10 @@ void ScreenWriter::write(float x, float y, const char* format, ...)
 	va_end(args);   
 	
 	write(entry);
+	return y;
 }
 
-void ScreenWriter::write(float x, float y, String format, ...)
+int ScreenWriter::write(float x, float y, String format, ...)
 {
 	Entry entry;
 	entry.x = x;
@@ -180,9 +181,10 @@ void ScreenWriter::write(float x, float y, String format, ...)
 	va_end(args);   
 	
 	write(entry);
+	return y;
 }
 
-void ScreenWriter::write(float x, float y, float size, const char* format, ...)
+int ScreenWriter::write(float x, float y, float size, const char* format, ...)
 {
 	Entry entry;
 	entry.x = x;
@@ -194,6 +196,7 @@ void ScreenWriter::write(float x, float y, float size, const char* format, ...)
 	va_end(args);   
 	
 	write(entry);
+	return y;
 }
 
 ScreenWriter::Context::Context()

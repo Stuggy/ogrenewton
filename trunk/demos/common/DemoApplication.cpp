@@ -175,6 +175,7 @@ DemoApplication::DemoApplication()
 	,m_screen(NULL)
 	,m_onScreeHelp(true)
 	,m_debugTriggerKey(false)
+	,m_asyncronousUpdateKey(false)
 	,mResourcesCfg(Ogre::StringUtil::BLANK)
 	,mPluginsCfg(Ogre::StringUtil::BLANK)
 	,m_pickParam(0.0f)
@@ -439,6 +440,11 @@ void DemoApplication::OnPhysicUpdateBegin(dFloat timestepInSecunds)
 {
 	m_onScreeHelp.Update (m_keyboard->isKeyDown(OIS::KC_F1) ? true : false);
 	m_debugTriggerKey.Update (m_keyboard->isKeyDown(OIS::KC_F3) ? true : false);
+	m_asyncronousUpdateKey.Update (m_keyboard->isKeyDown(OIS::KC_F2) ? true : false);
+
+	if (m_asyncronousUpdateKey.TriggerUp()) {
+		m_physicsWorld->SetConcurrentUpdateMode(!m_physicsWorld->GetConcurrentUpdateMode());
+	}
 
 	// see if we pick a body form the screen
 	UpdateMousePick ();
@@ -481,15 +487,17 @@ void DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 	mCamera->setOrientation (matrix.extractQuaternion());
 
 	// show statistic and help options
-	m_screen->write(20, 20, "FPS:  %05.3f", stats.lastFPS);
-	m_screen->write(20, 40, "Physics time:  %05.3f ms", float (double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
-	m_screen->write(20, 60, "Number of rigid bodies:  %d", m_physicsWorld->GetBodyCount());
+	int row = 0;
+	row = m_screen->write(20, row + 20, "FPS:  %05.3f", stats.lastFPS);
+	row = m_screen->write(20, row + 20, "Physics time:  %05.3f ms", float (double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
+	row = m_screen->write(20, row + 20, "Number of rigid bodies:  %d", m_physicsWorld->GetBodyCount());
 	if (m_onScreeHelp.m_state) {
-		m_screen->write(20,  80, "F1:  Hide debug help text");
-		m_screen->write(20, 100, "F3:  Toggle display physic debug");
-		m_screen->write(20, 120, "W, S, A, D:  Free camera navigation");
-		m_screen->write(20, 140, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objects from the screen");
-		m_screen->write(20, 160, "ESC:  Exit application");
+		row = m_screen->write(20, row + 20, "F1:  Hide debug help text");
+		row = m_screen->write(20, row + 20, "F2:  Toggle %s simulation update", m_physicsWorld->GetConcurrentUpdateMode() ? "Asynchronous" : "Synchronous");
+		row = m_screen->write(20, row + 20, "F3:  Toggle display physic debug");
+		row = m_screen->write(20, row + 20, "W, S, A, D:  Free camera navigation");
+		row = m_screen->write(20, row + 20, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objects from the screen");
+		row = m_screen->write(20, row + 20, "ESC:  Exit application");
 
 	} else if (m_onScreeHelp.TriggerDown()){
 		m_screen->removeAll();
