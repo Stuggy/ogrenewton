@@ -29,7 +29,7 @@ using namespace Ogre;
 
 class DemoApplication;
 
-class ForkliftPhysicsModel: public OgreNewtonArticulatedTransformManager::OgreNewtonArticulatedTransformController
+class ForkliftPhysicsModel: public OgreNewtonArticulationManager::OgreNewtonArticulatedTransformController
 {
 	public:
 	ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin);

@@ -70,7 +70,7 @@
 #include <OgreNewtonPlayerManager.h>
 #include <OgreNewtonRayPickManager.h>
 #include <OgreNewtonTriggerManager.h>
-#include <OgreNewtonArticulatedTransformManager.h>
+#include <OgreNewtonArticulationManager.h>
 
 #include <string>
 #include <map>

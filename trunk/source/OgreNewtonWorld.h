@@ -31,7 +31,7 @@ class OgreNewtonInputManager;
 class OgreNewtonPlayerManager;
 class OgreNewtonRayPickManager;
 class OgreNewtonTriggerManager;
-class OgreNewtonArticulatedTransformManager;
+class OgreNewtonArticulationManager;
 
 
 class OGRE_NEWTON_API OgreNewtonWorld: public dNewton 
@@ -57,7 +57,7 @@ class OGRE_NEWTON_API OgreNewtonWorld: public dNewton
 
 	const Vector3& GetGravity() const;
 	OgreNewtonInputManager* GetInputManager() const ;
-	OgreNewtonArticulatedTransformManager* GetHierarchyTransformManager() const; 
+	OgreNewtonArticulationManager* GetHierarchyTransformManager() const; 
 	OgreNewtonTriggerManager* GetTriggerManager() const; 
 	OgreNewtonPlayerManager* GetPlayerManager() const; 
 	OgreNewtonRayPickManager* GetRayPickManager() const; 
@@ -74,7 +74,7 @@ class OGRE_NEWTON_API OgreNewtonWorld: public dNewton
 	OgreNewtonPlayerManager* m_playerManager;
 	OgreNewtonTriggerManager* m_triggerManager;
 	OgreNewtonRayPickManager* m_rayPickerManager;
-	OgreNewtonArticulatedTransformManager* m_localTransformManager;
+	OgreNewtonArticulationManager* m_localTransformManager;
 
 	Vector3 m_gravity;
 	Real m_timestep;

@@ -307,11 +307,11 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\source\OgreNewtonArticulatedTransformManager.cpp"
+			RelativePath="..\..\source\OgreNewtonArticulationManager.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\source\OgreNewtonArticulatedTransformManager.h"
+			RelativePath="..\..\source\OgreNewtonArticulationManager.h"
 			>
 		</File>
 		<File
