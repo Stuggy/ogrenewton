@@ -28,7 +28,7 @@
 
 #include "OgreNewtonRayPickManager.h"
 #include "OgreNewtonTriggerManager.h"
-#include "OgreNewtonArticulatedTransformManager.h"
+#include "OgreNewtonArticulationManager.h"
 
 
 
@@ -43,7 +43,7 @@ OgreNewtonWorld::OgreNewtonWorld (int updateFramerate)
 
 	// add some of the essential managers, in order of execution
 	m_triggerManager = new OgreNewtonTriggerManager(this);
-	m_localTransformManager = new OgreNewtonArticulatedTransformManager (this);
+	m_localTransformManager = new OgreNewtonArticulationManager (this);
 	m_playerManager = new OgreNewtonPlayerManager (this);
 	m_rayPickerManager = new OgreNewtonRayPickManager (this, 0);
 	m_inputManager = new OgreNewtonInputManager(this);
@@ -64,7 +64,7 @@ OgreNewtonInputManager* OgreNewtonWorld::GetInputManager() const
 	return m_inputManager;
 }
 
-OgreNewtonArticulatedTransformManager* OgreNewtonWorld::GetHierarchyTransformManager() const 
+OgreNewtonArticulationManager* OgreNewtonWorld::GetHierarchyTransformManager() const 
 {
 	return m_localTransformManager;
 }

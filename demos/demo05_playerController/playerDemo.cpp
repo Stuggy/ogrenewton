@@ -251,7 +251,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 	ShootRigidBody* m_shootRigidBody;
 	MyPlayerContyroller* m_player;
 	
-	OgreNewtonArticulatedTransformManager* m_localTransformManager;
+	OgreNewtonArticulationManager* m_localTransformManager;
 };
 
 

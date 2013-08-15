@@ -20,8 +20,8 @@
 */
 
 
-#ifndef _OGRE_NEWTON_ARTICULATED_TRANSFORM_CONTROLLER_MANAGER_H_
-#define _OGRE_NEWTON_ARTICULATED_TRANSFORM_CONTROLLER_MANAGER_H_
+#ifndef _OGRE_NEWTON_ARTICULATED_CONTROLLER_MANAGER_H_
+#define _OGRE_NEWTON_ARTICULATED_CONTROLLER_MANAGER_H_
 
 #include "OgreNewtonStdAfx.h"
 
@@ -30,21 +30,21 @@ using namespace Ogre;
 
 class OgreNewtonWorld;
 
-class OGRE_NEWTON_API OgreNewtonArticulatedTransformManager: public dNewtonArticulatedTransformManager
+class OGRE_NEWTON_API OgreNewtonArticulationManager: public dNewtonArticulationManager
 {
 	public:
-	class OGRE_NEWTON_API OgreNewtonArticulatedTransformController: public dNewtonArticulatedTransformController
+	class OGRE_NEWTON_API OgreNewtonArticulatedTransformController: public dNewtonArticulationController
 	{
 		public:
-		OgreNewtonArticulatedTransformController (OgreNewtonArticulatedTransformManager* const manager, bool projectError);
+		OgreNewtonArticulatedTransformController (OgreNewtonArticulationManager* const manager, bool projectError);
 		~OgreNewtonArticulatedTransformController();
 
 		virtual void OnPreUpdate (dFloat timestep) = 0;
 		virtual void OnUpdateBoneTransform (dNewtonBody* const bone, const dFloat* const localMatrix) = 0;
 	};
 	
-	OgreNewtonArticulatedTransformManager (OgreNewtonWorld* const world);
-	~OgreNewtonArticulatedTransformManager ();
+	OgreNewtonArticulationManager (OgreNewtonWorld* const world);
+	~OgreNewtonArticulationManager ();
 };
 
 

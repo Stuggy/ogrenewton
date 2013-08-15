@@ -22,26 +22,26 @@
 
 #include "OgreNewtonStdAfx.h"
 #include "OgreNewtonWorld.h"
-#include "OgreNewtonArticulatedTransformManager.h"
+#include "OgreNewtonArticulationManager.h"
 
 
 
-OgreNewtonArticulatedTransformManager::OgreNewtonArticulatedTransformManager (OgreNewtonWorld* const world)
-	:dNewtonArticulatedTransformManager (world)
+OgreNewtonArticulationManager::OgreNewtonArticulationManager (OgreNewtonWorld* const world)
+	:dNewtonArticulationManager (world)
 {
 }
 
-OgreNewtonArticulatedTransformManager::~OgreNewtonArticulatedTransformManager ()
+OgreNewtonArticulationManager::~OgreNewtonArticulationManager ()
 {
 }
 
 
-OgreNewtonArticulatedTransformManager::OgreNewtonArticulatedTransformController::OgreNewtonArticulatedTransformController (OgreNewtonArticulatedTransformManager* const manager, bool projectError)
-	:dNewtonArticulatedTransformController (manager, projectError)
+OgreNewtonArticulationManager::OgreNewtonArticulatedTransformController::OgreNewtonArticulatedTransformController (OgreNewtonArticulationManager* const manager, bool projectError)
+	:dNewtonArticulationController (manager, projectError)
 {
 }
 
-OgreNewtonArticulatedTransformManager::OgreNewtonArticulatedTransformController::~OgreNewtonArticulatedTransformController()
+OgreNewtonArticulationManager::OgreNewtonArticulatedTransformController::~OgreNewtonArticulatedTransformController()
 {
 }
 
