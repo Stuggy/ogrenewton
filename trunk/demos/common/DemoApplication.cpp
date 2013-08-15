@@ -473,7 +473,7 @@ void DemoApplication::OnRenderUpdateBegin(dFloat updateParam)
 // called synchronous from ogre update loop after of updating updating all sceneNodes controlled by a physic body  
 void DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 {
-	const RenderTarget::FrameStats& stats = mWindow->getStatistics();
+	
 
 	// set the camera interpolated matrix
 	Matrix4 matrix;
@@ -487,18 +487,18 @@ void DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 	mCamera->setOrientation (matrix.extractQuaternion());
 
 	// show statistic and help options
-	int row = 0;
-	row = m_screen->write(20, row + 20, "FPS:  %05.3f", stats.lastFPS);
-	row = m_screen->write(20, row + 20, "Physics time:  %05.3f ms", float (double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
-	row = m_screen->write(20, row + 20, "Number of rigid bodies:  %d", m_physicsWorld->GetBodyCount());
 	if (m_onScreeHelp.m_state) {
+		int row = 0;
+		const RenderTarget::FrameStats& stats = mWindow->getStatistics();
+		row = m_screen->write(20, row + 20, "FPS:  %05.3f", stats.lastFPS);
+		row = m_screen->write(20, row + 20, "Physics time:  %05.3f ms", float (double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
+		row = m_screen->write(20, row + 20, "Number of rigid bodies:  %d", m_physicsWorld->GetBodyCount());
 		row = m_screen->write(20, row + 20, "F1:  Hide debug help text");
 		row = m_screen->write(20, row + 20, "F2:  Toggle %s simulation update", m_physicsWorld->GetConcurrentUpdateMode() ? "Asynchronous" : "Synchronous");
 		row = m_screen->write(20, row + 20, "F3:  Toggle display physic debug");
-		row = m_screen->write(20, row + 20, "W, S, A, D:  Free camera navigation");
+		row = m_screen->write(20, row + 30, "W, S, A, D:  Free camera navigation");
 		row = m_screen->write(20, row + 20, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objects from the screen");
 		row = m_screen->write(20, row + 20, "ESC:  Exit application");
-
 	} else if (m_onScreeHelp.TriggerDown()){
 		m_screen->removeAll();
 	}

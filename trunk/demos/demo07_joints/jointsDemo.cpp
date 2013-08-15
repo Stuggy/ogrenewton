@@ -178,13 +178,19 @@ class OgreNewtonDemoApplication: public DemoApplication
 	{
 		DemoApplication::OnRenderUpdateEnd(updateParam);
 		if (m_onScreeHelp.m_state) {
-			m_screen->write(20,  80, "F1:  Hide debug help text");
-			m_screen->write(20, 100, "F3:  Toggle display physic debug");
-			m_screen->write(20, 120, "W, S, A, D:  Drive Vehicle");
-			m_screen->write(20, 140, "Q E:  Rise and lower Lifter Apparatus");
-			m_screen->write(20, 160, "Z C:  Rotate Lifter Apparatus");
-			m_screen->write(20, 180, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objects from the screen");
-			m_screen->write(20, 120, "ESC:  Exit application");
+			int row = 0;
+			const RenderTarget::FrameStats& stats = mWindow->getStatistics();
+			row = m_screen->write(20, row + 20, "FPS:  %05.3f", stats.lastFPS);
+			row = m_screen->write(20, row + 20, "Physics time:  %05.3f ms", float (double (m_physicsWorld->GetPhysicsTimeInMicroSeconds()) * 1.0e-3f));
+			row = m_screen->write(20, row + 20, "Number of rigid bodies:  %d", m_physicsWorld->GetBodyCount());
+			row = m_screen->write(20, row + 20, "F1:  Hide debug help text");
+			row = m_screen->write(20, row + 20, "F2:  Toggle %s simulation update", m_physicsWorld->GetConcurrentUpdateMode() ? "Asynchronous" : "Synchronous");
+			row = m_screen->write(20, row + 20, "F3:  Toggle display physic debug");
+			row = m_screen->write(20, row + 30, "W, S, A, D:  Drive Vehicle");
+			row = m_screen->write(20, row + 20, "Q E:  Rise and lower Lifter Apparatus");
+			row = m_screen->write(20, row + 20, "Z C:  Rotate Lifter Apparatus");
+			row = m_screen->write(20, row + 20, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objects from the screen");
+			row = m_screen->write(20, row + 20, "ESC:  Exit application");
 		}
 		m_screen->update();
 	}
