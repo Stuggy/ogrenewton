@@ -622,6 +622,7 @@ bool DemoApplication::go(void)
 	}
 
 	// destroy the scene before quiting
+	m_physicsWorld->WaitForUpdateToFinish();
 	destroyScene();
 
 	return true;
