@@ -199,7 +199,7 @@
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\debug&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\debug&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\debug_mdd&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\debug_mdd&quot;"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\$(TargetName).pdb"
+				ProgramDatabaseFile="../../../bin/$(TargetName).pdb"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -276,7 +276,7 @@
 				AdditionalDependencies="newton.lib dMath.lib dNewton.lib dJointLibrary.lib OIS.lib OgreMain.lib OgreTerrain.lib"
 				AdditionalLibraryDirectories="&quot;$(OGRE_ENGINE_BUILD)\lib\release&quot;;&quot;$(OGRE_ENGINE_DEPENDENCIES)\lib\release&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dMath\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dNewton\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008\$(PlatformName)\dJointLibrary\release_md&quot;;&quot;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008\$(PlatformName)\newton\release_md&quot;"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\$(TargetName).pdb"
+				ProgramDatabaseFile="../../../bin/$(TargetName).pdb"
 				LinkTimeCodeGeneration="0"
 			/>
 			<Tool
