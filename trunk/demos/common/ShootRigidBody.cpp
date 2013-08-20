@@ -74,6 +74,39 @@ ShootRigidBody::ShootRigidBody (DemoApplication* const application)
 		m_shootingMesh[1] = object->convertToMesh (MakeName ("shootMesh"));
 		delete object;
 	}
+
+
+	{
+		// make chamhered cylinder;
+		m_shootingCollisions[2] = new dNewtonCollisionChamferedCylinder (physicsWorld, 0.25f, 1.0f, m_all);
+
+		OgreNewtonMesh mesh (m_shootingCollisions[2]);
+		mesh.Triangulate();
+		int materialId = mesh.AddMaterial(renderMaterial);
+		//mesh.ApplySphericalMapping (materialId);
+		mesh.ApplyCylindricalMapping (materialId, materialId);
+
+		ManualObject* const object = mesh.CreateEntity(MakeName ("shootMesh"));
+		m_shootingMesh[2] = object->convertToMesh (MakeName ("shootMesh"));
+		delete object;
+	}
+
+
+	{
+		// make cyder cylinder;
+		m_shootingCollisions[3] = new dNewtonCollisionCylinder (physicsWorld, 0.25f, 1.0f, m_all);
+
+		OgreNewtonMesh mesh (m_shootingCollisions[3]);
+		mesh.Triangulate();
+		int materialId = mesh.AddMaterial(renderMaterial);
+		//mesh.ApplySphericalMapping (materialId);
+		mesh.ApplyCylindricalMapping (materialId, materialId);
+
+		ManualObject* const object = mesh.CreateEntity(MakeName ("shootMesh"));
+		m_shootingMesh[3] = object->convertToMesh (MakeName ("shootMesh"));
+		delete object;
+	}
+
 }
 
 
