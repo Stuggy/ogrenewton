@@ -272,6 +272,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
+		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
 	}
 
 	virtual void destroyScene()
