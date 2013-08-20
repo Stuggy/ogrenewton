@@ -81,6 +81,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	void createFrameListener()
 	{
+		DemoApplication::createFrameListener();
 	}
 
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)

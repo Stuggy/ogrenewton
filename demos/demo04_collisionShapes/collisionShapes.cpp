@@ -234,9 +234,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	void createFrameListener()
 	{
-		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-//		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
-//		mRoot->addFrameListener(m_listener);
+		DemoApplication::createFrameListener();
 	}
 
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
