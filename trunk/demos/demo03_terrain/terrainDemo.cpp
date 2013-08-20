@@ -260,6 +260,11 @@ class OgreNewtonDemoApplication: public DemoApplication
 		m_terrainGroup->freeTemporaryResources();
 	}
 
+	void createFrameListener()
+	{
+		DemoApplication::createFrameListener();
+	}
+
 	void LoadDynamicScene(const Vector3& origin)
 	{
 	}
