@@ -41,7 +41,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
-		,m_shootRigidBody(NULL)
 		,m_player(NULL)
 		,m_localTransformManager(NULL)
 	{
@@ -83,20 +82,12 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	void createFrameListener()
 	{
-		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-		//		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
-		//		mRoot->addFrameListener(m_listener);
 	}
 
 	void OnPhysicUpdateBegin (dFloat timestepInSecunds)
 	{
 		// bypass the call to DemoApplication::OnPhysicUpdateBegin
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
-
-		// handle shotting objects
-		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
-			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
-		}
 
 		// update main player first
 		m_player->ApplyPlayerInputs (this, timestepInSecunds);
@@ -131,7 +122,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	virtual void destroyScene()
 	{
-		delete (m_shootRigidBody);
 	}
 
 	MyPlayerContyroller* CreatePlayer()
@@ -237,9 +227,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
 
-		// create shutting components
-		m_shootRigidBody = new ShootRigidBody(m_physicsWorld);
-
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 
@@ -248,7 +235,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		m_player = CreatePlayer();
 	}
 
-	ShootRigidBody* m_shootRigidBody;
 	MyPlayerContyroller* m_player;
 	
 	OgreNewtonArticulationManager* m_localTransformManager;

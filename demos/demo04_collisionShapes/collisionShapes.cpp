@@ -33,7 +33,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
-		,m_shootRigidBody(NULL)
 	{
 	}
 
@@ -243,15 +242,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
-
-		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
-			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
-		}
 	}
 
 	virtual void destroyScene()
 	{
-		delete (m_shootRigidBody);
 	}
 
 	void createScene()
@@ -293,14 +287,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
 
-		// create shutting components
-		m_shootRigidBody = new ShootRigidBody(m_physicsWorld);
-
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 	}
-
-	ShootRigidBody* m_shootRigidBody;
 };
 
 

@@ -81,6 +81,7 @@ class DemoApplication: public OIS::MouseListener, public OIS::KeyListener, publi
 	bool go(void);
 	virtual void createScene();
 	virtual void destroyScene();
+	virtual void createFrameListener();
 
 	SceneManager* GetSceneManager() const;
 	OgreNewtonWorld* GetPhysics() const;
@@ -146,10 +147,11 @@ class DemoApplication: public OIS::MouseListener, public OIS::KeyListener, publi
 	OIS::MouseState m_mouseState;
 
 	Real m_pickParam;
-	unsigned m_scopeLock;
 	bool m_mousePickMemory;
 	bool m_exitApplication;
 	bool m_initializationSuccessful;
+
+	FrameListener* m_shootBodyFrameListener; 
 
 	friend class OgreNewtonExample;
 };

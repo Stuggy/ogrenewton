@@ -26,9 +26,17 @@
 #include "ShootRigidBody.h"
 
 
-ShootRigidBody::ShootRigidBody (OgreNewtonWorld* const physicsWorld)
-	:m_shootingTimer(0.25f)
+#define SHOOTING_RATE_TIME		0.1f
+#define SHOOTING_SPEED			40.0f
+
+ShootRigidBody::ShootRigidBody (DemoApplication* const application)
+	:FrameListener()
+	,m_shootingTimer (SHOOTING_RATE_TIME)
+	,m_application(application)
 {
+
+	OgreNewtonWorld* const physicsWorld = application->GetPhysics();
+
 	// create a texture for using with this material
 	TexturePtr texture = Ogre::TextureManager::getSingleton().load("smilli.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
 
@@ -76,26 +84,33 @@ ShootRigidBody::~ShootRigidBody()
 	}
 }
 
-void ShootRigidBody::ShootRandomBody(DemoApplication* const application, SceneManager* const sceneMgr, Real timestep)
+
+bool ShootRigidBody::frameStarted(const FrameEvent& evt)
 {
-	m_shootingTimer -= timestep;
-	if (m_shootingTimer < 0.0f) {
-		m_shootingTimer = 0.1f;
+	FrameListener::frameStarted (evt);
+	m_application->GetKeyboard()->capture();
 
-//		Vector3 cameraPosit;
-//		Quaternion cameraRotation;
-		//application->GetInterpolatedCameraMatrix (cameraPosit, cameraRotation);
-		//matrix.makeTransform (cameraPosit, Vector3(1.0f, 1.0f, 1.0f), cameraRotation);
-		Matrix4 matrix (application->GetCameraTransform ());
+	m_shootingTimer -= evt.timeSinceLastFrame;
+	if (m_application->GetKeyboard()->isKeyDown(OIS::KC_SPACE)) {
+		if (m_shootingTimer < 0.0f) {
+			m_shootingTimer = SHOOTING_RATE_TIME;
 
-		int index = (rand() >> 3) % int (sizeof (m_shootingMesh) / sizeof (m_shootingMesh[0]));
+			// make sure we do no create bodies when the physics is running an update.
+			m_application->GetPhysics()->WaitForUpdateToFinish();
 
-		Entity* const ent = sceneMgr->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
-		SceneNode* const node = CreateNode (sceneMgr, ent, matrix.getTrans(), matrix.extractQuaternion());
-		OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (application->GetPhysics(), 30.0f, m_shootingCollisions[index], node, matrix);
+			// create new projetile rigid body
+			Matrix4 matrix (m_application->GetCameraTransform ());
 
-		const Real speed = -40.0f;
-		Vector3 veloc (Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * speed);   
-		body->SetVeloc(veloc);
+			int index = (rand() >> 3) % int (sizeof (m_shootingMesh) / sizeof (m_shootingMesh[0]));
+
+			Entity* const ent = m_application->GetSceneManager()->createEntity(MakeName ("shootObject"), m_shootingMesh[index]);
+			SceneNode* const node = CreateNode (m_application->GetSceneManager(), ent, matrix.getTrans(), matrix.extractQuaternion());
+			OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_application->GetPhysics(), 30.0f, m_shootingCollisions[index], node, matrix);
+
+			const Real speed = -SHOOTING_SPEED;
+			Vector3 veloc (Vector3 (matrix[0][2], matrix[1][2], matrix[2][2]) * speed);   
+			body->SetVeloc(veloc);
+		}
 	}
+	return true;
 }

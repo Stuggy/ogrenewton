@@ -25,6 +25,7 @@
 
 #include "MouseCursor.h"
 #include "ScreenWriter.h"
+#include "ShootRigidBody.h"
 #include "DemoApplication.h"
 
 
@@ -96,7 +97,7 @@ void DemoApplication::OgreNewtonExample::OnBeginUpdate (dFloat timestepInSecunds
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
-	dNewton::ScopeLock lock (&m_application->m_scopeLock);
+//	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnPhysicUpdateBegin (timestepInSecunds);
 }
 
@@ -105,7 +106,7 @@ void DemoApplication::OgreNewtonExample::OnEndUpdate (dFloat timestepInSecunds)
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
-	dNewton::ScopeLock lock (&m_application->m_scopeLock);
+//	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnPhysicUpdateEnd (timestepInSecunds);
 }
 
@@ -114,7 +115,7 @@ void DemoApplication::OgreNewtonExample::OnNodesTransformBegin(Real interpolatio
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
-	dNewton::ScopeLock lock (&m_application->m_scopeLock);
+//	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnRenderUpdateBegin(interpolationParam);
 }
 
@@ -123,7 +124,7 @@ void DemoApplication::OgreNewtonExample::OnNodesTransformEnd(Real interpolationP
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
-	dNewton::ScopeLock lock (&m_application->m_scopeLock);
+//	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnRenderUpdateEnd(interpolationParam);
 }
 
@@ -179,16 +180,19 @@ DemoApplication::DemoApplication()
 	,mResourcesCfg(Ogre::StringUtil::BLANK)
 	,mPluginsCfg(Ogre::StringUtil::BLANK)
 	,m_pickParam(0.0f)
-	,m_scopeLock(0)
+//	,m_scopeLock(0)
 	,m_mousePickMemory(false)
 	,m_exitApplication(false)
 	,m_initializationSuccessful (false)
+	,m_shootBodyFrameListener(NULL)
 {
 }
 
 DemoApplication::~DemoApplication(void)
 {
 	if (m_initializationSuccessful ) {
+		delete m_shootBodyFrameListener;
+
 		delete m_screen;
 		delete m_cursor;
 		m_ois->destroyInputObject(m_mouse);
@@ -516,6 +520,12 @@ void DemoApplication::destroyScene(void)
 {
 }
 
+void DemoApplication::createFrameListener()
+{
+	m_shootBodyFrameListener = new ShootRigidBody(this);
+	mRoot->addFrameListener(m_shootBodyFrameListener);
+}
+
 
 bool DemoApplication::go(void)
 {
@@ -599,6 +609,9 @@ bool DemoApplication::go(void)
 	// create a debug Renderer for showing physics data visually
 	m_debugRender = new OgreNewtonDebugger (mSceneMgr->getRootSceneNode()->createChildSceneNode("_OgreNewton_Debugger_Node_"), m_physicsWorld);
 
+	// crate frame listeners
+	createFrameListener();
+
 	// call for creation of the scene
 	createScene();
 
@@ -615,7 +628,6 @@ bool DemoApplication::go(void)
 		m_physicsWorld->Update();
 
 		// Render a frame 
-		dNewton::ScopeLock lock (&m_scopeLock);
 		if(!mRoot->renderOneFrame()) {
 			break;
 		}

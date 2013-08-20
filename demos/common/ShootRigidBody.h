@@ -33,17 +33,18 @@ using namespace Ogre;
 
 class DemoApplication;
 
-class ShootRigidBody
+
+class ShootRigidBody: public FrameListener
 {
 	public:
-	ShootRigidBody (OgreNewtonWorld* const physicsWorld);
+	ShootRigidBody (DemoApplication* const application);
 	~ShootRigidBody();
-
-	void ShootRandomBody (DemoApplication* const application, SceneManager* const sceneMgr, Real timestep);
+	virtual bool frameStarted(const FrameEvent& evt);
 
 	Real m_shootingTimer;
 	MeshPtr m_shootingMesh[2];
 	dNewtonCollision* m_shootingCollisions[2];
+	DemoApplication* m_application;
 };
 
 #endif
