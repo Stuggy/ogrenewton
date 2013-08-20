@@ -14,6 +14,7 @@ material "flatPlane"
 				texture grids.tga
 				tex_coord_set 0
 				colour_op modulate
+				filtering linear linear linear
 			}
 		}
 	}

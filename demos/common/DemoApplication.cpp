@@ -93,39 +93,33 @@ DemoApplication::OgreNewtonExample::~OgreNewtonExample()
 {
 }
 
-// called asynchronous at the beginning of a physics update. 
 void DemoApplication::OgreNewtonExample::OnBeginUpdate (dFloat timestepInSecunds)
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
-//	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnPhysicUpdateBegin (timestepInSecunds);
 }
 
-// called asynchronous at the beginning end a physics update. 
+
 void DemoApplication::OgreNewtonExample::OnEndUpdate (dFloat timestepInSecunds)
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
-//	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnPhysicUpdateEnd (timestepInSecunds);
 }
 
-// called synchronous with ogre update loop, at the beginning of setting all node transform after a physics update  
 void DemoApplication::OgreNewtonExample::OnNodesTransformBegin(Real interpolationParam)
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
-//	dNewton::ScopeLock lock (&m_application->m_scopeLock);
+
 	m_application->OnRenderUpdateBegin(interpolationParam);
 }
 
-// called synchronous with ogre update loop, at the end of setting all node transform after a physics update  
 void DemoApplication::OgreNewtonExample::OnNodesTransformEnd(Real interpolationParam)
 {
 	m_application->m_mouse->capture();
 	m_application->m_keyboard->capture();
-//	dNewton::ScopeLock lock (&m_application->m_scopeLock);
 	m_application->OnRenderUpdateEnd(interpolationParam);
 }
 
