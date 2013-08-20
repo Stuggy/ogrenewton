@@ -96,7 +96,6 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
-		,m_shootRigidBody(NULL)
 	{
 	}
 
@@ -406,14 +405,10 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
-		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
-			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
-		}
 	}
 
 	virtual void destroyScene()
 	{
-		delete (m_shootRigidBody);
 	}
 
 	void createScene()
@@ -438,7 +433,6 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		// load all of the static geometry
 		loadStaticScene ();
 
-
 		// load a water plane and place an water trigger volume around it
 		setupWater();
 
@@ -459,9 +453,6 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 		// now load the dynamics Scene
 		LoadDynamicScene(Vector3 (0.0f, 4.0f, 0.0f));
 
-		// create shutting components
-		m_shootRigidBody = new ShootRigidBody(m_physicsWorld);
-
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
 	}
@@ -470,7 +461,6 @@ class OgreNewtonDemoApplication: public DemoApplication, public RenderTargetList
 	Plane mWaterPlane;
 	RenderTarget* mRefractionTarget;
 	RenderTarget* mReflectionTarget;
-	ShootRigidBody* m_shootRigidBody;
 };
 
 

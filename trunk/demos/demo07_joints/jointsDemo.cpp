@@ -41,7 +41,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 	OgreNewtonDemoApplication()
 		:DemoApplication()
 		,m_player(NULL)
-		,m_shootRigidBody(NULL)
 	{
 	}
 
@@ -137,10 +136,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 	{
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
 
-		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
-			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
-		}
-
 		// check if there are some vehicle input, if there is, then wakeup the vehicle
 		if (m_keyboard->isKeyDown(OIS::KC_W) || 
 			m_keyboard->isKeyDown(OIS::KC_S) || 
@@ -198,10 +193,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	virtual void destroyScene()
 	{
-		delete (m_shootRigidBody);
 	}
-
-
 
 	void createScene()
 	{
@@ -236,12 +228,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 		ForkliftPhysicsModel* const forkLift = new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (0.0f, 0.5f, 10.0f));
 		m_player = forkLift->m_rootBody;
 
-		// create shutting components
-		m_shootRigidBody = new ShootRigidBody(m_physicsWorld);
-
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
-
 
 		//set light after the scene is loaded 
 		mSceneMgr->setAmbientLight(ColourValue(0.3f, 0.3f, 0.3f));
@@ -254,7 +242,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 		light0->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
 	}
 
-	ShootRigidBody* m_shootRigidBody;
 	OgreNewtonDynamicBody* m_player;
 };
 

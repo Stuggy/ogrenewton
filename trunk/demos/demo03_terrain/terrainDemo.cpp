@@ -23,7 +23,6 @@
 
 #include <HelpersStdAfx.h>
 #include "Utils.h"
-#include "ShootRigidBody.h"
 #include "DemoApplication.h"
 
 
@@ -35,7 +34,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
-		,m_shootRigidBody(NULL)
 		,m_terrainGroup(NULL)
 		,m_terrainGlobals(NULL)
 		,m_terrainsImported(false)
@@ -266,26 +264,15 @@ class OgreNewtonDemoApplication: public DemoApplication
 	{
 	}
 
-	void createFrameListener()
-	{
-		// this is our custom frame listener for this app, that lets us shoot cylinders with the space bar, move the camera, etc.
-//		m_listener = new ApplicationFrameListener (mRoot, mWindow, mCamera, mSceneMgr, this, m_debugRender);
-//		mRoot->addFrameListener(m_listener);
-	}
 
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
-		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
-		if (m_keyboard->isKeyDown(OIS::KC_SPACE)) {
-			m_shootRigidBody->ShootRandomBody (this, mSceneMgr, timestepInSecunds);
-		}
 	}
 
 	virtual void destroyScene()
 	{
 	    OGRE_DELETE m_terrainGroup;
 		OGRE_DELETE m_terrainGlobals;
-		delete (m_shootRigidBody);
 	}
 
 	void createScene()
@@ -334,15 +321,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 		// now load the dynamics Scene
 		LoadDynamicScene(origin);
 
-		// create shutting components
-		m_shootRigidBody = new ShootRigidBody(m_physicsWorld);
-
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
-
 	}
 
-	ShootRigidBody* m_shootRigidBody;
 
 	Light* m_light0;
 	TerrainGroup* m_terrainGroup;
