@@ -23,15 +23,11 @@
 #define _SHOOT_ROGID_BODY_H__
 
 #include <HelpersStdAfx.h>
-//#include <OgreNewtonStdAfx.h>
-//#include <OgreTexture.h>
-//#include <OgreOverlayManager.h>
-//#include <OgreMaterialManager.h>
-//#include <OgrePanelOverlayElement.h>
 
 using namespace Ogre;
 
 class DemoApplication;
+
 
 
 class ShootRigidBody: public FrameListener
@@ -42,8 +38,8 @@ class ShootRigidBody: public FrameListener
 	virtual bool frameStarted(const FrameEvent& evt);
 
 	Real m_shootingTimer;
-	MeshPtr m_shootingMesh[2];
-	dNewtonCollision* m_shootingCollisions[2];
+	MeshPtr m_shootingMesh[4];
+	dNewtonCollision* m_shootingCollisions[4];
 	DemoApplication* m_application;
 };
 

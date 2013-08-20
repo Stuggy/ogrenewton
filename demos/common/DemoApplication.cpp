@@ -86,6 +86,7 @@ void DemoApplication::SmoothCamera::Reset (const Vector3& posit, const Quaternio
 DemoApplication::OgreNewtonExample::OgreNewtonExample (DemoApplication* const application)
 	:m_application(application)
 {
+	GetRayPickManager()->SetCollisionMask(m_mousePick);
 }
 
 DemoApplication::OgreNewtonExample::~OgreNewtonExample()
