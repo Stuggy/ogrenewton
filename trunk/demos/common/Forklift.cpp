@@ -63,6 +63,7 @@ ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, 
 	:OgreNewtonArticulatedTransformController(application->GetPhysics()->GetHierarchyTransformManager(), true)
 	,m_application(application)
 	,m_liftPosit(0.0f)
+	,m_openPosit(0.0f)
 	,m_tiltAngle(0.0f)
 {
 	SceneManager* const sceneMgr = application->GetSceneManager();
@@ -413,18 +414,21 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 		liftPosit = slidePlaforms[0]->GetMaxPositLimit();
 		m_liftPosit = slidePlaforms[0]->GetActuatorPosit();
 	}
-	for (int i = 0; i < 3; i ++) {
+	for (int i = 0; i < sizeof (slidePlaforms) / sizeof (slidePlaforms[0]); i ++) {
 		slidePlaforms[i]->SetTargetPosit(liftPosit);
 	}
 
 	// control teeth position
-	const Real toothRate = 10.0f;
 	Real toothPosit = slideTooth[0]->GetActuatorPosit();
 	if (keyboard->isKeyDown(OIS::KC_F)) {
-		toothPosit = toothPosit + toothRate * timestep;
+		toothPosit = slideTooth[0]->GetMinPositLimit();
+		m_openPosit = slideTooth[0]->GetActuatorPosit();
 	} else if (keyboard->isKeyDown(OIS::KC_G)) {
-		toothPosit = toothPosit - toothRate * timestep;
+		toothPosit = slideTooth[0]->GetMaxPositLimit();
+		m_openPosit = slideTooth[0]->GetActuatorPosit();
 	}
-	slideTooth[0]->SetTargetPosit(toothPosit);
-	slideTooth[1]->SetTargetPosit(toothPosit);
+	for (int i = 0; i < sizeof (slideTooth) / sizeof (slideTooth[0]); i ++) {
+		slideTooth[i]->SetTargetPosit(toothPosit);
+	}
+		
 }
