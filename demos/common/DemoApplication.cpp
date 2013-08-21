@@ -175,7 +175,6 @@ DemoApplication::DemoApplication()
 	,mResourcesCfg(Ogre::StringUtil::BLANK)
 	,mPluginsCfg(Ogre::StringUtil::BLANK)
 	,m_pickParam(0.0f)
-//	,m_scopeLock(0)
 	,m_mousePickMemory(false)
 	,m_exitApplication(false)
 	,m_initializationSuccessful (false)
@@ -437,14 +436,6 @@ void DemoApplication::UpdateMousePick ()
 // called asynchronous at the beginning of a physics update. do any pre-physics update here  
 void DemoApplication::OnPhysicUpdateBegin(dFloat timestepInSecunds)
 {
-	m_onScreeHelp.Update (m_keyboard->isKeyDown(OIS::KC_F1) ? true : false);
-	m_debugTriggerKey.Update (m_keyboard->isKeyDown(OIS::KC_F3) ? true : false);
-	m_asyncronousUpdateKey.Update (m_keyboard->isKeyDown(OIS::KC_F2) ? true : false);
-
-	if (m_asyncronousUpdateKey.TriggerUp()) {
-		m_physicsWorld->SetConcurrentUpdateMode(!m_physicsWorld->GetConcurrentUpdateMode());
-	}
-
 	// see if we pick a body form the screen
 	UpdateMousePick ();
 }
@@ -455,9 +446,6 @@ void DemoApplication::OnPhysicUpdateEnd(dFloat timestepInSecunds)
 {
 	// camera update at physics simulation time
 	UpdateFreeCamera ();
-
-	// see if debug display was activated
-	m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
 
 	// see if we want to quit application
 	m_exitApplication = m_keyboard->isKeyDown(OIS::KC_ESCAPE);
@@ -472,8 +460,6 @@ void DemoApplication::OnRenderUpdateBegin(dFloat updateParam)
 // called synchronous from ogre update loop after of updating updating all sceneNodes controlled by a physic body  
 void DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 {
-	
-
 	// set the camera interpolated matrix
 	Matrix4 matrix;
 	Vector3 cameraPosit;
@@ -486,6 +472,7 @@ void DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 	mCamera->setOrientation (matrix.extractQuaternion());
 
 	// show statistic and help options
+	m_onScreeHelp.Update (m_keyboard->isKeyDown(OIS::KC_F1) ? true : false);
 	if (m_onScreeHelp.m_state) {
 		int row = 0;
 		const RenderTarget::FrameStats& stats = mWindow->getStatistics();
@@ -498,13 +485,25 @@ void DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 		row = m_screen->write(20, row + 30, "W, S, A, D:  Free camera navigation");
 		row = m_screen->write(20, row + 20, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objects from the screen");
 		row = m_screen->write(20, row + 20, "ESC:  Exit application");
-	} else if (m_onScreeHelp.TriggerDown()){
+	} else {
 		m_screen->removeAll();
 	}
-
 	m_screen->update();
-}
 
+	// see if debug display was activated
+	m_debugTriggerKey.Update (m_keyboard->isKeyDown(OIS::KC_F3) ? true : false);
+	if (m_debugTriggerKey.TriggerUp()) {
+		GetPhysics()->WaitForUpdateToFinish();
+		m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
+	}
+
+	// check if the player want to run the physics concurrent of not 
+	m_asyncronousUpdateKey.Update (m_keyboard->isKeyDown(OIS::KC_F2) ? true : false);
+	if (m_asyncronousUpdateKey.TriggerUp()) {
+		GetPhysics()->WaitForUpdateToFinish();
+		m_physicsWorld->SetConcurrentUpdateMode(!m_physicsWorld->GetConcurrentUpdateMode());
+	}
+}
 
 
 void DemoApplication::createScene(void)

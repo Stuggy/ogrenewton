@@ -66,6 +66,8 @@ class ForkliftPhysicsModel: public OgreNewtonArticulationManager::OgreNewtonArti
 	dNewtonSliderActuator* slidePlaforms[3];
 	dNewtonSliderActuator* slideTooth[2];
 
+	Real m_liftPosit;
+	Real m_tiltAngle;
 	Real m_maxEngineTorque;
 	Real m_omegaResistance;
 };
