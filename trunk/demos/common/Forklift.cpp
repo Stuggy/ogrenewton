@@ -62,6 +62,8 @@ class ForkliftTireBody: public OgreNewtonDynamicBody
 ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin)
 	:OgreNewtonArticulatedTransformController(application->GetPhysics()->GetHierarchyTransformManager(), true)
 	,m_application(application)
+	,m_liftPosit(0.0f)
+	,m_tiltAngle(0.0f)
 {
 	SceneManager* const sceneMgr = application->GetSceneManager();
 
@@ -358,15 +360,6 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	m_rearTire[0]->SetTargetAngle1(steeringAngle);
 	m_rearTire[1]->SetTargetAngle1(steeringAngle);
 
-	// control tilt angle
-	Real tillAngle = revolvePlatform->GetActuatorAngle();
-	if (keyboard->isKeyDown(OIS::KC_Z)) {
-		tillAngle = revolvePlatform->GetMinAngularLimit();
-	} else if (keyboard->isKeyDown(OIS::KC_C)) {
-		tillAngle = revolvePlatform->GetMaxAngularLimit();
-	}
-	revolvePlatform->SetTargetAngle (tillAngle);
-
 	// apply engine torque
 	Real brakeTorque = 0.0f;
 	Real engineTorque = 0.0f;
@@ -398,12 +391,27 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 		m_frontTireBody[i]->SetOmega(omega);
 	}
 
+
+	// control tilt angle
+	Real tiltAngle = m_tiltAngle;
+	if (keyboard->isKeyDown(OIS::KC_Z)) {
+		tiltAngle = revolvePlatform->GetMinAngularLimit();
+		m_tiltAngle = revolvePlatform->GetActuatorAngle();
+	} else if (keyboard->isKeyDown(OIS::KC_C)) {
+		tiltAngle = revolvePlatform->GetMaxAngularLimit();
+		m_tiltAngle = revolvePlatform->GetActuatorAngle();
+	}
+	revolvePlatform->SetTargetAngle (tiltAngle);
+
+
 	// control lift position
-	Real liftPosit = slidePlaforms[0]->GetActuatorPosit();
+	Real liftPosit= m_liftPosit;
 	if (keyboard->isKeyDown(OIS::KC_Q)) {
 		liftPosit = slidePlaforms[0]->GetMinPositLimit();
+		m_liftPosit = slidePlaforms[0]->GetActuatorPosit();
 	} else if (keyboard->isKeyDown(OIS::KC_E)) {
 		liftPosit = slidePlaforms[0]->GetMaxPositLimit();
+		m_liftPosit = slidePlaforms[0]->GetActuatorPosit();
 	}
 	for (int i = 0; i < 3; i ++) {
 		slidePlaforms[i]->SetTargetPosit(liftPosit);
