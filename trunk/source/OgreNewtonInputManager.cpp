@@ -29,6 +29,7 @@
 
 OgreNewtonInputManager::OgreNewtonInputManager (OgreNewtonWorld* const world)
 	:dNewtonInputManager(world)
+	,m_world(world)
 {
 }
 
@@ -39,13 +40,11 @@ OgreNewtonInputManager::~OgreNewtonInputManager()
 
 void OgreNewtonInputManager::OnBeginUpdate (dFloat timestepInSecunds)
 {
-	OgreNewtonWorld* const world = (OgreNewtonWorld*) m_dworld;
-	world->OnBeginUpdate(timestepInSecunds);
+	m_world->OnBeginUpdate(timestepInSecunds);
 }
 
 void OgreNewtonInputManager::OnEndUpdate (dFloat timestepInSecunds)
 {
-	OgreNewtonWorld* const world = (OgreNewtonWorld*) m_dworld;
-	world->OnEndUpdate(timestepInSecunds);
+	m_world->OnEndUpdate(timestepInSecunds);
 }
 
