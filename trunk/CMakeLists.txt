@@ -9,15 +9,23 @@
 # freely
 
 cmake_minimum_required( VERSION 2.8 )
-project (ogreNewtonSDK)
+project (ogreNewton)
 
+set(CMAKE_USE_RELATIVE_PATHS ON)
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
 
-file(GLOB_RECURSE headerFiles ${CMAKE_SOURCE_DIR}/source/*.h)
-file(GLOB_RECURSE sourceFiles ${CMAKE_SOURCE_DIR}/source/*.cpp)
+
+set (ogreEngine "$(OGRE_ENGINE)")
+set (ogreEngineBuild "$(OGRE_ENGINE_BUILD)")
+set (ogreEngineDependecies "$(OGRE_ENGINE_DEPENDENCIES)")
+
+set (newtonPath "$(NEWTON_DYNAMICS)")
 
 
-set (LIB_TYPE SHARED)
-add_library(ogreNewton ${LIB_TYPE} ${sourceFiles} ${headerFiles})
+
+set (ogreNewtonPath ${PROJECT_SOURCE_DIR}/source)
+
+add_subdirectory (source)
+
 
 
