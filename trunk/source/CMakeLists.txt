@@ -26,6 +26,9 @@ file(GLOB_RECURSE headers *.h)
 file(GLOB_RECURSE sources *.cpp)
 add_library(${projectName} ${LIB_TYPE} ${headers} ${sources})
 
+
+
+#target_link_libraries (${projectName} ${corePath}/pthreads.2/dgThreads)
 if (MSVC)
 	set_target_properties(${projectName} PROPERTIES COMPILE_FLAGS "/YuOgreNewtonStdAfx.h
 																   /I${ogreEngine}/OgreMain/include 
