@@ -8,7 +8,7 @@
 # including commercial applications, and to alter it and redistribute it
 # freely
 
-cmake_minimum_required( VERSION 2.8 )
+cmake_minimum_required (VERSION 2.8.11)
 project (ogreNewton)
 
 set(CMAKE_USE_RELATIVE_PATHS ON)

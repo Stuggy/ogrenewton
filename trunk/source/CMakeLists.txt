@@ -70,6 +70,7 @@ endif (NOT buildStaticLibrary)
 
 if (MSVC)
 	set_target_properties(${projectName} PROPERTIES COMPILE_FLAGS "/YuOgreNewtonStdAfx.h
+																   /Zm2000
 																   /I${ogreEngine}/OgreMain/include 
 																   /I${ogreEngine}/OgreMain/include/OGRE 
 																   /I${ogreEngine}/Samples/Common/include
