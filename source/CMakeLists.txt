@@ -14,8 +14,6 @@
 #file(GLOB_RECURSE sourceFiles ${CMAKE_SOURCE_DIR}/source/*.cpp)
 
 
-
-
 if (buildStaticLibrary)
 	set (libraryType STATIC)
 	
@@ -52,15 +50,23 @@ file(GLOB_RECURSE sources *.cpp)
 add_library(${projectName} ${libraryType} ${headers} ${sources})
 
 
-target_link_libraries (${projectName} debug ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dMath/debug/dMath_d.lib
-									  debug	${newtonPath}/packages/projects/${packagesLibPath}/Win32/dNewton/debug/dNewton_d.lib
-									  debug ${newtonPath}/coreLibrary_300/projects/windows/${newtonLibPath}/Win32/newton/Debug/newton_d.lib
-									  debug ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dJointLibrary/debug/dJointLibrary_d.lib)
+if (NOT buildStaticLibrary)
+	target_link_libraries (${projectName} debug ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dMath/debug/dMath_d.lib
+										  debug	${newtonPath}/packages/projects/${packagesLibPath}/Win32/dNewton/debug/dNewton_d.lib
+										  debug ${newtonPath}/coreLibrary_300/projects/windows/${newtonLibPath}/Win32/newton/Debug/newton_d.lib
+										  debug ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dJointLibrary/debug/dJointLibrary_d.lib
+										  debug ${ogreEngineDependecies}/lib/Debug/OIS_d.lib
+										  debug ${ogreEngineBuild}/lib/Debug/OgreMain_d.lib
+										  debug ${ogreEngineBuild}/lib/Debug/OgreTerrain_d.lib)
 
-target_link_libraries (${projectName} optimized ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dMath/release/dMath.lib
-									  optimized ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dNewton/release/dNewton.lib
-									  optimized ${newtonPath}/coreLibrary_300/projects/windows/${newtonLibPath}/Win32/newton/Release/newton.lib
-									  optimized ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dJointLibrary/release/dJointLibrary.lib)
+	target_link_libraries (${projectName} optimized ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dMath/release/dMath.lib
+										  optimized ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dNewton/release/dNewton.lib
+										  optimized ${newtonPath}/coreLibrary_300/projects/windows/${newtonLibPath}/Win32/newton/Release/newton.lib
+										  optimized ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dJointLibrary/release/dJointLibrary.lib
+  										  optimized ${ogreEngineDependecies}/lib/Release/OIS.lib
+										  optimized ${ogreEngineBuild}/lib/Release/OgreMain.lib
+										  optimized ${ogreEngineBuild}/lib/Release/OgreTerrain.lib)
+endif (NOT buildStaticLibrary)
 
 if (MSVC)
 	set_target_properties(${projectName} PROPERTIES COMPILE_FLAGS "/YuOgreNewtonStdAfx.h
