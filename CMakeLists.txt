@@ -12,7 +12,8 @@ cmake_minimum_required( VERSION 2.8 )
 project (ogreNewton)
 
 set(CMAKE_USE_RELATIVE_PATHS ON)
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
+
+option (buildStaticLibrary "build static library" false)   
 
 
 set (ogreEngine "$(OGRE_ENGINE)")
