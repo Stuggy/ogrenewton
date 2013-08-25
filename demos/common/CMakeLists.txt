@@ -15,7 +15,11 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/dot
 
 file(GLOB_RECURSE headers *.h dotSceneLoader/*.h dotSceneLoader/*.h dotSceneLoader/*.hpp)
 file(GLOB_RECURSE sources *.cpp dotSceneLoader/*.cpp)
+
 add_library(${projectName} STATIC ${headers} ${sources})
+add_dependencies (${projectName} ogreNewton)
+
+add_definitions (-D_CRT_SECURE_NO_WARNINGS -DBOOST_ALL_NO_LIB)
 
 
 set_target_properties(${projectName} PROPERTIES COMPILE_FLAGS "/YuHelpersStdAfx.h
@@ -31,6 +35,5 @@ set_target_properties(${projectName} PROPERTIES COMPILE_FLAGS "/YuHelpersStdAfx.
 															   /I${ogreEngine}/Components/Terrain/include
 															   /I${ogreEngineBuild}/include
 															   /I${ogreEngineDependecies}/include")
-															   
-set_target_properties (${projectName} PROPERTIES COMPILE_DEFINITIONS ";_CRT_SECURE_NO_WARNINGS;BOOST_ALL_NO_LIB")
+
 set_source_files_properties (HelpersStdAfx.cpp PROPERTIES COMPILE_FLAGS "/YcHelpersStdAfx.h")
