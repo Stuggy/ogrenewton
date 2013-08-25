@@ -17,7 +17,7 @@ if (buildStaticLibrary)
 else (buildStaticLibrary)
 	set (libraryType SHARED)
 
-	set (newtonPreprocessor ";_OGRE_NEWTON_BUILD_DLL")
+	set (newtonBuildLibraryType "_OGRE_NEWTON_BUILD_DLL")
 	
 	if (MSVC_VERSION EQUAL 1500)
 		set (newtonLibPath project_vs2008_dll)
@@ -42,22 +42,25 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GLOB_RECURSE headers *.h)
 file(GLOB_RECURSE sources *.cpp)
+
 add_library(${projectName} ${libraryType} ${headers} ${sources})
 
 
+add_definitions (-D_WIN_32_VER -D_CRT_SECURE_NO_WARNINGS -DBOOST_ALL_NO_LIB -D${newtonBuildLibraryType})
+
 if (NOT buildStaticLibrary)
-	target_link_libraries (${projectName} debug ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dMath/debug/dMath_d.lib
-										  debug	${newtonPath}/packages/projects/${packagesLibPath}/Win32/dNewton/debug/dNewton_d.lib
-										  debug ${newtonPath}/coreLibrary_300/projects/windows/${newtonLibPath}/Win32/newton/Debug/newton_d.lib
-										  debug ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dJointLibrary/debug/dJointLibrary_d.lib
+	target_link_libraries (${projectName} debug ${newtonPath}/packages/projects/${packagesLibPath}/${PlatformName}/dMath/debug/dMath_d.lib
+										  debug	${newtonPath}/packages/projects/${packagesLibPath}/${PlatformName}/dNewton/debug/dNewton_d.lib
+										  debug ${newtonPath}/coreLibrary_300/projects/windows/${newtonLibPath}/${PlatformName}/newton/Debug/newton_d.lib
+										  debug ${newtonPath}/packages/projects/${packagesLibPath}/${PlatformName}/dJointLibrary/debug/dJointLibrary_d.lib
 										  debug ${ogreEngineDependecies}/lib/Debug/OIS_d.lib
 										  debug ${ogreEngineBuild}/lib/Debug/OgreMain_d.lib
 										  debug ${ogreEngineBuild}/lib/Debug/OgreTerrain_d.lib)
 
-	target_link_libraries (${projectName} optimized ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dMath/release/dMath.lib
-										  optimized ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dNewton/release/dNewton.lib
-										  optimized ${newtonPath}/coreLibrary_300/projects/windows/${newtonLibPath}/Win32/newton/Release/newton.lib
-										  optimized ${newtonPath}/packages/projects/${packagesLibPath}/Win32/dJointLibrary/release/dJointLibrary.lib
+	target_link_libraries (${projectName} optimized ${newtonPath}/packages/projects/${packagesLibPath}/${PlatformName}/dMath/release/dMath.lib
+										  optimized ${newtonPath}/packages/projects/${packagesLibPath}/${PlatformName}/dNewton/release/dNewton.lib
+										  optimized ${newtonPath}/coreLibrary_300/projects/windows/${newtonLibPath}/${PlatformName}/newton/Release/newton.lib
+										  optimized ${newtonPath}/packages/projects/${packagesLibPath}/${PlatformName}/dJointLibrary/release/dJointLibrary.lib
   										  optimized ${ogreEngineDependecies}/lib/Release/OIS.lib
 										  optimized ${ogreEngineBuild}/lib/Release/OgreMain.lib
 										  optimized ${ogreEngineBuild}/lib/Release/OgreTerrain.lib)
@@ -76,9 +79,13 @@ if (MSVC)
 																   /I${newtonPath}/packages/dNewton
 																   /I${newtonPath}/packages/dCustomJoints
 																   /I${newtonPath}/coreLibrary_300/source/newton")
-																   
-	set_target_properties (${projectName} PROPERTIES COMPILE_DEFINITIONS "_WIN_32_VER;_CRT_SECURE_NO_WARNINGS;BOOST_ALL_NO_LIB${newtonPreprocessor}")
+
 	set_source_files_properties(OgreNewtonStdAfx.cpp PROPERTIES COMPILE_FLAGS "/YcOgreNewtonStdAfx.h")
+
+#	add_custom_command (TARGET ${projectName} POST_BUILD 
+#						COMMAND xcopy  "${newtonPath}\\coreLibrary_300\\projects\\windows\\${newtonLibPath}\\${PlatformName}\\newton\\debug\\*.dll" ${PROJECT_SOURCE_DIR}\\bin\\*.*  /F /Y /R)
+
+						
 endif(MSVC)
 
 
