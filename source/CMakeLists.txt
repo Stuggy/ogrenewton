@@ -9,11 +9,6 @@
 # freely
 
 
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
-#file(GLOB_RECURSE headerFiles ${CMAKE_SOURCE_DIR}/source/*.h)
-#file(GLOB_RECURSE sourceFiles ${CMAKE_SOURCE_DIR}/source/*.cpp)
-
-
 if (buildStaticLibrary)
 	set (libraryType STATIC)
 	

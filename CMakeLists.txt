@@ -19,14 +19,12 @@ option (buildStaticLibrary "build static library" false)
 set (ogreEngine "$(OGRE_ENGINE)")
 set (ogreEngineBuild "$(OGRE_ENGINE_BUILD)")
 set (ogreEngineDependecies "$(OGRE_ENGINE_DEPENDENCIES)")
-
 set (newtonPath "$(NEWTON_DYNAMICS)")
-
-
 
 set (ogreNewtonPath ${PROJECT_SOURCE_DIR}/source)
 
 add_subdirectory (source)
+add_subdirectory (demos)
 
 
 
