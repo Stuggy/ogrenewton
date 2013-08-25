@@ -28,7 +28,6 @@
 #include "BuildPyramid.h"
 #include "ShootRigidBody.h"
 #include "DemoApplication.h"
-#include "OgreNewtonExample.h"
 
 using namespace Ogre;
 

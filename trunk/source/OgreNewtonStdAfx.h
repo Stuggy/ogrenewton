@@ -50,7 +50,7 @@
 #include <OgreTerrain.h>
 #include <OgreTerrainGroup.h>
 
-#include <Newton.h>
+//#include <Newton.h>
 #include <dNewton.h>
 #include <dNewtonMesh.h>
 #include <dNewtonJoint.h>
