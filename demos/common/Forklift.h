@@ -62,9 +62,9 @@ class ForkliftPhysicsModel: public OgreNewtonArticulationManager::OgreNewtonArti
 	dNewtonHingeJoint* m_frontTire[2];
 	dNewtonUniversalActuator* m_rearTire[2];
 
-	dNewtonHingeActuator* revolvePlatform;
-	dNewtonSliderActuator* slidePlaforms[3];
-	dNewtonSliderActuator* slideTooth[2];
+	dNewtonHingeActuator* m_revolvePlatform;
+	dNewtonSliderActuator* m_slidePlaforms[3];
+	dNewtonSliderActuator* m_slideTooth[2];
 
 	Real m_liftPosit;
 	Real m_openPosit;

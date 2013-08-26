@@ -149,14 +149,14 @@ ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, 
 	m_frontTire[1] = LinkFrontTire (m_frontTireBody[1]);
 
 	// connect the forklift base
-	revolvePlatform = LinkBasePlatform (base1);
-	slidePlaforms[0] = LinkBasePlatform (base1, base2);
-	slidePlaforms[1] = LinkBasePlatform (base2, base3);
-	slidePlaforms[2] = LinkBasePlatform (base3, base4);
+	m_revolvePlatform = LinkBasePlatform (base1);
+	m_slidePlaforms[0] = LinkBasePlatform (base1, base2);
+	m_slidePlaforms[1] = LinkBasePlatform (base2, base3);
+	m_slidePlaforms[2] = LinkBasePlatform (base3, base4);
 
 	// connect the teeth
-	slideTooth[0] = LinkTooth (base4, leftTooth, 1.0f);
-	slideTooth[1] = LinkTooth (base4, rightTooth, -1.0f);
+	m_slideTooth[0] = LinkTooth (base4, leftTooth, 1.0f);
+	m_slideTooth[1] = LinkTooth (base4, rightTooth, -1.0f);
 
 	// calculate a fake engine 
 	CalculateEngine (m_frontTireBody[0]);
@@ -401,39 +401,39 @@ void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 	// control tilt angle
 	Real tiltAngle = m_tiltAngle;
 	if (keyboard->isKeyDown(OIS::KC_Z)) {
-		tiltAngle = revolvePlatform->GetMinAngularLimit();
-		m_tiltAngle = revolvePlatform->GetActuatorAngle();
+		tiltAngle = m_revolvePlatform->GetMinAngularLimit();
+		m_tiltAngle = m_revolvePlatform->GetActuatorAngle();
 	} else if (keyboard->isKeyDown(OIS::KC_C)) {
-		tiltAngle = revolvePlatform->GetMaxAngularLimit();
-		m_tiltAngle = revolvePlatform->GetActuatorAngle();
+		tiltAngle = m_revolvePlatform->GetMaxAngularLimit();
+		m_tiltAngle = m_revolvePlatform->GetActuatorAngle();
 	}
-	revolvePlatform->SetTargetAngle (tiltAngle);
+	m_revolvePlatform->SetTargetAngle (tiltAngle);
 
 
 	// control lift position
 	Real liftPosit= m_liftPosit;
 	if (keyboard->isKeyDown(OIS::KC_Q)) {
-		liftPosit = slidePlaforms[0]->GetMinPositLimit();
-		m_liftPosit = slidePlaforms[0]->GetActuatorPosit();
+		liftPosit = m_slidePlaforms[0]->GetMinPositLimit();
+		m_liftPosit = m_slidePlaforms[0]->GetActuatorPosit();
 	} else if (keyboard->isKeyDown(OIS::KC_E)) {
-		liftPosit = slidePlaforms[0]->GetMaxPositLimit();
-		m_liftPosit = slidePlaforms[0]->GetActuatorPosit();
+		liftPosit = m_slidePlaforms[0]->GetMaxPositLimit();
+		m_liftPosit = m_slidePlaforms[0]->GetActuatorPosit();
 	}
-	for (int i = 0; i < sizeof (slidePlaforms) / sizeof (slidePlaforms[0]); i ++) {
-		slidePlaforms[i]->SetTargetPosit(liftPosit);
+	for (int i = 0; i < sizeof (m_slidePlaforms) / sizeof (m_slidePlaforms[0]); i ++) {
+		m_slidePlaforms[i]->SetTargetPosit(liftPosit);
 	}
 
 	// control teeth position
-	Real toothPosit = slideTooth[0]->GetActuatorPosit();
+	Real toothPosit = m_slideTooth[0]->GetActuatorPosit();
 	if (keyboard->isKeyDown(OIS::KC_F)) {
-		toothPosit = slideTooth[0]->GetMinPositLimit();
-		m_openPosit = slideTooth[0]->GetActuatorPosit();
+		toothPosit = m_slideTooth[0]->GetMinPositLimit();
+		m_openPosit = m_slideTooth[0]->GetActuatorPosit();
 	} else if (keyboard->isKeyDown(OIS::KC_G)) {
-		toothPosit = slideTooth[0]->GetMaxPositLimit();
-		m_openPosit = slideTooth[0]->GetActuatorPosit();
+		toothPosit = m_slideTooth[0]->GetMaxPositLimit();
+		m_openPosit = m_slideTooth[0]->GetActuatorPosit();
 	}
-	for (int i = 0; i < sizeof (slideTooth) / sizeof (slideTooth[0]); i ++) {
-		slideTooth[i]->SetTargetPosit(toothPosit);
+	for (int i = 0; i < sizeof (m_slideTooth) / sizeof (m_slideTooth[0]); i ++) {
+		m_slideTooth[i]->SetTargetPosit(toothPosit);
 	}
 		
 }
