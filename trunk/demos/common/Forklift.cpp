@@ -31,6 +31,11 @@
 
 using namespace Ogre;
 
+#define BODY_MASS	800.0f
+#define TIRE_MASS	50.0f
+#define RACK_MASS	50.0f
+#define TOOTH_MASS	50.0f
+
 class ForkliftTireBody: public OgreNewtonDynamicBody
 {
 	public:
@@ -198,7 +203,7 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateRootBody (SceneNode* const no
 	dNewtonCollisionConvexHull bodyCollision (m_application->GetPhysics(), bodyMesh, m_allExcludingMousePick);
 	Matrix4 bodyMatrix;
 	bodyMatrix.makeTransform (node->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), node->_getDerivedOrientation());
-	OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_application->GetPhysics(), 800.0f, &bodyCollision, node, bodyMatrix);
+	OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (m_application->GetPhysics(), BODY_MASS, &bodyCollision, node, bodyMatrix);
 
 	// move the center of mass a little to the back	of the chassis
 	Vector3 com;
@@ -226,7 +231,7 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateTireBody (SceneNode* const ti
 
 	Matrix4 matrix;
 	matrix.makeTransform(tireNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), tireNode->_getDerivedOrientation());
-	return new ForkliftTireBody (m_application->GetPhysics(), 50.0f, &shape, tireNode, matrix, m_rootBody);
+	return new ForkliftTireBody (m_application->GetPhysics(), TIRE_MASS, &shape, tireNode, matrix, m_rootBody);
 }
 
 OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateBasePlatform (SceneNode* const baseNode, const Vector3& origin)
@@ -239,7 +244,7 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateBasePlatform (SceneNode* cons
 
 	Matrix4 matrix;
 	matrix.makeTransform(baseNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), baseNode->_getDerivedOrientation());
-	return new OgreNewtonDynamicBody (m_application->GetPhysics(), 50.0f, &collision, baseNode, matrix);
+	return new OgreNewtonDynamicBody (m_application->GetPhysics(), RACK_MASS, &collision, baseNode, matrix);
 }
 
 
@@ -256,7 +261,7 @@ OgreNewtonDynamicBody* ForkliftPhysicsModel::CreateTooth (SceneNode* const baseN
 
 	Matrix4 matrix;
 	matrix.makeTransform(baseNode->_getDerivedPosition() + origin, Vector3 (1.0f, 1.0f, 1.0f), baseNode->_getDerivedOrientation());
-	return new OgreNewtonDynamicBody (m_application->GetPhysics(), 50.0f, &compoundShape, baseNode, matrix);
+	return new OgreNewtonDynamicBody (m_application->GetPhysics(), TOOTH_MASS, &compoundShape, baseNode, matrix);
 }
 
 dNewtonHingeJoint* ForkliftPhysicsModel::LinkFrontTire (OgreNewtonDynamicBody* const tire)  
