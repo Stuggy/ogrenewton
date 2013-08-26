@@ -35,10 +35,10 @@ void LumberYard (SceneManager* const sceneMgr, OgreNewtonWorld* const world, con
 	SceneNode* const lumberYardRoot = CreateNode (sceneMgr, NULL, Vector3::ZERO, Quaternion::IDENTITY);
 	loader.parseDotScene ("lumberyard.scene", "Autodetect", sceneMgr, lumberYardRoot);
 
-SceneNode* const viper = CreateNode (sceneMgr, NULL, Vector3::ZERO, Quaternion::IDENTITY);
-viper->setPosition(origin + Vector3(5, 0, 0)) ;
+//SceneNode* const viper = CreateNode (sceneMgr, NULL, Vector3::ZERO, Quaternion::IDENTITY);
+//viper->setPosition(origin + Vector3(5, 0, 0)) ;
 //loader.parseDotScene ("viper.scene", "Autodetect", sceneMgr, viper);
-loader.parseDotScene ("aventador.scene", "Autodetect", sceneMgr, viper);
+//loader.parseDotScene ("aventador.scene", "Autodetect", sceneMgr, viper);
 
 	Real mass = 5.0f;
 
