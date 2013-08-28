@@ -64,7 +64,7 @@ class ForkliftTireBody: public OgreNewtonDynamicBody
 };
 
 
-ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin)
+ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin, const String& rootName)
 	:OgreNewtonArticulatedTransformController(application->GetPhysics()->GetHierarchyTransformManager(), true)
 	,m_application(application)
 	,m_liftPosit(0.0f)
@@ -76,32 +76,32 @@ ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, 
 	// load the Ogre model form and Ogre scene 
 	DotSceneLoader loader;
 	SceneNode* const forkliftRoot = CreateNode (sceneMgr, NULL, Vector3::ZERO, Quaternion::IDENTITY);
-	loader.parseDotScene (fileName, "Autodetect", sceneMgr, forkliftRoot);
+	loader.parseDotScene (fileName, "Autodetect", sceneMgr, forkliftRoot, rootName);
 
 	// find all vehicle components
-	SceneNode* const bodyNode = (SceneNode*) forkliftRoot->getChild ("body");
+	SceneNode* const bodyNode = (SceneNode*) forkliftRoot->getChild (rootName + "body");
 	dAssert (bodyNode);
 
-	SceneNode* const fl_tireNode = (SceneNode*) bodyNode->getChild ("fl_tire");
-	SceneNode* const fr_tireNode = (SceneNode*) bodyNode->getChild ("fr_tire");
-	SceneNode* const rl_tireNode = (SceneNode*) bodyNode->getChild ("rl_tire");
-	SceneNode* const rr_tireNode = (SceneNode*) bodyNode->getChild ("rr_tire");
+	SceneNode* const fl_tireNode = (SceneNode*) bodyNode->getChild (rootName + "fl_tire");
+	SceneNode* const fr_tireNode = (SceneNode*) bodyNode->getChild (rootName + "fr_tire");
+	SceneNode* const rl_tireNode = (SceneNode*) bodyNode->getChild (rootName + "rl_tire");
+	SceneNode* const rr_tireNode = (SceneNode*) bodyNode->getChild (rootName + "rr_tire");
 	dAssert (fl_tireNode);
 	dAssert (fr_tireNode);
 	dAssert (rl_tireNode);
 	dAssert (rr_tireNode);
 
-	SceneNode* const base1Node = (SceneNode*) bodyNode->getChild ("lift_1");
-	SceneNode* const base2Node = (SceneNode*) base1Node->getChild ("lift_2");
-	SceneNode* const base3Node = (SceneNode*) base2Node->getChild ("lift_3");
-	SceneNode* const base4Node = (SceneNode*) base3Node->getChild ("lift_4");
+	SceneNode* const base1Node = (SceneNode*) bodyNode->getChild (rootName + "lift_1");
+	SceneNode* const base2Node = (SceneNode*) base1Node->getChild (rootName + "lift_2");
+	SceneNode* const base3Node = (SceneNode*) base2Node->getChild (rootName + "lift_3");
+	SceneNode* const base4Node = (SceneNode*) base3Node->getChild (rootName + "lift_4");
 	dAssert (base1Node);
 	dAssert (base2Node);
 	dAssert (base3Node);
 	dAssert (base4Node);
 
-	SceneNode* const leftTeethNode = (SceneNode*) base4Node->getChild ("left_teeth");
-	SceneNode* const rightTeethNode = (SceneNode*) base4Node->getChild ("right_teeth");
+	SceneNode* const leftTeethNode = (SceneNode*) base4Node->getChild (rootName + "left_teeth");
+	SceneNode* const rightTeethNode = (SceneNode*) base4Node->getChild (rootName + "right_teeth");
 	dAssert (leftTeethNode);
 	dAssert (leftTeethNode);
 
@@ -163,7 +163,6 @@ ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, 
 
 	// disable self collision between all body parts
 	DisableAllSelfCollision();
-
 }
 
 ForkliftPhysicsModel::~ForkliftPhysicsModel()
