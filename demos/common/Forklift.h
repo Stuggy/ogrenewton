@@ -32,7 +32,7 @@ class DemoApplication;
 class ForkliftPhysicsModel: public OgreNewtonArticulationManager::OgreNewtonArticulatedTransformController
 {
 	public:
-	ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin);
+	ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin, const String& rootName);
 	~ForkliftPhysicsModel();
 
 	virtual void* AddBone (dNewtonBody* const bone, const dFloat* const bindMatrix, void* const parentBodne);

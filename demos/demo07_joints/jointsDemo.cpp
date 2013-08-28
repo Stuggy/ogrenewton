@@ -226,8 +226,11 @@ class OgreNewtonDemoApplication: public DemoApplication
 		LoadDynamicScene(origin + Vector3 (0.0f, 0.0f, -30.0f));
 
 		// load articulated ForkLift
-		ForkliftPhysicsModel* const forkLift = new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (0.0f, 0.5f, 10.0f));
+		ForkliftPhysicsModel* const forkLift = new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (0.0f, 0.5f, 10.0f), "lifter1_");
 		m_player = forkLift->m_rootBody;
+
+		// add a second vehicle just because we can
+//		new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (10.0f, 0.5f, 10.0f), "lifter2_");
 
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
