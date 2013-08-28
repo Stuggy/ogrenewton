@@ -230,7 +230,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		m_player = forkLift->m_rootBody;
 
 		// add a second vehicle just because we can
-//		new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (10.0f, 0.5f, 10.0f), "lifter2_");
+		new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (4.0f, 0.5f, 10.0f), "lifter2_");
 
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
