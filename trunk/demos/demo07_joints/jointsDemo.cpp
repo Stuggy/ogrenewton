@@ -40,7 +40,6 @@ class OgreNewtonDemoApplication: public DemoApplication
 	public:
 	OgreNewtonDemoApplication()
 		:DemoApplication()
-		,m_player(NULL)
 	{
 	}
 
@@ -136,6 +135,19 @@ class OgreNewtonDemoApplication: public DemoApplication
 	void OnPhysicUpdateBegin(dFloat timestepInSecunds)
 	{
 		DemoApplication::OnPhysicUpdateBegin(timestepInSecunds);
+		const OgreNewtonInputManager::OgrePlayerUserDataPair& playerData = m_physicsWorld->GetInputManager()->GetPlayer();
+
+		dNewtonDynamicBody* const playerBody = playerData.m_player;
+		ForkliftPhysicsModel* const playerController = (ForkliftPhysicsModel*)playerData.m_userData;
+
+		ForkliftPhysicsModel::InputRecored inputs;
+
+		inputs.m_throtler = (m_keyboard->isKeyDown(OIS::KC_W) - m_keyboard->isKeyDown(OIS::KC_S));
+		inputs.m_steering = (m_keyboard->isKeyDown(OIS::KC_A) - m_keyboard->isKeyDown(OIS::KC_D));
+		inputs.m_lift = (m_keyboard->isKeyDown(OIS::KC_Q) - m_keyboard->isKeyDown(OIS::KC_E));
+		inputs.m_tilt = (m_keyboard->isKeyDown(OIS::KC_X) - m_keyboard->isKeyDown(OIS::KC_Z));
+		inputs.m_palette = (m_keyboard->isKeyDown(OIS::KC_F) - m_keyboard->isKeyDown(OIS::KC_G));
+
 
 		// check if there are some vehicle input, if there is, then wakeup the vehicle
 		if (m_keyboard->isKeyDown(OIS::KC_W) || 
@@ -148,8 +160,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 			m_keyboard->isKeyDown(OIS::KC_C) ||	
 			m_keyboard->isKeyDown(OIS::KC_Q) ||	
 			m_keyboard->isKeyDown(OIS::KC_E)) {
-			m_player->SetSleepState(false);
+			playerBody->SetSleepState(false);
 		}
+
+		playerController->ApplyInputs (inputs);
 	}
 
 
@@ -157,10 +171,13 @@ class OgreNewtonDemoApplication: public DemoApplication
 	{
 		DemoApplication::OnPhysicUpdateEnd (timestepInSecunds);
 
+		OgreNewtonInputManager* const inputManager = m_physicsWorld->GetInputManager();
+		OgreNewtonDynamicBody* const player = (OgreNewtonDynamicBody*) inputManager->GetPlayer().m_player;
+
 		// reposition the camera origin to point to the player
 		Matrix4 camMatrix(GetCameraTransform());
 
-		Matrix4 playerMatrix(m_player->GetMatrix());
+		Matrix4 playerMatrix(player->GetMatrix());
 		Vector3 frontDir (camMatrix[0][2], camMatrix[1][2], camMatrix[2][2]);
 		Vector3 camOrigin (playerMatrix.transformAffine(Vector3(0.0f, ARTICULATED_VEHICLE_CAMERA_HIGH_ABOVE_HEAD, 0.0f)));
 		camOrigin += frontDir * ARTICULATED_VEHICLE_CAMERA_DISTANCE;
@@ -184,7 +201,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 			row = m_screen->write(20, row + 20, "F3:  Toggle display physic debug");
 			row = m_screen->write(20, row + 30, "W, S, A, D:  Drive Vehicle");
 			row = m_screen->write(20, row + 20, "Q E:  Rise and lower Lifter Apparatus");
-			row = m_screen->write(20, row + 20, "Z C:  Rotate Lifter Apparatus");
+			row = m_screen->write(20, row + 20, "Z X:  Rotate Lifter Apparatus");
 			row = m_screen->write(20, row + 20, "Hold CTRL and Left Mouse Key:  Show mouse cursor and pick objects from the screen");
 			row = m_screen->write(20, row + 20, "ESC:  Exit application");
 		}
@@ -227,7 +244,9 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 		// load articulated ForkLift
 		ForkliftPhysicsModel* const forkLift = new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (0.0f, 0.5f, 10.0f), "lifter1_");
-		m_player = forkLift->m_rootBody;
+
+		// set this object as the player
+		m_physicsWorld->GetInputManager()->SetPlayer(forkLift->m_rootBody, forkLift);
 
 		// add a second vehicle just because we can
 		new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (4.0f, 0.5f, 10.0f), "lifter2_");
@@ -246,7 +265,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		light0->setSpecularColour(ColourValue(0.4f, 0.4f, 0.4f));
 	}
 
-	OgreNewtonDynamicBody* m_player;
+//	OgreNewtonDynamicBody* m_player;
 };
 
 

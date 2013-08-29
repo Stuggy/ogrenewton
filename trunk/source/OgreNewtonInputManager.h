@@ -32,13 +32,38 @@ class OgreNewtonWorld;
 class OGRE_NEWTON_API OgreNewtonInputManager: public dNewtonInputManager
 {
 	public:
+	class OgrePlayerUserDataPair
+	{
+		public:
+		OgrePlayerUserDataPair()
+			:m_userData(NULL)
+			,m_player(NULL)
+		{
+		}
+		
+		void* m_userData; 
+		dNewtonDynamicBody* m_player;
+	};
+
 	OgreNewtonInputManager (OgreNewtonWorld* const world);
 	virtual ~OgreNewtonInputManager();
 
-	void OnBeginUpdate (dFloat timestepInSecunds);
-	void OnEndUpdate (dFloat timestepInSecunds);
+	void SetPlayer(dNewtonDynamicBody* const player, void* const userData)
+	{
+		m_playerInfo.m_player = player;
+		m_playerInfo.m_userData = userData;
+	}
+
+	const OgrePlayerUserDataPair& GetPlayer() const
+	{
+		return m_playerInfo;
+	}
+
+	virtual void OnBeginUpdate (dFloat timestepInSecunds);
+	virtual void OnEndUpdate (dFloat timestepInSecunds);
 
 	OgreNewtonWorld* m_world;
+	OgrePlayerUserDataPair m_playerInfo;
 };
 
 #endif
