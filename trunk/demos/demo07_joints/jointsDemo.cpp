@@ -140,8 +140,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 		dNewtonDynamicBody* const playerBody = playerData.m_player;
 		ForkliftPhysicsModel* const playerController = (ForkliftPhysicsModel*)playerData.m_userData;
 
+		// set all of the player inputs
 		ForkliftPhysicsModel::InputRecored inputs;
-
 		inputs.m_throtler = (m_keyboard->isKeyDown(OIS::KC_W) - m_keyboard->isKeyDown(OIS::KC_S));
 		inputs.m_steering = (m_keyboard->isKeyDown(OIS::KC_A) - m_keyboard->isKeyDown(OIS::KC_D));
 		inputs.m_lift = (m_keyboard->isKeyDown(OIS::KC_Q) - m_keyboard->isKeyDown(OIS::KC_E));
