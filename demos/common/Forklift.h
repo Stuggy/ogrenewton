@@ -32,9 +32,27 @@ class DemoApplication;
 class ForkliftPhysicsModel: public OgreNewtonArticulationManager::OgreNewtonArticulatedTransformController
 {
 	public:
+	class InputRecored
+	{
+		public:
+		InputRecored()
+		{
+			memset (this, 0, sizeof (InputRecored));
+		}
+
+		int m_throtler;
+		int m_steering;
+		int m_lift;
+		int m_tilt;
+		int m_palette;
+	};
+
+
 	ForkliftPhysicsModel (DemoApplication* const application, const char* const fileName, const Vector3& origin, const String& rootName);
 	~ForkliftPhysicsModel();
 
+
+	void ApplyInputs(const InputRecored& inputs);
 	virtual void* AddBone (dNewtonBody* const bone, const dFloat* const bindMatrix, void* const parentBodne);
 
 	virtual void OnPreUpdate (dFloat timestep);
@@ -71,6 +89,8 @@ class ForkliftPhysicsModel: public OgreNewtonArticulationManager::OgreNewtonArti
 	Real m_tiltAngle;
 	Real m_maxEngineTorque;
 	Real m_omegaResistance;
+
+	InputRecored m_inputRecored;
 };
 
 
