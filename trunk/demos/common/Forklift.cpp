@@ -131,29 +131,27 @@ ForkliftPhysicsModel::ForkliftPhysicsModel (DemoApplication* const application, 
 	AddBone (rearRightTireBody, &bindMatrix[0][0], parentBone);
 	AddBone (m_frontTireBody[0], &bindMatrix[0][0], parentBone);
 	AddBone (m_frontTireBody[1], &bindMatrix[0][0], parentBone);
-
-	// add the base bones
-	void* const base1Bone = AddBone (base1, &bindMatrix[0][0], parentBone);
-	void* const base2Bone = AddBone (base2, &bindMatrix[0][0], base1Bone);
-	void* const base3Bone = AddBone (base3, &bindMatrix[0][0], base2Bone);
-	void* const base4Bone = AddBone (base4, &bindMatrix[0][0], base3Bone);
-
-	// add the teeth bode
-	AddBone (leftTooth, &bindMatrix[0][0], base4Bone);
-	AddBone (rightTooth, &bindMatrix[0][0], base4Bone);
-
-	// connect the part with joints
+	// connect the tire to the root body 
 	m_rearTire[0] = LinkRearTire (rearLeftTireBody);
 	m_rearTire[1] = LinkRearTire (rearRightTireBody);
 	m_frontTire[0] = LinkFrontTire (m_frontTireBody[0]);
 	m_frontTire[1] = LinkFrontTire (m_frontTireBody[1]);
 
+
+	// add the lifter apparatus bones 
+	void* const base1Bone = AddBone (base1, &bindMatrix[0][0], parentBone);
+	void* const base2Bone = AddBone (base2, &bindMatrix[0][0], base1Bone);
+	void* const base3Bone = AddBone (base3, &bindMatrix[0][0], base2Bone);
+	void* const base4Bone = AddBone (base4, &bindMatrix[0][0], base3Bone);
 	// connect the forklift base
 	m_revolvePlatform = LinkBasePlatform (base1);
 	m_slidePlaforms[0] = LinkBasePlatform (base1, base2);
 	m_slidePlaforms[1] = LinkBasePlatform (base2, base3);
 	m_slidePlaforms[2] = LinkBasePlatform (base3, base4);
 
+	// add the teeth bode
+	AddBone (leftTooth, &bindMatrix[0][0], base4Bone);
+	AddBone (rightTooth, &bindMatrix[0][0], base4Bone);
 	// connect the teeth
 	m_slideTooth[0] = LinkTooth (base4, leftTooth, 1.0f);
 	m_slideTooth[1] = LinkTooth (base4, rightTooth, -1.0f);
@@ -298,8 +296,8 @@ dNewtonHingeActuator* ForkliftPhysicsModel::LinkBasePlatform (OgreNewtonDynamicB
 	Matrix4 aligmentMatrix (Quaternion (Radian (3.141592f * 0.5f), Vector3 (0.0f, 1.0f, 0.0f)));
 	Matrix4 baseMatrix((platform->GetMatrix() * aligmentMatrix).transpose());
 
-	dFloat minAngleLimit = -20.0f * 3.141592f / 180.0f;
-	dFloat maxAngleLimit =  30.0f * 3.141592f / 180.0f;
+	dFloat minAngleLimit = -30.0f * 3.141592f / 180.0f;
+	dFloat maxAngleLimit =  20.0f * 3.141592f / 180.0f;
 	dFloat angularRate = 10.0f * 3.141592f / 180.0f;
 	return new dNewtonHingeActuator (&baseMatrix[0][0], angularRate, minAngleLimit, maxAngleLimit, platform, m_rootBody);
 }
@@ -356,12 +354,13 @@ void ForkliftPhysicsModel::ApplyInputs(const InputRecored& inputs)
 
 void ForkliftPhysicsModel::OnPreUpdate (dFloat timestep)
 {
+
 	// apply steering control
 	Real steeringAngle = m_rearTire[0]->GetActuatorAngle1();
-	if (m_inputRecored.m_steering > 0) {
-		steeringAngle = m_rearTire[0]->GetMinAngularLimit0(); 
-	} else if (m_inputRecored.m_steering < 0) {
-		steeringAngle = m_rearTire[0]->GetMaxAngularLimit0(); 
+	if (m_inputRecored.m_steering < 0) {
+		steeringAngle = m_rearTire[0]->GetMinAngularLimit1(); 
+	} else if (m_inputRecored.m_steering > 0) {
+		steeringAngle = m_rearTire[0]->GetMaxAngularLimit1(); 
 	}
 	m_rearTire[0]->SetTargetAngle1(steeringAngle);
 	m_rearTire[1]->SetTargetAngle1(steeringAngle);
