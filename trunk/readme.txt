@@ -1,6 +1,6 @@
 Testing the wrapper:
 1- Go to folder:  ..\ogrenewt\bin\
-2-You will find a serious of compiled demos. Try some or all them before you try anything else.
+2-You will find a series of compiled demos. Try some or all them before you try anything else.
 
 -Using the library:
 1-The wrapper comes with precompiled release dll , you can simple copy that DLL to you Ogre folder and set a path to where the wrapper was unpacked.
@@ -8,7 +8,7 @@ For header: ..\ogrenewt\source
 For library: ..\ogrenewt\projects\vs_2009\Win32\ogreNewton\ReleaseDll
 
 Building the library:
-1-DonndLoad Newton SDK 3.11 (minimum)
+1-DownLoad Newton SDK 3.11 (minimum)
 2--open visual studio 2009 solution in folder: 
 ..\newton-dynamics\packages\projects\visualStudio_2008\build.sln
 -You will need to set few environment variables: 
