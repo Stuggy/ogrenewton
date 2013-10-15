@@ -20,8 +20,8 @@
 */
 
 
-#ifndef _OGRE_NEWTON_RAY_PEEKING_H_
-#define _OGRE_NEWTON_RAY_PEEKING_H_
+#ifndef _OGRE_NEWTON_INPUT_MANAGER_H_
+#define _OGRE_NEWTON_INPUT_MANAGER_H_
 
 #include "OgreNewtonStdAfx.h"
 

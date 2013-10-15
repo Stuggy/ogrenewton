@@ -124,7 +124,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		Vector3 end (origin - Vector3 (0.0f, 100.0f, 0.0f));
 		OgreNewtonRayCast raycaster(m_physicsWorld, m_rayCast); 
 		raycaster.CastRay (&start.x, &end.x);
-		LumberYard (mSceneMgr, m_physicsWorld, raycaster.m_contact, compoundCount, compoundCount, 10);
+//		LumberYard (mSceneMgr, m_physicsWorld, raycaster.m_contact, compoundCount, compoundCount, 10);
 	}									  
 
 	void createFrameListener()
@@ -249,7 +249,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		m_physicsWorld->GetInputManager()->SetPlayer(forkLift->m_rootBody, forkLift);
 
 		// add a second vehicle just because we can
-		new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (4.0f, 0.5f, 10.0f), "lifter2_");
+//		new ForkliftPhysicsModel(this, "forklift.scene", raycaster.m_contact + Vector3 (4.0f, 0.5f, 10.0f), "lifter2_");
 
 		// initialize the Camera position after the scene was loaded
 		ResetCamera (mCamera->getPosition(), mCamera->getOrientation());
