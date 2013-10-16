@@ -77,9 +77,8 @@ void DemoApplication::SmoothCamera::Reset (const Vector3& posit, const Quaternio
 	m_cameraTranslation = posit;
 	ResetMatrix (&matrix[0][0]);
 
-	Matrix4 cameraMatrix;
-	InterplateMatrix (0.0f, cameraMatrix[0]);
-	cameraMatrix = cameraMatrix.transpose();
+//	Matrix4 cameraMatrix;
+//	InterplateMatrix (0.0f, cameraMatrix[0]);
 }
 
 
