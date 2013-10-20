@@ -266,8 +266,9 @@ void OgreNewtonMesh::ParseEntity (const Entity* const entity, const Matrix4& mat
 		//now loop through the indices, getting polygon info!
 		int i_offset = 0;
 
+		Real poly_verts[3][12];
+		memset (triangle, 0, sizeof (triangle));
 		for (size_t i = 0; i < poly_count; i++)	{
-			Real poly_verts[3][12];
 			for (int j = 0; j < 3; j++) {
 				// index to first vertex!
 				int idx = uses32bit ? i_Longptr[i_offset + j] : i_Shortptr[i_offset + j]; 
