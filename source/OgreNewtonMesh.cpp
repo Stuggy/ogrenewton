@@ -267,7 +267,7 @@ void OgreNewtonMesh::ParseEntity (const Entity* const entity, const Matrix4& mat
 		int i_offset = 0;
 
 		Real poly_verts[3][12];
-		memset (triangle, 0, sizeof (triangle));
+		memset (poly_verts, 0, sizeof (poly_verts));
 		for (size_t i = 0; i < poly_count; i++)	{
 			for (int j = 0; j < 3; j++) {
 				// index to first vertex!
