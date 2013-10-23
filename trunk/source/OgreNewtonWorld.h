@@ -65,7 +65,6 @@ class OGRE_NEWTON_API OgreNewtonWorld: public dNewton
 	void SetUpdateFPS(Real desiredFps, int maxUpdatesPerFrames = 3);
 	void SetConcurrentUpdateMode (bool mode);
 	bool GetConcurrentUpdateMode () const; 
-	dNewtonBody* CreateBox(Ogre::SceneNode* const sourceNode);
 	dLong GetPhysicsTimeInMicroSeconds() const;
 	
 
