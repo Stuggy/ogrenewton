@@ -24,7 +24,6 @@
 
 using namespace Ogre;
 
-class OgreNewtonBody;
 
 class OGRE_NEWTON_API OgreNewtonDebugger
 {
