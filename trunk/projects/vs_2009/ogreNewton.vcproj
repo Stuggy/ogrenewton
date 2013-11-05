@@ -40,7 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm2000"
+				AdditionalOptions="/Zm500"
 				Optimization="0"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="../../source;&quot;$(OGRE_ENGINE_DEPENDENCIES)/include&quot;;&quot;$(OGRE_ENGINE_BUILD)/include&quot;;&quot;$(OGRE_ENGINE)/OgreMain/include&quot;;&quot;$(OGRE_ENGINE)/OgreMain/include/OGRE&quot;;&quot;$(OGRE_ENGINE)/Samples/Common/include&quot;;&quot;$(OGRE_ENGINE)/Components/Terrain/include&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dMath&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dNewton&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dCustomJoints&quot;;&quot;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton&quot;"
@@ -107,7 +107,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm2000"
+				AdditionalOptions="/Zm500"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="false"
@@ -173,7 +173,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm2000"
+				AdditionalOptions="/Zm500"
 				Optimization="0"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="../../source;&quot;$(OGRE_ENGINE_DEPENDENCIES)/include&quot;;&quot;$(OGRE_ENGINE_BUILD)/include&quot;;&quot;$(OGRE_ENGINE)/OgreMain/include&quot;;&quot;$(OGRE_ENGINE)/OgreMain/include/OGRE&quot;;&quot;$(OGRE_ENGINE)/Samples/Common/include&quot;;&quot;$(OGRE_ENGINE)/Components/Terrain/include&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dMath&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dNewton&quot;;&quot;$(NEWTON_DYNAMICS)/packages/dCustomJoints&quot;;&quot;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton&quot;"
@@ -251,7 +251,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm2000"
+				AdditionalOptions="/Zm500"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="false"
