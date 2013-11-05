@@ -124,7 +124,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		Vector3 end (origin - Vector3 (0.0f, 100.0f, 0.0f));
 		OgreNewtonRayCast raycaster(m_physicsWorld, m_rayCast); 
 		raycaster.CastRay (&start.x, &end.x);
-//		LumberYard (mSceneMgr, m_physicsWorld, raycaster.m_contact, compoundCount, compoundCount, 10);
+		LumberYard (mSceneMgr, m_physicsWorld, raycaster.m_contact, compoundCount, compoundCount, 10);
 	}									  
 
 	void createFrameListener()
