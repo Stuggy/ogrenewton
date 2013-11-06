@@ -34,6 +34,7 @@
 
 OgreNewtonWorld::OgreNewtonWorld (int updateFramerate)
 	:dNewton()
+	,m_materialMap()
 	,m_gravity (0.0f, -9.8f, 0.0f)
 	,m_concurrentUpdateMode(true)
 	,m_lastPhysicTimeInMicroseconds(GetTimeInMicrosenconds ())
@@ -47,6 +48,8 @@ OgreNewtonWorld::OgreNewtonWorld (int updateFramerate)
 	m_playerManager = new OgreNewtonPlayerManager (this);
 	m_rayPickerManager = new OgreNewtonRayPickManager (this, 0);
 	m_inputManager = new OgreNewtonInputManager(this);
+
+//SetNumberOfThreads(1);
 }
 
 OgreNewtonWorld::~OgreNewtonWorld()
@@ -107,6 +110,64 @@ dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
 {
 	return m_physicUpdateTimestepInMocroseconds;
 }
+
+dMaterialPairManager::dMaterialPair* OgreNewtonWorld::GetDefualtMaterialPair ()
+{
+	return m_materialMap.GetDefualtPair ();
+}
+
+void OgreNewtonWorld::AddMaterialPair (int materialId0, int materialId1, const dMaterialPairManager::dMaterialPair& pair)
+{
+	m_materialMap.AddPair (materialId0, materialId1, pair);
+}
+
+
+const dMaterialPairManager::dMaterialPair* OgreNewtonWorld::GetMaterialPair (int materialId0, int materialId1, int threadIndex) const
+{
+	return m_materialMap.GetPair (materialId0, materialId1, threadIndex);
+}
+
+
+
+bool OgreNewtonWorld::OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex) const
+{
+	dNewtonCollision* const collision0 = body0->GetCollision();
+	dNewtonCollision* const collision1 = body1->GetCollision();
+
+	// check if these two collision shape are part of a hierarchical model
+	void* const node0 = collision0->GetUserData();
+	void* const node1 = collision1->GetUserData();
+	if (node0 && node1) {
+		//both collision are child nodes, check if there are self colliding
+		return GetHierarchyTransformManager()->SelfCollisionTest (node0, node1);
+	}
+
+	// check all other collision using the bitfield mask, 
+	//for now simple return true
+	return (collision0->m_collisionMask & collision0->m_collisionMask) ? true : false;
+}
+
+bool OgreNewtonWorld::OnCompoundSubCollisionAABBOverlap (const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex) const
+{
+//	return (subShape0->m_collisionMask & subShape1->m_collisionMask) ? true : false;
+	return true;
+}
+
+void OgreNewtonWorld::OnContactProcess (dNewtonContactMaterial* const contactMaterial, dFloat timestep, int threadIndex) const
+{
+	for (void* contact = contactMaterial->GetFirstContact(); contact; contact = contactMaterial->GetNextContact(contact)) {
+		dNewtonCollision* const shape0 = contactMaterial->GetShape0(contact);
+		dNewtonCollision* const shape1 = contactMaterial->GetShape1(contact);
+		const dMaterialPairManager::dMaterialPair* const materialPair = m_materialMap.GetPair (shape0->m_materailID, shape1->m_materailID, threadIndex);
+
+		contactMaterial->SetContactRestitution(contact, materialPair->m_restitution);
+		contactMaterial->SetContactFrictionCoef (contact, materialPair->m_staticFriction0, materialPair->m_kineticFriction0, 0);
+		contactMaterial->SetContactFrictionCoef (contact, materialPair->m_staticFriction1, materialPair->m_kineticFriction1, 1);
+	}
+
+	dNewton::OnContactProcess (contactMaterial, timestep, threadIndex);
+}
+
 
 void OgreNewtonWorld::Update ()
 {

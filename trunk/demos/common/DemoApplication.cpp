@@ -122,13 +122,13 @@ void DemoApplication::OgreNewtonExample::OnNodesTransformEnd(Real interpolationP
 	m_application->OnRenderUpdateEnd(interpolationParam);
 }
 
-
+/*
 bool DemoApplication::OgreNewtonExample::OnBodiesAABBOverlap (const dNewtonBody* const body0, const dNewtonBody* const body1, int threadIndex) const
 {
 	dNewtonCollision* const collision0 = body0->GetCollision();
 	dNewtonCollision* const collision1 = body1->GetCollision();
 
-	// check if these twp collision shape are part of a hierarchical model
+	// check if these two collision shape are part of a hierarchical model
 	void* const node0 = collision0->GetUserData();
 	void* const node1 = collision1->GetUserData();
 	if (node0 && node1) {
@@ -150,7 +150,7 @@ void DemoApplication::OgreNewtonExample::OnContactProcess (dNewtonContactMateria
 {
 	OgreNewtonWorld::OnContactProcess (contactMaterial, timestep, threadIndex);
 }
-
+*/
 
 
 DemoApplication::DemoApplication()
