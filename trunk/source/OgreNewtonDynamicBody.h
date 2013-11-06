@@ -105,7 +105,7 @@ inline void OgreNewtonDynamicBody::SetVeloc (const Vector3& veloc)
 inline Vector3 OgreNewtonDynamicBody::GetVeloc () const
 {
 	Vector3 veloc;
-	dNewtonDynamicBody::GetOmega(&veloc.x);
+	dNewtonDynamicBody::GetVeloc(&veloc.x);
 	return veloc;
 }
 
