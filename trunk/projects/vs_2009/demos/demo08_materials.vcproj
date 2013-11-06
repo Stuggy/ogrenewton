@@ -388,6 +388,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\demos\demo08_materials\MaterialScene.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\demo08_materials\MaterialScene.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\demos\demo08_materials\materialsDemo.cpp"
 			>
 		</File>

@@ -26,13 +26,14 @@
 
 #include "Utils.h"
 #include "ShootRigidBody.h"
+#include "MaterialScene.h"
 #include "DemoApplication.h"
 
 using namespace Ogre;
 
 class OgreNewtonDemoApplication: public DemoApplication
 {
-public:
+	public:
 
 	OgreNewtonDemoApplication()
 		:DemoApplication()
@@ -43,7 +44,7 @@ public:
 	{
 	}
 
-protected:
+	protected:
 	void loadStaticScene ()
 	{
 		// create a scene body to add all static collidable meshes in the world 
@@ -69,11 +70,7 @@ protected:
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -20.0f) , 40);
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -20.0f) , 40);
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3(-10.0f, 0.0f, -40.0f) , 40);
-//		BuildJenga (mSceneMgr, m_physicsWorld, origin + Vector3( 10.0f, 0.0f, -40.0f) , 40);
-//		BuildPyramid (mSceneMgr, m_physicsWorld, Vector3(0.0f, 0.0f, -60.0f), 10.0f, 30, 30);
+		BuildMaterialScene (mSceneMgr, m_physicsWorld, origin + Vector3(-5.0f, 0.0f, -40.0f), 40);
 	}
 
 
