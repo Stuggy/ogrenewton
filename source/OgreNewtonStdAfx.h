@@ -50,7 +50,7 @@
 #include <OgreTerrain.h>
 #include <OgreTerrainGroup.h>
 
-//#include <Newton.h>
+
 #include <dNewton.h>
 #include <dNewtonMesh.h>
 #include <dNewtonJoint.h>
@@ -61,6 +61,7 @@
 #include <dNewtonInputManager.h>
 #include <dNewtonTransformLerp.h>
 #include <dNewtonPlayerManager.h>
+#include <dMaterialPairManager.h>
 #include <dNewtonTriggerManager.h>
 #include <dNewtonActuatorJoints.h>
 #include <dNewtonArticulationManager.h>
