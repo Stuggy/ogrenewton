@@ -26,10 +26,10 @@
 #include "MaterialScene.h"
 #include "DemoApplication.h"
 
-static void MakeStaticRamp(SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location)
+static void MakeStaticRamp(SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location, int rampMaterialID)
 {
 	Vector3 blockBoxSize (20.0f, 0.25f, 40.0f);
-	dNewtonCollisionBox boxShape (world, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, m_all);
+	dNewtonCollisionBox shape (world, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, m_all);
 
 	// create a texture for using with this material
 	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("sand1b.jpg", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
@@ -40,7 +40,7 @@ static void MakeStaticRamp(SceneManager* const sceneMgr, OgreNewtonWorld* const 
 	renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("sand1b.jpg");
 	renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
 
-	OgreNewtonMesh boxMesh (&boxShape);
+	OgreNewtonMesh boxMesh (&shape);
 	boxMesh.Triangulate();
 	int materialId = boxMesh.AddMaterial(renderMaterial);
 	boxMesh.ApplyBoxMapping (materialId, materialId, materialId);
@@ -50,77 +50,140 @@ static void MakeStaticRamp(SceneManager* const sceneMgr, OgreNewtonWorld* const 
 	MeshPtr mesh (object->convertToMesh (MakeName ("ramp")));
 
 	//Matrix4 matrix (Matrix4::IDENTITY);
-	Matrix4 matrix (Quaternion (Degree(-20.0f), Vector3 (0.0f, 0.0f, 1.0f)));
+	Matrix4 matrix (Quaternion (Degree(-30.0f), Vector3 (0.0f, 0.0f, 1.0f)));
 	matrix.setTrans (Vector3 (location.x, location.y, location.z));
 
 	Entity* const ent = sceneMgr->createEntity(MakeName ("ramp"), mesh);
 	SceneNode* const node = CreateNode (sceneMgr, ent, matrix.getTrans(), matrix.extractQuaternion());
-	new OgreNewtonDynamicBody (world, 0.0f, &boxShape, node, matrix);
+
+	shape.SetMaterialId (rampMaterialID);
+	new OgreNewtonDynamicBody (world, 0.0f, &shape, node, matrix);
 
 	delete object;
 }
 
-void BuildMaterialScene (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location, Real mass)
+static void AddFrictionSamples(SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location, int materialStartID)
 {
-	MakeStaticRamp(sceneMgr, world, location);
-/*
-	// please do not ask why, I just like golden ratios dimensions, 
-	Vector3 blockBoxSize (1.62f/2.0f, 0.25f, 0.5f);
-
-	// find the floor position
-	Vector3 start(location + Vector3 (0.0f, 10.0f, 0.0f));
-	Vector3 end (start - Vector3 (0.0f, 20.0f, 0.0f));
-	OgreNewtonRayCast raycaster(world, m_rayCast); 
-	raycaster.CastRay (&start.x, &end.x);
-	Vector3 position (raycaster.m_contact + Vector3 (0.0f, blockBoxSize.y * 0.5f, 0.0f));
-
-	// build the visual mesh out of a collision box
-	// make a box collision shape
-	dNewtonCollisionBox boxShape (world, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, m_all);
+	Vector3 blockBoxSize (0.75f, 0.25f, 0.5f);
+	dNewtonCollisionBox shape (world, blockBoxSize.x, blockBoxSize.y, blockBoxSize.z, m_all);
 
 	// create a texture for using with this material
-	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("crate.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("smilli.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
 
 	// make a material to use with this mesh
-	MaterialPtr renderMaterial = MaterialManager::getSingleton().create("pyramidMaterial", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+	MaterialPtr renderMaterial = MaterialManager::getSingleton().create("smalli", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
 	renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
-	renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("crate.tga");
+	renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("smilli.tga");
 	renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
 
-	// create a visual for visual representation
-	OgreNewtonMesh boxMesh (&boxShape);
+	OgreNewtonMesh boxMesh (&shape);
 	boxMesh.Triangulate();
 	int materialId = boxMesh.AddMaterial(renderMaterial);
 	boxMesh.ApplyBoxMapping (materialId, materialId, materialId);
 
 	// create a manual object for rendering 
-	ManualObject* const object = boxMesh.CreateEntity(MakeName ("jengaBox"));
-	MeshPtr mesh (object->convertToMesh (MakeName ("jengaBox")));
+	ManualObject* const object = boxMesh.CreateEntity(MakeName ("ramp"));
+	MeshPtr mesh (object->convertToMesh (MakeName ("ramp")));
 
+	//Matrix4 matrix (Matrix4::IDENTITY);
+	Matrix4 matrix (Quaternion (Degree(-30.0f), Vector3 (0.0f, 0.0f, 1.0f)));
+	Vector3 origin (location.x - 8.0f, location.y + 5.125f, location.z + 15.0f);
 
-	// get the initial matrix
-	Matrix4 matrix (Matrix4::IDENTITY);
-	matrix.setTrans (position);
+	dFloat mass = 10.0f;
+	for (int i = 0; i < 10; i ++) {
+		matrix.setTrans (origin);
+		origin.z -= 3.0f;
+		Entity* const ent = sceneMgr->createEntity(MakeName ("ramp"), mesh);
+		SceneNode* const node = CreateNode (sceneMgr, ent, matrix.getTrans(), matrix.extractQuaternion());
 
-	float y0 = matrix.getTrans().x + blockBoxSize.y / 2.0f;
-	float x0 = matrix.getTrans().x - (blockBoxSize.x + 0.01f) * base / 2;
+		shape.SetMaterialId(materialStartID + i);
+		OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (world, mass, &shape, node, matrix);
 
-	Real collisionPenetration = 1.0f / 256.0f;
-
-	matrix.setTrans(matrix.getTrans() + Vector3 (0.0f, y0, 0.0f));
-	for (int j = 0; j < high; j ++) {
-		matrix[0][3] = x0;
-		for (int i = 0; i < (base - j) ; i ++) {
-			Entity* const ent = sceneMgr->createEntity(MakeName ("pyramidBox"), mesh);
-			SceneNode* const node = CreateNode (sceneMgr, ent, matrix.getTrans(), matrix.extractQuaternion());
-			new OgreNewtonDynamicBody (world, mass, &boxShape, node, matrix);
-			matrix[0][3] += blockBoxSize.x;
-		}
-		x0 += (blockBoxSize.x + 0.01f) * 0.5f;
-		matrix[1][3] += (blockBoxSize.y - collisionPenetration);
+		// set the linear and angular drag do zero
+		body->SetLinearDrag (0.0f);
+		body->SetAngularDrag(Vector3 (0.0f, 0.0f, 0.0f));
 	}
+
 	delete object;
-*/
+}
+
+
+static void AddRestitutionSamples(SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location, int materialStartID)
+{
+//	Vector3 blockBoxSize (0.5f, 0.5f, 0.5f);
+	dNewtonCollisionSphere shape (world, 0.5f, m_all);
+
+	// create a texture for using with this material
+	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("smilli.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
+	// make a material to use with this mesh
+	MaterialPtr renderMaterial = MaterialManager::getSingleton().create("smalli", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+	renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
+	renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("smilli.tga");
+	renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
+
+	OgreNewtonMesh sphMesh (&shape);
+	sphMesh.Triangulate();
+	int materialId = sphMesh.AddMaterial(renderMaterial);
+	sphMesh.ApplyBoxMapping (materialId, materialId, materialId);
+
+	// create a manual object for rendering 
+	ManualObject* const object = sphMesh.CreateEntity(MakeName ("ramp"));
+	MeshPtr mesh (object->convertToMesh (MakeName ("ramp")));
+
+	Matrix4 matrix (Matrix4::IDENTITY);
+	Vector3 origin (location.x + 5.0f, location.y + 10.0f, location.z - 15.0f);
+
+	dFloat mass = 10.0f;
+	for (int i = 0; i < 10; i ++) {
+		matrix.setTrans (origin);
+		origin.x += 2.0f;
+		Entity* const ent = sceneMgr->createEntity(MakeName ("ramp"), mesh);
+		SceneNode* const node = CreateNode (sceneMgr, ent, matrix.getTrans(), matrix.extractQuaternion());
+
+		shape.SetMaterialId(materialStartID + i);
+		OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (world, mass, &shape, node, matrix);
+
+		// set the linear and angular drag do zero
+		body->SetLinearDrag (0.0f);
+		body->SetAngularDrag(Vector3 (0.0f, 0.0f, 0.0f));
+	}
+
+	delete object;
+}
+
+
+
+void BuildMaterialScene (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location, Real mass)
+{
+	int rampMaterialId = 0;
+	int frictionMaterialIDStart = rampMaterialId + 1;
+	int restitutionMaterialIDStart = frictionMaterialIDStart + 10;
+
+	// create 10 diffErent friCtion material 
+	dFloat friction = 0.0f;
+	for (int i = 0; i < 10; i ++) {
+		dMaterialPairManager::dMaterialPair materialInterAction;
+		materialInterAction.m_staticFriction0 = friction;
+		materialInterAction.m_staticFriction1 = friction;
+		materialInterAction.m_kineticFriction0 = friction;
+		materialInterAction.m_kineticFriction1 = friction;
+		world->AddMaterialPair (frictionMaterialIDStart + i, rampMaterialId, materialInterAction);
+		friction += 0.065f;
+	}
+
+	// create 10 restitution materials
+	dFloat restitution = 0.1f;
+	for (int i = 0; i < 10; i ++) {
+		dMaterialPairManager::dMaterialPair materialInterAction;
+		materialInterAction.m_restitution = restitution;
+		world->AddMaterialPair (restitutionMaterialIDStart + i, rampMaterialId, materialInterAction);
+		restitution += 0.1f;
+	}
+
+	MakeStaticRamp(sceneMgr, world, location, rampMaterialId);
+	AddFrictionSamples(sceneMgr, world, location, frictionMaterialIDStart);
+	AddRestitutionSamples(sceneMgr, world, location, restitutionMaterialIDStart);
 }	
 
 
