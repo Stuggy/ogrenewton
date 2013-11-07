@@ -125,7 +125,7 @@ static void AddRestitutionSamples(SceneManager* const sceneMgr, OgreNewtonWorld*
 	OgreNewtonMesh sphMesh (&shape);
 	sphMesh.Triangulate();
 	int materialId = sphMesh.AddMaterial(renderMaterial);
-	sphMesh.ApplyBoxMapping (materialId, materialId, materialId);
+	sphMesh.ApplySphericalMapping(materialId);
 
 	// create a manual object for rendering 
 	ManualObject* const object = sphMesh.CreateEntity(MakeName ("ramp"));
