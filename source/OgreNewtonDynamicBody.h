@@ -53,6 +53,9 @@ class OGRE_NEWTON_API OgreNewtonDynamicBody: public dNewtonDynamicBody
 	void AddForce (const Vector3& force);
 	void AddTorque (const Vector3& torque);
 
+	void SetLinearDrag (const Real drag);
+	void SetAngularDrag (const Vector3& drag);
+
 	Vector3 GetPointVeloc (const Vector3& point) const;
 	void ApplyImpulseToDesiredPointVeloc (const Vector3& point, const Vector3& desiredveloc);
 
@@ -152,6 +155,16 @@ inline Vector3 OgreNewtonDynamicBody::GetPointVeloc (const Vector3& point) const
 inline void OgreNewtonDynamicBody::ApplyImpulseToDesiredPointVeloc (const Vector3& point, const Vector3& desiredveloc)
 {
 	dNewtonDynamicBody::ApplyImpulseToDesiredPointVeloc (&point.x, &desiredveloc.x);
+}
+
+inline void OgreNewtonDynamicBody::SetLinearDrag (const Real drag)
+{
+	dNewtonDynamicBody::SetLinearDrag (drag);
+}
+
+inline void OgreNewtonDynamicBody::SetAngularDrag (const Vector3& drag)
+{
+	dNewtonDynamicBody::SetAngularDrag (&drag.x);
 }
 
 

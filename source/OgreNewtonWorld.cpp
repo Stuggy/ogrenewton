@@ -49,7 +49,7 @@ OgreNewtonWorld::OgreNewtonWorld (int updateFramerate)
 	m_rayPickerManager = new OgreNewtonRayPickManager (this, 0);
 	m_inputManager = new OgreNewtonInputManager(this);
 
-//SetNumberOfThreads(1);
+SetNumberOfThreads(1);
 }
 
 OgreNewtonWorld::~OgreNewtonWorld()
@@ -144,7 +144,7 @@ bool OgreNewtonWorld::OnBodiesAABBOverlap (const dNewtonBody* const body0, const
 
 	// check all other collision using the bitfield mask, 
 	//for now simple return true
-	return (collision0->m_collisionMask & collision0->m_collisionMask) ? true : false;
+	return (collision0->GetCollisionMask() & collision0->GetCollisionMask()) ? true : false;
 }
 
 bool OgreNewtonWorld::OnCompoundSubCollisionAABBOverlap (const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex) const
@@ -158,7 +158,7 @@ void OgreNewtonWorld::OnContactProcess (dNewtonContactMaterial* const contactMat
 	for (void* contact = contactMaterial->GetFirstContact(); contact; contact = contactMaterial->GetNextContact(contact)) {
 		dNewtonCollision* const shape0 = contactMaterial->GetShape0(contact);
 		dNewtonCollision* const shape1 = contactMaterial->GetShape1(contact);
-		const dMaterialPairManager::dMaterialPair* const materialPair = m_materialMap.GetPair (shape0->m_materailID, shape1->m_materailID, threadIndex);
+		const dMaterialPairManager::dMaterialPair* const materialPair = m_materialMap.GetPair (shape0->GetMaterialId(), shape1->GetMaterialId(), threadIndex);
 
 		contactMaterial->SetContactRestitution(contact, materialPair->m_restitution);
 		contactMaterial->SetContactFrictionCoef (contact, materialPair->m_staticFriction0, materialPair->m_kineticFriction0, 0);
