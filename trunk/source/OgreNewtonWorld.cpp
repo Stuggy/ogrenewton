@@ -49,7 +49,7 @@ OgreNewtonWorld::OgreNewtonWorld (int updateFramerate)
 	m_rayPickerManager = new OgreNewtonRayPickManager (this, 0);
 	m_inputManager = new OgreNewtonInputManager(this);
 
-SetNumberOfThreads(1);
+//SetNumberOfThreads(1);
 }
 
 OgreNewtonWorld::~OgreNewtonWorld()
