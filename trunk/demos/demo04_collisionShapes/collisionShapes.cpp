@@ -100,8 +100,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 			// apply non uniform scale to both 
 			dNewtonCollision* const collision = body->GetCollision();
-			node->setScale(1.0f, scaleY, 1.0f);
-			collision->SetScale(1.0f, scaleY, 1.0f);
+//			node->setScale(1.0f, scaleY, 1.0f);
+//			collision->SetScale(1.0f, scaleY, 1.0f);
 
 			scaleY += scaleStep;
 		}
@@ -207,10 +207,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 		SpawnManualCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -40.0f));
 
 		// some automatically generated convex decompositions
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -50.0f), "cow.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -60.0f), "bessel.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -70.0f), "torus.mesh");
-		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -80.0f), "torusKnot.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -50.0f), "cow.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -60.0f), "bessel.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -70.0f), "torus.mesh");
+//		SpawnAutomaticCompoundCollisionShapes (compoundCount, origin + Vector3 (-20.0f, 1.0f, -80.0f), "torusKnot.mesh");
 
 
 		// make a convex hull from 200 random points
@@ -226,7 +226,7 @@ class OgreNewtonDemoApplication: public DemoApplication
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -8.0f, 4.0f, -10.0f), dNewtonCollisionCapsule (m_physicsWorld, 0.25f, 0.5f, m_all));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( -4.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCapsule (m_physicsWorld, 0.25f, 0.35f, 0.75f, m_all));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  0.0f, 4.0f, -10.0f), dNewtonCollisionCone (m_physicsWorld, 0.25f, 0.75f, m_all));
-		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 4.0f, -10.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, 0));
+		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  4.0f, 4.0f, -10.0f), dNewtonCollisionCylinder (m_physicsWorld, 0.25f, 0.75f, m_all));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 (  8.0f, 4.0f, -10.0f), dNewtonCollisionTaperedCylinder (m_physicsWorld, 0.25f, 0.35f, 0.75f, m_all));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 12.0f, 4.0f, -10.0f), dNewtonCollisionChamferedCylinder (m_physicsWorld, 0.25f, 0.75f, m_all));
 		SpawnRegularScaledCollisionShape (spawnCount, origin + Vector3 ( 16.0f, 4.0f, -10.0f), dNewtonCollisionConvexHull (m_physicsWorld, points.GetElementsCount(), &points[0].x, sizeof (Vector3), 0.0f, m_all));

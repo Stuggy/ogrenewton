@@ -493,8 +493,8 @@ void DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 	m_debugTriggerKey.Update (m_keyboard->isKeyDown(OIS::KC_F3) ? true : false);
 	if (m_debugTriggerKey.TriggerUp()) {
 		GetPhysics()->WaitForUpdateToFinish();
-		m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
 	}
+	m_debugRender->SetDebugMode (m_debugTriggerKey.m_state);
 
 	// check if the player want to run the physics concurrent of not 
 	m_asyncronousUpdateKey.Update (m_keyboard->isKeyDown(OIS::KC_F2) ? true : false);

@@ -49,7 +49,8 @@ OgreNewtonWorld::OgreNewtonWorld (int updateFramerate)
 	m_rayPickerManager = new OgreNewtonRayPickManager (this, 0);
 	m_inputManager = new OgreNewtonInputManager(this);
 
-//SetNumberOfThreads(1);
+	// when debugging it is good to set thread count to 1
+	//SetNumberOfThreads(1);
 }
 
 OgreNewtonWorld::~OgreNewtonWorld()
@@ -144,7 +145,7 @@ bool OgreNewtonWorld::OnBodiesAABBOverlap (const dNewtonBody* const body0, const
 
 	// check all other collision using the bitfield mask, 
 	//for now simple return true
-	return (collision0->GetCollisionMask() & collision0->GetCollisionMask()) ? true : false;
+	return (collision0->GetCollisionMask() & collision1->GetCollisionMask()) ? true : false;
 }
 
 bool OgreNewtonWorld::OnCompoundSubCollisionAABBOverlap (const dNewtonBody* const body0, const dNewtonCollision* const subShape0, const dNewtonBody* const body1, const dNewtonCollision* const subShape1, int threadIndex) const
