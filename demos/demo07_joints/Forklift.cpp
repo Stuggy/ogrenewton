@@ -172,12 +172,6 @@ void* ForkliftPhysicsModel::AddBone (dNewtonBody* const bone, const dFloat* cons
 {	
 	// add the bode to the controller
 	void* const boneNode = OgreNewtonArticulationManager::OgreNewtonArticulatedTransformController::AddBone (bone, bindMatrix, parentBodne);
-
-	// save the body handle as the used data pf the body collision for using in later in eh collision callback
-	dNewtonCollision* const collision = bone->GetCollision();
-	dAssert (!collision->GetUserData());
-	collision->SetUserData (boneNode);
-
 	return boneNode;
 }
 
