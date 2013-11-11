@@ -173,41 +173,6 @@ static dNewtonCylindricalJoint* AddCylindricalWheel (SceneManager* const sceneMg
 
 
 
-
-void AddHinge (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& origin)
-{
-	Vector3 size (1.5f, 0.125f, 4.0f);
-	OgreNewtonDynamicBody* const box0 = CreateBox (sceneMgr, world, origin + Vector3 (0.0f, 0.0f, 4.0f), size);
-	OgreNewtonDynamicBody* const box1 = CreateBox (sceneMgr, world, origin + Vector3 (1.5f, 0.0f, 4.0f), size);
-    OgreNewtonDynamicBody* const box2 = CreateBox (sceneMgr, world, origin + Vector3 (3.0f, 0.0f, 4.0f), size);
-
-    // the joint pin is the first row of the matrix, to make a upright pin we
-    // take the x axis and rotate by 90 degree around the y axis
-    Matrix localPin (Quat (90.0f * 3.141592f / 180.0f, Vector3 (0.0f, 1.0f, 0.0f)));
-	
-	// connect first box to the world
-	Matrix matrix (localPin * box0->GetMatrix());
-	matrix.setTrans (matrix.getTrans() + Vector3 (-size.x() * 0.5f, 0.0f, 0.0f));
-	dNewtonHingeJoint* const hinge0 = new dNewtonHingeJoint (&matrix.transpose()[0][0], box0);
-    hinge0->EnableLimits (true);
-    hinge0->SetLimis(-45.0f * 3.141592f / 180.0f, 45.0f * 3.141592f / 180.0f);
-
-	// link the two boxes
-	matrix = localPin * box1->GetMatrix();
-	matrix.setTrans (matrix.getTrans() + Vector3 (-size.x() * 0.5f, 0.0f, 0.0f));
-	dNewtonHingeJoint* const hinge1 = new dNewtonHingeJoint (&matrix.transpose()[0][0], box0, box1);
-    hinge1->EnableLimits (true);
-    hinge1->SetLimis (-45.0f * 3.141592f / 180.0f, 45.0f * 3.141592f / 180.0f);
-
-	// link the two boxes
-    matrix = localPin * box2->GetMatrix();
-    matrix.setTrans (matrix.getTrans() + Vector3 (-size.x() * 0.5f, 0.0f, 0.0f));
-    dNewtonHingeJoint* const hinge2 = new dNewtonHingeJoint (&matrix.transpose()[0][0], box1, box2);
-    hinge2->EnableLimits (true);
-    hinge2->SetLimis (-45.0f * 3.141592f / 180.0f, 45.0f * 3.141592f / 180.0f);
-}
-
-
 void AddUniversal (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& origin)
 {
     OgreNewtonDynamicBody* const wheel = CreateWheel (sceneMgr, world, origin + Vector3 (0.0f, 0.0f, 4.0f), 1.0f, 0.5f);
@@ -360,4 +325,40 @@ void AddCylindrical (SceneManager* const sceneMgr, OgreNewtonWorld* const world,
 
 	// set limit on second axis
 	slider->SetLimis_0 (-3.0f, 3.0f);
+}
+
+
+
+void AddHinge (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& origin)
+{
+	Vector3 size (1.5f, 4.0f, 0.125f);
+	OgreNewtonDynamicBody* const box0 = CreateBox (sceneMgr, world, origin + Vector3 (0.0f, 4.0f, 0.0f), size);
+	OgreNewtonDynamicBody* const box1 = CreateBox (sceneMgr, world, origin + Vector3 (1.5f, 4.0f, 0.0f), size);
+	OgreNewtonDynamicBody* const box2 = CreateBox (sceneMgr, world, origin + Vector3 (3.0f, 4.0f, 0.0f), size);
+/*
+	// the joint pin is the first row of the matrix, to make a upright pin we
+	// take the x axis and rotate by 90 degree around the y axis
+	Matrix localPin (Quat (90.0f * 3.141592f / 180.0f, Vector3 (0.0f, 1.0f, 0.0f)));
+
+	// connect first box to the world
+	Matrix matrix (localPin * box0->GetMatrix());
+	matrix.setTrans (matrix.getTrans() + Vector3 (-size.x() * 0.5f, 0.0f, 0.0f));
+	dNewtonHingeJoint* const hinge0 = new dNewtonHingeJoint (&matrix.transpose()[0][0], box0);
+	hinge0->EnableLimits (true);
+	hinge0->SetLimis(-45.0f * 3.141592f / 180.0f, 45.0f * 3.141592f / 180.0f);
+
+	// link the two boxes
+	matrix = localPin * box1->GetMatrix();
+	matrix.setTrans (matrix.getTrans() + Vector3 (-size.x() * 0.5f, 0.0f, 0.0f));
+	dNewtonHingeJoint* const hinge1 = new dNewtonHingeJoint (&matrix.transpose()[0][0], box0, box1);
+	hinge1->EnableLimits (true);
+	hinge1->SetLimis (-45.0f * 3.141592f / 180.0f, 45.0f * 3.141592f / 180.0f);
+
+	// link the two boxes
+	matrix = localPin * box2->GetMatrix();
+	matrix.setTrans (matrix.getTrans() + Vector3 (-size.x() * 0.5f, 0.0f, 0.0f));
+	dNewtonHingeJoint* const hinge2 = new dNewtonHingeJoint (&matrix.transpose()[0][0], box1, box2);
+	hinge2->EnableLimits (true);
+	hinge2->SetLimis (-45.0f * 3.141592f / 180.0f, 45.0f * 3.141592f / 180.0f);
+*/
 }
