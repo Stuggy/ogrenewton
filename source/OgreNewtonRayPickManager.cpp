@@ -151,22 +151,55 @@ void OgreNewtonRayPickManager::PreUpdate(dFloat timestep)
 				veloc[i] = deltaVeloc[i];
 				body->ApplyImpulseToDesiredPointVeloc (peekPosit, veloc);
 			}
-	//		Vector3 veloc1 (m_pickedBody->GetVeloc());
-	//		Vector3 omega1 (m_pickedBody->GetOmega() * 0.9f);
+
+			Vector3 veloc1 (body->GetVeloc());
+			Vector3 omega1 (body->GetOmega() * 0.9f);
 
 			// restore body velocity and angular velocity
-	//		m_pickedBody->SetOmega(omega0);
-	//		m_pickedBody->SetVeloc(veloc0);
+			body->SetOmega(omega0);
+			body->SetVeloc(veloc0);
 
 			// convert the delta velocity change to a external force and torque
-	//		Vector3 inertia (m_pickedBody->GetInertia());
+			//Vector3 inertia (m_pickedBody->GetInertia());
+			dFloat Ixx;
+			dFloat Iyy;
+			dFloat Izz;
+			dFloat mass;
+			body->GetMassAndInertia (mass, Ixx, Iyy, Izz);
 		
-	//		matrix.setTrans(Vector3(0.0f, 0.0f, 0.0f));
-	//		Matrix4 invMatrix (matrix.transpose());
-	//		Vector3 angularMomentum (matrix.transformAffine(invMatrix.transformAffine(omega1 - omega0) * inertia));
+			Vector3 inertia (Ixx, Iyy, Izz);
+			matrix.setTrans(Vector3(0.0f, 0.0f, 0.0f));
+			Matrix4 invMatrix (matrix.transpose());
+			Vector3 angularMomentum (matrix.transformAffine(invMatrix.transformAffine(omega1 - omega0) * inertia));
 
-	//		m_pickedBody->AddForce ((veloc1 - veloc0) * (m_pickedBody->GetMass() * invTimeStep));
-	//		m_pickedBody->AddTorque(angularMomentum * invTimeStep);
+			body->AddForce ((veloc1 - veloc0) * (mass * invTimeStep));
+			body->AddTorque(angularMomentum * invTimeStep);
+/*
+			// damp angular velocity
+
+			// convert the delta velocity change to a external force and torque
+			dFloat Ixx;
+			dFloat Iyy;
+			dFloat Izz;
+			dFloat mass;
+			body->GetMassAndInertia (mass, Ixx, Iyy, Izz);
+
+			matrix.setTrans(0.0f, 0.0f, 0.0f);
+
+			Vector3 relOmega (omega1 - omega0);
+			relOmega = matrix.preMult(relOmega);
+			Vector3 angularMomentum (Ixx, Iyy, Izz, 0.0f);
+
+			//angularMomentum = matrix.RotateVector (angularMomentum.CompProduct(matrix.UnrotateVector(omega1 - omega0)));
+			angularMomentum = componentMultiply (relOmega, angularMomentum);
+			angularMomentum = matrix.postMult(angularMomentum);
+			Vector3 torque (angularMomentum * invTimeStep);
+			body->AddTorque(torque);
+
+			Vector3 relVeloc (veloc1 - veloc0);
+			Vector3 force (relVeloc * (mass * invTimeStep));
+			body->AddForce (force);
+*/
 		} else {
 			dAssert (0);
 		}

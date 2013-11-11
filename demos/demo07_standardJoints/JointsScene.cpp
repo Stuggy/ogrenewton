@@ -61,88 +61,78 @@ static OgreNewtonDynamicBody* CreateBox (SceneManager* const sceneMgr, OgreNewto
 	return body;
 }
 
-/*
+
 static OgreNewtonDynamicBody* CreateCylinder (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location, dFloat radius, dFloat height)
 {
-    dAssert (sceneMgr->getSceneData());
-    Group* const rootGroup = sceneMgr->getSceneData()->asGroup();
-    dAssert (rootGroup);
+	dNewtonCollisionCylinder shape (world, radius, height, m_all);
 
-    // create a texture and apply uv to this mesh
-    ref_ptr<Texture2D> texture = new Texture2D;
-    ref_ptr<Image> image = osgDB::readImageFile("images\\smilli.tga");
-    texture->setImage (image.get());
-    texture->setWrap(Texture::WRAP_S, Texture::REPEAT);
-    texture->setWrap(Texture::WRAP_R, Texture::REPEAT);
-    texture->setWrap(Texture::WRAP_T, Texture::REPEAT);
+	// create a texture for using with this material
+	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("sand1b.jpg", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
 
-    dNewtonCollisionCylinder shape (world, radius, height, DemoExample::m_all);
+	// make a material to use with this mesh
+	MaterialPtr renderMaterial = MaterialManager::getSingleton().create("cylinder", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+	renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
+	renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("sand1b.jpg");
+	renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
 
-    // create a visual for visual representation
-    newtonMesh boxMesh (&shape);
-    boxMesh.Triangulate();
-    int materialId = boxMesh.AddMaterial(texture);
+	OgreNewtonMesh boxMesh (&shape);
+	boxMesh.Triangulate();
+	int materialId = boxMesh.AddMaterial(renderMaterial);
+	boxMesh.ApplyCylindricalMapping (materialId, materialId);
 
-    // apply uv to this mesh
-    boxMesh.ApplyCylindricalMapping(materialId, materialId);
+	// create a manual object for rendering 
+	ManualObject* const object = boxMesh.CreateEntity(MakeName ("ramp"));
+	MeshPtr mesh (object->convertToMesh (MakeName ("ramp")));
 
-    // create a manual object for rendering 
-    ref_ptr<Geode> geometryNode = boxMesh.CreateGeodeNode();
+	//Matrix4 matrix (Matrix4::IDENTITY);
+	Matrix4 matrix (Matrix4::IDENTITY);
+	matrix.setTrans (Vector3 (location.x, location.y, location.z));
 
-    // make a osg transform node
-    Matrix matrix;
-    matrix.setTrans (location + Vector3 (0.0f, 20.0f, 0.0f));
-    ref_ptr<MatrixTransform> transformNode = new MatrixTransform(matrix);	
-    rootGroup->addChild(transformNode.get());
+	Entity* const ent = sceneMgr->createEntity(MakeName ("ramp"), mesh);
+	SceneNode* const node = CreateNode (sceneMgr, ent, matrix.getTrans(), matrix.extractQuaternion());
+	OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (world, 10.0f, &shape, node, matrix);
 
-    // attach geometry to transform node 
-    transformNode->addChild(geometryNode.get());
-
-    // make a dynamic body
-    return new OgreNewtonDynamicBody (world, 10.0f, &shape, transformNode.get(), matrix);
+	delete object;
+	return body;
 }
 
 
 static OgreNewtonDynamicBody* CreateWheel (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& location, dFloat radius, dFloat height)
 {
-    dAssert (sceneMgr->getSceneData());
-    Group* const rootGroup = sceneMgr->getSceneData()->asGroup();
-    dAssert (rootGroup);
+	dNewtonCollisionChamferedCylinder shape (world, radius, height, m_all);
 
-    // create a texture and apply uv to this mesh
-    ref_ptr<Texture2D> texture = new Texture2D;
-    ref_ptr<Image> image = osgDB::readImageFile("images\\smilli.tga");
-    texture->setImage (image.get());
-    texture->setWrap(Texture::WRAP_S, Texture::REPEAT);
-    texture->setWrap(Texture::WRAP_R, Texture::REPEAT);
-    texture->setWrap(Texture::WRAP_T, Texture::REPEAT);
+	// create a texture for using with this material
+	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().load("smilli.tga", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
 
-    dNewtonCollisionChamferedCylinder shape (world, radius, height, DemoExample::m_all);
+	// make a material to use with this mesh
+	MaterialPtr renderMaterial = MaterialManager::getSingleton().create("wheel", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+	renderMaterial->getTechnique(0)->getPass(0)->setLightingEnabled(true);
+	renderMaterial->getTechnique(0)->getPass(0)->createTextureUnitState("smilli.tga");
+	renderMaterial->setAmbient(0.2f, 0.2f, 0.2f);
 
-    // create a visual for visual representation
-    newtonMesh boxMesh (&shape);
-    boxMesh.Triangulate();
-    int materialId = boxMesh.AddMaterial(texture);
+	OgreNewtonMesh boxMesh (&shape);
+	boxMesh.Triangulate();
+	int materialId = boxMesh.AddMaterial(renderMaterial);
+	boxMesh.ApplyCylindricalMapping (materialId, materialId);
 
-    // apply uv to this mesh
-    boxMesh.ApplyCylindricalMapping(materialId, materialId);
+	// create a manual object for rendering 
+	ManualObject* const object = boxMesh.CreateEntity(MakeName ("ramp"));
+	MeshPtr mesh (object->convertToMesh (MakeName ("ramp")));
 
-    // create a manual object for rendering 
-    ref_ptr<Geode> geometryNode = boxMesh.CreateGeodeNode();
+	//Matrix4 matrix (Matrix4::IDENTITY);
+	Matrix4 matrix (Matrix4::IDENTITY);
+	matrix.setTrans (Vector3 (location.x, location.y, location.z));
 
-    // make a osg transform node
-    Matrix matrix;
-    matrix.setTrans (location + Vector3 (0.0f, 20.0f, 0.0f));
-    ref_ptr<MatrixTransform> transformNode = new MatrixTransform(matrix);	
-    rootGroup->addChild(transformNode.get());
+	Entity* const ent = sceneMgr->createEntity(MakeName ("ramp"), mesh);
+	SceneNode* const node = CreateNode (sceneMgr, ent, matrix.getTrans(), matrix.extractQuaternion());
+	OgreNewtonDynamicBody* const body = new OgreNewtonDynamicBody (world, 10.0f, &shape, node, matrix);
 
-    // attach geometry to transform node 
-    transformNode->addChild(geometryNode.get());
-
-    // make a dynamic body
-    return new OgreNewtonDynamicBody (world, 10.0f, &shape, transformNode.get(), matrix);
+	delete object;
+	return body;
 }
 
+
+/*
 static dNewtonHingeJoint* AddHingeWheel (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& origin, dFloat radius, dFloat height, OgreNewtonDynamicBody* const parent)
 {
     OgreNewtonDynamicBody* const wheel = CreateWheel (sceneMgr, world, origin, height, radius);
@@ -152,7 +142,7 @@ static dNewtonHingeJoint* AddHingeWheel (SceneManager* const sceneMgr, OgreNewto
 
     // connect first box to the world
     Matrix matrix (localPin * wheel->GetMatrix());
-    return new dNewtonHingeJoint (&dMatrix (matrix.ptr())[0][0], wheel, parent);
+    return new dNewtonHingeJoint (&matrix.transpose()[0][0], wheel, parent);
 }
 
 
@@ -165,7 +155,7 @@ static dNewtonSliderJoint* AddSliderWheel (SceneManager* const sceneMgr, OgreNew
 
     // connect first box to the world
     Matrix matrix (localPin * wheel->GetMatrix());
-    return new dNewtonSliderJoint (&dMatrix (matrix.ptr())[0][0], wheel, parent);
+    return new dNewtonSliderJoint (&matrix.transpose()[0][0], wheel, parent);
 }
 
 
@@ -178,7 +168,7 @@ static dNewtonCylindricalJoint* AddCylindricalWheel (SceneManager* const sceneMg
 
     // connect first box to the world
     Matrix matrix (localPin * wheel->GetMatrix());
-    return new dNewtonCylindricalJoint (&dMatrix (matrix.ptr())[0][0], wheel, parent);
+    return new dNewtonCylindricalJoint (&matrix.transpose()[0][0], wheel, parent);
 }
 
 
@@ -198,21 +188,21 @@ void AddHinge (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const
 	// connect first box to the world
 	Matrix matrix (localPin * box0->GetMatrix());
 	matrix.setTrans (matrix.getTrans() + Vector3 (-size.x() * 0.5f, 0.0f, 0.0f));
-	dNewtonHingeJoint* const hinge0 = new dNewtonHingeJoint (&dMatrix (matrix.ptr())[0][0], box0);
+	dNewtonHingeJoint* const hinge0 = new dNewtonHingeJoint (&matrix.transpose()[0][0], box0);
     hinge0->EnableLimits (true);
     hinge0->SetLimis(-45.0f * 3.141592f / 180.0f, 45.0f * 3.141592f / 180.0f);
 
 	// link the two boxes
 	matrix = localPin * box1->GetMatrix();
 	matrix.setTrans (matrix.getTrans() + Vector3 (-size.x() * 0.5f, 0.0f, 0.0f));
-	dNewtonHingeJoint* const hinge1 = new dNewtonHingeJoint (&dMatrix (matrix.ptr())[0][0], box0, box1);
+	dNewtonHingeJoint* const hinge1 = new dNewtonHingeJoint (&matrix.transpose()[0][0], box0, box1);
     hinge1->EnableLimits (true);
     hinge1->SetLimis (-45.0f * 3.141592f / 180.0f, 45.0f * 3.141592f / 180.0f);
 
 	// link the two boxes
     matrix = localPin * box2->GetMatrix();
     matrix.setTrans (matrix.getTrans() + Vector3 (-size.x() * 0.5f, 0.0f, 0.0f));
-    dNewtonHingeJoint* const hinge2 = new dNewtonHingeJoint (&dMatrix (matrix.ptr())[0][0], box1, box2);
+    dNewtonHingeJoint* const hinge2 = new dNewtonHingeJoint (&matrix.transpose()[0][0], box1, box2);
     hinge2->EnableLimits (true);
     hinge2->SetLimis (-45.0f * 3.141592f / 180.0f, 45.0f * 3.141592f / 180.0f);
 }
@@ -224,7 +214,7 @@ void AddUniversal (SceneManager* const sceneMgr, OgreNewtonWorld* const world, c
 
     Matrix localPin(Quat (90.0f * 3.141592f / 180.0f, Vector3 (1.0f, 0.0f, 0.0f)));
     Matrix matrix (localPin * wheel->GetMatrix());
-    dNewtonUniversalJoint* const universal = new dNewtonUniversalJoint (&dMatrix (matrix.ptr())[0][0], wheel);
+    dNewtonUniversalJoint* const universal = new dNewtonUniversalJoint (&matrix.transpose()[0][0], wheel);
 
     // disable limit of first axis
     universal->EnableLimit_0(false);
@@ -243,7 +233,7 @@ void AddSlider (SceneManager* const sceneMgr, OgreNewtonWorld* const world, cons
     OgreNewtonDynamicBody* const wheel = CreateWheel (sceneMgr, world, origin + Vector3 (0.0f, 0.0f, 4.0f), 1.0f, 0.5f);
 
     Matrix matrix (wheel->GetMatrix());
-    dNewtonSliderJoint* const slider = new dNewtonSliderJoint (&dMatrix (matrix.ptr())[0][0], wheel, reel);
+    dNewtonSliderJoint* const slider = new dNewtonSliderJoint (&matrix.transpose()[0][0], wheel, reel);
 
     // enable limit of first axis
     slider->EnableLimits(true);
@@ -253,23 +243,6 @@ void AddSlider (SceneManager* const sceneMgr, OgreNewtonWorld* const world, cons
 }
 
 
-void AddCylindrical (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& origin)
-{
-    // make a reel static
-    OgreNewtonDynamicBody* const reel = CreateCylinder(sceneMgr, world, origin + Vector3 (0.0f, 0.0f, 4.0f), 0.25f, 6.0f);
-    reel->SetMassAndInertia (0.0f, 0.0f, 0.0f, 0.0f);
-
-    OgreNewtonDynamicBody* const wheel = CreateWheel (sceneMgr, world, origin + Vector3 (0.0f, 0.0f, 4.0f), 1.0f, 0.5f);
-
-    Matrix matrix (wheel->GetMatrix());
-    dNewtonCylindricalJoint* const slider = new dNewtonCylindricalJoint (&dMatrix (matrix.ptr())[0][0], wheel, reel);
-
-    // enable limit of first axis
-    slider->EnableLimit_0(true);
-
-    // set limit on second axis
-    slider->SetLimis_0 (-3.0f, 3.0f);
-}
 
 
 void AddGear (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& origin)
@@ -368,4 +341,23 @@ void AddBallAndSockect (SceneManager* const sceneMgr, OgreNewtonWorld* const wor
 	matrix = box1->GetMatrix();
 	matrix.setTrans (matrix.getTrans() + Vector3 (-size.x * 0.5f, size.y * 0.5f, -size.z * 0.5f));
 	new dNewtonBallAndSocketJoint (&matrix.transpose()[0][0], box0, box1);
+}
+
+
+void AddCylindrical (SceneManager* const sceneMgr, OgreNewtonWorld* const world, const Vector3& origin)
+{
+	// make a reel static
+	OgreNewtonDynamicBody* const reel = CreateCylinder(sceneMgr, world, origin + Vector3 (0.0f, 4.0f, 0.0f), 0.25f, 6.0f);
+	reel->SetMassAndInertia (0.0f, 0.0f, 0.0f, 0.0f);
+
+	OgreNewtonDynamicBody* const wheel = CreateWheel (sceneMgr, world, origin + Vector3 (0.0f, 4.0f, 0.0f), 1.0f, 0.5f);
+
+	Matrix4 matrix (wheel->GetMatrix());
+	dNewtonCylindricalJoint* const slider = new dNewtonCylindricalJoint (&matrix.transpose()[0][0], wheel, reel);
+
+	// enable limit of first axis
+	slider->EnableLimit_0(true);
+
+	// set limit on second axis
+	slider->SetLimis_0 (-3.0f, 3.0f);
 }
