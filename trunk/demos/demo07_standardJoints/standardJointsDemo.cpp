@@ -26,7 +26,7 @@
 
 #include "Utils.h"
 #include "ShootRigidBody.h"
-//#include "MaterialScene.h"
+#include "JointsScene.h"
 #include "DemoApplication.h"
 
 using namespace Ogre;
@@ -70,9 +70,18 @@ class OgreNewtonDemoApplication: public DemoApplication
 
 	void LoadDynamicScene(const Vector3& origin)
 	{
-//		BuildMaterialScene (mSceneMgr, m_physicsWorld, origin + Vector3(-5.0f, 0.0f, -40.0f), 40);
-	}
+		// add standard joints example
+		AddBallAndSockect (mSceneMgr, m_physicsWorld, Vector3 (-15.0f, 0.0f, -25.0f));
+//		AddCylindrical (mSceneMgr, m_physicsWorld, Vector3 (-10.0f, 5.0f, 0.0f));
+//		AddHinge (mSceneMgr, m_physicsWorld, Vector3 (-5.0f, 5.0f, 0.0f));
+//		AddUniversal (mSceneMgr, m_physicsWorld, Vector3 (2.0f, 5.0f, 0.0f));
+//		AddSlider (mSceneMgr, m_physicsWorld, Vector3 (8.0f, 5.0f, 0.0f));
 
+		//add relational joints example 
+//		AddGear (mSceneMgr, m_physicsWorld, Vector3 (-10.0f, -5.0f, 0.0f));
+//		AddPulley (mSceneMgr, m_physicsWorld, Vector3 (0.0f, -5.0f, 0.0f));
+//		AddGearAndRack (mSceneMgr, m_physicsWorld, Vector3 (10.0f, -5.0f, 0.0f));
+	}
 
 	void createFrameListener()
 	{
