@@ -74,13 +74,13 @@ class OgreNewtonDemoApplication: public DemoApplication
 		AddBallAndSockect (mSceneMgr, m_physicsWorld, Vector3 (-15.0f, 0.0f, -25.0f));
 		AddCylindrical (mSceneMgr, m_physicsWorld, Vector3 (-10.0f, 0.0f, -25.0f));
 		AddHinge (mSceneMgr, m_physicsWorld, Vector3 (-5.0f, 0.0f, -25.0f));
-//		AddUniversal (mSceneMgr, m_physicsWorld, Vector3 (2.0f, 0.0f, -25.0f));
-//		AddSlider (mSceneMgr, m_physicsWorld, Vector3 (8.0f, 0.0f, -25.0f));
+		AddUniversal (mSceneMgr, m_physicsWorld, Vector3 (2.0f, 0.0f, -25.0f));
+		AddSlider (mSceneMgr, m_physicsWorld, Vector3 (8.0f, 0.0f, -25.0f));
 
 		//add relational joints example 
-//		AddGear (mSceneMgr, m_physicsWorld, Vector3 (-10.0f, -5.0f, 0.0f));
-//		AddPulley (mSceneMgr, m_physicsWorld, Vector3 (0.0f, -5.0f, 0.0f));
-//		AddGearAndRack (mSceneMgr, m_physicsWorld, Vector3 (10.0f, -5.0f, 0.0f));
+		AddGear (mSceneMgr, m_physicsWorld, Vector3 (-10.0f, 0.0f, -15.0f));
+		AddPulley (mSceneMgr, m_physicsWorld, Vector3 (0.0f, 0.0f, -15.0f));
+		AddGearAndRack (mSceneMgr, m_physicsWorld, Vector3 (10.0f, 0.0f, -15.0f));
 	}
 
 	void createFrameListener()
