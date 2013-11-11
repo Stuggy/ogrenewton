@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="demo08_materials"
-	ProjectGUID="{FEFA0647-8337-4981-A396-711DFBC49120}"
+	Name="demo07_standrdJoints"
+	ProjectGUID="{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}"
 	RootNamespace="Quake3Map_vc9"
 	TargetFrameworkVersion="131072"
 	>
@@ -388,15 +388,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\..\demos\demo08_materials\MaterialScene.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\demo08_materials\MaterialScene.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\demos\demo08_materials\materialsDemo.cpp"
+			RelativePath="..\..\..\demos\demo07_standardJoints\standardJointsDemo.cpp"
 			>
 		</File>
 	</Files>
