@@ -160,7 +160,6 @@ void OgreNewtonRayPickManager::PreUpdate(dFloat timestep)
 			body->SetVeloc(veloc0);
 
 			// convert the delta velocity change to a external force and torque
-			//Vector3 inertia (m_pickedBody->GetInertia());
 			dFloat Ixx;
 			dFloat Iyy;
 			dFloat Izz;
@@ -174,32 +173,6 @@ void OgreNewtonRayPickManager::PreUpdate(dFloat timestep)
 
 			body->AddForce ((veloc1 - veloc0) * (mass * invTimeStep));
 			body->AddTorque(angularMomentum * invTimeStep);
-/*
-			// damp angular velocity
-
-			// convert the delta velocity change to a external force and torque
-			dFloat Ixx;
-			dFloat Iyy;
-			dFloat Izz;
-			dFloat mass;
-			body->GetMassAndInertia (mass, Ixx, Iyy, Izz);
-
-			matrix.setTrans(0.0f, 0.0f, 0.0f);
-
-			Vector3 relOmega (omega1 - omega0);
-			relOmega = matrix.preMult(relOmega);
-			Vector3 angularMomentum (Ixx, Iyy, Izz, 0.0f);
-
-			//angularMomentum = matrix.RotateVector (angularMomentum.CompProduct(matrix.UnrotateVector(omega1 - omega0)));
-			angularMomentum = componentMultiply (relOmega, angularMomentum);
-			angularMomentum = matrix.postMult(angularMomentum);
-			Vector3 torque (angularMomentum * invTimeStep);
-			body->AddTorque(torque);
-
-			Vector3 relVeloc (veloc1 - veloc0);
-			Vector3 force (relVeloc * (mass * invTimeStep));
-			body->AddForce (force);
-*/
 		} else {
 			dAssert (0);
 		}
