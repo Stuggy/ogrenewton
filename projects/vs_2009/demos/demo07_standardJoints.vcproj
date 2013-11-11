@@ -388,6 +388,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\..\demos\demo07_standardJoints\JointsScene.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\..\demos\demo07_standardJoints\JointsScene.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\..\demos\demo07_standardJoints\standardJointsDemo.cpp"
 			>
 		</File>
