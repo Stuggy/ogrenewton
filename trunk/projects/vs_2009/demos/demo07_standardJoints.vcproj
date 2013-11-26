@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="demo07_standrdJoints"
+	Name="demo07_standardJoints"
 	ProjectGUID="{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}"
 	RootNamespace="Quake3Map_vc9"
 	TargetFrameworkVersion="131072"

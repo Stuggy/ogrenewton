@@ -45,6 +45,10 @@ class OgreNewtonDemoApplication: public DemoApplication
 	protected:
 	void loadStaticScene ()
 	{
+
+		//////////////////////////////////////////////////////////////////////////
+		// ARENA
+		// use the static geometry class to pick up speed of rendering
 		// create a scene body to add all static collidable meshes in the world 
 		OgreNewtonSceneBody* const sceneBody = new OgreNewtonSceneBody (m_physicsWorld, m_allExcludingMousePick);
 
@@ -52,13 +56,28 @@ class OgreNewtonDemoApplication: public DemoApplication
 		sceneBody->BeginAddRemoveCollision();
 
 		// floor object!
-		Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
+		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
 		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "playground.mesh" );
 		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
+		Entity* const levelMap = mSceneMgr->createEntity(MakeName("TheArena"), "theCityv2.mesh" );      
 
 		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
 		floorNode->attachObject( levelMap );
 		levelMap->setCastShadows( false );
+
+		//////////////////////////////////////////////////////////////////////////
+		// try and save as an OFF file
+		//    OgreNewtonMesh bodyMesh (m_World, floor);
+		//    NewtonMeshSaveOFF(bodyMesh.GetMesh(),"thecity.off");
+		//////////////////////////////////////////////////////////////////////////
+
+		// add this collision to the scene body
+		//OgreNewtonMesh levelMesh (m_physicsWorld, levelMap);
+		//levelMesh.Triangulate();
+		//NewtonCollision* collision = NewtonCreateConvexHullFromMesh (m_physicsWorld->GetNewton(), levelMesh.GetMesh(), 0, 0);
+		//sceneBody->AddCollision(bodyCollision);
+		//sceneBody->GetCollision()->SetMaterialId(MatIDArena);
+
 
 		// add this collision to the scene body
 		sceneBody->AddCollisionTree (floorNode);
