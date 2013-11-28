@@ -59,7 +59,8 @@ class OgreNewtonDemoApplication: public DemoApplication
 		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "chiropteradm.mesh" );
 		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "playground.mesh" );
 		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("Level"), "castle.mesh" );
-		Entity* const levelMap = mSceneMgr->createEntity(MakeName("TheArena"), "theCityv2.mesh" );      
+		//Entity* const levelMap = mSceneMgr->createEntity(MakeName("TheArena"), "theCityv2.mesh" );      
+		Entity* const levelMap = mSceneMgr->createEntity(MakeName("TheArena"), "Floortestbed.mesh" );      
 
 		SceneNode* const floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode( "FloorNode" );
 		floorNode->attachObject( levelMap );
