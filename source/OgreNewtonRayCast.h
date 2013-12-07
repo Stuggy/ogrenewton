@@ -38,6 +38,7 @@ class OGRE_NEWTON_API OgreNewtonRayCast: public dNewtonRayCast
 	Vector3 m_normal;
 	Vector3 m_contact;
 	dNewtonBody* m_bodyHit;
+	dNewtonCollision* m_shapeHit;
 	dLong m_shapeId;
 	Real m_param;
 };
