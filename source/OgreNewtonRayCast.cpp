@@ -65,6 +65,6 @@ void OgreNewtonAllHitRayCast::CastRay (const dFloat* const p0, const dFloat* con
 
 dFloat OgreNewtonAllHitRayCast::OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, dLong collisionID, dFloat intersectParam)
 {
-	push_back (OgreNewtonRayHitBody (body, Vector3 (normal[0], normal[1], normal[2]), Vector3 (contact[0], contact[1], contact[2]), collisionID, intersectParam));
+	push_back (OgreNewtonRayHitBody (body, shape, Vector3 (normal[0], normal[1], normal[2]), Vector3 (contact[0], contact[1], contact[2]), collisionID, intersectParam));
 	return 1.2f;
 }
