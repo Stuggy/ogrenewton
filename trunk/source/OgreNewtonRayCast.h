@@ -31,7 +31,7 @@ using namespace Ogre;
 class OGRE_NEWTON_API OgreNewtonRayCast: public dNewtonRayCast
 {
 	public:
-	OgreNewtonRayCast(dNewton* const world, dLong collsionMask);
+	OgreNewtonRayCast(dNewton* const world, dLong collisionMask);
 	void CastRay (const dFloat* const p0, const dFloat* const p1, int threadIndex = 0);
 	dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, dLong collisionID, dFloat intersectParam);
 
@@ -40,6 +40,35 @@ class OGRE_NEWTON_API OgreNewtonRayCast: public dNewtonRayCast
 	dNewtonBody* m_bodyHit;
 	dLong m_shapeId;
 	Real m_param;
+};
+
+class OgreNewtonRayHitBody
+{
+	public:
+	OgreNewtonRayHitBody(){}
+	OgreNewtonRayHitBody (const dNewtonBody* const bodyHit, const Vector3& normal, const Vector3& contact, dLong shapeId, Real param)
+		:m_normal(normal)
+		,m_contact(contact)
+		,m_bodyHit(bodyHit)
+		,m_shapeId(shapeId)
+		,m_param(param)
+	{
+	}
+
+	Vector3 m_normal;
+	Vector3 m_contact;
+	const dNewtonBody* m_bodyHit;
+	dLong m_shapeId;
+	Real m_param;
+};
+
+
+class OGRE_NEWTON_API OgreNewtonAllHitRayCast: public dNewtonRayCast, public std::vector<OgreNewtonRayHitBody>
+{
+	public:
+	OgreNewtonAllHitRayCast(dNewton* const world, dLong collisionMask);
+	void CastRay (const dFloat* const p0, const dFloat* const p1, int threadIndex = 0);
+	dFloat OnRayHit (const dNewtonBody* const body, const dNewtonCollision* const shape, const dFloat* const contact, const dFloat* const normal, dLong collisionID, dFloat intersectParam);
 };
 
 
