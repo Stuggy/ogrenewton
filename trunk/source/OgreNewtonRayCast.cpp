@@ -28,6 +28,8 @@
 
 OgreNewtonRayCast::OgreNewtonRayCast(dNewton* const world, dLong collisionMask)
 	:dNewtonRayCast(world, collisionMask)
+	,m_bodyHit(NULL)
+	,m_shapeHit(NULL)
 	,m_param(1.0f)
 {
 }
@@ -43,8 +45,10 @@ dFloat OgreNewtonRayCast::OnRayHit (const dNewtonBody* const body, const dNewton
 {
 	if (intersectParam < m_param) {
 		m_bodyHit = (dNewtonBody*) body;
+		m_shapeHit = (dNewtonCollision*) shape;
 		m_param = intersectParam;
 		m_shapeId = collisionID;
+
 		m_normal = Vector3 (normal[0], normal[1], normal[2]); 
 		m_contact = Vector3 (contact[0], contact[1], contact[2]); 
 	}
