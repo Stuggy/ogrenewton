@@ -160,6 +160,10 @@ void OgreNewtonWorld::OnContactProcess (dNewtonContactMaterial* const contactMat
 		dNewtonCollision* const shape1 = contactMaterial->GetShape1(contact);
 		const dMaterialPairManager::dMaterialPair* const materialPair = m_materialMap.GetPair (shape0->GetMaterialId(), shape1->GetMaterialId(), threadIndex);
 
+		// if some condition, you can remove per contacts, from the contact list
+		//contactMaterial->RemoveContact(contact);
+
+
 		contactMaterial->SetContactRestitution(contact, materialPair->m_restitution);
 		contactMaterial->SetContactFrictionCoef (contact, materialPair->m_staticFriction0, materialPair->m_kineticFriction0, 0);
 		contactMaterial->SetContactFrictionCoef (contact, materialPair->m_staticFriction1, materialPair->m_kineticFriction1, 1);

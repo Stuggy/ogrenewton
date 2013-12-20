@@ -36,7 +36,16 @@ OgreNewtonMesh::OgreNewtonMesh (dNewton* const world, const Entity* const entity
 	,m_materialMap()
 {
 	BeginPolygon();
-	ParseEntity (entity, Matrix4::IDENTITY);
+	ParseEntity (entity->getMesh(), Matrix4::IDENTITY);
+	EndPolygon();
+}
+
+OgreNewtonMesh::OgreNewtonMesh (dNewton* const world, const MeshPtr mesh, const Matrix4& matrix)
+	:dNewtonMesh (world)
+	,m_materialMap()
+{
+	BeginPolygon();
+	ParseEntity (mesh, matrix);
 	EndPolygon();
 }
 
@@ -84,7 +93,7 @@ OgreNewtonMesh::OgreNewtonMesh (dNewton* const world, SceneNode* const sceneNode
 		for (unsigned int co = 0; co < num_obj; co++) {
 			MovableObject* const obj = node->getAttachedObject(short(co));
 			if (obj->getMovableType() == "Entity") {
-				ParseEntity ((Entity*) obj, matrix);
+				ParseEntity (((Entity*) obj)->getMesh(), matrix);
 			}
 		}
 
@@ -174,9 +183,13 @@ ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 	return object;
 }
 
-void OgreNewtonMesh::ParseEntity (const Entity* const entity, const Matrix4& matrix)
+
+
+
+//void OgreNewtonMesh::ParseEntity (const Entity* const entity, const Matrix4& matrix)
+void OgreNewtonMesh::ParseEntity (MeshPtr mesh, const Matrix4& matrix)
 {
-	MeshPtr mesh = entity->getMesh();
+//	MeshPtr mesh = entity->getMesh();
 
 	//find number of sub-meshes
 	unsigned short sub = mesh->getNumSubMeshes();
