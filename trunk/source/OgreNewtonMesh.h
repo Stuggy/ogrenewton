@@ -47,6 +47,7 @@ class OGRE_NEWTON_API OgreNewtonMesh: public dNewtonMesh
 	OgreNewtonMesh (const dNewtonCollision* const collision);
 	OgreNewtonMesh (dNewton* const world, const Entity* const entity);
 	OgreNewtonMesh (dNewton* const world, SceneNode* const sceneNode);
+	OgreNewtonMesh (dNewton* const world, const MeshPtr mesh, const Matrix4& matrix = Matrix4::IDENTITY);
 
 	virtual ~OgreNewtonMesh();
 
@@ -58,7 +59,8 @@ class OGRE_NEWTON_API OgreNewtonMesh: public dNewtonMesh
 	ManualObject* CreateEntity (const String& name) const;
 
 	private:
-	void ParseEntity (const Entity* const entity, const Matrix4& matrix);
+	void ParseEntity (MeshPtr mesh, const Matrix4& matrix);
+//	void ParseEntity (const Entity* const entity, const Matrix4& matrix);
 	
 
 	MaterialMap m_materialMap;	
