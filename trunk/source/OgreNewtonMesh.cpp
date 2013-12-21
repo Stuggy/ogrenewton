@@ -184,13 +184,8 @@ ManualObject* OgreNewtonMesh::CreateEntity (const String& name) const
 }
 
 
-
-
-//void OgreNewtonMesh::ParseEntity (const Entity* const entity, const Matrix4& matrix)
 void OgreNewtonMesh::ParseEntity (MeshPtr mesh, const Matrix4& matrix)
 {
-//	MeshPtr mesh = entity->getMesh();
-
 	//find number of sub-meshes
 	unsigned short sub = mesh->getNumSubMeshes();
 
@@ -225,10 +220,12 @@ void OgreNewtonMesh::ParseEntity (MeshPtr mesh, const Matrix4& matrix)
 			vertexPtr->unlock();
 		}
 
+		dNewtonScopeBuffer<Vector3> normals;
 		const VertexElement* const normalElem = v_decl->findElementBySemantic(VES_NORMAL);
-		HardwareVertexBufferSharedPtr normalPtr = v_data->vertexBufferBinding->getBuffer(normalElem->getSource());
-		dNewtonScopeBuffer<Vector3> normals (normalPtr->getNumVertices());
-		{
+		if (normalElem) {
+			HardwareVertexBufferSharedPtr normalPtr = v_data->vertexBufferBinding->getBuffer(normalElem->getSource());
+			normals.Init (normalPtr->getNumVertices());
+
 			int size = normalPtr->getVertexSize();
 			int offset = vertexElem->getOffset() / sizeof (float);
 			unsigned char* const ptr = static_cast<unsigned char*> (normalPtr->lock(HardwareBuffer::HBL_READ_ONLY));
@@ -242,10 +239,12 @@ void OgreNewtonMesh::ParseEntity (MeshPtr mesh, const Matrix4& matrix)
 		}
 
 
+		dNewtonScopeBuffer<Vector3> uvs;
 		const VertexElement* const uvElem = v_decl->findElementBySemantic(VES_TEXTURE_COORDINATES);
-		HardwareVertexBufferSharedPtr uvPtr = v_data->vertexBufferBinding->getBuffer(uvElem->getSource());
-		dNewtonScopeBuffer<Vector3> uvs (uvPtr->getNumVertices());
-		{
+		if (uvElem) {
+			HardwareVertexBufferSharedPtr uvPtr = v_data->vertexBufferBinding->getBuffer(uvElem->getSource());
+			uvs.Init (uvPtr->getNumVertices());
+		
 			int size = uvPtr->getVertexSize();
 			int offset = vertexElem->getOffset() / sizeof (float);
 			unsigned char* const ptr = static_cast<unsigned char*> (uvPtr->lock(HardwareBuffer::HBL_READ_ONLY));
@@ -291,15 +290,16 @@ void OgreNewtonMesh::ParseEntity (MeshPtr mesh, const Matrix4& matrix)
 				poly_verts[j][2] = points[idx].z;
 				poly_verts[j][3] = 0.0f;
 
-				poly_verts[j][4] = normals[idx].x;
-				poly_verts[j][5] = normals[idx].y;
-				poly_verts[j][6] = normals[idx].z;
+				if (normals.GetElementsCount()) {
+					poly_verts[j][4] = normals[idx].x;
+					poly_verts[j][5] = normals[idx].y;
+					poly_verts[j][6] = normals[idx].z;
+				}
 
-				poly_verts[j][7] = uvs[idx].x;
-				poly_verts[j][8] = uvs[idx].y;
-
-				poly_verts[j][9]  = 0.0f;
-				poly_verts[j][10] = 0.0f;
+				if (uvs.GetElementsCount()) {
+					poly_verts[j][7] = uvs[idx].x;
+					poly_verts[j][8] = uvs[idx].y;
+				}
 			}
 			AddFace(3, &poly_verts[0][0], 12 * sizeof (Real), cs);
 			i_offset += 3;
