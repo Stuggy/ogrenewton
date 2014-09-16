@@ -34,6 +34,13 @@ class OgreNewtonWorld;
 class OGRE_NEWTON_API OgreNewtonRayPickController: public CustomControllerBase
 {
 	public:
+
+	bool operator == (const OgreNewtonRayPickController& other ) const
+	{
+		dAssert (0);
+		return false;
+	}
+
 	virtual void PreUpdate(dFloat timestep, int threadIndex)
 	{
 		//do nothing;

@@ -114,7 +114,8 @@ dLong OgreNewtonWorld::GetPhysicsTimeInMicroSeconds() const
 
 dMaterialPairManager::dMaterialPair* OgreNewtonWorld::GetDefualtMaterialPair ()
 {
-	return m_materialMap.GetDefualtPair ();
+	return m_materialMap.GetDefaultPair ();
+						 
 }
 
 void OgreNewtonWorld::AddMaterialPair (int materialId0, int materialId1, const dMaterialPairManager::dMaterialPair& pair)
