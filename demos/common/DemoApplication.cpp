@@ -465,7 +465,7 @@ void DemoApplication::OnRenderUpdateEnd(dFloat updateParam)
 	Quaternion cameraRotation;
 	
 	// interpolate the camera matrix at rendering time
-	m_cameraSmoothing.InterplateMatrix (updateParam, &matrix[0][0]);
+	m_cameraSmoothing.InterpolateMatrix (updateParam, &matrix[0][0]);
 	matrix = matrix.transpose();
 	mCamera->setPosition (matrix.getTrans());
 	mCamera->setOrientation (matrix.extractQuaternion());
