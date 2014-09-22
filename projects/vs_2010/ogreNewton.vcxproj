@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="debugDll|Win32">
+      <Configuration>debugDll</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseDll|Win32">
+      <Configuration>ReleaseDll</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4E75F9E3-764D-4162-870D-A923CB5C7DEC}</ProjectGuid>
+    <RootNamespace>irrNewton</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDll|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debugDll|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDll|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='debugDll|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)/$(ProjectName)/$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)/$(ProjectName)/$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)/$(ProjectName)/$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)/$(ProjectName)/$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='debugDll|Win32'">$(Platform)/$(ProjectName)/$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='debugDll|Win32'">$(Platform)/$(ProjectName)/$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseDll|Win32'">$(Platform)/$(ProjectName)/$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseDll|Win32'">$(Platform)/$(ProjectName)/$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zm500 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../source;$(OGRE_ENGINE_DEPENDENCIES)/include;$(OGRE_ENGINE_BUILD)/include;$(OGRE_ENGINE)/OgreMain/include;$(OGRE_ENGINE)/OgreMain/include/OGRE;$(OGRE_ENGINE)/Samples/Common/include;$(OGRE_ENGINE)/Components/Terrain/include;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;BOOST_ALL_NO_LIB;_NEWTON_STATIC_LIB;_CNEWTON_STATIC_LIB;_CUSTOM_JOINTS_STATIC_LIB;_OGRE_NEWTON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>OgreNewtonStdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zm500 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../source;$(OGRE_ENGINE_DEPENDENCIES)/include;$(OGRE_ENGINE_BUILD)/include;$(OGRE_ENGINE)/OgreMain/include;$(OGRE_ENGINE)/OgreMain/include/OGRE;$(OGRE_ENGINE)/Samples/Common/include;$(OGRE_ENGINE)/Components/Terrain/include;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;BOOST_ALL_NO_LIB;_NEWTON_STATIC_LIB;_CNEWTON_STATIC_LIB;_CUSTOM_JOINTS_STATIC_LIB;_OGRE_NEWTON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>OgreNewtonStdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debugDll|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zm500 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../source;$(OGRE_ENGINE_DEPENDENCIES)/include;$(OGRE_ENGINE_BUILD)/include;$(OGRE_ENGINE)/OgreMain/include;$(OGRE_ENGINE)/OgreMain/include/OGRE;$(OGRE_ENGINE)/Samples/Common/include;$(OGRE_ENGINE)/Components/Terrain/include;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;BOOST_ALL_NO_LIB;_OGRE_NEWTON_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>OgreNewtonStdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>newton_d.lib;dMath_d.lib;dContainers_d.lib;dNewton_d.lib;dJointLibrary_d.lib;OIS_d.lib;OgreMain_d.lib;OgreTerrain_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName)_d.dll</OutputFile>
+      <AdditionalLibraryDirectories>$(OGRE_ENGINE_BUILD)\lib\debug;$(OGRE_ENGINE_DEPENDENCIES)\lib\debug;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dMath\debug;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dNewton\debug;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dContainers\debug;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dJointLibrary\debug;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008_dll\$(Platform)\newton\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ProjectName)_d.pdb</ProgramDatabaseFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy  "$(OutDir)$(TargetName).pdb" "../../bin/*.*"  /F /Y /R
+xcopy  "$(OutDir)$(TargetName).dll" "../../bin/*.*"  /F /Y /R
+
+xcopy  "$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008_dll\$(Platform)\newton\debug\*.dll" "../../bin/*.*"  /F /Y /R
+xcopy  "$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008_dll\$(Platform)\newton\debug\*.pdb" "../../bin/*.*"  /F /Y /R
+
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dNewton\debug\*.dll" "../../bin/*.*"  /F /Y /R
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dNewton\debug\*.pdb" "../../bin/*.*"  /F /Y /R
+
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dContainers\debug\*.dll" "../../bin/*.*"  /F /Y /R
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dContainers\debug\*.pdb" "../../bin/*.*"  /F /Y /R
+
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dJointLibrary\debug\*.dll" "../../bin/*.*"  /F /Y /R
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dJointLibrary\debug\*.pdb" "../../bin/*.*"  /F /Y /R
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDll|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zm500 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../source;$(OGRE_ENGINE_DEPENDENCIES)/include;$(OGRE_ENGINE_BUILD)/include;$(OGRE_ENGINE)/OgreMain/include;$(OGRE_ENGINE)/OgreMain/include/OGRE;$(OGRE_ENGINE)/Samples/Common/include;$(OGRE_ENGINE)/Components/Terrain/include;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;BOOST_ALL_NO_LIB;_OGRE_NEWTON_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>OgreNewtonStdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>newton.lib;dMath.lib;dContainers.lib;dNewton.lib;dJointLibrary.lib;OIS.lib;OgreMain.lib;OgreTerrain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OGRE_ENGINE_BUILD)\lib\release;$(OGRE_ENGINE_DEPENDENCIES)\lib\release;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dMath\release;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dNewton\release;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dContainers\release;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dJointLibrary\release;$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008_dll\$(Platform)\newton\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy  "$(OutDir)$(TargetName).pdb" "../../bin/*.*"  /F /Y /R
+xcopy  "$(OutDir)$(TargetName).dll" "../../bin/*.*"  /F /Y /R
+
+xcopy  "$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008_dll\$(Platform)\newton\release\*.dll" "../../bin/*.*"  /F /Y /R
+xcopy  "$(NEWTON_DYNAMICS)\coreLibrary_300\projects\windows\project_vs2008_dll\$(Platform)\newton\release\*.pdb" "../../bin/*.*"  /F /Y /R
+
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dNewton\release\*.dll" "../../bin/*.*"  /F /Y /R
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dNewton\release\*.pdb" "../../bin/*.*"  /F /Y /R
+
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dContainers\release\*.dll" "../../bin/*.*"  /F /Y /R
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dContainers\release\*.pdb" "../../bin/*.*"  /F /Y /R
+
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dJointLibrary\release\*.dll" "../../bin/*.*"  /F /Y /R
+xcopy  "$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dJointLibrary\release\*.pdb" "../../bin/*.*"  /F /Y /R
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\OgreNewtonArticulationManager.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonDebugger.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonDynamicBody.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonInputManager.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonMesh.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonPlayerManager.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonRayCast.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonRayPickManager.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonSceneBody.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonStdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDll|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='debugDll|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\source\OgreNewtonTriggerManager.cpp" />
+    <ClCompile Include="..\..\source\OgreNewtonWorld.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\OgreNewtonArticulationManager.h" />
+    <ClInclude Include="..\..\source\OgreNewtonDebugger.h" />
+    <ClInclude Include="..\..\source\OgreNewtonDynamicBody.h" />
+    <ClInclude Include="..\..\source\OgreNewtonInputManager.h" />
+    <ClInclude Include="..\..\source\OgreNewtonMesh.h" />
+    <ClInclude Include="..\..\source\OgreNewtonPlayerManager.h" />
+    <ClInclude Include="..\..\source\OgreNewtonRayCast.h" />
+    <ClInclude Include="..\..\source\OgreNewtonRayPickManager.h" />
+    <ClInclude Include="..\..\source\OgreNewtonSceneBody.h" />
+    <ClInclude Include="..\..\source\OgreNewtonStdAfx.h" />
+    <ClInclude Include="..\..\source\OgreNewtonTriggerManager.h" />
+    <ClInclude Include="..\..\source\OgreNewtonWorld.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

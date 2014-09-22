@@ -5,30 +5,34 @@ Testing the wrapper:
 -Using the library:
 1-The wrapper comes with precompiled release dll , you can simple copy that DLL to you Ogre folder and set a path to where the wrapper was unpacked.
 For header: ..\ogrenewt\source 
-For library: ..\ogrenewt\projects\vs_2009\Win32\ogreNewton\ReleaseDll
+For library: ..\ogrenewt\projects\vs_2010\Win32\ogreNewton\ReleaseDll
 
 Building the library:
-1-DownLoad Newton SDK 3.11 (minimum)
-2--open visual studio 2009 solution in folder: 
-..\newton-dynamics\packages\projects\visualStudio_2008\build.sln
--You will need to set few environment variables: 
-Say your Ogre SDK is installed: 
+1-DownLoad Newton SDK 3.13 from github (minimum)
+2-Open visual studio 2010 solution in folder: 
+..\newton-dynamics\packages\projects\visualStudio_2010\build.sln
+3-Build debug and release 
 
-OGRE_ENGINE=C:\tmp\ogre_src_v1-8-1
-OGRE_ENGINE_BUILD=C:\tmp\ogre_src_v1-8-1\project
-OGRE_ENGINE_DEPENDENCIES=C:\tmp\ogre_src_v1-8-1\Dependencies
+4-You will need to set few environment variables: 
+Say your Ogre SDK is installed: 
 
 For the Newton engine
 NEWTON_DYNAMICS=..\newton-dynamics
 
-3-Now with visual studio 2009, open solution:
-..\ogrenewton\projects\vs_2009\ogreNewton.sln
+For ogre SDK
+OGRE_ENGINE=C:\tmp\ogre_src_v1-8-1
+OGRE_ENGINE_BUILD=C:\tmp\ogre_src_v1-8-1\project
+OGRE_ENGINE_DEPENDENCIES=C:\tmp\ogre_src_v1-8-1\Dependencies
+
+
+3-Now with visual studio 2010, open solution:
+..\ogrenewton\projects\vs_2010\ogreNewton.sln
 
 
 Building the demos
-1-do the step on previous section
-2- Now with visual studio 2009, open solution:
-..\ogrenewton\projects\vs_2009\demos\allDemos.sln
+1- do the step on previous section
+2- Now with visual studio 2010, open solution:
+..\ogrenewton\projects\vs_2010\demos\allDemos.sln
 
 All solution should build without warning or errors.
 
