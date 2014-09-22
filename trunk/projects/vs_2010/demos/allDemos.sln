@@ -1,0 +1,136 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogreNewton", "..\ogreNewton.vcxproj", "{4E75F9E3-764D-4162-870D-A923CB5C7DEC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "demo00_helpers.vcxproj", "{382370CB-9178-4A9C-9ECE-894C54C6FCBE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo01_theBasics", "demo01_theBasics.vcxproj", "{D1A464A2-D479-458C-98A2-60965D823CD1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo02_levelMesh", "demo02_levelMesh.vcxproj", "{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo03_terrain", "demo03_terrain.vcxproj", "{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo04_collisionShapes", "demo04_collisionShapes.vcxproj", "{C86FEF56-C8AD-4EE2-A2E9-48EF3BFFA863}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo05_playerController", "demo05_playerController.vcxproj", "{BC3F09A7-971E-4101-B1A6-54AFA9180777}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo06_triggerController", "demo06_triggerController .vcxproj", "{F24D3677-7F80-490F-949D-57933E2DFBC6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo09_materials", "demo09_materials.vcxproj", "{FEFA0647-8337-4981-A396-711DFBC49120}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo08_advancedJoints", "demo08_advancedJoints.vcxproj", "{120CBD33-81E6-4346-BEDC-C9F555394786}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo07_standardJoints", "demo07_standardJoints.vcxproj", "{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo10_actuatorsJoints", "demo10_actuatorsJoints.vcxproj", "{5383F42A-8CB6-431B-9BBF-0D00AF0B909C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		DebugDll|Win32 = DebugDll|Win32
+		Release|Win32 = Release|Win32
+		ReleaseDll|Win32 = ReleaseDll|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.Debug|Win32.Build.0 = Debug|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.DebugDll|Win32.ActiveCfg = debugDll|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.DebugDll|Win32.Build.0 = debugDll|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.Release|Win32.ActiveCfg = Release|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.Release|Win32.Build.0 = Release|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{382370CB-9178-4A9C-9ECE-894C54C6FCBE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{382370CB-9178-4A9C-9ECE-894C54C6FCBE}.Debug|Win32.Build.0 = Debug|Win32
+		{382370CB-9178-4A9C-9ECE-894C54C6FCBE}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{382370CB-9178-4A9C-9ECE-894C54C6FCBE}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{382370CB-9178-4A9C-9ECE-894C54C6FCBE}.Release|Win32.ActiveCfg = Release|Win32
+		{382370CB-9178-4A9C-9ECE-894C54C6FCBE}.Release|Win32.Build.0 = Release|Win32
+		{382370CB-9178-4A9C-9ECE-894C54C6FCBE}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{382370CB-9178-4A9C-9ECE-894C54C6FCBE}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{D1A464A2-D479-458C-98A2-60965D823CD1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D1A464A2-D479-458C-98A2-60965D823CD1}.Debug|Win32.Build.0 = Debug|Win32
+		{D1A464A2-D479-458C-98A2-60965D823CD1}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{D1A464A2-D479-458C-98A2-60965D823CD1}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{D1A464A2-D479-458C-98A2-60965D823CD1}.Release|Win32.ActiveCfg = Release|Win32
+		{D1A464A2-D479-458C-98A2-60965D823CD1}.Release|Win32.Build.0 = Release|Win32
+		{D1A464A2-D479-458C-98A2-60965D823CD1}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{D1A464A2-D479-458C-98A2-60965D823CD1}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.Debug|Win32.Build.0 = Debug|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.Release|Win32.ActiveCfg = Release|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.Release|Win32.Build.0 = Release|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{BBD1FFB5-48C0-442F-B548-4A7E3E5891D5}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}.Debug|Win32.Build.0 = Debug|Win32
+		{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}.Release|Win32.ActiveCfg = Release|Win32
+		{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}.Release|Win32.Build.0 = Release|Win32
+		{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{3FBBF2BD-9477-4AAB-A299-6C25F17F6956}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{C86FEF56-C8AD-4EE2-A2E9-48EF3BFFA863}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C86FEF56-C8AD-4EE2-A2E9-48EF3BFFA863}.Debug|Win32.Build.0 = Debug|Win32
+		{C86FEF56-C8AD-4EE2-A2E9-48EF3BFFA863}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{C86FEF56-C8AD-4EE2-A2E9-48EF3BFFA863}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{C86FEF56-C8AD-4EE2-A2E9-48EF3BFFA863}.Release|Win32.ActiveCfg = Release|Win32
+		{C86FEF56-C8AD-4EE2-A2E9-48EF3BFFA863}.Release|Win32.Build.0 = Release|Win32
+		{C86FEF56-C8AD-4EE2-A2E9-48EF3BFFA863}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{C86FEF56-C8AD-4EE2-A2E9-48EF3BFFA863}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{BC3F09A7-971E-4101-B1A6-54AFA9180777}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BC3F09A7-971E-4101-B1A6-54AFA9180777}.Debug|Win32.Build.0 = Debug|Win32
+		{BC3F09A7-971E-4101-B1A6-54AFA9180777}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{BC3F09A7-971E-4101-B1A6-54AFA9180777}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{BC3F09A7-971E-4101-B1A6-54AFA9180777}.Release|Win32.ActiveCfg = Release|Win32
+		{BC3F09A7-971E-4101-B1A6-54AFA9180777}.Release|Win32.Build.0 = Release|Win32
+		{BC3F09A7-971E-4101-B1A6-54AFA9180777}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{BC3F09A7-971E-4101-B1A6-54AFA9180777}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.Debug|Win32.Build.0 = Debug|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.Release|Win32.ActiveCfg = Release|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.Release|Win32.Build.0 = Release|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{F24D3677-7F80-490F-949D-57933E2DFBC6}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{FEFA0647-8337-4981-A396-711DFBC49120}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FEFA0647-8337-4981-A396-711DFBC49120}.Debug|Win32.Build.0 = Debug|Win32
+		{FEFA0647-8337-4981-A396-711DFBC49120}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{FEFA0647-8337-4981-A396-711DFBC49120}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{FEFA0647-8337-4981-A396-711DFBC49120}.Release|Win32.ActiveCfg = Release|Win32
+		{FEFA0647-8337-4981-A396-711DFBC49120}.Release|Win32.Build.0 = Release|Win32
+		{FEFA0647-8337-4981-A396-711DFBC49120}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{FEFA0647-8337-4981-A396-711DFBC49120}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{120CBD33-81E6-4346-BEDC-C9F555394786}.Debug|Win32.ActiveCfg = Debug|Win32
+		{120CBD33-81E6-4346-BEDC-C9F555394786}.Debug|Win32.Build.0 = Debug|Win32
+		{120CBD33-81E6-4346-BEDC-C9F555394786}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{120CBD33-81E6-4346-BEDC-C9F555394786}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{120CBD33-81E6-4346-BEDC-C9F555394786}.Release|Win32.ActiveCfg = Release|Win32
+		{120CBD33-81E6-4346-BEDC-C9F555394786}.Release|Win32.Build.0 = Release|Win32
+		{120CBD33-81E6-4346-BEDC-C9F555394786}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{120CBD33-81E6-4346-BEDC-C9F555394786}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}.Debug|Win32.Build.0 = Debug|Win32
+		{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}.Release|Win32.ActiveCfg = Release|Win32
+		{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}.Release|Win32.Build.0 = Release|Win32
+		{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{ACC493ED-E1E0-4D32-8365-8203FF0BAB22}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+		{5383F42A-8CB6-431B-9BBF-0D00AF0B909C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5383F42A-8CB6-431B-9BBF-0D00AF0B909C}.Debug|Win32.Build.0 = Debug|Win32
+		{5383F42A-8CB6-431B-9BBF-0D00AF0B909C}.DebugDll|Win32.ActiveCfg = DebugDll|Win32
+		{5383F42A-8CB6-431B-9BBF-0D00AF0B909C}.DebugDll|Win32.Build.0 = DebugDll|Win32
+		{5383F42A-8CB6-431B-9BBF-0D00AF0B909C}.Release|Win32.ActiveCfg = Release|Win32
+		{5383F42A-8CB6-431B-9BBF-0D00AF0B909C}.Release|Win32.Build.0 = Release|Win32
+		{5383F42A-8CB6-431B-9BBF-0D00AF0B909C}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{5383F42A-8CB6-431B-9BBF-0D00AF0B909C}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

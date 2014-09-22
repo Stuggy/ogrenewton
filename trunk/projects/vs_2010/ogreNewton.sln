@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogreNewton", "ogreNewton.vcxproj", "{4E75F9E3-764D-4162-870D-A923CB5C7DEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		debugDll|Win32 = debugDll|Win32
+		Release|Win32 = Release|Win32
+		ReleaseDll|Win32 = ReleaseDll|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.Debug|Win32.Build.0 = Debug|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.debugDll|Win32.ActiveCfg = debugDll|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.debugDll|Win32.Build.0 = debugDll|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.Release|Win32.ActiveCfg = Release|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.Release|Win32.Build.0 = Release|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.ReleaseDll|Win32.ActiveCfg = ReleaseDll|Win32
+		{4E75F9E3-764D-4162-870D-A923CB5C7DEC}.ReleaseDll|Win32.Build.0 = ReleaseDll|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
