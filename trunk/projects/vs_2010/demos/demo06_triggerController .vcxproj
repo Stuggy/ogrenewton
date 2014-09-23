@@ -87,7 +87,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../../source;../../../demos/common;../../../demos/common/dotSceneLoader;$(OGRE_ENGINE_DEPENDENCIES)/include;$(OGRE_ENGINE_BUILD)/include;$(OGRE_ENGINE)/OgreMain/include;$(OGRE_ENGINE)/OgreMain/include/ogre;$(OGRE_ENGINE)/Samples/Common/include;$(OGRE_ENGINE)/Components/Terrain/include;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../source;../../../demos/common;../../../demos/common/dotSceneLoader;$(OGRE_ENGINE)/boost;$(OGRE_ENGINE)/include;$(OGRE_ENGINE)/include/OGRE;$(OGRE_ENGINE)/include/OGRE/Overlay;$(OGRE_ENGINE)/include/OGRE/Terrain;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;BOOST_ALL_NO_LIB;_NEWTON_STATIC_LIB;_CNEWTON_STATIC_LIB;_CUSTOM_JOINTS_STATIC_LIB;_OGRE_NEWTON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -129,7 +129,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../../../source;../../../demos/common;../../../demos/common/dotSceneLoader;$(OGRE_ENGINE_DEPENDENCIES)/include;$(OGRE_ENGINE_BUILD)/include;$(OGRE_ENGINE)/OgreMain/include;$(OGRE_ENGINE)/OgreMain/include/ogre;$(OGRE_ENGINE)/Samples/Common/include;$(OGRE_ENGINE)/Components/Terrain/include;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../source;../../../demos/common;../../../demos/common/dotSceneLoader;$(OGRE_ENGINE)/boost;$(OGRE_ENGINE)/include;$(OGRE_ENGINE)/include/OGRE;$(OGRE_ENGINE)/include/OGRE/Overlay;$(OGRE_ENGINE)/include/OGRE/Terrain;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;BOOST_ALL_NO_LIB;_NEWTON_STATIC_LIB;_CNEWTON_STATIC_LIB;_CUSTOM_JOINTS_STATIC_LIB;_OGRE_NEWTON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -171,7 +171,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../../source;../../../demos/common;../../../demos/common/dotSceneLoader;$(OGRE_ENGINE_DEPENDENCIES)/include;$(OGRE_ENGINE_BUILD)/include;$(OGRE_ENGINE)/OgreMain/include;$(OGRE_ENGINE)/OgreMain/include/ogre;$(OGRE_ENGINE)/Samples/Common/include;$(OGRE_ENGINE)/Components/Terrain/include;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../source;../../../demos/common;../../../demos/common/dotSceneLoader;$(OGRE_ENGINE)/boost;$(OGRE_ENGINE)/include;$(OGRE_ENGINE)/include/OGRE;$(OGRE_ENGINE)/include/OGRE/Overlay;$(OGRE_ENGINE)/include/OGRE/Terrain;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -191,10 +191,10 @@
       <Culture>0x0c07</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>dNewton_d.lib;OIS_d.lib;OgreMain_d.lib;OgreTerrain_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dNewton_d.lib;OIS_d.lib;OgreMain_d.lib;OgreTerrain_d.lib;OgreOverlay_d.lib;libboost_thread-vc100-mt-gd-1_55.lib;libboost_system-vc100-mt-gd-1_55.lib;libboost_chrono-vc100-mt-gd-1_55.lib;libboost_date_time-vc100-mt-gd-1_55.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>../../../bin/$(ProjectName)_d.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(OGRE_ENGINE_BUILD)\lib\debug;$(OGRE_ENGINE_DEPENDENCIES)\lib\debug;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dNewton\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OGRE_ENGINE)/lib/debug;$(OGRE_ENGINE)/boost/lib;$(NEWTON_DYNAMICS)\packages\projects\visualStudio_2008_dll\$(Platform)\dNewton\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>../../../bin/$(ProjectName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -213,7 +213,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../../../source;../../../demos/common;../../../demos/common/dotSceneLoader;$(OGRE_ENGINE_DEPENDENCIES)/include;$(OGRE_ENGINE_BUILD)/include;$(OGRE_ENGINE)/OgreMain/include;$(OGRE_ENGINE)/OgreMain/include/ogre;$(OGRE_ENGINE)/Samples/Common/include;$(OGRE_ENGINE)/Components/Terrain/include;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../source;../../../demos/common;../../../demos/common/dotSceneLoader;$(OGRE_ENGINE)/boost;$(OGRE_ENGINE)/include;$(OGRE_ENGINE)/include/OGRE;$(OGRE_ENGINE)/include/OGRE/Overlay;$(OGRE_ENGINE)/include/OGRE/Terrain;$(NEWTON_DYNAMICS)/packages/dMath;$(NEWTON_DYNAMICS)/packages/dNewton;$(NEWTON_DYNAMICS)/packages/dContainers;$(NEWTON_DYNAMICS)/packages/dCustomJoints;$(NEWTON_DYNAMICS)/coreLibrary_300/source/newton;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

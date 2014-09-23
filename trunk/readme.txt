@@ -9,23 +9,22 @@ For library: ..\ogrenewt\projects\vs_2010\Win32\ogreNewton\ReleaseDll
 
 Building the library:
 1-DownLoad Newton SDK 3.13 from github (minimum)
+
 2-Open visual studio 2010 solution in folder: 
 ..\newton-dynamics\packages\projects\visualStudio_2010\build.sln
+
 3-Build debug and release 
 
 4-You will need to set few environment variables: 
 Say your Ogre SDK is installed: 
 
-For the Newton engine
+For example the Newton engine in my system is set to 
 NEWTON_DYNAMICS=..\newton-dynamics
 
-For ogre SDK
-OGRE_ENGINE=C:\tmp\ogre_src_v1-8-1
-OGRE_ENGINE_BUILD=C:\tmp\ogre_src_v1-8-1\project
-OGRE_ENGINE_DEPENDENCIES=C:\tmp\ogre_src_v1-8-1\Dependencies
+For example the OGRE sdk in my system is set to 
+OGRE_ENGINE=C:\Development\OgreSDK_vc10_v1-9-0
 
-
-3-Now with visual studio 2010, open solution:
+5-Now with visual studio 2010, open solution:
 ..\ogrenewton\projects\vs_2010\ogreNewton.sln
 
 
