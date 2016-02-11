@@ -1,0 +1,1 @@
+This is a lightweight object oriented wrapper that integrates the Newton Dynamics physic engine with the Ogre Game engine.
